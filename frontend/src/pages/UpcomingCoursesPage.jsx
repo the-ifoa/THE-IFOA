@@ -34,7 +34,7 @@ const COURSES = [
     facts: [
       ['Duration', '200 hours, plus ADX self-study'],
       ['Where', 'Online preparation, then Daytona Beach, Florida'],
-      ['Fee', '$4,500']
+      ['Fee', '$4,500 USD']
     ],
     cta: { label: 'Apply online', to: '/courses/aircraft-dispatcher-training-faa-part-65/enroll' }
   },

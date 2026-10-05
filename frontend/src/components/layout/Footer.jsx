@@ -107,7 +107,15 @@ export function Footer() {
 
         {/* Bottom bar */}
         <div className="pt-7 border-t border-white/10 flex items-center justify-between gap-4 text-xs text-slate-500">
-          <p>© {currentYear} International Flight Operations Academy GmbH</p>
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
+            <p>© {currentYear} International Flight Operations Academy GmbH</p>
+            <Link to="/impressum" className="hover:text-white transition-colors">
+              Impressum
+            </Link>
+            <Link to="/privacy-policy" className="hover:text-white transition-colors">
+              Privacy policy
+            </Link>
+          </div>
           <button
             onClick={scrollToTop}
             className="group inline-flex items-center gap-2 text-slate-400 hover:text-white transition-colors duration-200 cursor-pointer shrink-0"

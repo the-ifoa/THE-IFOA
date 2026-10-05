@@ -218,10 +218,10 @@ const courses = [
     additionalCosts: {
       intro: 'Full cost to FAA certificate',
       items: [
-        { label: 'Tuition', amount: '$4,500' },
-        { label: 'ADX knowledge test', amount: '$175' },
-        { label: 'Practical test, paid to the examiner', amount: '$600' },
-        { label: 'Total to FAA certificate', amount: '$5,275' }
+        { label: 'Tuition', amount: '$4,500 USD' },
+        { label: 'ADX knowledge test', amount: '$175 USD' },
+        { label: 'Practical test, paid to the examiner', amount: '$600 USD' },
+        { label: 'Total to FAA certificate', amount: '$5,275 USD' }
       ],
       note: 'Payment, cancellation and refunds: see our Terms and Conditions.'
     },
@@ -248,7 +248,7 @@ const courses = [
           eyebrowSecondary: 'Aircraft Dispatcher Training',
           applyOnlineLabel: 'Apply Online',
           admissionsTitle: 'Ready to start your dispatcher certification?',
-          admissionsDesc: '200 hours · FAA Part 65 approved · $4,500',
+          admissionsDesc: '200 hours · FAA Part 65 approved · $4,500 USD',
           admissionsApplyLabel: 'Apply Online'
         },
         curriculum: {
@@ -346,7 +346,7 @@ const courses = [
     processSteps: ['Complete the 200-hour course', 'Pass the ADX knowledge test', 'Pass the practical test with an FAA examiner', 'FAA Aircraft Dispatcher certificate, issued by the FAA'],
     seo: {
       metaTitle: 'FAA Aircraft Dispatcher Course: Part 65 Approved, 200 Hours | IFOA',
-      metaDescription: 'FAA Part 65 approved 200-hour Aircraft Dispatcher course in Florida. Covers all eight Appendix A knowledge areas and prepares you for the ADX and practical test. $4,500.'
+      metaDescription: 'FAA Part 65 approved 200-hour Aircraft Dispatcher course in Florida. Covers all eight Appendix A knowledge areas and prepares you for the ADX and practical test. $4,500 USD.'
     }
 
   },
@@ -382,7 +382,7 @@ const courses = [
     location: 'Sønderborg, Denmark',
     price: {
       amount: 5500,
-      currency: 'EUR',
+      currency: 'USD',
       note: 'Includes training materials, ADX learning portal and weekly masterclasses. Travel, accommodation, meals and visa are not included.'
     },
     whatYouWillLearn: {
@@ -464,8 +464,8 @@ const courses = [
     additionalCosts: {
       intro: 'FAA fees not included',
       items: [
-        { label: 'ADX knowledge test', amount: '$175' },
-        { label: 'Practical test, paid to the examiner', amount: '$600' }
+        { label: 'ADX knowledge test', amount: '$175 USD' },
+        { label: 'Practical test, paid to the examiner', amount: '$600 USD' }
       ],
       note: 'Payment, cancellation and refunds: see our Terms and Conditions.'
     },
@@ -482,12 +482,12 @@ const courses = [
     },
     bottomBanner: {
       title: 'Ready to start your dispatcher certification?',
-      desc: '280 hours · FAA Part 65, ICAO and EASA · €5,500'
+      desc: '280 hours · FAA Part 65, ICAO and EASA · $5,500 USD'
     },
     seo: {
       metaTitle: 'Flight Dispatcher Double Programme: FAA, ICAO & EASA, 280 Hours | IFOA',
       metaDescription:
-        'A 280-hour, 7-week hybrid programme in Europe, €5,500: the FAA Part 65 approved dispatcher course plus ICAO and EASA operations. Prepares you for the FAA Aircraft Dispatcher certificate.'
+        'A 280-hour, 7-week hybrid programme in Europe, $5,500 USD: the FAA Part 65 approved dispatcher course plus ICAO and EASA operations. Prepares you for the FAA Aircraft Dispatcher certificate.'
     },
     registrationOpen: true
   },
@@ -1183,6 +1183,47 @@ const courses = [
 
   }
 ]
+
+// India edition of Flight Dispatcher Initial: the same ICAO Doc 10106
+// programme, taught in 4 weeks on-site in New Delhi and priced in INR. Built
+// from the EASA entry so the shared syllabus lives in one place.
+const easaInitial = courses.find((c) => c.slug === 'flight-dispatcher-initial-certification')
+courses.splice(courses.indexOf(easaInitial) + 1, 0, {
+  ...easaInitial,
+  slug: 'flight-dispatcher-initial-training-india',
+  title: 'Flight Dispatcher Initial Training (India)',
+  refCode: 'FD-INITIAL-IN',
+  featured: false,
+  order: 11,
+  authority: 'ICAO Doc 10106',
+  format: '4 Weeks On-site, New Delhi (India)',
+  intakeLabel: 'Next intake: contact us',
+  summary:
+    "Four weeks on-site in New Delhi to learn how to plan, release and follow a flight, and make the calls when it doesn't go to plan. Built on ICAO Doc 10106 and taught by working dispatchers.",
+  schedule: { mode: 'Onsite', startDate: null, endDate: null, timeText: '4 Weeks On-site, New Delhi (India)' },
+  duration: '4 Weeks',
+  location: 'New Delhi, India',
+  price: {
+    amount: 99999,
+    currency: 'INR',
+    note: 'Includes training materials, examination and certificate. Travel, accommodation and meals are not included.'
+  },
+  delivery: {
+    intro: 'All four weeks are on-site in New Delhi, in the classroom with your instructors.',
+    items: [
+      { label: 'School', title: 'IFOA India', description: 'Taught by working dispatchers' },
+      { label: 'Format', title: '4 weeks on-site', description: 'New Delhi, India' }
+    ]
+  },
+  heroNote:
+    'This course gives you an IFOA Flight Dispatch Completion Certificate, built on ICAO Doc 10106. If you need a government-issued dispatcher licence, see our FAA Aircraft Dispatcher course.',
+  processSteps: ['Week 1: New Delhi', 'Week 2: New Delhi', 'Week 3: New Delhi', 'Week 4: New Delhi'],
+  seo: {
+    metaTitle: 'Flight Dispatcher Initial Training India: 4 Weeks, New Delhi | IFOA',
+    metaDescription:
+      'A 4-week on-site flight dispatcher course in New Delhi, built on ICAO Doc 10106. ₹99,999 + GST, including training materials, examination and certificate.'
+  }
+})
 
 // Approved page copy (overview blocks + sidebar facts) per course - kept in
 // its own file so the long-form copy doesn't bury the catalog data above.

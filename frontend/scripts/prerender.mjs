@@ -27,16 +27,20 @@ const SITE_URL = process.env.SITE_URL || 'https://theifoa.com'
 const API_BASE = process.env.PRERENDER_API_BASE || 'http://localhost:5001/api'
 
 // Routes that exist regardless of database contents.
-// changefreq/priority are sitemap hints only.
+// Every page gets a <lastmod> (Google ignores changefreq/priority, and a
+// sitemap where only some URLs carry a date reads as unreliable). Static pages
+// use the build date; course pages use the course's last update.
+const BUILD_DATE = new Date().toISOString().slice(0, 10)
 const STATIC_ROUTES = [
-  { path: '/', priority: '1.0', changefreq: 'weekly' },
-  { path: '/services', priority: '0.9', changefreq: 'monthly' },
-  { path: '/events', priority: '0.9', changefreq: 'weekly' },
-  { path: '/events-courses', priority: '0.5', changefreq: 'weekly' },
-  { path: '/about', priority: '0.7', changefreq: 'monthly' },
-  { path: '/contact', priority: '0.7', changefreq: 'yearly' },
-  { path: '/foxtrot-delta', priority: '0.6', changefreq: 'monthly' },
-  { path: '/upcoming-courses', priority: '0.8', changefreq: 'weekly' }
+  { path: '/' },
+  { path: '/services' },
+  { path: '/events' },
+  { path: '/about' },
+  { path: '/contact' },
+  { path: '/foxtrot-delta' },
+  { path: '/upcoming-courses' },
+  { path: '/impressum' },
+  { path: '/privacy-policy' }
 ]
 
 const SEO_BLOCK = /<!--SEO:START-->[\s\S]*?<!--SEO:END-->/
@@ -88,10 +92,9 @@ async function writeRoute(routePath, html) {
 function buildSitemap(entries) {
   const urls = entries
     .map(
-      ({ path: p, priority, changefreq, lastmod }) => `  <url>
-    <loc>${SITE_URL}${p === '/' ? '/' : p}</loc>${lastmod ? `\n    <lastmod>${lastmod}</lastmod>` : ''}
-    <changefreq>${changefreq}</changefreq>
-    <priority>${priority}</priority>
+      ({ path: p, lastmod }) => `  <url>
+    <loc>${SITE_URL}${p === '/' ? '/' : p}</loc>
+    <lastmod>${lastmod || BUILD_DATE}</lastmod>
   </url>`
     )
     .join('\n')
@@ -138,7 +141,7 @@ async function main() {
   }
 
   for (const route of STATIC_ROUTES) {
-    const isEventsRoute = route.path === '/events' || route.path === '/events-courses'
+    const isEventsRoute = route.path === '/events'
     const preload = isEventsRoute && courses ? { courses } : {}
     await renderRoute(route.path, preload)
     console.log(`[prerender] ${route.path}`)
@@ -151,8 +154,6 @@ async function main() {
       await renderRoute(routePath, { [`course:${course.slug}`]: course })
       sitemap.push({
         path: routePath,
-        priority: '0.8',
-        changefreq: 'weekly',
         lastmod: course.updatedAt ? new Date(course.updatedAt).toISOString().slice(0, 10) : undefined
       })
       console.log(`[prerender] ${routePath}`)

@@ -1,11 +1,12 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { RiArrowLeftLine, RiLoader4Line } from 'react-icons/ri'
 
-import { api } from '@/lib/api'
 import { CourseDetailView } from '@/components/course/CourseDetailView'
+import { programmeBanner, resolveCard } from '@/components/course/CourseCard'
 import { Seo } from '@/components/common/Seo'
 import { readPreload } from '@/lib/preload'
+import { cachedCourse, fetchCourse } from '@/lib/courseCache'
 import {
   graph,
   organizationSchema,
@@ -16,22 +17,29 @@ import {
 
 export function CourseDetailPage() {
   const { slug } = useParams()
-  const preloaded = readPreload(`course:${slug}`)
+  const preloaded = readPreload(`course:${slug}`) || cachedCourse(slug)
   const [course, setCourse] = useState(preloaded)
   const [loading, setLoading] = useState(!preloaded)
   const [error, setError] = useState('')
+  // The course currently on screen (read by the effect below).
+  const shownRef = useRef(course)
+  useEffect(() => {
+    shownRef.current = course
+  }, [course])
 
   useEffect(() => {
     let cancelled = false
-    // A preloaded course is already on screen; refetch quietly to pick up any
-    // edits made since the last build rather than flashing the spinner again.
-    if (!readPreload(`course:${slug}`)) setLoading(true)
+    // A known course (prerendered or fetched earlier) shows at once; when
+    // switching between courses the previous one stays on screen until the
+    // new one arrives. Either way we refetch quietly to pick up recent edits.
+    const known = readPreload(`course:${slug}`) || cachedCourse(slug)
+    if (known) setCourse(known)
+    else if (!shownRef.current) setLoading(true)
     setError('')
 
-    api
-      .getCourse(slug)
+    fetchCourse(slug)
       .then((data) => {
-        if (!cancelled) setCourse(data.course)
+        if (!cancelled) setCourse(data)
       })
       .catch(() => {
         if (!cancelled) setError('This course could not be found.')
@@ -82,7 +90,7 @@ export function CourseDetailPage() {
         description={clampDescription(
           course.seo?.metaDescription || course.summary || course.whatYouWillLearn?.intro
         )}
-        image={course.card?.image?.url || course.heroImage?.url}
+        image={course.card?.image?.url || course.heroImage?.url || programmeBanner(course) || resolveCard(course).image}
         jsonLd={graph(
           organizationSchema(),
           courseSchema(course),

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
-import { Link, Navigate, useParams } from 'react-router-dom'
+import { Link, Navigate, useParams, useSearchParams } from 'react-router-dom'
 import {
   RiArrowLeftLine,
   RiCalendarEventLine,
@@ -16,7 +16,8 @@ import { mergeContent } from '@/hooks/usePageContent'
 import { useCoursePreview } from '@/components/course/CourseOverview'
 import { CmsText, CmsImageButton, postEdit } from '@/components/admin/CmsEditable'
 import { useGoBack } from '@/hooks/useGoBack'
-import { programmeBanner } from '@/components/course/CourseCard'
+import { programmeBanner, resolveCard, enrollPath } from '@/components/course/CourseCard'
+import { PriceTag, hasGst, GST_NOTE } from '@/components/course/PriceTag'
 
 // Standards Logos
 import logoEasa from '@/assets/shared/standards-logos/logo-easa.webp'
@@ -32,7 +33,6 @@ const STANDARD_LOGOS = {
   faa: { src: logoFaa, alt: 'FAA' }
 }
 const logoSrc = (url = '') => (url.startsWith('std:') ? STANDARD_LOGOS[url.slice(4)]?.src : url)
-import bannerCourseHero from '@/assets/shared/course-media/easa-hero.webp'
 
 // Static chrome the enrollment flow ships with, same for every course;
 // editable at /admin/pages/courseEnrollment. Course-specific fields (title,
@@ -77,6 +77,9 @@ const FALLBACK = {
 
 export function CourseEnrollmentPage() {
   const { slug: paramSlug } = useParams()
+  // ?location=india pre-selects that training location in the form.
+  const [searchParams] = useSearchParams()
+  const initialLocation = searchParams.get('location') || ''
   // Back returns to the previous page; opened directly, it goes to the course.
   const goBack = useGoBack(`/courses/${paramSlug}`)
 
@@ -157,13 +160,8 @@ export function CourseEnrollmentPage() {
   }
   const activeLocation = trainingLocation ? locationLabel(trainingLocation) : course?.location
 
-  const formatPrice = (price) => {
-    if (!price || price.amount == null) return 'Contact Admissions'
-    if (price.currency === 'INR') {
-      return `₹${price.amount.toLocaleString('en-IN')}`
-    }
-    return `${price.currency} ${price.amount.toLocaleString()}`
-  }
+  const formatPrice = (price) =>
+    price && price.amount != null ? <PriceTag price={price} /> : 'Contact Admissions'
 
   const formatDate = (isoString) => {
     if (!isoString) return ''
@@ -178,6 +176,11 @@ export function CourseEnrollmentPage() {
   // No course in the URL - send visitors to the programs list to pick one.
   if (!activeSlug) {
     return <Navigate to="/events" replace />
+  }
+  // Courses that apply through another course's form (e.g. India edition).
+  const via = enrollPath({ slug: activeSlug })
+  if (via !== `/courses/${activeSlug}/enroll`) {
+    return <Navigate to={via} replace />
   }
 
   if (loading) {
@@ -265,7 +268,7 @@ export function CourseEnrollmentPage() {
             <div className="rounded-[2rem] bg-white border border-slate-200/90 shadow-[0_4px_24px_rgba(0,0,0,0.03)] overflow-hidden p-6 sm:p-7">
               <div className="aspect-[3/2] rounded-2xl overflow-hidden bg-slate-950/5 border border-slate-100 relative flex items-center justify-center p-2 shadow-2xs">
                 <img
-                  src={cardImageUrl || programmeBanner(course) || course.image || bannerCourseHero}
+                  src={cardImageUrl || programmeBanner(course) || resolveCard(course).image}
                   alt={course.title}
                   className="w-full h-full object-contain object-center"
                 />
@@ -294,6 +297,9 @@ export function CourseEnrollmentPage() {
                     formatPrice(activePrice)
                   )}
                 </div>
+                {!facts && hasGst(activePrice) && (
+                  <span className="block text-xs font-semibold text-slate-600">{GST_NOTE}</span>
+                )}
                 {facts && !locationPrice && (
                   <span className="block text-[11px] text-slate-400">Leave the amount empty to show “Contact Admissions”.</span>
                 )}
@@ -306,7 +312,9 @@ export function CourseEnrollmentPage() {
                     <TbClockHour4 className="w-4 h-4 text-slate-400" />
                     <span>{T('sidebar', 'durationLabel')}</span>
                   </span>
-                  <strong className="text-slate-900 text-right font-bold">{CF('duration', '4 Weeks')}</strong>
+                  <strong className="text-slate-900 text-right font-bold">
+                    {locationPrice?.duration || CF('duration', '4 Weeks')}
+                  </strong>
                 </div>
 
                 <div className="flex items-center justify-between gap-4 py-2 border-b border-slate-100">
@@ -435,6 +443,7 @@ export function CourseEnrollmentPage() {
               courseTitle={course.title?.replace(/[\u2013\u2014]/g, '-')}
               onAnswersChange={handleAnswersChange}
               locationPrices={course.locationPrices || []}
+              initialLocation={initialLocation}
               liveSections={liveCourse?.form}
               text={{
                 title: CF('title'),

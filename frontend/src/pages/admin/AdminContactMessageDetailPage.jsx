@@ -117,6 +117,7 @@ export function AdminContactMessageDetailPage() {
             <p className="text-xs text-gray-400 mt-1">
               received {new Date(message.createdAt).toLocaleString('en-GB')}
               {message.office ? ` · ${message.office}` : ''}
+              {message.location ? ` · Training location: ${message.location}` : ''}
             </p>
           </div>
 

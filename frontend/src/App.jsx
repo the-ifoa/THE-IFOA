@@ -47,9 +47,12 @@ function AdminLoadingFallback() {
 
 // ScrollToTop helper on route change
 function ScrollToTop() {
-  const { pathname } = useLocation()
+  const { pathname, state } = useLocation()
   useEffect(() => {
+    // In-page switches (e.g. a course's location switch) keep the position.
+    if (state?.keepScroll) return
     window.scrollTo(0, 0)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname])
   return null
 }
@@ -96,7 +99,9 @@ function PublicSite({ pages }) {
     ContactPage: Contact,
     CourseDetailPage: CourseDetail,
     CourseEnrollmentPage: CourseEnrollment,
-    NotFoundPage: NotFound
+    NotFoundPage: NotFound,
+    ImpressumPage: Impressum,
+    PrivacyPolicyPage: PrivacyPolicy
   } = pages
 
   return (
@@ -124,6 +129,9 @@ function PublicSite({ pages }) {
             <Route path="/training" element={<Navigate to="/services" replace />} />
             <Route path="/compliance" element={<ExternalRedirect to="https://agent.theifoa.com/" />} />
             <Route path="/agent-for-service" element={<ExternalRedirect to="https://agent.theifoa.com/" />} />
+            <Route path="/impressum" element={<Impressum />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/data-protection-policy" element={<Navigate to="/privacy-policy" replace />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>

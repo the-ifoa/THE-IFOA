@@ -71,7 +71,7 @@ export function CustomSelect({
       {isOpen && (
         <div
           role="listbox"
-          className="absolute left-0 right-0 top-full mt-2 z-50 rounded-2xl bg-white border border-slate-200/90 shadow-2xl p-1.5 max-h-64 overflow-y-auto space-y-0.5 animate-in fade-in slide-in-from-top-2 duration-150"
+          className="absolute left-0 right-0 top-full mt-2 z-40 rounded-2xl bg-white border border-slate-200/90 shadow-2xl p-1.5 max-h-80 overflow-y-auto space-y-0.5 animate-in fade-in slide-in-from-top-2 duration-150"
         >
           {normalizedOptions.map((opt) => {
             const isSelected = opt.value === value

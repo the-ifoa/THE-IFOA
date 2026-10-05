@@ -19,7 +19,7 @@ import { downloadEnrollmentPdf } from '@/pdf/generateEnrollmentPdf'
 // it replaces the saved sections and tags each section/field with its path in
 // that array, so their wording renders click-to-edit. `text` holds the
 // header/submit wording (strings, or editable nodes in the admin preview).
-export function RegistrationForm({ slug, courseTitle, onAnswersChange, locationPrices = [], liveSections, text = {} }) {
+export function RegistrationForm({ slug, courseTitle, onAnswersChange, locationPrices = [], liveSections, text = {}, initialLocation = '' }) {
   const [savedSections, setSections] = useState(null)
   const sections = useMemo(() => {
     if (!Array.isArray(liveSections)) return savedSections
@@ -53,7 +53,17 @@ export function RegistrationForm({ slug, courseTitle, onAnswersChange, locationP
         setFormAvailable(data.formAvailable !== false && sorted.length > 0)
         setSections(sorted)
         setCourse(data.course)
-        setAnswers(buildEmptyAnswers(sorted))
+        const empty = buildEmptyAnswers(sorted)
+        // Pre-select the training location passed in the URL (?location=india).
+        const needle = initialLocation.trim().toLowerCase()
+        if (needle) {
+          for (const section of sorted) {
+            const field = section.fields.find((f) => f.id === 'trainingCountry')
+            const match = field?.options?.find((o) => o.toLowerCase().includes(needle))
+            if (match) empty[section.id] = { ...empty[section.id], trainingCountry: match }
+          }
+        }
+        setAnswers(empty)
       })
       .catch((err) => {
         if (cancelled) return
@@ -63,7 +73,7 @@ export function RegistrationForm({ slug, courseTitle, onAnswersChange, locationP
     return () => {
       cancelled = true
     }
-  }, [slug])
+  }, [slug, initialLocation])
 
   const intakes = course?.intakes || []
 

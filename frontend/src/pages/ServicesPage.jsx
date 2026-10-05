@@ -70,7 +70,7 @@ const FALLBACK = {
         title: 'FAA Aircraft Dispatcher',
         desc: 'FAA Part 65 approved. Prepares you for the FAA certificate.',
         badge1: '200 HRS · 6 WKS',
-        badge2: '$4,500',
+        badge2: '$4,500 USD',
         action: 'Enquire'
       },
       {
@@ -78,7 +78,7 @@ const FALLBACK = {
         title: 'Double Programme: FAA & EASA',
         desc: 'FAA Part 65 plus ICAO and EASA operations in one programme.',
         badge1: '280 HRS · 7 WKS',
-        badge2: '€5,500',
+        badge2: '$5,500 USD',
         action: 'Enquire'
       },
       {
@@ -167,7 +167,7 @@ const FALLBACK = {
         id: '02',
         title: 'Double Programme: FAA & EASA',
         subtitle: 'Two qualifications, one programme.',
-        desc: 'The FAA Part 65 approved course plus ICAO and EASA operations. 280 hours, 7 weeks, plus ADX self-study. Hybrid, Europe. €5,500.',
+        desc: 'The FAA Part 65 approved course plus ICAO and EASA operations. 280 hours, 7 weeks, plus ADX self-study. Hybrid, Europe. $5,500 USD.',
         audience: 'Individuals',
         forAudience: 'individuals',
         category: 'flight-ops',

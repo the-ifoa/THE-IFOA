@@ -9,11 +9,13 @@ export function RouteProgressBar() {
   const isFirstMount = useRef(true)
 
   useEffect(() => {
-    // Avoid showing on the initial page mount
+    // Avoid showing on the initial page mount, and for in-page switches
+    // (e.g. a course's location switch) that are not a page change.
     if (isFirstMount.current) {
       isFirstMount.current = false
       return
     }
+    if (location.state?.keepScroll) return
 
     // Reset and trigger ultra-smooth progress
     setVisible(true)
@@ -48,6 +50,7 @@ export function RouteProgressBar() {
       clearTimeout(t4)
       clearTimeout(t5)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname, location.search])
 
   if (!visible && progress === 0) return null

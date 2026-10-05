@@ -78,7 +78,8 @@ const FALLBACK = {
         country: 'India',
         address: 'Innov8 Old Fort, 2nd Floor, Saket District Centre, New Delhi 110017, India',
         phone: '+91 98101 44034',
-        email: 'info@theifoa.com'
+        email: 'info@theifoa.com',
+        email2: 'info-india@theifoa.com'
       }
     ]
   },
@@ -107,12 +108,16 @@ const COURSE_TOPICS = {
   'airline-occ-setup-operational-consulting': { topic: 'OCC consulting', audience: 'operator' }
 }
 
+const LOCATION_NAMES = { india: 'India (New Delhi)', denmark: 'Denmark (Sønderborg)', united: 'United States (Daytona Beach)' }
+
 export function ContactPage() {
   const { c } = usePageContent('contact', FALLBACK)
   // Arriving from a course page (/contact?course=<slug>) pre-selects that
   // course as the topic, and "An operator" for team/corporate courses.
   const [searchParams] = useSearchParams()
   const fromCourse = COURSE_TOPICS[searchParams.get('course')] || null
+  // ?location=india from a region card / course page: sent with the enquiry.
+  const location = LOCATION_NAMES[(searchParams.get('location') || '').toLowerCase()] || ''
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -136,7 +141,7 @@ export function ContactPage() {
         formData.topic === 'Flight Dispatch' && formData.pathway
           ? `Flight Dispatch: ${formData.pathway}`
           : formData.topic
-      await api.sendContact({ ...formData, topic: topic || topicOptions[0] })
+      await api.sendContact({ ...formData, topic: topic || topicOptions[0], location })
       setSubmitted(true)
     } catch (err) {
       setError(err.message || 'Could not send your message. Please try again.')
@@ -515,14 +520,24 @@ export function ContactPage() {
                             <CmsText path={`${office._path}.phone`} value={office.phone} />
                           </a>
                         </div>
-                        <div className="flex items-center justify-between">
+                        <div className="flex items-start justify-between gap-3">
                           <span className="text-slate-400 font-mono">Email:</span>
-                          <a
-                            href={`mailto:${office.email}`}
-                            className="font-semibold text-white hover:text-[#34E06E] transition-colors"
-                          >
-                            <CmsText path={`${office._path}.email`} value={office.email} />
-                          </a>
+                          <div className="flex flex-col items-end gap-1 min-w-0">
+                            <a
+                              href={`mailto:${office.email}`}
+                              className="font-semibold text-white hover:text-[#34E06E] transition-colors break-all text-right"
+                            >
+                              <CmsText path={`${office._path}.email`} value={office.email} />
+                            </a>
+                            {office.email2 && (
+                              <a
+                                href={`mailto:${office.email2}`}
+                                className="font-semibold text-white hover:text-[#34E06E] transition-colors break-all text-right"
+                              >
+                                <CmsText path={`${office._path}.email2`} value={office.email2} />
+                              </a>
+                            )}
+                          </div>
                         </div>
                       </div>
                     </div>

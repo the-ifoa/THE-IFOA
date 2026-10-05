@@ -107,6 +107,7 @@ const courseSchema = new mongoose.Schema(
             location: { type: String, required: true },
             amount: { type: Number, required: true },
             currency: { type: String, default: 'EUR' },
+            duration: { type: String, default: '' }, // e.g. '4 Weeks' when it differs by location
             note: { type: String, default: '' }
           },
           { _id: false }

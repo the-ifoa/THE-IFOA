@@ -13,6 +13,7 @@ const contactMessageSchema = new mongoose.Schema(
     topic: { type: String, default: '' },
     message: { type: String, required: true },
     office: { type: String, default: '' },
+    location: { type: String, default: '' }, // training location carried from a course page
 
     // Admin workflow.
     status: {

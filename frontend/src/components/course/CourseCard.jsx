@@ -36,12 +36,37 @@ const first = (...vals) => vals.find((v) => v !== '' && v !== null && v !== unde
 // programme-overview thumbnail and the registration-form thumbnail.
 const PROGRAMME_BANNER = {
   'flight-dispatcher-initial-certification': bannerDispatcher,
+  'flight-dispatcher-initial-training-india': bannerDispatcher,
   'aircraft-dispatcher-training-faa-part-65': bannerPart65,
   'flight-dispatcher-double-programme': bannerDispatcher
 }
 
 export function programmeBanner(course = {}) {
   return PROGRAMME_BANNER[course.slug] || null
+}
+
+// Courses that apply through another course's form, with a training location
+// pre-selected (the India edition uses the Flight Dispatcher Initial form).
+const ENROLL_VIA = {
+  'flight-dispatcher-initial-training-india': '/courses/flight-dispatcher-initial-certification/enroll?location=india'
+}
+
+// Courses taught in several locations with their own page each (content,
+// duration and price differ). The course page shows a location switch.
+const EDITIONS = [
+  [
+    { label: 'Denmark', location: 'denmark', slug: 'flight-dispatcher-initial-certification' },
+    { label: 'India', location: 'india', slug: 'flight-dispatcher-initial-training-india' }
+  ]
+]
+
+export function courseEditions(slug) {
+  return EDITIONS.find((group) => group.some((e) => e.slug === slug)) || null
+}
+
+// Where a course's "Apply online" button goes.
+export function enrollPath(course = {}) {
+  return ENROLL_VIA[course.slug] || `/courses/${course.slug}/enroll`
 }
 
 // Only these programmes have a published registration form; every other

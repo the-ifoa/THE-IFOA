@@ -67,7 +67,7 @@ const FALLBACK = {
     regions: [
       {
         name: 'Europe HQ',
-        location: 'Basel, Switzerland',
+        location: 'Zeiningen, Switzerland',
         facility: 'IFOA',
         desc: 'European headquarters leading EASA Part-ORO GEN 110 compliant Flight Dispatcher certification and OCC scenario labs.'
       },
@@ -264,7 +264,7 @@ export function AboutPage() {
                 </p>
               </div>
               <span className="text-[11px] font-mono font-bold text-slate-500 uppercase tracking-wider block pt-3 border-t border-slate-100">
-                United States FAA #IPIN
+                Federal Aviation Administration
               </span>
             </div>
 

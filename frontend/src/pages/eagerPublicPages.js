@@ -19,6 +19,7 @@ import { CourseDetailPage } from './CourseDetailPage'
 import { CourseEnrollmentPage } from './CourseEnrollmentPage'
 import { FoxtrotDeltaPage } from './FoxtrotDeltaPage'
 import { UpcomingCoursesPage } from './UpcomingCoursesPage'
+import { ImpressumPage, PrivacyPolicyPage } from './LegalPages'
 
 export const eagerPublicPages = {
   HomePage,
@@ -30,5 +31,7 @@ export const eagerPublicPages = {
   CourseDetailPage,
   CourseEnrollmentPage,
   FoxtrotDeltaPage,
-  UpcomingCoursesPage
+  UpcomingCoursesPage,
+  ImpressumPage,
+  PrivacyPolicyPage
 }

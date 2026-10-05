@@ -257,7 +257,8 @@ const SCHEMAS = {
               f('country', 'Country'),
               f('address', 'Address', 'textarea'),
               f('phone', 'Phone'),
-              f('email', 'Email')
+              f('email', 'Email'),
+              f('email2', 'Second email (optional)')
             ]
           }
         ]
@@ -797,9 +798,9 @@ const DEFAULTS = {
         {
           name: 'India',
           city: 'New Delhi',
-          desc: 'Both dispatcher programmes: Flight Dispatcher Initial (ICAO and EASA, 200 hours, 5 weeks) and FAA Aircraft Dispatcher (Part 65 approved course, 200 hours, 6 weeks).',
+          desc: 'Both dispatcher programmes: Flight Dispatcher Initial (ICAO, 4 weeks on-site) and FAA Aircraft Dispatcher (Part 65 approved course, 200 hours, 6 weeks).',
           link1Label: 'Flight Dispatcher Initial',
-          link1Slug: 'flight-dispatcher-initial-certification',
+          link1Slug: 'flight-dispatcher-initial-training-india',
           link2Label: 'FAA Aircraft Dispatcher',
           link2Slug: 'aircraft-dispatcher-training-faa-part-65'
         }
@@ -825,7 +826,7 @@ const DEFAULTS = {
           category: 'FAA & EASA',
           title: 'Double Programme: FAA & EASA',
           desc: 'The FAA Part 65 approved course plus ICAO and EASA operations in one programme. The FAA certificate is issued by the FAA.',
-          hours: '280 Hours (7 Weeks) · Hybrid\nEurope · €5,500',
+          hours: '280 Hours (7 Weeks) · Hybrid\nEurope · $5,500 USD',
           linkText: 'View programme',
           courseSlug: 'flight-dispatcher-double-programme'
         },
@@ -833,7 +834,7 @@ const DEFAULTS = {
           category: 'FAA Part 65',
           title: 'FAA Aircraft Dispatcher',
           desc: 'Prepares you for the FAA Aircraft Dispatcher certificate. Part 65 approved.',
-          hours: '200 Hours (6 Weeks) · Hybrid\nEurope, USA, India · $4,500',
+          hours: '200 Hours (6 Weeks) · Hybrid\nEurope, USA, India · $4,500 USD',
           linkText: 'View course',
           courseSlug: 'aircraft-dispatcher-training-faa-part-65'
         },
@@ -1019,7 +1020,8 @@ const DEFAULTS = {
           country: 'India',
           address: 'Innov8 Old Fort, 2nd Floor, Saket District Centre, New Delhi 110017, India',
           phone: '+91 98101 44034',
-          email: 'info@theifoa.com'
+          email: 'info@theifoa.com',
+          email2: 'info-india@theifoa.com'
         }
       ]
     },
@@ -1081,7 +1083,7 @@ const DEFAULTS = {
       regions: [
         {
           name: 'Europe HQ',
-          location: 'Basel, Switzerland',
+          location: 'Zeiningen, Switzerland',
           facility: 'IFOA',
           desc: 'European headquarters leading EASA Part-ORO GEN 110 compliant Flight Dispatcher certification and OCC scenario labs'
         },
@@ -1135,7 +1137,7 @@ const DEFAULTS = {
           title: 'FAA Aircraft Dispatcher',
           desc: 'FAA Part 65 approved. Prepares you for the FAA certificate.',
           badge1: '200 HRS · 6 WKS',
-          badge2: '$4,500',
+          badge2: '$4,500 USD',
           action: 'Enquire'
         },
         {
@@ -1143,7 +1145,7 @@ const DEFAULTS = {
           title: 'Double Programme: FAA & EASA',
           desc: 'FAA Part 65 plus ICAO and EASA operations in one programme.',
           badge1: '280 HRS · 7 WKS',
-          badge2: '€5,500',
+          badge2: '$5,500 USD',
           action: 'Enquire'
         },
         {
@@ -1230,7 +1232,7 @@ const DEFAULTS = {
           id: '02',
           title: 'Double Programme: FAA & EASA',
           subtitle: 'Two qualifications, one programme.',
-          desc: 'The FAA Part 65 approved course plus ICAO and EASA operations. 280 hours, 7 weeks, plus ADX self-study. Hybrid, Europe. €5,500.',
+          desc: 'The FAA Part 65 approved course plus ICAO and EASA operations. 280 hours, 7 weeks, plus ADX self-study. Hybrid, Europe. $5,500 USD.',
           audience: 'Individuals',
           forAudience: 'individuals',
           category: 'flight-ops',

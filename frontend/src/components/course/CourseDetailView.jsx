@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { useGoBack } from '@/hooks/useGoBack'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
@@ -25,10 +25,13 @@ import { MdOutlineMail } from 'react-icons/md'
 import { mergeContent } from '@/hooks/usePageContent'
 
 // Assets
-import { resolveCard, programmeBanner, hasEnrollmentForm } from '@/components/course/CourseCard'
+import { resolveCard, programmeBanner, hasEnrollmentForm, enrollPath, courseEditions } from '@/components/course/CourseCard'
+import { PriceTag, hasGst, GST_NOTE } from '@/components/course/PriceTag'
 import { OverviewHero, OverviewBlocks, DgProvider, DgSidebar, OverviewEditProvider, useCoursePreview, E as T } from '@/components/course/CourseOverview'
 import { CmsText, CmsImageButton } from '@/components/admin/CmsEditable'
 import { getAtPath } from '@/lib/objectPath'
+import { api } from '@/lib/api'
+import { prefetchCourse } from '@/lib/courseCache'
 import logoEasa from '@/assets/shared/standards-logos/logo-easa.webp'
 import logoIcao from '@/assets/shared/standards-logos/logo-icao.webp'
 import logoDgca from '@/assets/shared/standards-logos/logo-dgca.webp'
@@ -195,6 +198,52 @@ function formatPrice(price) {
 export function CourseDetailView({ course: savedCourse, preview = false }) {
   const handleBack = useGoBack('/events')
   const liveCourse = useCoursePreview(savedCourse)
+  const [searchParams] = useSearchParams()
+  const editions = courseEditions(savedCourse?.slug)
+
+  // Location switch: every training location the course's application form
+  // offers. A location with its own page (an "edition", e.g. India) links
+  // there; any other stays on this page with ?location= set.
+  const formSlug = editions ? editions[0].slug : savedCourse?.slug
+  const [locationOptions, setLocationOptions] = useState([])
+  useEffect(() => {
+    if (!formSlug || !hasEnrollmentForm({ slug: formSlug })) return undefined
+    let cancelled = false
+    api
+      .getCourseForm(formSlug)
+      .then((data) => {
+        const field = (data.sections || []).flatMap((s) => s.fields || []).find((f) => f.id === 'trainingCountry')
+        if (!cancelled) setLocationOptions(field?.options || [])
+      })
+      .catch(() => {})
+    return () => {
+      cancelled = true
+    }
+  }, [formSlug])
+  const locationItems = locationOptions.map((opt) => {
+    const key = opt.split(/[\s(]/)[0].toLowerCase()
+    const edition = editions?.find((e) => e.location === key)
+    return { opt, key, label: opt.split('(')[0].trim(), slug: edition?.slug || formSlug }
+  })
+  // Other location editions load in the background so the switch is instant.
+  useEffect(() => {
+    editions?.forEach((e) => e.slug !== savedCourse?.slug && prefetchCourse(e.slug))
+  }, [editions, savedCourse?.slug])
+  const pageEdition = editions?.find((e) => e.slug === savedCourse?.slug)
+  const onBasePage = !pageEdition || pageEdition.slug === formSlug
+  const homeCity = (savedCourse?.location || '').split(',')[0].trim()
+  const defaultItem =
+    locationItems.find((i) => i.slug === formSlug && homeCity && i.opt.includes(homeCity)) ||
+    locationItems.find((i) => i.slug === formSlug)
+  const paramKey = (searchParams.get('location') || '').toLowerCase()
+  const activeItem = onBasePage
+    ? locationItems.find((i) => i.key === paramKey && i.slug === formSlug) || defaultItem
+    : locationItems.find((i) => i.key === pageEdition.location)
+  // Chosen location differs from the page's own: sidebar shows it instead.
+  const locationOverride = onBasePage && activeItem && activeItem !== defaultItem ? activeItem.opt : null
+  const preferredLocation = activeItem?.key || searchParams.get('location') || pageEdition?.location || ''
+  // India admissions has its own inbox.
+  const supportEmail = preferredLocation === 'india' ? 'info-india@theifoa.com' : 'info@theifoa.com'
   // In the admin editor, the course's text fields come from the editor's
   // in-progress copy; everywhere else this is just the saved course.
   const course = liveCourse?.course && savedCourse ? { ...savedCourse, ...liveCourse.course } : savedCourse
@@ -232,6 +281,26 @@ export function CourseDetailView({ course: savedCourse, preview = false }) {
   }
 
   if (!course) return null
+
+  // Price and facts for a location picked in the switch (else the course's own).
+  const overridePrice = locationOverride
+    ? (course.locationPrices || []).find((p) => p.location === locationOverride)
+    : null
+  const sidebarPrice = overridePrice ? { amount: overridePrice.amount, currency: overridePrice.currency } : course.price
+  const overrideLocationLabel = locationOverride
+    ? (() => {
+        const m = /^(.*?)\s*\((.*)\)$/.exec(locationOverride)
+        if (!m) return locationOverride
+        const [city, region] = m[2].split(',').map((x) => x.trim())
+        return region && region !== 'Europe' ? `${city}, ${region}` : `${city}, ${m[1].trim()}`
+      })()
+    : null
+  const specOverride = (label = '') => {
+    if (!locationOverride) return null
+    if (/^location$/i.test(label)) return overrideLocationLabel
+    if (/^duration$/i.test(label) && overridePrice?.duration) return overridePrice.duration
+    return null
+  }
 
   const { schedule = {} } = course
   const isIndiaProgram =
@@ -330,8 +399,14 @@ export function CourseDetailView({ course: savedCourse, preview = false }) {
   const cardImageUrl = liveCourse?.courseMedia ? liveCourse.courseMedia.cardImage?.url : course.card?.image?.url
   const sidebarBanner = cardImageUrl ? null : programmeBanner(course)
   // Contact links carry the course so the Contact form pre-selects its topic.
-  const contactHref = `/contact?course=${course.slug}`
-  const enrollHref = hasEnrollmentForm(course) ? `/courses/${course.slug}/enroll` : contactHref
+  const contactHref = `/contact?course=${course.slug}${preferredLocation ? `&location=${encodeURIComponent(preferredLocation)}` : ''}`
+  // A ?location= on this page (e.g. from the India region card) is passed on
+  // so the application form opens with that training location selected.
+  const baseEnroll = hasEnrollmentForm(course) ? enrollPath(course) : contactHref
+  const enrollHref =
+    preferredLocation && hasEnrollmentForm(course) && !baseEnroll.includes('location=')
+      ? `${baseEnroll}${baseEnroll.includes('?') ? '&' : '?'}location=${encodeURIComponent(preferredLocation)}`
+      : baseEnroll
   const sidebarImgSrc =
     cardImageUrl ||
     sidebarBanner ||
@@ -376,6 +451,34 @@ export function CourseDetailView({ course: savedCourse, preview = false }) {
                     <RiArrowLeftLine className="w-3.5 h-3.5 text-slate-300 group-hover:text-white group-hover:-translate-x-0.5 transition-transform" />
                     <span>Back</span>
                   </button>
+                  {locationItems.length > 1 && !editing && (
+                    <div
+                      className="inline-flex flex-wrap items-center gap-1 rounded-full border border-slate-200/90 bg-white p-1 shadow-2xs"
+                      role="tablist"
+                      aria-label="Training location"
+                    >
+                      <RiMapPin2Line className="ml-1.5 w-3.5 h-3.5 text-slate-400 shrink-0" />
+                      {locationItems.map((item) => {
+                        const active = item === activeItem
+                        return (
+                          <Link
+                            key={item.opt}
+                            to={`/courses/${item.slug}?location=${item.key}`}
+                            replace
+                            preventScrollReset
+                            state={{ keepScroll: true }}
+                            role="tab"
+                            aria-selected={active}
+                            className={`px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap transition-colors ${
+                              active ? 'bg-slate-950 text-white' : 'text-slate-600 hover:text-slate-950 hover:bg-slate-50'
+                            }`}
+                          >
+                            {item.label}
+                          </Link>
+                        )
+                      })}
+                    </div>
+                  )}
                 </div>
 
                 <div className="flex items-center gap-2.5 shrink-0">
@@ -1386,8 +1489,11 @@ export function CourseDetailView({ course: savedCourse, preview = false }) {
                       {L('sidebarTuitionLabel')}
                     </span>
                     <strong className="block text-3xl sm:text-4xl font-extrabold text-slate-950 tracking-tight leading-tight mt-0.5">
-                      {formatPrice(course.price) || 'Contact for Pricing'}
+                      {formatPrice(sidebarPrice) ? <PriceTag price={sidebarPrice} /> : 'Contact for Pricing'}
                     </strong>
+                    {hasGst(sidebarPrice) && (
+                      <span className="block text-xs font-semibold text-slate-700 mt-1">{GST_NOTE}</span>
+                    )}
                     <small className="block text-xs text-slate-500 font-normal mt-1 leading-relaxed">
                       {F('price.note') ||
                         (formatPrice(course.price)
@@ -1447,7 +1553,9 @@ export function CourseDetailView({ course: savedCourse, preview = false }) {
                 {fields.sidebarSpecs.map((_, idx) => (
                   <div key={idx} className="flex justify-between items-center gap-4 py-1.5 border-b border-slate-100/70">
                     <span className="text-slate-500 font-medium">{F(`sidebarSpecs.${idx}.label`)}</span>
-                    <strong className="font-bold text-slate-950 text-right">{F(`sidebarSpecs.${idx}.value`)}</strong>
+                    <strong className="font-bold text-slate-950 text-right">
+                      {specOverride(fields.sidebarSpecs[idx]?.label) || F(`sidebarSpecs.${idx}.value`)}
+                    </strong>
                   </div>
                 ))}
               </div>
@@ -1553,11 +1661,11 @@ export function CourseDetailView({ course: savedCourse, preview = false }) {
             <div className="pt-4 border-t border-slate-100 flex items-center justify-between gap-3 text-xs">
               <span className="text-slate-500">{L('sidebarSupportTitle')}</span>
               <a
-                href="mailto:info@theifoa.com"
+                href={`mailto:${supportEmail}`}
                 className="inline-flex items-center gap-1.5 font-bold text-slate-900 hover:text-[#16a952] transition-colors"
               >
                 <MdOutlineMail className="w-3.5 h-3.5 text-slate-400" />
-                info@theifoa.com
+                {supportEmail}
               </a>
             </div>
             </div>

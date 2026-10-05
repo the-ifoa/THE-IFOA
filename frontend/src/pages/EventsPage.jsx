@@ -307,19 +307,8 @@ export function EventsPage() {
                   </div>
                 </div>
 
-                {/* Footer: Fee & Action Buttons */}
+                {/* Footer: Action Buttons */}
                 <div className="space-y-3 pt-3 border-t border-slate-100">
-                  {/* Training Fee */}
-                  <div className="flex items-baseline justify-between gap-2">
-                    <div>
-                      <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400 block">TRAINING FEE</span>
-                      <span className="text-xl font-extrabold text-slate-950 tracking-tight block mt-0.5">€5,500</span>
-                    </div>
-                    <span className="text-[10px] text-slate-400 text-right leading-tight max-w-[130px]">
-                      Excl. travel & lodging
-                    </span>
-                  </div>
-
                   {/* Action Buttons Row */}
                   <div className="grid grid-cols-2 gap-2.5">
                     <Link
@@ -394,19 +383,8 @@ export function EventsPage() {
                   </div>
                 </div>
 
-                {/* Footer: Fee & Action Buttons */}
+                {/* Footer: Action Buttons */}
                 <div className="space-y-3 pt-3 border-t border-slate-100">
-                  {/* Training Fee */}
-                  <div className="flex items-baseline justify-between gap-2">
-                    <div>
-                      <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400 block">TRAINING FEE</span>
-                      <span className="text-xl font-extrabold text-slate-950 tracking-tight block mt-0.5">€3,500</span>
-                    </div>
-                    <span className="text-[10px] text-slate-400 text-right leading-tight max-w-[130px]">
-                      Excl. travel & lodging
-                    </span>
-                  </div>
-
                   {/* Action Buttons Row */}
                   <div className="grid grid-cols-2 gap-2.5">
                     <Link
@@ -481,19 +459,8 @@ export function EventsPage() {
                   </div>
                 </div>
 
-                {/* Footer: Fee & Action Buttons */}
+                {/* Footer: Action Buttons */}
                 <div className="space-y-3 pt-3 border-t border-slate-100">
-                  {/* Training Fee */}
-                  <div className="flex items-baseline justify-between gap-2">
-                    <div>
-                      <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400 block">TRAINING FEE</span>
-                      <span className="text-xl font-extrabold text-slate-950 tracking-tight block mt-0.5">$4,500</span>
-                    </div>
-                    <span className="text-[10px] text-slate-400 text-right leading-tight max-w-[130px]">
-                      Excl. ADX exam fee & travel
-                    </span>
-                  </div>
-
                   {/* Action Buttons Row */}
                   <div className="grid grid-cols-2 gap-2.5">
                     <Link

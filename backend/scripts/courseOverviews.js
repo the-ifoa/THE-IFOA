@@ -15,7 +15,9 @@ module.exports = {
   'flight-dispatcher-initial-certification': {
     fields: {
       intakes: [{ label: '4 January 2027', startDate: new Date('2027-01-04T09:00:00Z'), isActive: true }],
-      locationPrices: [{ location: 'India (New Delhi)', amount: 99999, currency: 'INR' }],
+      // India also has its own page (flight-dispatcher-initial-training-india),
+      // whose Apply button opens this form with India pre-selected.
+      locationPrices: [{ location: 'India (New Delhi)', amount: 99999, currency: 'INR', duration: '4 Weeks' }],
       price: { amount: 3500, currency: 'EUR', note: 'Includes training materials, examination and certificate. Travel, accommodation, meals and visa are not included.' },
       sidebarSpecs: [
         { label: 'Next intake', value: '4 January 2027' },
@@ -118,10 +120,137 @@ module.exports = {
             ['Regulatory focus', 'ICAO and EASA', 'FAA, 14 CFR Part 65'],
             ['Duration', '5 weeks', '200 hours'],
             ['Location', '2 weeks online, 3 weeks in Denmark', 'Florida, USA, with online preparation'],
-            ['Fee', '€3,500', '$4,500, plus FAA test and examiner fees']
+            ['Fee', '€3,500', '$4,500 USD, plus FAA test and examiner fees']
           ],
           links: [
             { label: 'See the FAA course', href: '/courses/aircraft-dispatcher-training-faa-part-65' },
+            { label: 'Not sure? Ask us', href: '/contact' }
+          ]
+        },
+        {
+          type: 'cols',
+          columns: [
+            [{ type: 'pills', title: "Who it's for", intro: 'No previous dispatch experience needed.', items: ['People starting a career in flight dispatch', 'Airline and OCC staff moving into dispatch', 'Aviation professionals who want formal dispatch training'] }],
+            [{ type: 'checks', title: 'Entry requirements', items: ['English good enough to follow professional aviation training', 'No previous dispatch experience required'] }]
+          ]
+        }
+      ]
+    }
+  },
+
+  // ---------------------------------------------------------------------------
+  'flight-dispatcher-initial-training-india': {
+    fields: {
+      intakes: [],
+      locationPrices: [],
+      price: {
+        amount: 99999,
+        currency: 'INR',
+        note: 'Includes training materials, examination and certificate. Travel, accommodation and meals are not included.'
+      },
+      sidebarSpecs: [
+        { label: 'Next intake', value: 'Contact us for dates' },
+        { label: 'Duration', value: '4 weeks' },
+        { label: 'Format', value: 'On-site' },
+        { label: 'Location', value: 'New Delhi, India' },
+        { label: 'Assessment', value: 'Practical and multiple-choice exam' },
+        { label: 'Certificate', value: 'IFOA Flight Dispatch Completion Certificate' }
+      ],
+      enrollLabel: 'Apply online'
+    },
+    overview: {
+      sidebarNote: TERMS,
+      hero: {
+        title: 'Flight Dispatcher Initial Training, India',
+        lead: "Four weeks on-site in New Delhi to learn how to plan, release and follow a flight, and make the calls when it doesn't go to plan. Built on ICAO Doc 10106 and taught by working dispatchers.",
+        blocks: [
+          {
+            type: 'track',
+            items: [
+              { label: 'Week 1', title: 'New Delhi', tone: 'on' },
+              { label: 'Week 2', title: 'New Delhi', tone: 'on' },
+              { label: 'Week 3', title: 'New Delhi', tone: 'on' },
+              { label: 'Week 4', title: 'New Delhi', tone: 'on' }
+            ],
+            key: [{ label: 'On-site in New Delhi, every week', tone: 'on' }]
+          }
+        ]
+      },
+      blocks: [
+        {
+          type: 'notice',
+          anchor: 'qualification',
+          title: 'What this course qualifies you for',
+          paragraphs: [
+            'This course gives you an IFOA Flight Dispatch Completion Certificate. It shows an operator you have completed structured training built on ICAO Doc 10106, the international standard for flight operations officer and dispatcher training.',
+            'Each operator decides who is qualified to dispatch its flights, and your employer will still train you on its own procedures before you dispatch.',
+            'If you need a government-issued dispatcher licence, see our [FAA Aircraft Dispatcher course](/courses/aircraft-dispatcher-training-faa-part-65).'
+          ]
+        },
+        {
+          type: 'accordion',
+          anchor: 'modules',
+          title: 'The programme',
+          intro: 'Five phases over four weeks in the classroom, from the rules that govern the operation to the decisions you make on shift. Select a phase to see what it covers.',
+          items: [
+            { title: 'The Operating Environment', bullets: ['Air law and civil aviation regulations', 'ICAO framework', 'Air traffic management', 'Aeronautical communications'] },
+            { title: 'Know the Aircraft', bullets: ['Aircraft systems for dispatchers', 'Mass and balance', 'Aircraft performance', 'MEL and CDL'] },
+            { title: 'Plan the Flight', bullets: ['Aviation meteorology', 'Navigation and route planning', 'Fuel planning and alternates', 'NOTAMs and flight plan filing'] },
+            { title: 'Control the Operation', bullets: ['Flight following and monitoring', 'Operational control', 'Communicating with crew and stakeholders', 'Managing disruptions'] },
+            { title: 'Make the Decision', bullets: ['Decision-making under uncertainty', 'Threat and error management', 'Human factors in dispatch', 'Scenario exercises'] }
+          ]
+        },
+        {
+          type: 'cols',
+          anchor: 'assessment',
+          columns: [
+            [
+              {
+                type: 'checks',
+                title: "What you'll be able to do",
+                items: [
+                  'Plan and prepare a flight',
+                  'Apply weather, fuel, routing and alternate requirements',
+                  'Assess operational risks and constraints',
+                  'Monitor flights and anticipate disruptions',
+                  'Make operational decisions as conditions change',
+                  'Apply ICAO and operator procedures'
+                ]
+              }
+            ],
+            [
+              {
+                type: 'facts',
+                title: "How you're assessed",
+                items: [
+                  { title: 'Practical and multiple-choice exam', text: 'A pass mark of 80% is required.' },
+                  { title: 'IFOA Flight Dispatch Completion Certificate', text: 'Issued when you pass. It does not expire.' }
+                ],
+                standards: [
+                  { title: 'ICAO Doc 10106', text: 'Competency-based training for flight operations officers and dispatchers' },
+                  { title: 'ICAO Annex 1 and Annex 6', text: 'Flight operations officer requirements' }
+                ]
+              }
+            ]
+          ]
+        },
+        {
+          type: 'table',
+          anchor: 'compare',
+          title: 'EASA or FAA: which course?',
+          intro: 'Both teach you to dispatch. They lead to different documents.',
+          highlight: 1,
+          head: ['', 'Flight Dispatcher Initial (this course)', 'FAA Aircraft Dispatcher'],
+          rows: [
+            ['You receive', 'IFOA Flight Dispatch Completion Certificate', 'Eligibility for the FAA Aircraft Dispatcher certificate, after passing the FAA knowledge and practical tests'],
+            ['Issued by', 'IFOA', 'The FAA, a government authority'],
+            ['Regulatory focus', 'ICAO and EASA', 'FAA, 14 CFR Part 65'],
+            ['Duration', '4 weeks', '200 hours'],
+            ['Location', '4 weeks on-site in New Delhi, India', 'New Delhi, India, with online preparation'],
+            ['Fee', '₹99,999 + GST', '$4,500 USD, plus FAA test and examiner fees']
+          ],
+          links: [
+            { label: 'See the FAA course', href: '/courses/aircraft-dispatcher-training-faa-part-65?location=india' },
             { label: 'Not sure? Ask us', href: '/contact' }
           ]
         },
@@ -144,16 +273,17 @@ module.exports = {
       additionalCosts: {
         intro: 'Full cost to certificate',
         items: [
-          { label: 'Tuition', amount: '$4,500' },
-          { label: 'ADX knowledge test', amount: '$175' },
-          { label: 'Practical test, paid to the examiner', amount: '$600' },
-          { label: 'Total to FAA certificate', amount: '$5,275' }
+          { label: 'Tuition', amount: '$4,500 USD' },
+          { label: 'ADX knowledge test', amount: '$175 USD' },
+          { label: 'Practical test, paid to the examiner', amount: '$600 USD' },
+          { label: 'Total to FAA certificate', amount: '$5,275 USD' }
         ],
         note: ''
       },
       sidebarSpecs: [
         { label: 'Approval', value: 'FAA Part 65 approved' },
-        { label: 'Duration', value: '200 hours, plus ADX self-study' },
+        { label: 'Duration', value: '200 hours over 6 weeks, plus ADX self-study' },
+        { label: 'Exam week', value: '1 week, included in the 6 weeks' },
         { label: 'Format', value: 'Online preparation, then on-site' },
         { label: 'Location', value: 'Daytona Beach, Florida' },
         { label: 'Start', value: 'Rolling admissions' }
@@ -175,7 +305,7 @@ module.exports = {
               { label: 'Step 3', title: 'Pass the practical test', sub: 'With an FAA examiner' },
               { label: 'Step 4', title: 'FAA Aircraft Dispatcher certificate', sub: 'Issued by the FAA', tone: 'on' }
             ],
-            note: 'The 200 hours cover the FAA knowledge areas. ADX preparation is extra and done alongside, in your own time. The certificate itself is issued by the FAA.'
+            note: 'The 200 hours cover the FAA knowledge areas. The 6 weeks include one week for the FAA exams. ADX preparation is extra and done alongside, in your own time. The certificate itself is issued by the FAA.'
           }
         ]
       },
@@ -264,7 +394,7 @@ module.exports = {
             ['Regulatory focus', 'FAA, 14 CFR Part 65', 'ICAO and EASA'],
             ['Duration', '200 hours', '5 weeks'],
             ['Location', 'Florida, USA, with online preparation', '2 weeks online, 3 weeks in Denmark'],
-            ['Fee', '$4,500, plus FAA test and examiner fees', '€3,500']
+            ['Fee', '$4,500 USD, plus FAA test and examiner fees', '€3,500']
           ],
           links: [
             { label: 'See the EASA-focused course', href: '/courses/flight-dispatcher-initial-certification' },
@@ -292,19 +422,20 @@ module.exports = {
   'flight-dispatcher-double-programme': {
     fields: {
       intakes: [{ label: 'Next intake: to be confirmed', startDate: null, isActive: true }],
-      price: { amount: 5500, currency: 'EUR', note: 'Includes training materials, ADX learning portal and weekly masterclasses. Travel, accommodation, meals and visa are not included.' },
+      price: { amount: 5500, currency: 'USD', note: 'Includes training materials, ADX learning portal and weekly masterclasses. Travel, accommodation, meals and visa are not included.' },
       additionalCosts: {
         intro: 'FAA fees not included',
         items: [
-          { label: 'ADX knowledge test', amount: '$175' },
-          { label: 'Practical test, paid to the examiner', amount: '$600' }
+          { label: 'ADX knowledge test', amount: '$175 USD' },
+          { label: 'Practical test, paid to the examiner', amount: '$600 USD' }
         ],
         note: ''
       },
       sidebarSpecs: [
         { label: 'Duration', value: '280 hours over 7 weeks, plus ADX self-study' },
+        { label: 'Exam week', value: '1 week, included in the 7 weeks' },
         { label: 'Format', value: 'Hybrid' },
-        { label: 'Location', value: 'Europe' },
+        { label: 'Location', value: 'Sønderborg, Denmark' },
         { label: 'Start', value: 'To be confirmed' },
         { label: 'Leads to', value: 'FAA Part 65 certificate, issued by the FAA' }
       ],
@@ -323,7 +454,7 @@ module.exports = {
               { value: '200 h', label: 'FAA Part 65 approved course', weight: 200 },
               { value: '80 h', label: 'ICAO and EASA operations', weight: 80, tone: 'amber' }
             ],
-            note: "ADX preparation is extra and done in your own time. It's not part of the 280 hours."
+            note: "The 7 weeks include one week for the FAA exams. ADX preparation is extra and done in your own time. It's not part of the 280 hours."
           }
         ]
       },
@@ -421,7 +552,7 @@ module.exports = {
             ['Regulatory focus', 'FAA, ICAO and EASA', 'FAA', 'ICAO and EASA'],
             ['Duration', '280 hours, 7 weeks', '200 hours', '5 weeks'],
             ['Format', 'Hybrid', 'Online preparation, then Florida', '2 weeks online, 3 weeks in Denmark'],
-            ['Fee', '€5,500, plus FAA test and examiner fees', '$4,500, plus FAA test and examiner fees', '€3,500'],
+            ['Fee', '$5,500 USD, plus FAA test and examiner fees', '$4,500 USD, plus FAA test and examiner fees', '€3,500'],
             ['Best for', 'Working anywhere, US or Europe', 'US operators and FAA-regulated carriers', 'European and ICAO-based operators']
           ],
           links: [

@@ -192,9 +192,9 @@ const FALLBACK = {
       {
         name: 'India',
         city: 'New Delhi',
-        desc: 'Both dispatcher programmes: Flight Dispatcher Initial (ICAO and EASA, 200 hours, 5 weeks) and FAA Aircraft Dispatcher (Part 65 approved course, 200 hours, 6 weeks).',
+        desc: 'Both dispatcher programmes: Flight Dispatcher Initial (ICAO, 4 weeks on-site) and FAA Aircraft Dispatcher (Part 65 approved course, 200 hours, 6 weeks).',
         link1Label: 'Flight Dispatcher Initial',
-        link1Slug: 'flight-dispatcher-initial-certification',
+        link1Slug: 'flight-dispatcher-initial-training-india',
         link2Label: 'FAA Aircraft Dispatcher',
         link2Slug: 'aircraft-dispatcher-training-faa-part-65'
       }
@@ -219,7 +219,7 @@ const FALLBACK = {
         category: 'FAA & EASA',
         title: 'Double Programme: FAA & EASA',
         desc: 'The FAA Part 65 approved course plus ICAO and EASA operations in one programme. The FAA certificate is issued by the FAA.',
-        hours: '280 Hours (7 Weeks) · Hybrid\nEurope · €5,500',
+        hours: '280 Hours (7 Weeks) · Hybrid\nEurope · $5,500 USD',
         linkText: 'View programme',
         courseSlug: 'flight-dispatcher-double-programme'
       },
@@ -227,7 +227,7 @@ const FALLBACK = {
         category: 'FAA Part 65',
         title: 'FAA Aircraft Dispatcher',
         desc: 'Prepares you for the FAA Aircraft Dispatcher certificate. Part 65 approved.',
-        hours: '200 Hours (6 Weeks) · Hybrid\nEurope, USA, India · $4,500',
+        hours: '200 Hours (6 Weeks) · Hybrid\nEurope, USA, India · $4,500 USD',
         linkText: 'View course',
         courseSlug: 'aircraft-dispatcher-training-faa-part-65'
       },
@@ -353,6 +353,14 @@ const FALLBACK = {
     findCourseLabel: 'Find a course',
     ctaLabel: 'Talk to us about your team'
   }
+}
+
+// Region card links carry the region, so the course's "Apply online" opens
+// the form with that training location already selected.
+const REGION_LOCATION = { europe: 'denmark', usa: 'united', india: 'india' }
+const regionQuery = (name = '') => {
+  const loc = REGION_LOCATION[name.trim().toLowerCase()]
+  return loc ? `?location=${loc}` : ''
 }
 
 export function HomePage() {
@@ -806,19 +814,8 @@ export function HomePage() {
                   </div>
                 </div>
 
-                {/* Footer: Fee & Action Buttons */}
+                {/* Footer: Action Buttons */}
                 <div className="space-y-3 pt-3 border-t border-slate-100">
-                  {/* Training Fee */}
-                  <div className="flex items-baseline justify-between gap-2">
-                    <div>
-                      <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400 block">TRAINING FEE</span>
-                      <span className="text-xl font-extrabold text-slate-950 tracking-tight block mt-0.5">€5,500</span>
-                    </div>
-                    <span className="text-[10px] text-slate-400 text-right leading-tight max-w-[130px]">
-                      Excl. travel & lodging
-                    </span>
-                  </div>
-
                   {/* Action Buttons Row */}
                   <div className="grid grid-cols-2 gap-2.5">
                     <Link
@@ -893,19 +890,8 @@ export function HomePage() {
                   </div>
                 </div>
 
-                {/* Footer: Fee & Action Buttons */}
+                {/* Footer: Action Buttons */}
                 <div className="space-y-3 pt-3 border-t border-slate-100">
-                  {/* Training Fee */}
-                  <div className="flex items-baseline justify-between gap-2">
-                    <div>
-                      <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400 block">TRAINING FEE</span>
-                      <span className="text-xl font-extrabold text-slate-950 tracking-tight block mt-0.5">€3,500</span>
-                    </div>
-                    <span className="text-[10px] text-slate-400 text-right leading-tight max-w-[130px]">
-                      Excl. travel & lodging
-                    </span>
-                  </div>
-
                   {/* Action Buttons Row */}
                   <div className="grid grid-cols-2 gap-2.5">
                     <Link
@@ -980,19 +966,8 @@ export function HomePage() {
                   </div>
                 </div>
 
-                {/* Footer: Fee & Action Buttons */}
+                {/* Footer: Action Buttons */}
                 <div className="space-y-3 pt-3 border-t border-slate-100">
-                  {/* Training Fee */}
-                  <div className="flex items-baseline justify-between gap-2">
-                    <div>
-                      <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-400 block">TRAINING FEE</span>
-                      <span className="text-xl font-extrabold text-slate-950 tracking-tight block mt-0.5">$4,500</span>
-                    </div>
-                    <span className="text-[10px] text-slate-400 text-right leading-tight max-w-[130px]">
-                      Excl. ADX exam fee & travel
-                    </span>
-                  </div>
-
                   {/* Action Buttons Row */}
                   <div className="grid grid-cols-2 gap-2.5">
                     <Link
@@ -1080,7 +1055,7 @@ export function HomePage() {
                       {links.map((l) => (
                         <Link
                           key={l.n}
-                          to={l.slug ? (l.slug.startsWith('/') ? l.slug : `/courses/${l.slug}`) : '/events-courses'}
+                          to={l.slug ? (l.slug.startsWith('/') ? l.slug : `/courses/${l.slug}${regionQuery(region.name)}`) : '/events-courses'}
                           className="group/link flex items-center justify-between gap-3 px-4 py-3 rounded-xl border border-slate-200/80 bg-slate-50/60 hover:bg-slate-100/80 hover:border-slate-300 text-sm font-semibold text-slate-800 hover:text-slate-950 transition-all duration-200"
                         >
                           <span className="truncate">

@@ -44,6 +44,10 @@ async function notifySubmission({ course, intake, sections, answers, submissionI
     }
   }
 
+  // Always state where the applicant wants to train: the location they picked,
+  // else the course's own location (courses without a location question).
+  const location = trainingLocation || course.location || 'Not specified'
+
   // Tuition for the chosen training location (falls back to the course price).
   const lp = (course.locationPrices || []).find((p) => p.location === trainingLocation)
   const price = lp || course.price
@@ -54,8 +58,8 @@ async function notifySubmission({ course, intake, sections, answers, submissionI
 
   const text = [
     `Course: ${course.title}${course.refCode ? ` (${course.refCode})` : ''}`,
+    `Training location: ${location}`,
     applicant ? `Applicant: ${applicant}` : null,
-    trainingLocation ? `Training location: ${trainingLocation}` : null,
     tuition ? `Tuition: ${tuition}` : null,
     `Intake: ${intake || 'Not specified'}`,
     `Submission ID: ${submissionId}`,
@@ -67,8 +71,8 @@ async function notifySubmission({ course, intake, sections, answers, submissionI
 
   const html = `
     <p><strong>Course:</strong> ${escapeHtml(course.title)}${course.refCode ? ` (${escapeHtml(course.refCode)})` : ''}</p>
+    <p><strong>Training location:</strong> ${escapeHtml(location)}</p>
     ${applicant ? `<p><strong>Applicant:</strong> ${escapeHtml(applicant)}</p>` : ''}
-    ${trainingLocation ? `<p><strong>Training location:</strong> ${escapeHtml(trainingLocation)}</p>` : ''}
     ${tuition ? `<p><strong>Tuition:</strong> ${escapeHtml(tuition)}</p>` : ''}
     <p><strong>Intake:</strong> ${escapeHtml(intake || 'Not specified')}</p>
     <p><strong>Submission ID:</strong> ${escapeHtml(submissionId)}</p>
@@ -95,7 +99,7 @@ async function notifySubmission({ course, intake, sections, answers, submissionI
   await sendMail({
     to: process.env.MAIL_TO || 'info@theifoa.com',
     replyTo,
-    subject: `New enrollment: ${course.title}${intake ? ` (${intake})` : ''}${applicant ? ` - ${applicant}` : ''}`,
+    subject: `New enrollment: ${course.title} - ${location}${intake ? ` (${intake})` : ''}${applicant ? ` - ${applicant}` : ''}`,
     text,
     html
   })
@@ -276,4 +280,4 @@ const listLegacyRegistrations = asyncHandler(async (req, res) => {
   res.json({ count: registrations.length, registrations })
 })
 
-module.exports = { create, getPublicOne, list, getOne, update, remove, listLegacyRegistrations }
+module.exports = { notifySubmission, create, getPublicOne, list, getOne, update, remove, listLegacyRegistrations }
