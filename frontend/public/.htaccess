@@ -2,6 +2,12 @@
   RewriteEngine On
   RewriteBase /
 
+  # Internal rewrites (e.g. /events -> /events/index.html, further down) run
+  # back through this file. Skip every rule on that second pass, otherwise the
+  # old-site redirects match the internal path and loop (/events -> /events).
+  RewriteCond %{ENV:REDIRECT_STATUS} !^$
+  RewriteRule ^ - [L]
+
   # --------------------------------------------------------------------------
   # Canonical scheme + host
   # Every other rule below assumes one canonical origin: https://theifoa.com
