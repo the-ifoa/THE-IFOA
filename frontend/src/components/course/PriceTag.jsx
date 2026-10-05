@@ -1,5 +1,5 @@
 // A course price as shown in sidebars: "$4,500 USD" (code in small type for
-// dollars, so it is never mistaken for another dollar), "€3,500", "₹99,999".
+// dollars, so it is never mistaken for another dollar), "€3,500", "€1,000".
 const SYMBOL = { USD: '$', EUR: '€', INR: '₹' }
 
 export function PriceTag({ price, codeClassName = 'ml-1.5 text-[0.45em] font-bold tracking-wider text-slate-400 align-middle' }) {

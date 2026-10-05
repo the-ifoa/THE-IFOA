@@ -37,6 +37,7 @@ const first = (...vals) => vals.find((v) => v !== '' && v !== null && v !== unde
 const PROGRAMME_BANNER = {
   'flight-dispatcher-initial-certification': bannerDispatcher,
   'flight-dispatcher-initial-training-india': bannerDispatcher,
+  'flight-dispatcher-initial-training-usa': bannerDispatcher,
   'aircraft-dispatcher-training-faa-part-65': bannerPart65,
   'flight-dispatcher-double-programme': bannerDispatcher
 }
@@ -48,7 +49,8 @@ export function programmeBanner(course = {}) {
 // Courses that apply through another course's form, with a training location
 // pre-selected (the India edition uses the Flight Dispatcher Initial form).
 const ENROLL_VIA = {
-  'flight-dispatcher-initial-training-india': '/courses/flight-dispatcher-initial-certification/enroll?location=india'
+  'flight-dispatcher-initial-training-india': '/courses/flight-dispatcher-initial-certification/enroll?location=india',
+  'flight-dispatcher-initial-training-usa': '/courses/flight-dispatcher-initial-certification/enroll?location=united'
 }
 
 // Courses taught in several locations with their own page each (content,
@@ -56,7 +58,8 @@ const ENROLL_VIA = {
 const EDITIONS = [
   [
     { label: 'Denmark', location: 'denmark', slug: 'flight-dispatcher-initial-certification' },
-    { label: 'India', location: 'india', slug: 'flight-dispatcher-initial-training-india' }
+    { label: 'India', location: 'india', slug: 'flight-dispatcher-initial-training-india' },
+    { label: 'United States', location: 'united', slug: 'flight-dispatcher-initial-training-usa' }
   ]
 ]
 

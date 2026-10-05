@@ -10,14 +10,14 @@ const TERMS = 'Payment, cancellation and refunds: see our Terms and Conditions.'
 
 const PROPOSAL = '/contact'
 
-module.exports = {
+const OVERVIEWS = {
   // ---------------------------------------------------------------------------
   'flight-dispatcher-initial-certification': {
     fields: {
       intakes: [{ label: '4 January 2027', startDate: new Date('2027-01-04T09:00:00Z'), isActive: true }],
       // India also has its own page (flight-dispatcher-initial-training-india),
       // whose Apply button opens this form with India pre-selected.
-      locationPrices: [{ location: 'India (New Delhi)', amount: 99999, currency: 'INR', duration: '4 Weeks' }],
+      locationPrices: [{ location: 'India (New Delhi)', amount: 1000, currency: 'EUR', duration: '4 Weeks' }],
       price: { amount: 3500, currency: 'EUR', note: 'Includes training materials, examination and certificate. Travel, accommodation, meals and visa are not included.' },
       sidebarSpecs: [
         { label: 'Next intake', value: '4 January 2027' },
@@ -144,8 +144,8 @@ module.exports = {
       intakes: [],
       locationPrices: [],
       price: {
-        amount: 99999,
-        currency: 'INR',
+        amount: 1000,
+        currency: 'EUR',
         note: 'Includes training materials, examination and certificate. Travel, accommodation and meals are not included.'
       },
       sidebarSpecs: [
@@ -247,7 +247,7 @@ module.exports = {
             ['Regulatory focus', 'ICAO and EASA', 'FAA, 14 CFR Part 65'],
             ['Duration', '4 weeks', '200 hours'],
             ['Location', '4 weeks on-site in New Delhi, India', 'New Delhi, India, with online preparation'],
-            ['Fee', '₹99,999 + GST', '$4,500 USD, plus FAA test and examiner fees']
+            ['Fee', '€1,000 + GST', '$4,500 USD, plus FAA test and examiner fees']
           ],
           links: [
             { label: 'See the FAA course', href: '/courses/aircraft-dispatcher-training-faa-part-65?location=india' },
@@ -1160,3 +1160,22 @@ module.exports = {
     }
   }
 }
+
+// USA edition of Flight Dispatcher Initial: the Denmark programme with its
+// on-site weeks in Daytona Beach, Florida.
+const usa = JSON.parse(
+  JSON.stringify(OVERVIEWS['flight-dispatcher-initial-certification'])
+    .replace(/Sønderborg, Denmark/g, 'Daytona Beach, Florida')
+    .replace(/On-site at Air Alsie, Denmark/g, 'On-site in Daytona Beach, Florida')
+    .replace(/3 weeks in Denmark/g, '3 weeks in Florida')
+    .replace(/Sønderborg/g, 'Daytona Beach')
+)
+usa.fields.intakes = []
+usa.fields.locationPrices = []
+usa.fields.sidebarSpecs = usa.fields.sidebarSpecs.map((row) =>
+  row.label === 'Next intake' ? { ...row, value: 'Contact us for dates' } : row
+)
+usa.overview.hero.title = 'Flight Dispatcher Initial Training, USA'
+OVERVIEWS['flight-dispatcher-initial-training-usa'] = usa
+
+module.exports = OVERVIEWS

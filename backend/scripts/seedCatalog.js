@@ -1185,7 +1185,7 @@ const courses = [
 ]
 
 // India edition of Flight Dispatcher Initial: the same ICAO Doc 10106
-// programme, taught in 4 weeks on-site in New Delhi and priced in INR. Built
+// programme, taught in 4 weeks on-site in New Delhi, €1,000. Built
 // from the EASA entry so the shared syllabus lives in one place.
 const easaInitial = courses.find((c) => c.slug === 'flight-dispatcher-initial-certification')
 courses.splice(courses.indexOf(easaInitial) + 1, 0, {
@@ -1204,8 +1204,8 @@ courses.splice(courses.indexOf(easaInitial) + 1, 0, {
   duration: '4 Weeks',
   location: 'New Delhi, India',
   price: {
-    amount: 99999,
-    currency: 'INR',
+    amount: 1000,
+    currency: 'EUR',
     note: 'Includes training materials, examination and certificate. Travel, accommodation and meals are not included.'
   },
   delivery: {
@@ -1221,7 +1221,34 @@ courses.splice(courses.indexOf(easaInitial) + 1, 0, {
   seo: {
     metaTitle: 'Flight Dispatcher Initial Training India: 4 Weeks, New Delhi | IFOA',
     metaDescription:
-      'A 4-week on-site flight dispatcher course in New Delhi, built on ICAO Doc 10106. ₹99,999 + GST, including training materials, examination and certificate.'
+      'A 4-week on-site flight dispatcher course in New Delhi, built on ICAO Doc 10106. €1,000 + GST, including training materials, examination and certificate.'
+  }
+})
+
+// USA edition of Flight Dispatcher Initial: same programme and fee, with the
+// on-site weeks in Daytona Beach, Florida.
+courses.splice(courses.indexOf(easaInitial) + 2, 0, {
+  ...easaInitial,
+  slug: 'flight-dispatcher-initial-training-usa',
+  title: 'Flight Dispatcher Initial Training (USA)',
+  refCode: 'FD-INITIAL-US',
+  featured: false,
+  order: 12,
+  format: 'Hybrid: 2 Weeks Online, 3 Weeks Onsite Daytona Beach (Florida)',
+  intakeLabel: 'Next intake: contact us',
+  schedule: { mode: 'Hybrid', startDate: null, endDate: null, timeText: '2 Weeks Online, 3 Weeks On-site Daytona Beach (Florida)' },
+  location: 'Daytona Beach, Florida',
+  delivery: {
+    intro: '2 weeks online, from home, then 3 weeks on-site in Daytona Beach, Florida. The online weeks are live and self-paced study, so the on-site weeks can focus on practical work with instructors.',
+    items: [
+      { label: 'School', title: 'IFOA', description: 'Taught by working dispatchers' },
+      { label: 'Format', title: '2 weeks online, 3 weeks on-site', description: 'Daytona Beach, Florida' }
+    ]
+  },
+  processSteps: ['Week 1: Online', 'Week 2: Online', 'Week 3: Daytona Beach', 'Week 4: Daytona Beach', 'Week 5: Daytona Beach'],
+  seo: {
+    metaTitle: 'Flight Dispatcher Initial Training USA: 5 Weeks, Florida | IFOA',
+    metaDescription: 'A 5-week flight dispatcher course built on ICAO Doc 10106: 2 weeks online, 3 weeks on-site in Daytona Beach, Florida. €3,500.'
   }
 })
 
