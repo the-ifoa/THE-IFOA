@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { Loader2, Plus, Trash2, ChevronDown, ArrowUp, ArrowDown, X, Check, ArrowLeft, RotateCcw, ExternalLink } from 'lucide-react'
 import { api } from '@/lib/api'
+import { AdminCourseTextEditor } from './AdminCourseTextEditor'
 
 const FIELD_TYPES = [
   { value: 'text', label: 'Text Input' },
@@ -303,6 +304,51 @@ export function AdminFormBuilderPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [courseId])
 
+  // Course mode opens on the live application page (edit wording and images
+  // in place); "Form structure" is the builder for fields, types and options.
+  const [mode, setMode] = useState('page')
+  const [pageDirty, setPageDirty] = useState(false)
+  const switchMode = (next) => {
+    if (next === mode) return
+    if (mode === 'page' && pageDirty && !window.confirm('Discard unsaved changes on the page?')) return
+    if (next === 'structure') load()
+    setPageDirty(false)
+    setMode(next)
+  }
+  const modeToggle = isCourseMode && (
+    <div className="inline-flex rounded-xl border border-gray-200 bg-white p-1" role="tablist">
+      {[
+        ['page', 'Page view'],
+        ['structure', 'Form structure']
+      ].map(([key, label]) => (
+        <button
+          key={key}
+          type="button"
+          role="tab"
+          aria-selected={mode === key}
+          onClick={() => switchMode(key)}
+          className={`px-3 py-1.5 rounded-lg text-[11px] font-bold uppercase tracking-wider transition-colors ${
+            mode === key ? 'bg-[#020617] text-white' : 'text-gray-600 hover:text-rocket-dark'
+          }`}
+        >
+          {label}
+        </button>
+      ))}
+    </div>
+  )
+
+  if (isCourseMode && mode === 'page') {
+    return (
+      <AdminCourseTextEditor
+        initialTab="enroll"
+        showTabs={false}
+        heading="Enrollment Form"
+        toolbar={modeToggle}
+        onDirtyChange={setPageDirty}
+      />
+    )
+  }
+
   if (loading || !sections) {
     return (
       <div className="flex flex-col items-center justify-center py-20 text-gray-400">
@@ -367,7 +413,7 @@ export function AdminFormBuilderPage() {
   }
 
   return (
-    <div className="space-y-6 pb-20 max-w-5xl mx-auto">
+    <div className="space-y-6 pb-20 max-w-6xl mx-auto">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-white p-5 rounded-2xl border border-gray-200/80 shadow-xs">
         <div>
           {isCourseMode ? (
@@ -378,7 +424,12 @@ export function AdminFormBuilderPage() {
               <ArrowLeft className="w-3.5 h-3.5" /> Back to course
             </Link>
           ) : (
-            <span className="text-[11px] font-bold uppercase tracking-wider text-gray-400">Overview / Form Builder</span>
+            <Link
+              to="/admin/courses"
+              className="inline-flex items-center gap-1.5 text-xs font-bold text-gray-500 hover:text-rocket-dark uppercase tracking-wider"
+            >
+              <ArrowLeft className="w-3.5 h-3.5" /> Courses
+            </Link>
           )}
           <h1 className="text-xl sm:text-2xl font-black text-rocket-dark mt-1">
             {isCourseMode ? 'Enrollment Form' : 'Default Form Template'}
@@ -401,6 +452,7 @@ export function AdminFormBuilderPage() {
         </div>
 
         <div className="flex items-center gap-2.5">
+          {modeToggle}
           {isCourseMode && meta.course?.slug && (
             <a
               href={`/courses/${meta.course.slug}`}

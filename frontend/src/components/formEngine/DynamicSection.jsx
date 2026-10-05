@@ -1,4 +1,5 @@
 import { SectionCard } from './SectionCard.jsx';
+import { CmsText } from '@/components/admin/CmsEditable';
 import { DynamicField } from './DynamicField.jsx';
 import { useState } from 'react';
 import { isSectionComplete, isTrackableSection, isFieldVisible, getFormatError } from './formSchema.js';
@@ -29,8 +30,10 @@ export function DynamicSection({ section, value = {}, onChange, intakes, stepNum
     <SectionCard
       id={`section-${section.id}`}
       stepNumber={stepNumber}
-      title={section.title}
-      description={section.description}
+      title={section._path ? <CmsText path={`${section._path}.title`} value={section.title} /> : section.title}
+      description={
+        section._path ? <CmsText path={`${section._path}.description`} value={section.description || ''} /> : section.description
+      }
       isCompleted={isTrackableSection(section) && isSectionComplete(section, value)}
     >
       {fields.map((field) => (

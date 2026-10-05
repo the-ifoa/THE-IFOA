@@ -54,17 +54,20 @@
   RewriteRule ^ifoa-activities-review-q2-2023/?$         /foxtrot-delta [L,R=301]
 
   # --- Events -> course pages ----------------------------------------------
-  RewriteRule ^event/ifoa-india-4-weeks-flight-operations-flight-dispatch-program-ref-ipin2501/?$ /courses/ifoa-india-4-weeks-flight-operations-and-flight-dispatch-program [L,R=301]
+  RewriteRule ^event/ifoa-india-4-weeks-flight-operations-flight-dispatch-program-ref-ipin2501/?$ /courses/flight-dispatcher-initial-certification [L,R=301]
   RewriteRule ^event/4-weeks-easa-flight-dispatch-initial-course-ref-fdin2403/?$ /courses/flight-dispatcher-initial-certification [L,R=301]
   RewriteRule ^event/4-weeks-easa-flight-dispatch-initial-course-ref-fdin2401/?$ /courses/flight-dispatcher-initial-certification [L,R=301]
   RewriteRule ^event/4-weeks-easa-flight-dispatch-course-prom2-2023/?$          /courses/flight-dispatcher-initial-certification [L,R=301]
-  RewriteRule ^event/3-days-easa-flight-dispatch-recurrent-online-course-module-1-2023/?$ /courses/flight-dispatch-recurrent-refresher-course [L,R=301]
+  RewriteRule ^event/3-days-easa-flight-dispatch-recurrent-online-course-module-1-2023/?$ /events [L,R=301]
   RewriteRule ^event/4-days-easa-crew-control-frm-online-course-2023/?$         /services [L,R=301]
   RewriteRule ^3-weeks-easa-flight-dispatch-initial-course-prom1-2023/?$        /events [L,R=301]
-  RewriteRule ^ifoa-india-landing-page/?$ /courses/ifoa-india-4-weeks-flight-operations-and-flight-dispatch-program [L,R=301]
+  RewriteRule ^ifoa-india-landing-page/?$ /courses/flight-dispatcher-initial-certification [L,R=301]
   # Any remaining Events Calendar URL.
   RewriteRule ^event/.*$  /events [L,R=301]
   RewriteRule ^events/.+$ /events [L,R=301]
+  # Events Calendar venue and organizer pages.
+  RewriteRule ^venue/.*$     /events [L,R=301]
+  RewriteRule ^organizer/.*$ /about  [L,R=301]
 
   # --- Legal / misc [CONSOLIDATED] -----------------------------------------
   # /impressum and /data-protection-policy have no replacement yet. An Impressum
@@ -80,7 +83,7 @@
   # --- Dead WordPress surface ----------------------------------------------
   # Kill crawl budget spent on URLs that will never exist again.
   RewriteRule ^(wp-admin|wp-login\.php|wp-json|xmlrpc\.php|feed|comments/feed)(/.*)?$ - [R=410,L]
-  RewriteRule ^(category|tag|author)/.*$ - [R=410,L]
+  RewriteRule ^(category|tag|author|fl-builder-template-category)/.*$ - [R=410,L]
 
   # ==========================================================================
   # Prerendered routes

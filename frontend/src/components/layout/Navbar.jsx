@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react'
-import { NavLink, Link, useLocation, useNavigate } from 'react-router-dom'
+import { useState, useEffect, useRef } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   RiMenu4Fill,
@@ -188,8 +188,8 @@ export function Navbar({ variant = 'fixed' }) {
           </Link>
 
           {/* Nav Links with Smooth Underline Animation (Desktop) */}
-          <nav className="hidden md:flex items-center gap-8 text-sm font-medium">
-            {navLinks.map((link) => {
+          <nav className="hidden lg:flex items-center gap-6 xl:gap-8 whitespace-nowrap text-sm font-medium">
+            {navLinks.filter((link) => link.name !== 'Contact').map((link) => {
               const active = isActive(link.path)
               if (link.external) {
                 return (
@@ -203,18 +203,6 @@ export function Navbar({ variant = 'fixed' }) {
                     <span>{link.name}</span>
                     <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-rocket-lime rounded-full transition-all duration-300 ease-out origin-left scale-x-0 opacity-0 group-hover:scale-x-100 group-hover:opacity-100" />
                   </a>
-                )
-              }
-              if (link.name === 'Contact') {
-                // Always-visible green pill, not just a hover/active underline - the one nav item that should stand out regardless of state.
-                return (
-                  <Link
-                    key={link.path}
-                    to={link.path}
-                    className="inline-flex items-center bg-[#34E06E] hover:bg-[#28c85e] text-slate-950 font-bold px-4 py-1.5 rounded-full text-sm transition-colors duration-200 outline-none focus:outline-none"
-                  >
-                    {link.name}
-                  </Link>
                 )
               }
               return (
@@ -242,9 +230,17 @@ export function Navbar({ variant = 'fixed' }) {
           <div className="flex items-center gap-3">
             {admin && <AdminMenu admin={admin} onLogout={handleLogout} />}
 
+            {/* Contact: always-visible green pill on the right, apart from the page links. */}
+            <Link
+              to="/contact"
+              className="hidden lg:inline-flex items-center bg-[#34E06E] hover:bg-[#28c85e] text-slate-950 font-bold px-5 py-2 rounded-full text-sm transition-colors duration-200 outline-none focus:outline-none"
+            >
+              Contact
+            </Link>
+
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 rounded-xl text-white hover:bg-white/10 focus:outline-none transition-colors"
+              className="lg:hidden p-2 rounded-xl text-white hover:bg-white/10 focus:outline-none transition-colors"
               aria-label="Toggle Menu"
               aria-expanded={mobileMenuOpen}
             >
@@ -262,7 +258,7 @@ export function Navbar({ variant = 'fixed' }) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.16, ease: 'easeOut' }}
-            className="md:hidden bg-[#020617] border-t border-white/10 px-4 sm:px-6 py-6 space-y-4 max-h-[calc(100dvh-5rem)] overflow-y-auto shadow-2xl"
+            className="lg:hidden bg-[#020617] border-t border-white/10 px-4 sm:px-6 py-6 space-y-4 max-h-[calc(100dvh-5rem)] overflow-y-auto shadow-2xl"
           >
             <div className="flex flex-col space-y-2">
               {navLinks.map((link, i) => {

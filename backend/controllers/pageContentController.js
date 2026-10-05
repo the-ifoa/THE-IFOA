@@ -1,6 +1,7 @@
 const PageContent = require('../models/PageContent')
 const Course = require('../models/Course')
 const { asyncHandler } = require('../middleware/error')
+const { deleteObject } = require('../config/r2')
 const {
   PAGE_KEYS,
   PAGE_LABELS,
@@ -16,6 +17,16 @@ const {
 const COURSE_SCOPED_PAGES = new Set(['courseDetail', 'courseEnrollment'])
 function isValidCoursePage(page) {
   return COURSE_SCOPED_PAGES.has(page)
+}
+
+// R2 keys of every uploaded image ({ url, key, alt }) inside a content blob.
+function imageKeys(value, out = new Set()) {
+  if (Array.isArray(value)) value.forEach((v) => imageKeys(v, out))
+  else if (value && typeof value === 'object') {
+    if (typeof value.key === 'string' && typeof value.url === 'string') out.add(value.key)
+    Object.values(value).forEach((v) => imageKeys(v, out))
+  }
+  return out
 }
 
 // ---------- Public ----------
@@ -79,11 +90,20 @@ const adminUpdatePage = asyncHandler(async (req, res) => {
   // ever change copy, never inject arbitrary keys the frontend might read.
   const sanitized = sanitizeContent(page, data)
 
+  const before = await PageContent.findOne({ page }).lean()
   const doc = await PageContent.findOneAndUpdate(
     { page },
     { $set: { data: sanitized } },
     { returnDocument: 'after', upsert: true, setDefaultsOnInsert: true }
   )
+
+  // Drop R2 objects for images that were replaced or removed.
+  const keysAfter = imageKeys(sanitized)
+  for (const key of imageKeys(before?.data)) {
+    if (!keysAfter.has(key)) {
+      deleteObject(key).catch((err) => console.warn('[r2] cleanup failed', key, err.message))
+    }
+  }
   res.json({ page, data: mergeContent(DEFAULTS[page], doc.data || {}) })
 })
 

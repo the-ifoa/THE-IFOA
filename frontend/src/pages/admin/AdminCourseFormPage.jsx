@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate, useParams, Link } from 'react-router-dom'
-import { ArrowLeft, Loader2, Plus, Trash2, Eye, FileText } from 'lucide-react'
+import { ArrowLeft, Loader2, Plus, Trash2, Eye, FileText, PencilLine } from 'lucide-react'
 import { api } from '@/lib/api'
 import { ImageUploader } from '@/components/admin/ImageUploader'
-import { CourseCard } from '@/components/course/CourseCard'
+import { CourseCard, hasEnrollmentForm } from '@/components/course/CourseCard'
 
 const CATEGORIES = [
   'dispatch',
@@ -196,12 +196,7 @@ export function AdminCourseFormPage() {
           .map((i) => ({ label: i.label.trim(), startDate: i.startDate || null, isActive: i.isActive !== false }))
       }
 
-      if (isEdit) {
-        await api.adminUpdateCourse(id, payload)
-      } else {
-        const { course } = await api.adminCreateCourse(payload)
-        navigate(`/admin/courses/${course._id}`, { replace: true })
-      }
+      await api.adminUpdateCourse(id, payload)
       navigate('/admin/courses')
     } catch (err) {
       setError(err.message)
@@ -231,11 +226,20 @@ export function AdminCourseFormPage() {
             <ArrowLeft className="w-3.5 h-3.5" /> Back to Courses
           </Link>
           <h1 className="text-xl sm:text-2xl font-black text-rocket-dark mt-1">
-            {isEdit ? 'Edit Course Program' : 'Create New Course Program'}
+            {isEdit ? 'Course settings' : 'Create New Course Program'}
           </h1>
         </div>
         <div className="flex items-center gap-3">
           {isEdit && (
+            <Link
+              to={`/admin/courses/${id}/text`}
+              title="Open the live course page and click any text to edit it"
+              className="inline-flex items-center gap-2 bg-[#34E06E] text-slate-950 font-bold text-xs uppercase tracking-wider px-4 py-2.5 rounded-xl hover:bg-[#28c85e] transition-colors"
+            >
+              <PencilLine className="w-4 h-4" /> Edit Page
+            </Link>
+          )}
+          {isEdit && hasEnrollmentForm(form) && (
             <Link
               to={`/admin/courses/${id}/form`}
               title="Customise this course's enrollment form"

@@ -1,6 +1,6 @@
-import React, { useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { RiBookReadFill, RiBookOpenFill, RiCheckLine } from 'react-icons/ri'
+import { RiBookReadFill, RiBookOpenLine, RiCheckLine, RiCloseLine, RiExternalLinkLine } from 'react-icons/ri'
 import { PiAirplaneTakeoffFill, PiAirplaneTiltFill } from 'react-icons/pi'
 import { HiArrowUpRight, HiArrowRight } from 'react-icons/hi2'
 import { MdOutlineMail } from 'react-icons/md'
@@ -24,6 +24,79 @@ const EDITION_COVERS = {
   'special-edition': issue03Cover,
   'issue-02': issue02Cover,
   'issue-01': issue01Cover
+}
+
+// Publuu flipbook for each edition, so a click opens that issue directly
+// instead of the whole bookshelf.
+const PUBLUU_ACCOUNT = '371907'
+const EDITION_FLIPBOOKS = {
+  'special-edition': '935013',
+  'issue-02': '935033',
+  'issue-01': '935041'
+}
+const flipbookUrl = (id, embed) => `https://publuu.com/flip-book/${PUBLUU_ACCOUNT}/${id}${embed ? '/page/1?embed' : ''}`
+
+// Full-screen reader for one issue. Esc or the backdrop closes it.
+function IssueReader({ issue, onClose }) {
+  const flipbook = EDITION_FLIPBOOKS[issue.id]
+  useEffect(() => {
+    const onKey = (e) => e.key === 'Escape' && onClose()
+    const prev = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    window.addEventListener('keydown', onKey)
+    return () => {
+      document.body.style.overflow = prev
+      window.removeEventListener('keydown', onKey)
+    }
+  }, [onClose])
+
+  return (
+    <div
+      className="fixed inset-0 z-[100] flex items-center justify-center p-0 sm:p-6 bg-slate-950/85 backdrop-blur-sm animate-[overviewFadeIn_0.25s_ease-out]"
+      role="dialog"
+      aria-modal="true"
+      aria-label={`Foxtrot Delta ${issue.number}: ${issue.title}`}
+      onClick={onClose}
+    >
+      <div
+        className="relative w-full h-full sm:h-[90vh] max-w-6xl bg-white sm:rounded-2xl overflow-hidden flex flex-col shadow-2xl"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="flex items-center gap-3 px-4 sm:px-5 py-3 border-b border-slate-200">
+          <div className="min-w-0 flex-1">
+            <p className="text-[10px] font-mono font-bold uppercase tracking-widest text-slate-500">
+              {issue.number} · {issue.date}
+            </p>
+            <p className="text-sm sm:text-base font-bold text-slate-950 truncate">{issue.title}</p>
+          </div>
+          <a
+            href={flipbookUrl(flipbook)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-slate-950 px-3 py-2 rounded-full border border-slate-200 hover:border-slate-300 transition-colors"
+          >
+            <RiExternalLinkLine className="w-3.5 h-3.5" />
+            Open in new tab
+          </a>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Close reader"
+            className="w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition-colors cursor-pointer"
+          >
+            <RiCloseLine className="w-5 h-5" />
+          </button>
+        </div>
+        <iframe
+          title={`Foxtrot Delta ${issue.number}`}
+          src={flipbookUrl(flipbook, true)}
+          className="flex-1 w-full border-0 bg-slate-100"
+          allow="clipboard-write; autoplay; fullscreen"
+          allowFullScreen
+        />
+      </div>
+    </div>
+  )
 }
 
 // Content the page ships with; editable at /admin/pages/foxtrotDelta.
@@ -87,6 +160,7 @@ const FALLBACK = {
 
 export function FoxtrotDeltaPage() {
   const bookshelfRef = useRef(null)
+  const [reading, setReading] = useState(null)
   const { c } = usePageContent('foxtrotDelta', FALLBACK)
   const featuredEditions = c.collection.editions.map((e, i) => ({ ...e, _path: `collection.editions.${i}` }))
 
@@ -207,81 +281,90 @@ export function FoxtrotDeltaPage() {
               </button>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {featuredEditions.map((issue) => (
-                <div
-                  key={issue.id}
-                  className="group rounded-[2rem] bg-white border border-slate-200/90 hover:border-[#34E06E]/40 shadow-[0_4px_24px_rgba(0,0,0,0.03)] hover:shadow-[0_16px_40px_rgba(0,0,0,0.08)] transition-all duration-300 p-7 flex flex-col justify-between space-y-6 hover:-translate-y-1.5 text-left"
-                >
-                  <div className="space-y-4">
-                    {/* Clean Magazine Cover Visual */}
-                    <div className="relative aspect-[3/4] w-full rounded-[1.25rem] overflow-hidden bg-slate-50 border border-slate-100 shadow-[0_4px_16px_rgba(0,0,0,0.04)] group-hover:shadow-[0_10px_28px_rgba(0,0,0,0.08)] transition-all duration-500">
-                      <img
-                        src={EDITION_COVERS[issue.id]}
-                        alt={`Foxtrot Delta ${issue.number}`}
-                        className="w-full h-full object-cover object-top group-hover:scale-[1.02] transition-transform duration-500"
-                      />
-                    </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+              {featuredEditions.map((issue) => {
+                const canRead = Boolean(EDITION_FLIPBOOKS[issue.id])
+                const open = () => (canRead ? setReading(issue) : scrollToBookshelf())
+                return (
+                  <article key={issue.id} className="group flex flex-col text-left rounded-2xl bg-white border border-slate-200/90 overflow-hidden hover:border-slate-300 hover:shadow-[0_16px_40px_-16px_rgba(15,23,42,0.18)] transition-[border-color,box-shadow] duration-300">
+                    {/* Cover: the whole cover opens the issue */}
+                    <button
+                      type="button"
+                      onClick={open}
+                      aria-label={`Read Foxtrot Delta ${issue.number}: ${issue.title}`}
+                      className="relative block bg-slate-100/80 p-6 sm:p-8 cursor-pointer overflow-hidden border-b border-slate-200/80"
+                    >
+                      <span className="relative block aspect-[3/4] w-full max-w-[300px] mx-auto rounded-md overflow-hidden shadow-[0_18px_40px_-12px_rgba(15,23,42,0.35)] transition-transform duration-500 ease-out group-hover:-translate-y-1.5">
+                        <img
+                          src={EDITION_COVERS[issue.id]}
+                          alt={`Foxtrot Delta ${issue.number} cover`}
+                          loading="lazy"
+                          className="w-full h-full object-cover object-top"
+                        />
+                        <span className="absolute inset-0 flex items-center justify-center bg-slate-950/0 group-hover:bg-slate-950/45 transition-colors duration-300">
+                          <span className="inline-flex items-center gap-2 bg-white text-slate-950 text-xs font-bold px-4 py-2.5 rounded-full opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
+                            <RiBookOpenLine className="w-4 h-4" />
+                            Read now
+                          </span>
+                        </span>
+                      </span>
+                    </button>
 
-                    {/* Metadata & Title */}
-                    <div className="space-y-2.5">
-                      <div className="flex items-center justify-between gap-2 min-h-[1.75rem]">
-                        <span className="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-mono font-bold uppercase tracking-wider bg-slate-100 text-slate-950 border border-slate-200/90">
+                    {/* Details */}
+                    <div className="flex-1 flex flex-col p-6">
+                      <div className="flex items-center justify-between gap-3">
+                        <span className="inline-flex items-center px-2.5 py-1 rounded-md bg-emerald-50 text-[#16a952] text-[10px] font-mono font-bold uppercase tracking-widest">
                           <CmsText path={`${issue._path}.number`} value={issue.number} />
                         </span>
-                        <span className="text-xs text-slate-500 font-medium font-mono">
+                        <span className="text-[11px] font-mono font-semibold uppercase tracking-wider text-slate-400">
                           <CmsText path={`${issue._path}.date`} value={issue.date} />
                         </span>
                       </div>
 
-                      <h3 className="text-lg sm:text-xl font-bold text-slate-950 tracking-tight leading-snug min-h-[3.25rem] flex items-start">
+                      <h3 className="mt-4 text-lg font-bold text-slate-950 tracking-tight leading-snug">
                         <CmsText path={`${issue._path}.title`} value={issue.title} />
                       </h3>
-
-                      <p className="text-xs sm:text-sm text-slate-600 font-normal leading-relaxed min-h-[3.5rem]">
+                      <p className="mt-1.5 text-sm text-slate-600 leading-relaxed sm:min-h-[2.75rem]">
                         <CmsText path={`${issue._path}.subtitle`} value={issue.subtitle} />
                       </p>
-                    </div>
 
-                    {/* Highlights List */}
-                    <div className="pt-3.5 border-t border-slate-100 space-y-2">
-                      <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-slate-400 block">
-                        Inside This Issue
-                      </span>
-                      <div className="space-y-1.5 min-h-[6.5rem]">
-                        {issue.highlights.map((item, idx) => (
-                          <div
-                            key={idx}
-                            className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-50/80 border border-slate-100 text-xs text-slate-700"
-                          >
-                            <RiCheckLine className="w-3.5 h-3.5 text-[#16a952] shrink-0" />
-                            <span className="font-semibold text-slate-800 truncate">
-                              <CmsText path={`${issue._path}.highlights.${idx}`} value={item} />
-                            </span>
-                          </div>
-                        ))}
+                      <div className="mt-5 rounded-xl bg-slate-50 border border-slate-100 p-4">
+                        <p className="text-[10px] font-mono font-bold uppercase tracking-widest text-slate-400">Inside this issue</p>
+                        <ul className="mt-2.5 space-y-2">
+                          {issue.highlights.map((item, idx) => (
+                            <li key={idx} className="flex items-start gap-2 text-[13px] font-medium text-slate-800 leading-snug">
+                              <RiCheckLine className="w-3.5 h-3.5 text-[#16a952] shrink-0 mt-[3px]" />
+                              <span>
+                                <CmsText path={`${issue._path}.highlights.${idx}`} value={item} />
+                              </span>
+                            </li>
+                          ))}
+                        </ul>
                       </div>
-                    </div>
-                  </div>
 
-                  <div className="mt-auto pt-3 border-t border-slate-100">
-                    <button
-                      onClick={scrollToBookshelf}
-                      className="w-full bg-slate-950 hover:bg-[#34E06E] hover:text-slate-950 text-white font-bold py-3.5 px-5 rounded-full text-xs uppercase tracking-wider transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer shadow-sm hover:shadow-[0_0_20px_rgba(52,224,110,0.35)] group/btn"
-                    >
-                      <RiBookOpenFill className="w-4 h-4 text-[#34E06E] group-hover/btn:text-slate-950 transition-colors" />
-                      <span>
-                        <CmsText path={`${issue._path}.readLabel`} value={issue.readLabel} />
-                      </span>
-                      <HiArrowRight className="w-3.5 h-3.5 opacity-60 group-hover/btn:translate-x-0.5 transition-transform" />
-                    </button>
-                  </div>
-                </div>
-              ))}
+                      <button
+                        type="button"
+                        onClick={open}
+                        className="mt-auto pt-5 group/read w-full flex items-center justify-between text-sm font-bold text-slate-950 cursor-pointer"
+                      >
+                        <span className="inline-flex items-center gap-2">
+                          <RiBookOpenLine className="w-4 h-4 text-[#16a952]" />
+                          <CmsText path={`${issue._path}.readLabel`} value={issue.readLabel} />
+                        </span>
+                        <span className="w-9 h-9 rounded-full bg-slate-950 text-white flex items-center justify-center transition-colors group-hover/read:bg-[#34E06E] group-hover/read:text-slate-950">
+                          <HiArrowRight className="w-4 h-4" />
+                        </span>
+                      </button>
+                    </div>
+                  </article>
+                )
+              })}
             </div>
           </div>
         </div>
       </Reveal>
+
+      {reading && <IssueReader issue={reading} onClose={() => setReading(null)} />}
 
       {/* 3. FINAL CTA */}
       <Reveal as="section" className="py-20 sm:py-28 bg-slate-50/70 text-center border-t border-slate-200/80" data-purpose="foxtrot-final-cta">

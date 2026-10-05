@@ -1,6 +1,4 @@
-import React from 'react'
 import { Link } from 'react-router-dom'
-import { RiStarFill } from 'react-icons/ri'
 import { TbClockHour4 } from 'react-icons/tb'
 import { HiArrowUpRight } from 'react-icons/hi2'
 

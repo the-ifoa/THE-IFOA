@@ -1,18 +1,12 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import {
   RiCheckboxCircleFill,
-  RiMailLine,
-  RiPhoneLine,
-  RiMapPin2Line,
   RiSendPlaneFill
 } from 'react-icons/ri'
-import { HiArrowRight } from 'react-icons/hi2'
-import { MdOutlineMail } from 'react-icons/md'
 
-import { CosmicParallaxBg } from '@/components/common/CosmicParallaxBg'
 import { Reveal } from '@/components/common/Reveal'
-import { CmsText, CmsRemoveItem, CmsAddItem } from '@/components/admin/CmsEditable'
+import { CmsText, CmsRemoveItem, CmsAddItem, CmsImageButton } from '@/components/admin/CmsEditable'
 import { CustomSelect } from '@/components/ui/CustomSelect'
 import { usePageContent } from '@/hooks/usePageContent'
 import { Seo } from '@/components/common/Seo'
@@ -110,8 +104,7 @@ const COURSE_TOPICS = {
   'dangerous-goods-regulations-cbta-initial': { topic: 'Dangerous Goods for our crews', audience: 'operator' },
   'airline-crew-control-flight-rostering': { topic: 'Crew Control', audience: 'operator' },
   'human-factors-in-the-occ': { topic: 'Human Factors for the OCC', audience: 'operator' },
-  'airline-occ-setup-operational-consulting': { topic: 'OCC consulting', audience: 'operator' },
-  'flight-dispatch-recurrent-refresher-course': { topic: 'Flight Dispatch: tailored initial, recurrent or advanced', audience: 'operator' }
+  'airline-occ-setup-operational-consulting': { topic: 'OCC consulting', audience: 'operator' }
 }
 
 export function ContactPage() {
@@ -166,7 +159,7 @@ export function ContactPage() {
       <Seo
         path="/contact"
         title="Contact IFOA | Flight Dispatch Training Enquiries"
-        description="Contact IFOA's flight operations training team in Switzerland, the United States or India for course dates, eligibility and airline training programmes."
+        description="Talk to IFOA about a flight dispatcher course or training for your team. Offices in Switzerland, the United States and India. We reply within two working days."
         jsonLd={graph(
           organizationSchema(),
           localBusinessSchemas(),
@@ -187,6 +180,7 @@ export function ContactPage() {
           />
           <div className="absolute inset-0 bg-gradient-to-b from-[#020617]/90 via-[#020617]/75 to-[#020617]" />
         </div>
+        <CmsImageButton path="hero.image" className="top-24 right-4 sm:right-6" />
 
         <div className="relative z-10 w-full max-w-[1280px] mx-auto px-6 text-center space-y-6 flex flex-col items-center justify-center">
           <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white max-w-4xl mx-auto leading-tight">
@@ -202,34 +196,22 @@ export function ContactPage() {
       {/* 2. MAIN CONTACT SECTION (FORM + DIRECT LINES) */}
       <Reveal as="section" id="contact-main-section" className="py-20 sm:py-24 bg-white border-b border-slate-200/80 scroll-mt-20" data-purpose="contact-main">
         <div className="max-w-[1280px] mx-auto px-6">
-          {/* Header Row: Locked to same top baseline */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start mb-6">
-            {/* Left Header */}
-            <div className="lg:col-span-7 space-y-2">
-              <span className="text-xs sm:text-sm font-mono font-black uppercase tracking-widest text-slate-950 border-b-2 border-[#34E06E] pb-1 block w-fit">
-                <CmsText path="form.eyebrow" value={c.form.eyebrow} />
-              </span>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-slate-950 leading-tight">
-                <CmsText path="form.title" value={c.form.title} />
-              </h2>
-            </div>
-
-            {/* Right Header */}
-            <div className="lg:col-span-5 space-y-2">
-              <span className="text-xs sm:text-sm font-mono font-black uppercase tracking-widest text-slate-950 border-b-2 border-[#34E06E] pb-1 block w-fit">
-                <CmsText path="direct.eyebrow" value={c.direct.eyebrow} />
-              </span>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-slate-950 leading-tight">
-                <CmsText path="direct.title" value={c.direct.title} />
-              </h2>
-            </div>
-          </div>
-
-          {/* Cards Row: Perfectly Aligned Containers */}
+          {/* Single Unified Grid with Sticky Right Column */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
-            {/* Left: Contact Form Card */}
-            <div className="lg:col-span-7">
-              <div className="rounded-[2rem] bg-slate-50/70 border border-slate-200/90 p-8 sm:p-10 shadow-[0_4px_24px_rgba(0,0,0,0.03)] flex flex-col justify-between">
+            {/* Left: Header + Contact Form Card */}
+            <div className="lg:col-span-7 space-y-6">
+              {/* Left Header */}
+              <div className="space-y-2">
+                <span className="text-xs sm:text-sm font-mono font-black uppercase tracking-widest text-slate-950 border-b-2 border-[#34E06E] pb-1 block w-fit">
+                  <CmsText path="form.eyebrow" value={c.form.eyebrow} />
+                </span>
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-slate-950 leading-tight">
+                  <CmsText path="form.title" value={c.form.title} />
+                </h2>
+              </div>
+
+              {/* Contact Form Card */}
+              <div className="rounded-[2rem] bg-slate-50/70 border border-slate-200/90 p-5 sm:p-10 shadow-[0_4px_24px_rgba(0,0,0,0.03)] flex flex-col justify-between">
                 {submitted ? (
                   <div className="text-center py-12 space-y-4 animate-in fade-in duration-300 my-auto">
                     <div className="w-16 h-16 rounded-full bg-slate-100 text-[#34E06E] flex items-center justify-center mx-auto">
@@ -350,7 +332,7 @@ export function ContactPage() {
                       </label>
                       <input
                         type="text"
-                        placeholder="Airline, operator, or 'individual'"
+                        placeholder="Airline, operator, or 'Individual'"
                         value={formData.organization}
                         onChange={(e) => setFormData({ ...formData, organization: e.target.value })}
                         className="w-full px-4 py-3 rounded-xl bg-white border border-slate-200 text-sm text-slate-950 placeholder:text-slate-400 focus:outline-hidden focus:border-[#34E06E] focus:ring-1 focus:ring-[#34E06E] transition-all"
@@ -419,9 +401,20 @@ export function ContactPage() {
               </div>
             </div>
 
-            {/* Right: Direct Lines Card */}
-            <div className="lg:col-span-5">
-              <div className="rounded-[2rem] bg-slate-50/70 border border-slate-200/90 p-8 sm:p-10 shadow-[0_4px_24px_rgba(0,0,0,0.03)] flex flex-col justify-between space-y-8">
+            {/* Right: Header + Direct Lines Card (Sticky) */}
+            <div className="lg:col-span-5 lg:sticky lg:top-28 lg:self-start space-y-6">
+              {/* Right Header */}
+              <div className="space-y-2">
+                <span className="text-xs sm:text-sm font-mono font-black uppercase tracking-widest text-slate-950 border-b-2 border-[#34E06E] pb-1 block w-fit">
+                  <CmsText path="direct.eyebrow" value={c.direct.eyebrow} />
+                </span>
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-slate-950 leading-tight">
+                  <CmsText path="direct.title" value={c.direct.title} />
+                </h2>
+              </div>
+
+              {/* Direct Lines Card */}
+              <div className="rounded-[2rem] bg-slate-50/70 border border-slate-200/90 p-5 sm:p-10 shadow-[0_4px_24px_rgba(0,0,0,0.03)] flex flex-col justify-between space-y-8">
                 <div className="divide-y divide-slate-200/80">
                   {c.direct.lines.map((line, idx) => (
                     <a

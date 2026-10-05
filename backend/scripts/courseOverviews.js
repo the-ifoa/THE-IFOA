@@ -957,6 +957,19 @@ module.exports = {
           assessTitle: "How you're assessed",
           assessShort: { pilot: 'Flight scenarios', dispatcher: 'Dispatch scenarios', cabin: 'Cabin scenarios' },
           duration: '4 hours',
+          sidebar: {
+            priceTitle: 'Price per group',
+            priceNote: 'on request',
+            rows: [
+              { label: 'Duration', value: '4 hours' },
+              { label: 'Format', value: 'Self-paced online' },
+              { label: 'Assessment', value: '' },
+              { label: 'Certificate', value: 'Valid 24 months' },
+              { label: 'Start', value: 'Scheduled with your group' }
+            ],
+            ctaLabel: 'Request a proposal',
+            secondaryLabel: 'What operators get'
+          },
           assess: {
             pilot: "Scenarios: a DG found in flight, a NOTOC that doesn't match the load, and a decision to accept or refuse.",
             dispatcher: 'Scenarios: DG in a booking or load document, preparing the information for the commander, and an emergency call.',

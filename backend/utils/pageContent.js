@@ -623,6 +623,15 @@ const SCHEMAS = {
         ]
       },
       {
+        k: 'form',
+        label: 'Registration form',
+        fields: [
+          f('eyebrow', 'Form eyebrow'),
+          f('instructions', 'Form instructions'),
+          f('submitLabel', 'Submit button label')
+        ]
+      },
+      {
         k: 'support',
         label: 'Admissions support box',
         fields: [
@@ -783,7 +792,7 @@ const DEFAULTS = {
           link1Label: 'FAA Aircraft Dispatcher',
           link1Slug: 'aircraft-dispatcher-training-faa-part-65',
           link2Label: 'Double FAA & EASA Programme',
-          link2Slug: 'events-courses'
+          link2Slug: 'flight-dispatcher-double-programme'
         },
         {
           name: 'India',
@@ -1490,6 +1499,11 @@ const DEFAULTS = {
       credentialLabel: 'Credential',
       credentialValue: 'IFOA Flight Dispatch Cert',
       accreditationLabel: 'Regulatory Framework'
+    },
+    form: {
+      eyebrow: 'Candidate Registration Form',
+      instructions: 'Please complete all required fields marked with an asterisk',
+      submitLabel: 'Submit Application Now'
     },
     support: {
       title: 'Need Admissions Assistance?',

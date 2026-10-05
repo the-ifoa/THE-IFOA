@@ -1,19 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import {
   BookOpen,
   Users,
   Mail,
   ChevronRight,
-  Sparkles,
-  Plus,
-  ExternalLink,
-  FileCode,
-  ArrowUpRight,
-  HelpCircle
+  ExternalLink
 } from 'lucide-react'
 import { api } from '@/lib/api'
 import { PATH_BY_PAGE } from './pagesMeta'
+import { CourseLinksGrid } from '@/components/admin/CourseLinksGrid'
 
 function StatCard({ label, value, subtext, icon: Icon, tone = 'emerald', to, loading }) {
   const tones = {
@@ -68,48 +64,6 @@ function StatCard({ label, value, subtext, icon: Icon, tone = 'emerald', to, loa
   )
 }
 
-function SectionCard({ to, icon: Icon, title, description, badge, actionLabel = 'Open', external }) {
-  const content = (
-    <div className="group flex flex-col justify-between gap-4 rounded-2xl border border-slate-200/90 bg-white p-5 shadow-xs hover:border-slate-300 hover:shadow-md transition-all cursor-pointer">
-      <div className="space-y-3">
-        <div className="flex items-center justify-between">
-          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-slate-800 group-hover:bg-[#34E06E]/15 group-hover:text-emerald-700 transition-colors">
-            <Icon className="h-5 w-5" />
-          </span>
-          {badge && (
-            <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200/60">
-              {badge}
-            </span>
-          )}
-        </div>
-        <div>
-          <h3 className="text-base font-bold text-slate-900 group-hover:text-emerald-600 transition-colors">
-            {title}
-          </h3>
-          <p className="text-xs text-slate-500 mt-1 leading-relaxed">{description}</p>
-        </div>
-      </div>
-
-      <div className="flex items-center justify-end pt-3 border-t border-slate-100">
-        <span className="inline-flex items-center gap-1.5 bg-[#020617] group-hover:bg-[#34E06E] text-white group-hover:text-black font-extrabold text-[11px] uppercase tracking-wider px-3.5 py-2 rounded-xl transition-all shadow-xs">
-          <span>{actionLabel}</span>
-          {external ? <ArrowUpRight className="w-3.5 h-3.5" /> : <ChevronRight className="w-3.5 h-3.5" />}
-        </span>
-      </div>
-    </div>
-  )
-
-  if (external) {
-    return (
-      <a href={to} target="_blank" rel="noreferrer">
-        {content}
-      </a>
-    )
-  }
-
-  return <Link to={to}>{content}</Link>
-}
-
 export function AdminOverviewPage() {
   const [stats, setStats] = useState({
     courses: null,
@@ -119,6 +73,7 @@ export function AdminOverviewPage() {
     newMessages: null
   })
   const [pages, setPages] = useState(null)
+  const [courses, setCourses] = useState(null)
 
   useEffect(() => {
     api
@@ -128,8 +83,14 @@ export function AdminOverviewPage() {
 
     api
       .adminListCourses({})
-      .then((data) => setStats((prev) => ({ ...prev, courses: (data.courses || []).length })))
-      .catch(() => setStats((prev) => ({ ...prev, courses: 0 })))
+      .then((data) => {
+        setCourses(data.courses || [])
+        setStats((prev) => ({ ...prev, courses: (data.courses || []).length }))
+      })
+      .catch(() => {
+        setCourses([])
+        setStats((prev) => ({ ...prev, courses: 0 }))
+      })
 
     api
       .adminListSubmissions({})
@@ -158,48 +119,43 @@ export function AdminOverviewPage() {
 
   return (
     <div className="max-w-6xl mx-auto space-y-8 pb-12">
-      {/* 1. WELCOME & QUICK ACTIONS HERO */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900 text-white p-6 sm:p-8 rounded-3xl border border-slate-800 shadow-lg">
-        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div className="space-y-2 max-w-xl">
-            <span className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">
-              <Sparkles className="w-3.5 h-3.5" />
-              IFOA Command Center
-            </span>
-            <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
-              Flight Operations Management
-            </h1>
-            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-              Manage training programs, customize public website copy, configure enrollment forms, and process candidate applications in one place.
-            </p>
-          </div>
-
-          <div className="flex flex-wrap items-center gap-3 shrink-0">
-            <Link
-              to="/admin/courses/new"
-              className="inline-flex items-center gap-2 bg-[#34E06E] hover:bg-[#2bc960] text-black font-extrabold text-xs uppercase tracking-wider px-4 py-3 rounded-xl transition-all shadow-md hover:shadow-emerald-500/20 cursor-pointer"
-            >
-              <Plus className="w-4 h-4" />
-              <span>Add Course</span>
-            </Link>
-            <a
-              href="/"
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white font-bold text-xs uppercase tracking-wider px-4 py-3 rounded-xl border border-white/10 transition-all cursor-pointer"
-            >
-              <ExternalLink className="w-4 h-4" />
-              <span>Live Website</span>
-            </a>
-          </div>
-        </div>
+      {/* 1. WHAT NEEDS ATTENTION */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <StatCard
+          to="/admin/courses"
+          label="Academic Programs"
+          value={stats.courses}
+          subtext="Active in database"
+          icon={BookOpen}
+          tone="emerald"
+          loading={stats.courses === null}
+        />
+        <StatCard
+          to="/admin/submissions"
+          label="Candidate Registrations"
+          value={stats.newSubmissions != null ? `${stats.newSubmissions} New` : ' - '}
+          subtext={`${stats.totalSubmissions || 0} total applications`}
+          icon={Users}
+          tone="blue"
+          loading={stats.newSubmissions === null}
+        />
+        <StatCard
+          to="/admin/contact-messages"
+          label="Contact Inquiries"
+          value={stats.newMessages != null ? `${stats.newMessages} New` : ' - '}
+          subtext={`${stats.totalMessages || 0} total messages`}
+          icon={Mail}
+          tone="amber"
+          loading={stats.newMessages === null}
+        />
       </div>
 
-      {/* 2. YOUR WEBSITE PAGES - every major page, one click to edit, right up front */}
+
+      {/* 2. WEBSITE PAGES - one click to edit */}
       <section className="space-y-4">
         <div>
           <h2 className="text-base font-black uppercase tracking-wider text-slate-900">
-            Your Website Pages
+            Website Pages
           </h2>
           <p className="text-xs text-slate-500 mt-0.5">
             Click a page below to edit its text and images directly. Changes go live as soon as you save.
@@ -265,130 +221,26 @@ export function AdminOverviewPage() {
         </div>
       </section>
 
-      {/* 3. REAL-TIME STATS SUMMARY */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <StatCard
-          to="/admin/courses"
-          label="Academic Programs"
-          value={stats.courses}
-          subtext="Active in database"
-          icon={BookOpen}
-          tone="emerald"
-          loading={stats.courses === null}
-        />
-        <StatCard
-          to="/admin/submissions"
-          label="Candidate Registrations"
-          value={stats.newSubmissions != null ? `${stats.newSubmissions} New` : ' - '}
-          subtext={`${stats.totalSubmissions || 0} total applications`}
-          icon={Users}
-          tone="blue"
-          loading={stats.newSubmissions === null}
-        />
-        <StatCard
-          to="/admin/contact-messages"
-          label="Contact Inquiries"
-          value={stats.newMessages != null ? `${stats.newMessages} New` : ' - '}
-          subtext={`${stats.totalMessages || 0} total messages`}
-          icon={Mail}
-          tone="amber"
-          loading={stats.newMessages === null}
-        />
-      </div>
 
-      {/* 4. CURRICULUM & FORMS SECTION */}
+      {/* 3. COURSES - each course's page, application form and settings */}
       <section className="space-y-4">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-wrap items-end justify-between gap-2">
           <div>
-            <h2 className="text-base font-black uppercase tracking-wider text-slate-900">
-              1. Curriculum &amp; Forms
-            </h2>
+            <h2 className="text-base font-black uppercase tracking-wider text-slate-900">Course Pages</h2>
             <p className="text-xs text-slate-500 mt-0.5">
-              Manage training programs and the default application form schema.
+              Edit a course's page or application form right on the page. Settings holds price, dates and status.
             </p>
           </div>
+          <Link to="/admin/courses" className="text-xs font-bold text-slate-700 hover:text-emerald-600">
+            Manage courses →
+          </Link>
         </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
-          <SectionCard
-            to="/admin/courses"
-            icon={BookOpen}
-            title="Courses Catalog"
-            description="Manage individual training programs, syllabus modules, tuition pricing, schedules, and custom enrollment questions."
-            badge="Curriculum"
-            actionLabel="Manage Courses"
-          />
-          <SectionCard
-            to="/admin/form-template"
-            icon={FileCode}
-            title="Default Form Template"
-            description="Configure the default multi-step application form schema that new courses inherit automatically."
-            badge="Form Schema"
-            actionLabel="Configure Template"
-          />
-        </div>
+        {courses === null ? (
+          <div className="h-[120px] rounded-2xl border border-slate-200/90 bg-white animate-pulse" />
+        ) : (
+          <CourseLinksGrid courses={courses} />
+        )}
       </section>
-
-      {/* 5. ADMISSIONS & INBOUND LEADS SECTION */}
-      <section className="space-y-4">
-        <div className="flex items-center justify-between">
-          <div>
-            <h2 className="text-base font-black uppercase tracking-wider text-slate-900">
-              2. Admissions &amp; Inbound Leads
-            </h2>
-            <p className="text-xs text-slate-500 mt-0.5">
-              Review and process applications and inquiries submitted by visitors.
-            </p>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
-          <SectionCard
-            to="/admin/submissions"
-            icon={Users}
-            title="Student Registrations"
-            description="Review student applications submitted via the course enrollment forms, download applicant PDFs, and update enrollment statuses."
-            badge="Enrollments"
-            actionLabel="View Registrations"
-          />
-          <SectionCard
-            to="/admin/contact-messages"
-            icon={Mail}
-            title="Contact Messages"
-            description="View inquiries submitted via the public Contact Us page with sender information, topic classification, and status tracking."
-            badge="Inquiries"
-            actionLabel="View Messages"
-          />
-        </div>
-      </section>
-
-      {/* 5. QUICK OPERATIONAL CHEATSHEET */}
-      <div className="bg-slate-50 border border-slate-200/90 rounded-2xl p-5 sm:p-6 space-y-3">
-        <div className="flex items-center gap-2 text-slate-800 font-bold text-sm">
-          <HelpCircle className="w-4 h-4 text-emerald-600" />
-          <span>Quick Admin Guide</span>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs text-slate-600 leading-relaxed">
-          <div className="p-3 bg-white rounded-xl border border-slate-200/60 space-y-1">
-            <span className="font-bold text-slate-900 block">Immediate Publishing</span>
-            <p className="text-slate-500">
-              Any changes made in Courses or Site Pages are live immediately upon clicking "Save Content" without redeploying.
-            </p>
-          </div>
-          <div className="p-3 bg-white rounded-xl border border-slate-200/60 space-y-1">
-            <span className="font-bold text-slate-900 block">Step-by-Step Help (i)</span>
-            <p className="text-slate-500">
-              Click the "(i)" button in the top navigation bar anytime for a numbered step-by-step guide specific to the page you are on.
-            </p>
-          </div>
-          <div className="p-3 bg-white rounded-xl border border-slate-200/60 space-y-1">
-            <span className="font-bold text-slate-900 block">Lead Status Tracking</span>
-            <p className="text-slate-500">
-              Keep registrations organized by toggling applicant status between New, Contacted, Confirmed, and Rejected.
-            </p>
-          </div>
-        </div>
-      </div>
     </div>
   )
 }

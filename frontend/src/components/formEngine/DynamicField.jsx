@@ -1,3 +1,4 @@
+import { CmsText } from '@/components/admin/CmsEditable';
 import { FormField, SelectField, RadioGroup, CheckboxField, CountrySelectField, PhoneInputField } from './FormField.jsx';
 
 // First line is "Programme name, <price>"; any further lines are details
@@ -236,8 +237,11 @@ function FormattedStaticContent({ content }) {
   );
 }
 
-export function DynamicField({ field, sectionId, value, onChange, intakes = [], error }) {
+export function DynamicField({ field, value, onChange, intakes = [], error }) {
   const fieldId = field.id;
+  // Admin editor preview: wording is click-to-edit (field._path is set by
+  // RegistrationForm). field.label stays a string for the type checks below.
+  const label = field._path ? <CmsText path={`${field._path}.label`} value={field.label} /> : field.label;
 
   // Check for Country fields
   const isCountryField =
@@ -251,7 +255,7 @@ export function DynamicField({ field, sectionId, value, onChange, intakes = [], 
     return (
       <div id={`field-wrap-${fieldId}`}>
         <CountrySelectField
-          label={field.label}
+          label={label}
           name={field.id}
           value={value}
           onChange={(e) => onChange(e.target.value)}
@@ -274,7 +278,7 @@ export function DynamicField({ field, sectionId, value, onChange, intakes = [], 
     return (
       <div id={`field-wrap-${fieldId}`}>
         <PhoneInputField
-          label={field.label}
+          label={label}
           name={field.id}
           value={value}
           onChange={(e) => onChange(e.target.value)}
@@ -293,7 +297,7 @@ export function DynamicField({ field, sectionId, value, onChange, intakes = [], 
       return (
         <div id={`field-wrap-${fieldId}`}>
           <FormField
-            label={field.label}
+            label={label}
             name={field.id}
             type={field.type}
             value={value}
@@ -311,7 +315,7 @@ export function DynamicField({ field, sectionId, value, onChange, intakes = [], 
           {field.label && (
             <label htmlFor={field.id} className="flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-slate-600">
               <span>
-                {field.label}
+                {label}
                 {field.required && <span className="text-red-500 font-bold ml-1">*</span>}
               </span>
               {!field.required && <span className="text-[10px] font-normal lowercase tracking-normal text-slate-400">Optional</span>}
@@ -338,7 +342,7 @@ export function DynamicField({ field, sectionId, value, onChange, intakes = [], 
       return (
         <div id={`field-wrap-${fieldId}`}>
           <SelectField
-            label={field.label}
+            label={label}
             name={field.id}
             value={value}
             onChange={(e) => onChange(e.target.value)}
@@ -353,7 +357,7 @@ export function DynamicField({ field, sectionId, value, onChange, intakes = [], 
       return (
         <div id={`field-wrap-${fieldId}`}>
           <SelectField
-            label={field.label}
+            label={label}
             name={field.id}
             value={value}
             onChange={(e) => onChange(e.target.value)}
@@ -375,7 +379,7 @@ export function DynamicField({ field, sectionId, value, onChange, intakes = [], 
       return (
         <div id={`field-wrap-${fieldId}`}>
           <RadioGroup
-            label={field.label}
+            label={label}
             name={field.id}
             value={value}
             onChange={(e) => onChange(e.target.value)}
@@ -393,7 +397,7 @@ export function DynamicField({ field, sectionId, value, onChange, intakes = [], 
             <CheckboxField
               label={
                 <span>
-                  {field.label}
+                  {label}
                   {field.required && <span className="text-red-500 font-bold ml-1">*</span>}
                 </span>
               }
@@ -417,7 +421,7 @@ export function DynamicField({ field, sectionId, value, onChange, intakes = [], 
           {field.label && (
             <span className="flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-slate-600">
               <span>
-                {field.label}
+                {label}
                 {field.required && <span className="text-red-500 font-bold ml-1">*</span>}
               </span>
               {!field.required && <span className="text-[10px] font-normal lowercase tracking-normal text-slate-400">Optional</span>}
@@ -434,6 +438,19 @@ export function DynamicField({ field, sectionId, value, onChange, intakes = [], 
     }
 
     case 'staticText': {
+      if (field._path) {
+        return (
+          <div className="rounded-2xl border border-slate-200/90 bg-slate-50/70 p-5">
+            {field.label && <p className="mb-3 text-xs font-bold uppercase tracking-wider text-slate-500">{label}</p>}
+            <CmsText
+              as="div"
+              path={`${field._path}.content`}
+              value={field.content || ''}
+              className="block whitespace-pre-line text-xs leading-relaxed text-slate-700"
+            />
+          </div>
+        );
+      }
       const isNotice = field.id === 'idNotice' || (field.content && field.content.includes('Passport or Government Photo ID'));
       if (isNotice) {
         return (
@@ -452,7 +469,7 @@ export function DynamicField({ field, sectionId, value, onChange, intakes = [], 
       return (
         <div className="rounded-2xl border border-slate-200/90 bg-slate-50/70 p-5">
           {field.label && (
-            <p className="mb-3 text-xs font-bold uppercase tracking-wider text-slate-500">{field.label}</p>
+            <p className="mb-3 text-xs font-bold uppercase tracking-wider text-slate-500">{label}</p>
           )}
           {field.id === 'programInfo' ? (
             <ProgramInfoBlock content={field.content} />

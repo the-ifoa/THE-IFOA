@@ -1,4 +1,3 @@
-import React from 'react'
 import { renderToString } from 'react-dom/server'
 // React Router v7 exports StaticRouter from the root package;
 // react-router-dom/server no longer exists.

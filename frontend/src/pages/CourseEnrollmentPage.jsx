@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import {
   RiArrowLeftLine,
@@ -13,6 +13,8 @@ import { api } from '@/lib/api'
 import RegistrationForm from '@/components/course/RegistrationForm'
 import { Seo } from '@/components/common/Seo'
 import { mergeContent } from '@/hooks/usePageContent'
+import { useCoursePreview } from '@/components/course/CourseOverview'
+import { CmsText, CmsImageButton, postEdit } from '@/components/admin/CmsEditable'
 import { useGoBack } from '@/hooks/useGoBack'
 import { programmeBanner } from '@/components/course/CourseCard'
 
@@ -21,6 +23,15 @@ import logoEasa from '@/assets/shared/standards-logos/logo-easa.webp'
 import logoIcao from '@/assets/shared/standards-logos/logo-icao.webp'
 import logoDgca from '@/assets/shared/standards-logos/logo-dgca.webp'
 import logoFaa from '@/assets/shared/standards-logos/logo-faa.webp'
+// Standard logos are stored by name ("std:easa") so a saved row survives
+// rebuilds that change the bundled file URLs.
+const STANDARD_LOGOS = {
+  easa: { src: logoEasa, alt: 'EASA' },
+  icao: { src: logoIcao, alt: 'ICAO' },
+  dgca: { src: logoDgca, alt: 'DGCA' },
+  faa: { src: logoFaa, alt: 'FAA' }
+}
+const logoSrc = (url = '') => (url.startsWith('std:') ? STANDARD_LOGOS[url.slice(4)]?.src : url)
 import bannerCourseHero from '@/assets/shared/course-media/easa-hero.webp'
 
 // Static chrome the enrollment flow ships with, same for every course;
@@ -46,6 +57,11 @@ const FALLBACK = {
     credentialLabel: 'Credential',
     credentialValue: 'IFOA Flight Dispatch Cert',
     accreditationLabel: 'Regulatory Framework'
+  },
+  form: {
+    eyebrow: 'Candidate Registration Form',
+    instructions: 'Please complete all required fields marked with an asterisk',
+    submitLabel: 'Submit Application Now'
   },
   support: {
     title: 'Need Admissions Assistance?',
@@ -74,7 +90,28 @@ export function CourseEnrollmentPage() {
   // DEFAULTS.courseEnrollment server-side), delivered on `course.content` in
   // the same request that fetched the course. FALLBACK covers the moment
   // before the course has loaded.
-  const c = mergeContent(FALLBACK, course?.content?.courseEnrollment || {})
+  const liveCourse = useCoursePreview(course)
+  // Uploaded course image (live from the admin editor while editing).
+  const cardImageUrl = liveCourse?.courseMedia ? liveCourse.courseMedia.cardImage?.url : course?.card?.image?.url
+  const c = mergeContent(FALLBACK, liveCourse?.courseEnrollment || course?.content?.courseEnrollment || {})
+  // Page text: plain strings on the site, click-to-edit in the admin editor.
+  const T = (group, key) =>
+    liveCourse ? <CmsText path={`courseEnrollment.${group}.${key}`} value={c[group]?.[key]} /> : c[group]?.[key]
+  // Wording stored on the course itself (title, duration...), shared with the
+  // course page. Click-to-edit in the admin editor when the course has it.
+  const CF = (key, fallback) => {
+    const live = liveCourse?.course?.[key]
+    if (typeof live === 'string') return <CmsText path={`course.${key}`} value={live} />
+    const value = course?.[key]
+    return (typeof value === 'string' ? value.replace(/[\u2013\u2014]/g, '-') : value) || fallback
+  }
+  // Regulatory logos uploaded for this course; empty = the standard set.
+  const customLogos = (liveCourse?.courseMedia ? liveCourse.courseMedia.logos : course?.trainingStandards?.logos) || []
+  // Admin preview: edits rebuild the whole row (standard logos included) so
+  // one logo can be replaced or removed on its own.
+  const setLogos = (logos) => postEdit('courseMedia.logos', logos)
+  // Admin preview: tuition and intake date, edited in place (see AdminCourseTextEditor).
+  const facts = liveCourse?.courseFacts || null
 
   useEffect(() => {
     if (!activeSlug) return
@@ -179,6 +216,10 @@ export function CourseEnrollmentPage() {
     (course.slug?.includes('faa') ||
       course.slug?.includes('part-65') ||
       course.refCode?.toLowerCase().includes('faa'))
+  const standardIds = isFaaProgram ? ['faa'] : isIndiaProgram ? ['dgca', 'icao'] : ['easa', 'icao']
+  const rowLogos = customLogos.length
+    ? customLogos
+    : standardIds.map((id) => ({ url: `std:${id}`, key: '', alt: STANDARD_LOGOS[id].alt }))
 
   return (
     <div className="bg-slate-50 min-h-screen">
@@ -199,17 +240,17 @@ export function CourseEnrollmentPage() {
             className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-slate-400 hover:text-white transition-colors cursor-pointer"
           >
             <RiArrowLeftLine className="w-4 h-4" />
-            <span>{c.header.backLabel}</span>
+            <span>{T('header', 'backLabel')}</span>
           </button>
 
           <div className="space-y-3 max-w-3xl">
             <span className="inline-block text-xs font-mono font-bold uppercase tracking-widest text-white border-b-2 border-[#34E06E] pb-1">
-              {c.header.eyebrow}
+              {T('header', 'eyebrow')}
             </span>
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight leading-tight [text-wrap:balance]">
-              {course.title?.replace(/[\u2013\u2014]/g, '-')}
+              {CF('title')}
             </h1>
-            <p className="text-sm sm:text-base text-slate-300 leading-relaxed">{c.header.intro}</p>
+            <p className="text-sm sm:text-base text-slate-300 leading-relaxed">{T('header', 'intro')}</p>
           </div>
         </div>
       </section>
@@ -218,33 +259,44 @@ export function CourseEnrollmentPage() {
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
 
-          {/* Left Sticky Sidebar: Course Highlights & Details */}
-          <aside className="lg:col-span-4 lg:sticky lg:top-24 space-y-6">
-            {/* Course Summary Card */}
-            <div className="rounded-[2rem] bg-white border border-slate-200/90 shadow-[0_4px_24px_rgba(0,0,0,0.03)] overflow-hidden p-6 sm:p-7 space-y-6">
-              {/* Image & Title Header */}
-              <div className="space-y-3">
-                <div className="aspect-[3/2] rounded-2xl overflow-hidden bg-slate-950/5 border border-slate-100 relative flex items-center justify-center p-2 shadow-2xs">
-                  <img
-                    src={programmeBanner(course) || course.image || bannerCourseHero}
-                    alt={course.title}
-                    className="w-full h-full object-contain object-center"
-                  />
-                </div>
-
-                <h2 className="text-lg font-bold text-slate-900 leading-snug">
-                  {course.title?.replace(/[\u2013\u2014]/g, '-')}
-                </h2>
+          {/* Left Sidebar: banner scrolls with page, details card sticks */}
+          <aside className="lg:col-span-4 lg:self-stretch space-y-6">
+            {/* Course Banner (scrolls away) */}
+            <div className="rounded-[2rem] bg-white border border-slate-200/90 shadow-[0_4px_24px_rgba(0,0,0,0.03)] overflow-hidden p-6 sm:p-7">
+              <div className="aspect-[3/2] rounded-2xl overflow-hidden bg-slate-950/5 border border-slate-100 relative flex items-center justify-center p-2 shadow-2xs">
+                <img
+                  src={cardImageUrl || programmeBanner(course) || course.image || bannerCourseHero}
+                  alt={course.title}
+                  className="w-full h-full object-contain object-center"
+                />
+                <CmsImageButton path="courseMedia.cardImage" folder="courses" />
               </div>
+            </div>
+
+            {/* Course Summary Card (sticky) */}
+            <div className="lg:sticky lg:top-24 rounded-[2rem] bg-white border border-slate-200/90 shadow-[0_4px_24px_rgba(0,0,0,0.03)] overflow-hidden p-6 sm:p-7 space-y-6">
+              <h2 className="text-lg font-bold text-slate-900 leading-snug">
+                {CF('title')}
+              </h2>
 
               {/* Tuition & Pricing */}
               <div className="p-4 rounded-2xl bg-slate-50/80 border border-slate-100 space-y-1">
                 <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 block">
-                  {c.sidebar.tuitionLabel}
+                  {T('sidebar', 'tuitionLabel')}
                 </span>
                 <div className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-                  {formatPrice(activePrice)}
+                  {facts && !locationPrice ? (
+                    <>
+                      <CmsText path="courseFacts.currency" value={facts.currency} />{' '}
+                      <CmsText path="courseFacts.priceAmount" value={facts.priceAmount} />
+                    </>
+                  ) : (
+                    formatPrice(activePrice)
+                  )}
                 </div>
+                {facts && !locationPrice && (
+                  <span className="block text-[11px] text-slate-400">Leave the amount empty to show “Contact Admissions”.</span>
+                )}
               </div>
 
               {/* Key Quick Metadata */}
@@ -252,64 +304,116 @@ export function CourseEnrollmentPage() {
                 <div className="flex items-center justify-between gap-4 py-2 border-b border-slate-100">
                   <span className="text-slate-500 flex items-center gap-2 shrink-0">
                     <TbClockHour4 className="w-4 h-4 text-slate-400" />
-                    <span>{c.sidebar.durationLabel}</span>
+                    <span>{T('sidebar', 'durationLabel')}</span>
                   </span>
-                  <strong className="text-slate-900 text-right font-bold">{course.duration || '4 Weeks'}</strong>
+                  <strong className="text-slate-900 text-right font-bold">{CF('duration', '4 Weeks')}</strong>
                 </div>
 
                 <div className="flex items-center justify-between gap-4 py-2 border-b border-slate-100">
                   <span className="text-slate-500 flex items-center gap-2 shrink-0">
                     <RiCalendarEventLine className="w-4 h-4 text-slate-400" />
-                    <span>{c.sidebar.intakeLabel}</span>
+                    <span>{T('sidebar', 'intakeLabel')}</span>
                   </span>
                   <strong className="text-slate-900 text-right font-bold font-mono">
-                    {schedule.startDate ? formatDate(schedule.startDate) : course.intakeLabel || 'To be announced'}
+                    {facts ? (
+                      <span className="flex flex-col items-end gap-1">
+                        <input
+                          type="date"
+                          value={facts.startDate}
+                          onChange={(e) => postEdit('courseFacts.startDate', e.target.value)}
+                          className="rounded-md border border-dashed border-emerald-400 bg-white px-2 py-1 text-xs font-sans"
+                        />
+                        {!facts.startDate && CF('intakeLabel', 'To be announced')}
+                      </span>
+                    ) : schedule.startDate ? (
+                      formatDate(schedule.startDate)
+                    ) : (
+                      CF('intakeLabel', 'To be announced')
+                    )}
                   </strong>
                 </div>
 
                 <div className="flex items-start justify-between gap-4 py-2 border-b border-slate-100">
                   <span className="text-slate-500 flex items-center gap-2 shrink-0 pt-0.5">
                     <RiMapPin2Line className="w-4 h-4 text-slate-400" />
-                    <span>{c.sidebar.locationLabel}</span>
+                    <span>{T('sidebar', 'locationLabel')}</span>
                   </span>
                   <strong className="text-slate-900 text-right font-bold leading-snug">
-                    {activeLocation || 'New Delhi (IAA)'}
+                    {liveCourse && !trainingLocation ? CF('location') : activeLocation || 'New Delhi (IAA)'}
                   </strong>
                 </div>
 
                 <div className="flex items-start justify-between gap-4 py-2 border-b border-slate-100">
                   <span className="text-slate-500 flex items-center gap-2 shrink-0 pt-0.5">
                     <TbCertificate className="w-4 h-4 text-slate-400" />
-                    <span>{c.sidebar.credentialLabel}</span>
+                    <span>{T('sidebar', 'credentialLabel')}</span>
                   </span>
                   <strong className="text-slate-900 text-right font-bold leading-snug">
-                    {c.sidebar.credentialValue}
+                    {T('sidebar', 'credentialValue')}
                   </strong>
                 </div>
               </div>
 
               {/* Regulatory Accreditations Strip */}
-              <div className="space-y-2.5 pt-2 border-t border-slate-100">
+              <div className="relative space-y-2.5 pt-2 border-t border-slate-100">
                 <span className="text-xs font-bold uppercase tracking-wider text-slate-700 block">
-                  {c.sidebar.accreditationLabel}
+                  {T('sidebar', 'accreditationLabel')}
                 </span>
-                <div className="flex items-center justify-center gap-4 p-3 rounded-2xl bg-slate-50 border border-slate-200/80">
-                  {isFaaProgram ? (
-                    <img src={logoFaa} alt="FAA" className="h-6 w-auto object-contain" />
-                  ) : isIndiaProgram ? (
-                    <img src={logoDgca} alt="DGCA" className="h-6 w-auto object-contain" />
-                  ) : (
-                    <img src={logoEasa} alt="EASA" className="h-6 w-auto object-contain" />
+                {liveCourse && customLogos.length > 0 && (
+                  <div className="flex justify-end">
+                    <button
+                      type="button"
+                      onClick={() => postEdit('courseMedia.logos', [])}
+                      className="rounded-full border border-slate-300 bg-white px-3 py-1.5 text-[11px] font-bold text-slate-700 hover:bg-slate-100"
+                    >
+                      Use standard logos
+                    </button>
+                  </div>
+                )}
+                <div className="flex flex-wrap items-center justify-center gap-4 p-3 rounded-2xl bg-slate-50 border border-slate-200/80">
+                  {rowLogos.map((logo, i) => (
+                    <div key={`${logo.url}-${i}`} className={liveCourse ? 'group relative flex flex-col items-center gap-1.5' : 'contents'}>
+                      <img src={logoSrc(logo.url)} alt={logo.alt || ''} className="h-6 w-auto object-contain" />
+                      {liveCourse && (
+                        <>
+                          <div className="relative h-7 w-[4.5rem]">
+                            <CmsImageButton
+                              folder="courses"
+                              label="Replace"
+                              className="top-0 right-0"
+                              onUploaded={(img) => setLogos(rowLogos.map((l, j) => (j === i ? img : l)))}
+                            />
+                          </div>
+                          <button
+                            type="button"
+                            title="Remove logo"
+                            onClick={() => setLogos(rowLogos.filter((_, j) => j !== i))}
+                            className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-red-600 text-[10px] font-bold text-white shadow"
+                          >
+                            ×
+                          </button>
+                        </>
+                      )}
+                    </div>
+                  ))}
+                  {liveCourse && (
+                    <div className="relative h-7 w-[5.5rem]">
+                      <CmsImageButton
+                        folder="courses"
+                        label="+ Add logo"
+                        className="top-0 right-0"
+                        onUploaded={(img) => setLogos([...rowLogos, img])}
+                      />
+                    </div>
                   )}
-                  {!isFaaProgram && <img src={logoIcao} alt="ICAO" className="h-6 w-auto object-contain" />}
                 </div>
               </div>
 
               {/* Admissions WhatsApp Support Box */}
               <div className="p-4.5 rounded-2xl bg-emerald-50/80 border border-emerald-200/80 space-y-2 text-xs">
-                <strong className="font-bold text-[#0d6833] block">{c.support.title}</strong>
+                <strong className="font-bold text-[#0d6833] block">{T('support', 'title')}</strong>
                 <p className="text-slate-600 leading-relaxed">
-                  {c.support.desc}
+                  {T('support', 'desc')}
                 </p>
                 <a
                   href="https://wa.me/41782273103"
@@ -318,7 +422,7 @@ export function CourseEnrollmentPage() {
                   className="inline-flex items-center gap-2 text-xs font-bold text-[#0d6833] hover:underline pt-1"
                 >
                   <RiWhatsappFill className="w-3.5 h-3.5" />
-                  <span>{c.support.ctaLabel}</span>
+                  <span>{T('support', 'ctaLabel')}</span>
                 </a>
               </div>
             </div>
@@ -331,6 +435,13 @@ export function CourseEnrollmentPage() {
               courseTitle={course.title?.replace(/[\u2013\u2014]/g, '-')}
               onAnswersChange={handleAnswersChange}
               locationPrices={course.locationPrices || []}
+              liveSections={liveCourse?.form}
+              text={{
+                title: CF('title'),
+                eyebrow: T('form', 'eyebrow'),
+                instructions: T('form', 'instructions'),
+                submitLabel: T('form', 'submitLabel')
+              }}
             />
           </main>
 

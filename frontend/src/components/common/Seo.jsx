@@ -1,4 +1,3 @@
-import React from 'react'
 import {
   SITE_NAME,
   SITE_NOINDEX,

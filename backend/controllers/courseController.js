@@ -82,12 +82,6 @@ const getById = asyncHandler(async (req, res) => {
   res.json({ course })
 })
 
-// POST /api/admin/courses
-const create = asyncHandler(async (req, res) => {
-  const course = await Course.create(sanitize(req.body))
-  res.status(201).json({ course })
-})
-
 // PUT /api/admin/courses/:id
 const update = asyncHandler(async (req, res) => {
   const course = await Course.findById(req.params.id)
@@ -109,17 +103,76 @@ const update = asyncHandler(async (req, res) => {
   res.json({ course })
 })
 
-// DELETE /api/admin/courses/:id
-const remove = asyncHandler(async (req, res) => {
+// Copy text edits from `incoming` onto `current`, but only where `current`
+// already holds a string - the inline editor changes wording, never the
+// shape of the page (block types, links, layout flags stay as they are).
+const STRUCTURE_KEYS = new Set([
+  'type', 'layout', 'href', 'anchor', 'tone', 'tagTone', 'icon', 'image', 'src', 'id', 'slug',
+  'adaptive', 'currency', 'url', 'mode'
+])
+
+function applyTextEdits(current, incoming) {
+  if (Array.isArray(current)) {
+    return current.map((v, i) => (Array.isArray(incoming) ? applyTextEdits(v, incoming[i]) : v))
+  }
+  // Plain objects only - ObjectIds, Dates etc. are kept as they are.
+  if (current && typeof current === 'object' && Object.getPrototypeOf(current) === Object.prototype) {
+    const out = { ...current }
+    if (incoming && typeof incoming === 'object' && !Array.isArray(incoming)) {
+      for (const key of Object.keys(current)) {
+        if (!STRUCTURE_KEYS.has(key)) out[key] = applyTextEdits(current[key], incoming[key])
+      }
+    }
+    return out
+  }
+  if (typeof current === 'string' && typeof incoming === 'string') return incoming.slice(0, 5000)
+  return current
+}
+
+// PUT /api/admin/courses/:id/overview - save inline text edits to the
+// course page copy (course.overview).
+const updateOverview = asyncHandler(async (req, res) => {
+  const { overview } = req.body || {}
+  if (!overview || typeof overview !== 'object' || Array.isArray(overview)) {
+    return res.status(400).json({ message: 'overview must be an object' })
+  }
+  const course = await Course.findById(req.params.id)
+  if (!course) return res.status(404).json({ message: 'Course not found' })
+  if (!course.overview) return res.status(400).json({ message: 'This course has no page copy to edit' })
+
+  course.overview = applyTextEdits(course.overview, overview)
+  course.markModified('overview')
+  await course.save()
+  res.json({ overview: course.overview })
+})
+
+// Course fields whose wording the inline page editor may change. Keep in sync
+// with frontend/src/lib/courseText.js.
+const TEXT_FIELDS = [
+  'title', 'summary', 'eyebrow', 'heroNote', 'badges', 'trustStat', 'duration', 'location', 'format',
+  'intakeLabel', 'curriculum', 'whatYouWillLearn', 'whoShouldAttend', 'entryRequirements', 'certification',
+  'trainingStandards', 'bottomBanner', 'processSteps', 'trainingPhilosophy', 'dgrExplorer', 'sidebarSpecs',
+  'price', 'rateCard', 'ctaLabel'
+]
+
+// PUT /api/admin/courses/:id/text-fields - save inline edits to the wording
+// stored on the course. Numbers, currencies and list shapes are kept.
+const updateTextFields = asyncHandler(async (req, res) => {
+  const { fields } = req.body || {}
+  if (!fields || typeof fields !== 'object' || Array.isArray(fields)) {
+    return res.status(400).json({ message: 'fields must be an object' })
+  }
   const course = await Course.findById(req.params.id)
   if (!course) return res.status(404).json({ message: 'Course not found' })
 
-  for (const key of course.imageKeys()) {
-    deleteObject(key).catch((err) => console.warn('[r2] cleanup failed', key, err.message))
+  for (const key of TEXT_FIELDS) {
+    if (fields[key] === undefined) continue
+    const current = course.toObject()[key]
+    if (current === undefined || current === null) continue
+    course.set(key, applyTextEdits(current, fields[key]))
   }
-  await course.deleteOne()
-
-  res.json({ message: 'Course deleted' })
+  await course.save()
+  res.json({ course })
 })
 
-module.exports = { listPublic, getBySlug, listAdmin, getById, create, update, remove }
+module.exports = { listPublic, getBySlug, listAdmin, getById, update, updateOverview, updateTextFields }

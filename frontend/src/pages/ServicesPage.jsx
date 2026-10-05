@@ -1,35 +1,20 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import {
   RiWhatsappFill,
   RiSearchLine,
-  RiGroupLine,
-  RiShieldCheckFill,
-  RiAwardFill,
-  RiCheckboxCircleFill
+  RiGroupLine
 } from 'react-icons/ri'
 import {
-  PiAirplaneTiltFill,
-  PiAirplaneTakeoffFill
-} from 'react-icons/pi'
-import {
-  TbClockHour4,
-  TbCertificate
-} from 'react-icons/tb'
-import {
-  HiArrowUpRight,
-  HiArrowRight,
-  HiSparkles
+  HiArrowRight
 } from 'react-icons/hi2'
 
-import { CosmicParallaxBg } from '@/components/common/CosmicParallaxBg'
 import { Reveal } from '@/components/common/Reveal'
-import { CourseCard } from '@/components/course/CourseCard'
 import { AviationIcon } from '@/components/common/AviationIcon'
 import { usePageContent } from '@/hooks/usePageContent'
 import { Seo } from '@/components/common/Seo'
-import { graph, organizationSchema, breadcrumbSchema } from '@/lib/seo'
-import { CmsText, CmsRemoveItem, CmsAddItem, isPreviewEditMode } from '@/components/admin/CmsEditable'
+import { graph, organizationSchema, breadcrumbSchema, courseListSchema } from '@/lib/seo'
+import { CmsText, CmsRemoveItem, CmsAddItem, isPreviewEditMode, CmsImageButton } from '@/components/admin/CmsEditable'
 
 // Standards Logos
 import logoFaa from '@/assets/shared/standards-logos/logo-faa.webp'
@@ -303,7 +288,7 @@ export function ServicesPage() {
     .map(({ d, originalIndex }, index) => {
       const formattedId = String(index + 1).padStart(2, '0')
       const lowerTitle = (d.title || '').toLowerCase()
-      let category = d.category
+      let category
       if (lowerTitle.includes('train')) category = 'train-trainer'
       else if (lowerTitle.includes('consulting')) category = 'consulting'
       else category = 'flight-ops'
@@ -348,14 +333,25 @@ export function ServicesPage() {
     <div className="bg-white text-rocket-dark selection:bg-[#34E06E] selection:text-slate-950" data-purpose="services-page">
       <Seo
         path="/services"
-        title="Aviation Training Services: Dispatch, DGR & OCC | IFOA"
-        description="Flight dispatch, dangerous goods, train the trainer, human factors, crew control and OCC consulting. Competency-based training for airlines and operators."
+        title="Flight Dispatch, Dangerous Goods & OCC Training | IFOA"
+        description="Every IFOA course in one place: flight dispatch, dangerous goods, train the trainer, human factors, crew control and OCC consulting."
         jsonLd={graph(
           organizationSchema(),
           breadcrumbSchema([
             { name: 'Home', path: '/' },
             { name: 'Services', path: '/services' }
-          ])
+          ]),
+          courseListSchema(
+            'IFOA courses and services',
+            disciplines
+              .flatMap((d) =>
+                d.courseChoices?.length
+                  ? d.courseChoices.map((ch) => ({ name: `${d.title} (${ch.label})`, description: d.desc, slug: ch.courseSlug }))
+                  : [{ name: d.title, description: d.desc, slug: d.courseSlug }]
+              )
+              .filter((d) => d.slug)
+              .map((d) => ({ ...d, path: `/courses/${d.slug}` }))
+          )
         )}
       />
       {/* 1. HERO SECTION */}
@@ -369,6 +365,7 @@ export function ServicesPage() {
           />
           <div className="absolute inset-0 bg-gradient-to-b from-[#020617]/90 via-[#020617]/75 to-[#020617]" />
         </div>
+        <CmsImageButton path="hero.image" className="top-24 right-4 sm:right-6" />
 
         <div className="relative z-10 w-full max-w-[1280px] mx-auto px-6 text-center space-y-6 flex flex-col items-center justify-center">
           <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white max-w-4xl mx-auto leading-tight">
@@ -455,85 +452,85 @@ export function ServicesPage() {
           {/* Clean & Organized 3-Column Luxury Card Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {filteredDisciplines.map((item) => (
-              <div
+              <article
                 key={item.id}
-                className="group relative rounded-[2rem] bg-white border border-slate-200/90 shadow-[0_4px_24px_rgba(0,0,0,0.03)] hover:shadow-[0_16px_40px_rgba(0,0,0,0.08)] hover:border-[#34E06E]/40 hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between overflow-hidden"
+                className="group relative rounded-2xl bg-white border border-slate-200/90 hover:border-slate-300 hover:shadow-[0_18px_40px_-18px_rgba(15,23,42,0.22)] transition-[border-color,box-shadow] duration-300 flex flex-col overflow-hidden"
               >
                 <CmsRemoveItem listPath="specialist.disciplines" index={item._originalIndex} label="Remove discipline" />
-                {/* Top Media Container */}
-                <div className="relative aspect-3/2 w-full overflow-hidden bg-slate-100 shrink-0">
+                {/* Image */}
+                <div className="relative aspect-[16/10] w-full overflow-hidden bg-slate-100 shrink-0">
                   <img
                     src={item.image}
                     alt={item.title}
                     loading="eager"
                     decoding="async"
-                    className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out"
+                    className="w-full h-full object-cover object-center group-hover:scale-[1.03] transition-transform duration-700 ease-out"
                   />
+                  <CmsImageButton path={`${item._path}.image`} className="top-3 left-3" />
                 </div>
 
-                {/* Card Content Body */}
-                <div className="p-6 sm:p-7 flex-1 flex flex-col justify-between space-y-5 bg-white">
-                  <div className="space-y-2.5">
-                    <div className="flex items-center justify-between gap-2">
-                      <span className="text-xs font-mono font-black text-slate-950 border-b-2 border-[#34E06E] pb-0.5 inline-block">
-                        {item.id}
+                {/* Body */}
+                <div className="p-6 flex-1 flex flex-col">
+                  <div className="flex items-center justify-between gap-3">
+                    {item.tag ? (
+                      <span className="inline-block text-[10px] font-mono font-bold uppercase tracking-widest text-slate-900 border-b-2 border-[#34E06E] pb-0.5">
+                        {item.tag}
                       </span>
-                      {item.tag && (
-                        <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-800 border-b-2 border-[#34E06E] pb-0.5">
-                          {item.tag}
-                        </span>
+                    ) : (
+                      <span />
+                    )}
+                    <span className="text-[11px] font-mono font-bold text-slate-300">{item.id}</span>
+                  </div>
+
+                  <h3 className="mt-4 text-lg sm:text-xl font-bold text-slate-950 tracking-tight leading-snug">
+                    <CmsText path={`${item._path}.title`} value={item.title} />
+                  </h3>
+
+                  {item.subtitle || isPreviewEditMode() ? (
+                    <p className="mt-1 text-sm font-medium text-slate-500 leading-snug">
+                      <CmsText path={`${item._path}.subtitle`} value={item.subtitle} />
+                    </p>
+                  ) : null}
+
+                  <p className="mt-3 text-sm text-slate-600 leading-relaxed">
+                    <CmsText path={`${item._path}.desc`} value={item.desc} />
+                  </p>
+
+                  {/* Who it's for + actions, pinned to the card bottom */}
+                  <div className="mt-auto pt-4">
+                    <p className="flex items-center gap-2 text-xs font-medium text-slate-500">
+                      <RiGroupLine className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                      <CmsText path={`${item._path}.audience`} value={item.audience} />
+                    </p>
+                    <div className="mt-5 pt-5 border-t border-slate-100">
+                      {item.courseChoices?.length ? (
+                        <div className="grid grid-cols-2 gap-2">
+                          {item.courseChoices.map((choice) => (
+                            <Link
+                              key={choice.courseSlug}
+                              to={`/courses/${choice.courseSlug}`}
+                              className="group/btn inline-flex items-center justify-center gap-1.5 h-9 rounded-full border border-slate-200 text-xs font-bold text-slate-900 hover:bg-slate-950 hover:border-slate-950 hover:text-white transition-colors"
+                            >
+                              {choice.label}
+                              <HiArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-0.5 transition-transform" />
+                            </Link>
+                          ))}
+                        </div>
+                      ) : (
+                        <Link
+                          to={item.courseSlug ? `/courses/${item.courseSlug}` : '/events'}
+                          className="group/btn flex items-center justify-between text-sm font-bold text-slate-950"
+                        >
+                          <span>{item.linkText || (item.courseSlug ? 'View course' : c.specialist.disciplineCtaLabel)}</span>
+                          <span className="w-9 h-9 rounded-full bg-slate-950 text-white flex items-center justify-center transition-colors group-hover/btn:bg-[#34E06E] group-hover/btn:text-slate-950">
+                            <HiArrowRight className="w-4 h-4" />
+                          </span>
+                        </Link>
                       )}
                     </div>
-
-                    <h3 className="text-lg sm:text-xl font-bold text-slate-950 tracking-tight leading-snug group-hover:text-[#34E06E] transition-colors pt-0.5">
-                      <CmsText path={`${item._path}.title`} value={item.title} />
-                    </h3>
-
-                    {item.subtitle || isPreviewEditMode() ? (
-                      <p className="text-xs sm:text-sm font-semibold text-slate-900 leading-snug">
-                        <CmsText path={`${item._path}.subtitle`} value={item.subtitle} />
-                      </p>
-                    ) : null}
-
-                    <p className="text-xs sm:text-sm text-slate-600 font-normal leading-relaxed">
-                      <CmsText path={`${item._path}.desc`} value={item.desc} />
-                    </p>
-                  </div>
-
-                  {/* Audience & Inquire Action Footer */}
-                  <div className="pt-4 border-t border-slate-100 flex items-center justify-between gap-3 flex-wrap sm:flex-nowrap">
-                    <div className="flex items-center gap-1.5 text-xs font-medium text-slate-500 whitespace-nowrap shrink-0">
-                      <RiGroupLine className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                      <span className="whitespace-nowrap">
-                        <CmsText path={`${item._path}.audience`} value={item.audience} />
-                      </span>
-                    </div>
-
-                    {item.courseChoices?.length ? (
-                      <div className="flex items-center gap-3 shrink-0 ml-auto">
-                        {item.courseChoices.map((choice) => (
-                          <Link
-                            key={choice.courseSlug}
-                            to={`/courses/${choice.courseSlug}`}
-                            className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-slate-950 hover:text-[#34E06E] transition-colors cursor-pointer group/btn"
-                          >
-                            <span>{choice.label}</span>
-                            <HiArrowUpRight className="w-4 h-4 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform text-slate-700 group-hover/btn:text-[#34E06E]" />
-                          </Link>
-                        ))}
-                      </div>
-                    ) : (
-                      <Link
-                        to={item.courseSlug ? `/courses/${item.courseSlug}` : '/events'}
-                        className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-slate-950 hover:text-[#34E06E] transition-colors cursor-pointer shrink-0 group/btn ml-auto"
-                      >
-                        <span>{item.linkText || (item.courseSlug ? 'View Course' : c.specialist.disciplineCtaLabel)}</span>
-                        <HiArrowUpRight className="w-4 h-4 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform text-slate-700 group-hover/btn:text-[#34E06E]" />
-                      </Link>
-                    )}
                   </div>
                 </div>
-              </div>
+              </article>
             ))}
             <CmsAddItem
               listPath="specialist.disciplines"

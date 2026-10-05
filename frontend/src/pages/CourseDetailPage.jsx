@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { RiArrowLeftLine, RiLoader4Line } from 'react-icons/ri'
 
@@ -88,7 +88,7 @@ export function CourseDetailPage() {
           courseSchema(course),
           breadcrumbSchema([
             { name: 'Home', path: '/' },
-            { name: 'Events & Programs', path: '/events' },
+            { name: 'Services', path: '/services' },
             { name: course.title, path: `/courses/${course.slug}` }
           ])
         )}

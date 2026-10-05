@@ -9,7 +9,6 @@ const BRAND = 'IFOA | International Flight Operations Academy'
 // Ordered most-specific first.
 const ROUTES = [
   { pattern: '/admin/login', title: 'Admin Login | IFOA' },
-  { pattern: '/admin/courses/new', title: 'New Course · Admin | IFOA' },
   { pattern: '/admin/courses/:id/preview', title: 'Course Preview · Admin | IFOA' },
   { pattern: '/admin/courses/:id/form', title: 'Enrollment Form · Admin | IFOA' },
   { pattern: '/admin/courses/:id', title: 'Edit Course · Admin | IFOA' },
@@ -18,7 +17,6 @@ const ROUTES = [
   { pattern: '/admin/submissions/:id', title: 'Submission · Admin | IFOA' },
   { pattern: '/admin/submissions', title: 'Submissions · Admin | IFOA' },
   { pattern: '/admin/pages/:page', title: 'Page Content · Admin | IFOA' },
-  { pattern: '/admin/pages', title: 'Pages · Admin | IFOA' },
   { pattern: '/admin', title: 'Admin | IFOA' }
 ]
 

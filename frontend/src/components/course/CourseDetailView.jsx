@@ -4,7 +4,6 @@ import { useGoBack } from '@/hooks/useGoBack'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   RiArrowLeftLine,
-  RiArrowRightLine,
   RiArrowDownSLine,
   RiShareForwardLine,
   RiWhatsappFill,
@@ -13,12 +12,8 @@ import {
   RiMapPin2Line,
   RiStackLine,
   RiCheckboxCircleFill,
-  RiAddLine,
-  RiSubtractLine,
   RiUserLine,
-  RiFlightTakeoffLine,
   RiGlobalLine,
-  RiCompass3Line,
   RiAwardLine,
   RiInformationLine,
   RiCheckLine
@@ -31,12 +26,21 @@ import { mergeContent } from '@/hooks/usePageContent'
 
 // Assets
 import { resolveCard, programmeBanner, hasEnrollmentForm } from '@/components/course/CourseCard'
-import { OverviewHero, OverviewBlocks, DgProvider, DgSidebar } from '@/components/course/CourseOverview'
+import { OverviewHero, OverviewBlocks, DgProvider, DgSidebar, OverviewEditProvider, useCoursePreview, E as T } from '@/components/course/CourseOverview'
+import { CmsText, CmsImageButton } from '@/components/admin/CmsEditable'
+import { getAtPath } from '@/lib/objectPath'
 import logoEasa from '@/assets/shared/standards-logos/logo-easa.webp'
 import logoIcao from '@/assets/shared/standards-logos/logo-icao.webp'
 import logoDgca from '@/assets/shared/standards-logos/logo-dgca.webp'
 import logoFaa from '@/assets/shared/standards-logos/logo-faa.webp'
 import imgDgr from '@/assets/services/02_dangerous_goods.webp'
+
+// Shared accordion motion: height eases out long and soft, content fades a
+// touch faster so text never shows half-clipped.
+const ACCORDION_TRANSITION = {
+  height: { duration: 0.45, ease: [0.22, 1, 0.36, 1] },
+  opacity: { duration: 0.3, ease: 'easeOut' }
+}
 
 const FALLBACK = {
   labels: {
@@ -188,8 +192,12 @@ function formatPrice(price) {
   return `${symbol}${price.amount.toLocaleString('en-US')}`
 }
 
-export function CourseDetailView({ course, preview = false }) {
+export function CourseDetailView({ course: savedCourse, preview = false }) {
   const handleBack = useGoBack('/events')
+  const liveCourse = useCoursePreview(savedCourse)
+  // In the admin editor, the course's text fields come from the editor's
+  // in-progress copy; everywhere else this is just the saved course.
+  const course = liveCourse?.course && savedCourse ? { ...savedCourse, ...liveCourse.course } : savedCourse
 
   // Sidebar scrolls with the page until its image has gone off screen, then
   // sticks, so the price, actions and facts stay in view while reading.
@@ -210,7 +218,18 @@ export function CourseDetailView({ course, preview = false }) {
   const [activeRoleIdx, setActiveRoleIdx] = useState(0)
   const [activeSegmentIdx, setActiveSegmentIdx] = useState(0)
 
-  const c = mergeContent(FALLBACK, course?.content?.courseDetail || {})
+  const c = mergeContent(FALLBACK, liveCourse?.courseDetail || course?.content?.courseDetail || {})
+  // Page labels: plain strings on the site, click-to-edit in the admin editor.
+  const editing = Boolean(liveCourse)
+  const C = (group, key) =>
+    editing ? <CmsText path={`courseDetail.${group}.${key}`} value={c[group]?.[key]} /> : c[group]?.[key]
+  const L = (key) => C('labels', key)
+  // Sidebar wording stored on the course itself (spec rows, price note, CTAs).
+  const fields = course
+  const F = (path) => {
+    const value = getAtPath(fields, path)
+    return editing && typeof value === 'string' ? <CmsText path={`course.${path}`} value={value} /> : value
+  }
 
   if (!course) return null
 
@@ -280,6 +299,8 @@ export function CourseDetailView({ course, preview = false }) {
     ]
 
   const audienceProfiles = (course.whoShouldAttend?.points || []).map((raw) => {
+    // In the admin editor each point stays whole so it can be edited as one.
+    if (editing) return { title: raw, desc: null }
     const [title, ...rest] = raw.split(/ [ - –-] |: /)
     return rest.length ? { title, desc: rest.join(': ') } : { title: raw, desc: null }
   })
@@ -288,12 +309,6 @@ export function CourseDetailView({ course, preview = false }) {
   const assessmentPoints = course.certification?.points || []
   const certificationText = course.certification?.text || ''
 
-  const activeIntakes = (course.intakes || []).filter((i) => i.isActive !== false)
-  const upcomingDates = activeIntakes.length
-    ? activeIntakes
-    : schedule.startDate
-      ? [{ label: course.intakeLabel || 'Upcoming Intake', startDate: schedule.startDate }]
-      : []
 
   const isDgrCourse =
     course.category === 'dangerous-goods' ||
@@ -304,18 +319,22 @@ export function CourseDetailView({ course, preview = false }) {
 
   // Course-specific overview blocks (approved page copy) replace the fixed
   // section template when present.
-  const overview = course.overview?.blocks?.length ? course.overview : null
+  const liveOverview = liveCourse?.overview || course.overview
+  const overview = liveOverview?.blocks?.length ? liveOverview : null
   // Red-hatched sidebar border for Dangerous Goods, like a Shipper's Declaration.
-  const dgHatch = { background: 'repeating-linear-gradient(-45deg, #C8102E 0 9px, transparent 9px 18px)' }
+  const dgHatch = { background: 'repeating-linear-gradient(-45deg, #C8102E 0 5px, transparent 5px 10px)' }
   // Dangerous Goods: the sidebar card follows the role/operation picked in the page body.
   const dgBlock = overview?.blocks?.find((b) => b.type === 'dgExplorer') || null
-  const sidebarBanner = programmeBanner(course)
+  // Uploaded course image (live from the admin editor while editing) wins over
+  // the bundled programme banners.
+  const cardImageUrl = liveCourse?.courseMedia ? liveCourse.courseMedia.cardImage?.url : course.card?.image?.url
+  const sidebarBanner = cardImageUrl ? null : programmeBanner(course)
   // Contact links carry the course so the Contact form pre-selects its topic.
   const contactHref = `/contact?course=${course.slug}`
   const enrollHref = hasEnrollmentForm(course) ? `/courses/${course.slug}/enroll` : contactHref
   const sidebarImgSrc =
+    cardImageUrl ||
     sidebarBanner ||
-    course.card?.image?.url ||
     (isDgrCourse && (!course.heroImage?.url || course.heroImage?.url?.includes('ground') || course.heroImage?.url?.includes('dispatcher'))
       ? imgDgr
       : course.heroImage?.url) ||
@@ -323,6 +342,7 @@ export function CourseDetailView({ course, preview = false }) {
     (isDgrCourse ? imgDgr : null)
 
   return (
+    <OverviewEditProvider overview={overview} course={editing ? course : null}>
     <DgProvider block={dgBlock}>
     <div
       className={`w-full min-h-screen bg-[#f8fafc] text-slate-900 font-sans antialiased selection:bg-[#34E06E] selection:text-slate-950 ${preview ? '' : 'pt-24 pb-16'
@@ -365,7 +385,7 @@ export function CourseDetailView({ course, preview = false }) {
                     className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-700 hover:text-slate-950 bg-white hover:bg-slate-50 border border-slate-200/90 px-3.5 py-1.5 rounded-full transition-all shadow-2xs cursor-pointer active:scale-95"
                   >
                     <RiShareForwardLine className="w-3.5 h-3.5 text-slate-500" />
-                    <span>{copied ? c.labels.copiedLabel : c.labels.shareLabel}</span>
+                    <span>{copied ? L('copiedLabel') : L('shareLabel')}</span>
                   </button>
                 </div>
               </div>
@@ -378,16 +398,16 @@ export function CourseDetailView({ course, preview = false }) {
               <div className="space-y-3.5">
                 {course.eyebrow && (
                   <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200/80 text-[11px] font-mono font-bold uppercase tracking-wider text-emerald-800">
-                    {course.eyebrow}
+                    <T o={course} k="eyebrow" />
                   </span>
                 )}
                 <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-[40px] font-extrabold text-slate-950 tracking-tight leading-[1.14] [text-wrap:balance]">
-                  {course.title || 'Flight Dispatcher Initial Certification'}
+                  {course.title ? <T o={course} k="title" /> : 'Flight Dispatcher Initial Certification'}
                 </h1>
 
                 {/* Summary Copy */}
                 <p className="text-sm sm:text-base md:text-[16px] text-slate-600 font-normal leading-relaxed max-w-3xl">
-                  {course.summary ||
+                  {(course.summary && <T o={course} k="summary" />) ||
                     `A complete ${course.duration || '5-week'} ${isIndiaProgram ? 'DGCA & ICAO' : 'EASA'}-aligned licensing curriculum designed to build technical mastery, situational awareness, and operational command for modern airline operations.`}
                 </p>
 
@@ -396,7 +416,7 @@ export function CourseDetailView({ course, preview = false }) {
                   <div className="flex items-start gap-3 bg-emerald-50/80 border border-emerald-200/80 rounded-2xl p-4 max-w-2xl shadow-2xs">
                     <RiInformationLine className="w-4 h-4 text-emerald-700 shrink-0 mt-0.5" />
                     <span className="text-xs sm:text-sm text-emerald-900 leading-relaxed font-medium">
-                      {course.heroNote}
+                      <T o={course} k="heroNote" />
                     </span>
                   </div>
                 )}
@@ -405,13 +425,13 @@ export function CourseDetailView({ course, preview = false }) {
               {/* Badges & Regulatory Alignment Strip */}
               {course.badges?.length > 0 ? (
                 <div className="flex flex-wrap items-center gap-2 sm:gap-2.5 pt-0.5">
-                  {course.badges.map((badge, idx) => (
+                  {course.badges.map((_, idx) => (
                     <div
                       key={idx}
                       className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-950 border border-slate-800 text-white text-xs font-semibold shadow-xs"
                     >
                       <RiShieldCheckFill className="w-3.5 h-3.5 text-[#34E06E] shrink-0" />
-                      <span className="font-mono tracking-tight">{badge}</span>
+                      <span className="font-mono tracking-tight"><T o={course.badges} k={idx} /></span>
                     </div>
                   ))}
                 </div>
@@ -421,10 +441,10 @@ export function CourseDetailView({ course, preview = false }) {
                     <RiShieldCheckFill className="w-3.5 h-3.5 text-[#34E06E] shrink-0" />
                     <span className="font-mono tracking-tight font-bold">
                       {isIndiaProgram
-                        ? c.labels.dgcaComplianceBadge
+                        ? L('dgcaComplianceBadge')
                         : isFaaProgram
-                          ? c.labels.faaComplianceBadge
-                          : c.labels.easaComplianceBadge}
+                          ? L('faaComplianceBadge')
+                          : L('easaComplianceBadge')}
                     </span>
                   </div>
                   {!isFaaProgram && (
@@ -435,7 +455,7 @@ export function CourseDetailView({ course, preview = false }) {
                   )}
                   <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-950 border border-slate-800 text-white text-xs font-semibold shadow-xs">
                     <RiAwardLine className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                    <span className="font-mono tracking-tight">{c.labels.cbtaBadge}</span>
+                    <span className="font-mono tracking-tight">{L('cbtaBadge')}</span>
                   </div>
                 </div>
               )}
@@ -443,7 +463,7 @@ export function CourseDetailView({ course, preview = false }) {
               {/* Trust Stat Row - shown when admin sets one */}
               {course.trustStat && (
                 <div className="flex items-center gap-2 pt-0.5">
-                  <span className="text-xs sm:text-sm text-slate-600 font-medium">{course.trustStat}</span>
+                  <span className="text-xs sm:text-sm text-slate-600 font-medium"><T o={course} k="trustStat" /></span>
                 </div>
               )}
 
@@ -454,7 +474,7 @@ export function CourseDetailView({ course, preview = false }) {
                     to={contactHref}
                     className="inline-flex items-center justify-center gap-2.5 bg-[#34E06E] hover:bg-[#2fe069] active:bg-[#28c85e] text-slate-950 font-bold px-7 py-3.5 rounded-full text-xs sm:text-sm tracking-wide transition-all duration-150 shadow-[0_4px_20px_rgba(52,224,110,0.35)] hover:-translate-y-0.5 active:scale-[0.98] group cursor-pointer text-center w-full sm:w-auto"
                   >
-                    <span>{course.ctaLabel || 'Request a Corporate Quote'}</span>
+                    <span>{F('ctaLabel') || 'Request a Corporate Quote'}</span>
                     <HiArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                   </Link>
                 ) : (
@@ -462,7 +482,7 @@ export function CourseDetailView({ course, preview = false }) {
                     to={enrollHref}
                     className="inline-flex items-center justify-center gap-2.5 bg-[#34E06E] hover:bg-[#2fe069] active:bg-[#28c85e] text-slate-950 font-bold px-7 py-3.5 rounded-full text-xs sm:text-sm tracking-wide transition-all duration-150 shadow-[0_4px_20px_rgba(52,224,110,0.35)] hover:-translate-y-0.5 active:scale-[0.98] group cursor-pointer text-center w-full sm:w-auto"
                   >
-                    <span>{c.labels.applyOnlineLabel}</span>
+                    <span>{L('applyOnlineLabel')}</span>
                     <HiArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                   </Link>
                 )}
@@ -472,7 +492,7 @@ export function CourseDetailView({ course, preview = false }) {
                   className="inline-flex items-center justify-center gap-2 bg-white hover:bg-slate-900 hover:text-white border border-slate-300 hover:border-slate-900 text-slate-800 font-semibold px-6 py-3.5 rounded-full text-xs sm:text-sm transition-all duration-150 shadow-2xs hover:-translate-y-0.5 group cursor-pointer text-center w-full sm:w-auto"
                 >
                   <TbBook2 className="w-4 h-4 text-slate-400 group-hover:text-white transition-colors" />
-                  <span>{c.labels.viewModulesLabel}</span>
+                  <span>{L('viewModulesLabel')}</span>
                 </a>
               </div>
                 </>
@@ -532,18 +552,18 @@ export function CourseDetailView({ course, preview = false }) {
                               )}
 
                               <h3 className="text-2xl sm:text-3xl font-extrabold text-slate-950 tracking-tight">
-                                {role.title}
+                                <T o={role} k="title" />
                               </h3>
 
                               {role.scenarios?.length > 0 && (
                                 <div className="space-y-2.5 pt-1">
-                                  {role.scenarios.map((s, sIdx) => (
+                                  {role.scenarios.map((_, sIdx) => (
                                     <div
                                       key={sIdx}
                                       className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-700 leading-relaxed"
                                     >
                                       <span className="text-[#0E7A4B] font-bold shrink-0">&rsaquo;</span>
-                                      <span>{s}</span>
+                                      <span><T o={role.scenarios} k={sIdx} /></span>
                                     </div>
                                   ))}
                                 </div>
@@ -562,7 +582,7 @@ export function CourseDetailView({ course, preview = false }) {
                               </div>
                               <div className="flex-1 flex items-center justify-center my-4 overflow-hidden w-full">
                                 <span className="text-xs sm:text-sm font-semibold text-slate-600 whitespace-nowrap [writing-mode:vertical-rl] rotate-180 tracking-wide text-center">
-                                  {role.title}
+                                  <T o={role} k="title" />
                                 </span>
                               </div>
                               <div className="text-xs font-mono font-bold text-slate-400 shrink-0">
@@ -596,7 +616,7 @@ export function CourseDetailView({ course, preview = false }) {
                                 Category {role.code}
                               </div>
                             )}
-                            <div className="text-base font-bold text-slate-950">{role.title}</div>
+                            <div className="text-base font-bold text-slate-950"><T o={role} k="title" /></div>
                           </button>
                         )
                       })}
@@ -608,10 +628,10 @@ export function CourseDetailView({ course, preview = false }) {
                           What {activeExplorerRole.title} actually deal with
                         </div>
                         <div className="grid sm:grid-cols-2 gap-x-6 gap-y-2.5">
-                          {activeExplorerRole.scenarios.map((s, idx) => (
+                          {activeExplorerRole.scenarios.map((_, idx) => (
                             <div key={idx} className="flex items-start gap-2.5 text-sm text-slate-700 leading-relaxed">
                               <span className="text-[#0E7A4B] font-bold shrink-0">&rsaquo;</span>
-                              <span>{s}</span>
+                              <span><T o={activeExplorerRole.scenarios} k={idx} /></span>
                             </div>
                           ))}
                         </div>
@@ -644,7 +664,7 @@ export function CourseDetailView({ course, preview = false }) {
                               : 'bg-white border-slate-200/90 text-slate-600 hover:border-slate-300'
                             }`}
                         >
-                          {segment.title}
+                          <T o={segment} k="title" />
                         </button>
                       )
                     })}
@@ -652,7 +672,7 @@ export function CourseDetailView({ course, preview = false }) {
 
                   {activeExplorerSegment?.descriptor && (
                     <div className="bg-emerald-50/80 border border-emerald-200/80 rounded-2xl p-4 sm:p-5 text-sm text-emerald-900 font-medium leading-relaxed">
-                      {activeExplorerSegment.descriptor}
+                      <T o={activeExplorerSegment} k="descriptor" />
                     </div>
                   )}
                 </div>
@@ -664,10 +684,10 @@ export function CourseDetailView({ course, preview = false }) {
               <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 pb-3.5 border-b border-slate-200/80">
                 <div className="space-y-1.5">
                   <span className="inline-block text-[11px] font-mono font-bold uppercase tracking-wider text-slate-900 border-b-2 border-[#34E06E] pb-0.5 w-fit">
-                    {course.curriculum?.eyebrow || c.curriculum.eyebrow}
+                    {course.curriculum?.eyebrow ? <T o={course.curriculum} k="eyebrow" /> : C('curriculum', 'eyebrow')}
                   </span>
                   <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-slate-950 tracking-tight">
-                    {course.curriculum?.title || c.curriculum.title}
+                    {course.curriculum?.title ? <T o={course.curriculum} k="title" /> : C('curriculum', 'title')}
                   </h2>
                   {dgrExplorer && (
                     <p className="text-xs sm:text-sm text-emerald-700 font-semibold">
@@ -677,7 +697,7 @@ export function CourseDetailView({ course, preview = false }) {
                 </div>
                 {(course.curriculum?.subtitle || c.curriculum.subtitle) && (
                   <p className="text-xs sm:text-sm text-slate-500 max-w-sm sm:text-right font-normal">
-                    {course.curriculum?.subtitle || c.curriculum.subtitle}
+                    {course.curriculum?.subtitle ? <T o={course.curriculum} k="subtitle" /> : C('curriculum', 'subtitle')}
                   </p>
                 )}
               </div>
@@ -738,31 +758,31 @@ export function CourseDetailView({ course, preview = false }) {
                                 {/* Phase Title & Subtitle */}
                                 <div className="space-y-1">
                                   <h3 className="text-2xl sm:text-3xl font-extrabold text-slate-950 tracking-tight">
-                                    {phase.title}
+                                    <T o={phase} k="title" />
                                   </h3>
                                   <p className="text-xs sm:text-sm text-slate-500 font-normal leading-relaxed">
-                                    {phase.description || 'Key operational competencies and syllabus objectives:'}
+                                    {phase.description ? <T o={phase} k="description" /> : 'Key operational competencies and syllabus objectives:'}
                                   </p>
                                 </div>
 
                                 {/* Syllabus Topics */}
                                 {phase.topics?.length > 0 ? (
                                   <div className="space-y-2.5 pt-1">
-                                    {phase.topics.map((topic, topicIdx) => (
+                                    {phase.topics.map((_, topicIdx) => (
                                       <div
                                         key={topicIdx}
                                         className="p-3.5 px-4 rounded-xl bg-slate-50/70 border border-slate-200/70 hover:border-slate-300 hover:bg-slate-50/90 transition-all flex items-center gap-3 group shadow-2xs"
                                       >
                                         <span className="w-1.5 h-1.5 rounded-full bg-slate-400 group-hover:bg-[#34E06E] transition-colors shrink-0" />
                                         <span className="text-xs sm:text-sm font-semibold text-slate-800 leading-snug">
-                                          {topic}
+                                          <T o={phase.topics} k={topicIdx} />
                                         </span>
                                       </div>
                                     ))}
                                   </div>
                                 ) : (
                                   <div className="p-4 rounded-xl bg-slate-50/70 border border-slate-200/70 text-sm text-slate-700">
-                                    {phase.description}
+                                    <T o={phase} k="description" />
                                   </div>
                                 )}
                               </div>
@@ -791,7 +811,7 @@ export function CourseDetailView({ course, preview = false }) {
                               {/* Vertical Rotated Title */}
                               <div className="flex-1 flex items-center justify-center my-4 overflow-hidden w-full">
                                 <span className="text-xs sm:text-sm font-semibold text-slate-600 whitespace-nowrap [writing-mode:vertical-rl] rotate-180 tracking-wide text-center">
-                                  {phase.title}
+                                  <T o={phase} k="title" />
                                 </span>
                               </div>
 
@@ -827,7 +847,7 @@ export function CourseDetailView({ course, preview = false }) {
                               <span className="w-7 h-7 rounded-full bg-slate-950 text-white font-mono font-bold text-xs grid place-items-center shadow-2xs shrink-0">
                                 {phaseNum}
                               </span>
-                              <span className="font-bold text-sm text-slate-900">{phase.title}</span>
+                              <span className="font-bold text-sm text-slate-900"><T o={phase} k="title" /></span>
                             </div>
 
                             <div className="flex items-center gap-2.5 shrink-0">
@@ -852,24 +872,24 @@ export function CourseDetailView({ course, preview = false }) {
                                 initial={{ opacity: 0, height: 0 }}
                                 animate={{ opacity: 1, height: 'auto' }}
                                 exit={{ opacity: 0, height: 0 }}
-                                transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+                                transition={ACCORDION_TRANSITION}
                                 className="overflow-hidden"
                               >
                                 <div className="mt-3 pt-3 border-t border-slate-100 space-y-3">
                                   {phase.description && (
                                     <p className="text-xs text-slate-600 font-normal leading-relaxed">
-                                      {phase.description}
+                                      <T o={phase} k="description" />
                                     </p>
                                   )}
                                   {phase.topics?.length > 0 && (
                                     <div className="space-y-2">
-                                      {phase.topics.map((t, topicIdx) => (
+                                      {phase.topics.map((_, topicIdx) => (
                                         <div
                                           key={topicIdx}
                                           className="text-xs font-semibold text-slate-800 bg-slate-50 border border-slate-100 rounded-xl px-3.5 py-2.5 flex items-center gap-2.5"
                                         >
                                           <RiCheckLine className="w-3.5 h-3.5 text-[#16a952] shrink-0" />
-                                          <span>{t}</span>
+                                          <span><T o={phase.topics} k={topicIdx} /></span>
                                         </div>
                                       ))}
                                     </div>
@@ -910,7 +930,7 @@ export function CourseDetailView({ course, preview = false }) {
                             <span className="w-8 h-8 rounded-full bg-slate-950 text-white font-mono font-bold text-xs flex items-center justify-center shrink-0 shadow-2xs">
                               {phaseNum}
                             </span>
-                            <span className="font-bold text-sm sm:text-base text-slate-900">{phase.title}</span>
+                            <span className="font-bold text-sm sm:text-base text-slate-900"><T o={phase} k="title" /></span>
                           </div>
 
                           <div className="flex items-center gap-3 shrink-0 ml-auto">
@@ -940,24 +960,24 @@ export function CourseDetailView({ course, preview = false }) {
                               initial={{ opacity: 0, height: 0 }}
                               animate={{ opacity: 1, height: 'auto' }}
                               exit={{ opacity: 0, height: 0 }}
-                              transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+                              transition={ACCORDION_TRANSITION}
                               className="overflow-hidden"
                             >
                               <div className="mt-4 pt-4 border-t border-slate-100 space-y-3.5">
                                 {phase.description && (
                                   <p className="text-xs sm:text-sm text-slate-600 font-normal leading-relaxed">
-                                    {phase.description}
+                                    <T o={phase} k="description" />
                                   </p>
                                 )}
                                 {phase.topics?.length > 0 && (
                                   <div className="space-y-2">
-                                    {phase.topics.map((t, topicIdx) => (
+                                    {phase.topics.map((_, topicIdx) => (
                                       <div
                                         key={topicIdx}
                                         className="text-xs sm:text-sm font-semibold text-slate-800 bg-slate-50 border border-slate-100 rounded-xl px-3.5 py-2.5 flex items-center gap-2.5"
                                       >
                                         <RiCheckLine className="w-3.5 h-3.5 text-[#16a952] shrink-0" />
-                                        <span>{t}</span>
+                                        <span><T o={phase.topics} k={topicIdx} /></span>
                                       </div>
                                     ))}
                                   </div>
@@ -981,21 +1001,21 @@ export function CourseDetailView({ course, preview = false }) {
             <section className="rounded-[2rem] bg-white border border-slate-200/90 p-7 sm:p-8 lg:p-9 shadow-[0_4px_24px_rgba(0,0,0,0.03)] space-y-6 sm:space-y-7">
               <div className="space-y-1.5">
                 <span className="inline-block text-[11px] font-mono font-bold uppercase tracking-wider text-slate-900 border-b-2 border-[#34E06E] pb-0.5 w-fit">
-                  {course.whatYouWillLearn?.eyebrow || c.labels.outcomesEyebrow}
+                  {course.whatYouWillLearn?.eyebrow ? <T o={course.whatYouWillLearn} k="eyebrow" /> : L('outcomesEyebrow')}
                 </span>
                 <h2 className="text-xl sm:text-2xl lg:text-[26px] font-bold text-slate-950 tracking-tight">
-                  {course.whatYouWillLearn?.title || c.labels.outcomesTitle}
+                  {course.whatYouWillLearn?.title ? <T o={course.whatYouWillLearn} k="title" /> : L('outcomesTitle')}
                 </h2>
               </div>
 
               <div className="grid sm:grid-cols-2 gap-4">
-                {learningOutcomes.map((point, i) => (
+                {learningOutcomes.map((_, i) => (
                   <div
                     key={i}
                     className="flex items-start gap-3 p-4 rounded-2xl bg-slate-50/70 border border-slate-100/90 hover:bg-slate-50 hover:border-slate-200 transition-colors text-xs sm:text-sm text-slate-800 leading-snug"
                   >
                     <RiCheckLine className="w-3.5 h-3.5 text-[#16a952] shrink-0 mt-[3px]" />
-                    <span>{point}</span>
+                    <span><T o={learningOutcomes} k={i} /></span>
                   </div>
                 ))}
               </div>
@@ -1004,10 +1024,10 @@ export function CourseDetailView({ course, preview = false }) {
               {course.processSteps?.length > 0 && (
                 <div className="pt-2">
                   <div className="rounded-2xl sm:rounded-full bg-emerald-50/80 border border-emerald-200/60 py-3.5 px-5 sm:px-8 flex flex-wrap items-center justify-center gap-x-3 sm:gap-x-4 gap-y-2 text-center">
-                    {course.processSteps.map((step, idx) => (
+                    {course.processSteps.map((_, idx) => (
                       <React.Fragment key={idx}>
                         <span className="text-[11px] sm:text-xs font-bold sm:font-extrabold uppercase tracking-wider text-[#085A3C]">
-                          {step}
+                          <T o={course.processSteps} k={idx} />
                         </span>
                         {idx < course.processSteps.length - 1 && (
                           <span className="text-xs sm:text-sm text-[#085A3C]/70 font-semibold select-none">
@@ -1025,20 +1045,20 @@ export function CourseDetailView({ course, preview = false }) {
             <section className="rounded-[2rem] bg-gradient-to-br from-slate-950 via-[#0a1120] to-[#040814] text-white p-8 sm:p-9 lg:p-10 shadow-lg border border-white/10 space-y-6 sm:space-y-7 relative overflow-hidden">
               <div className="space-y-1.5">
                 <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 border border-white/15 text-[#34E06E] font-mono text-xs font-bold uppercase tracking-wider">
-                  {course.trainingStandards?.eyebrow || c.labels.complianceEyebrow}
+                  {course.trainingStandards?.eyebrow ? <T o={course.trainingStandards} k="eyebrow" /> : L('complianceEyebrow')}
                 </span>
                 <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
-                  {course.trainingStandards?.title ||
+                  {(course.trainingStandards?.title && <T o={course.trainingStandards} k="title" />) ||
                     (isIndiaProgram
-                      ? c.labels.complianceTitleDgca
+                      ? L('complianceTitleDgca')
                       : isFaaProgram
-                        ? c.labels.complianceTitleFaa
-                        : c.labels.complianceTitleEasa)}
+                        ? L('complianceTitleFaa')
+                        : L('complianceTitleEasa'))}
                 </h2>
               </div>
 
               <p className="text-xs sm:text-sm text-slate-300 font-normal leading-relaxed max-w-2xl">
-                {course.trainingStandards?.intro ||
+                {(course.trainingStandards?.intro && <T o={course.trainingStandards} k="intro" />) ||
                   'This curriculum meets rigorous international civil aviation standards, structured in full compliance with applicable EASA Air Operations requirements and ICAO Flight Operations Officer competencies.'}
               </p>
 
@@ -1050,10 +1070,10 @@ export function CourseDetailView({ course, preview = false }) {
                       className="p-4.5 rounded-2xl bg-white/[0.05] border border-white/10 hover:border-white/20 transition-colors space-y-1.5"
                     >
                       <div className="text-sm font-mono font-bold text-[#34E06E]">
-                        {card.code}
+                        <T o={card} k="code" />
                       </div>
                       <p className="text-xs text-slate-300 font-normal leading-relaxed">
-                        {card.title}
+                        <T o={card} k="title" />
                       </p>
                     </div>
                   ))}
@@ -1070,11 +1090,11 @@ export function CourseDetailView({ course, preview = false }) {
                     </div>
                     <div className="min-w-0">
                       <div className="text-sm font-bold text-white leading-tight">
-                        {isIndiaProgram ? 'DGCA CAR Compliant' : isFaaProgram ? c.labels.complianceTag1Faa : 'EASA ORO.GEN.110'}
+                        {isIndiaProgram ? 'DGCA CAR Compliant' : isFaaProgram ? L('complianceTag1Faa') : 'EASA ORO.GEN.110'}
                       </div>
                       <div className="text-[11px] text-slate-400 font-mono">
                         {isIndiaProgram
-                          ? c.labels.complianceTag1Dgca
+                          ? L('complianceTag1Dgca')
                           : isFaaProgram
                             ? 'Aircraft Dispatcher Certification'
                             : 'Air Operations Specification'}
@@ -1115,15 +1135,15 @@ export function CourseDetailView({ course, preview = false }) {
                 <div className="space-y-1.5">
                   {course.trainingPhilosophy.eyebrow && (
                     <span className="inline-block text-[11px] font-mono font-bold uppercase tracking-wider text-slate-900 border-b-2 border-[#34E06E] pb-0.5 w-fit">
-                      {course.trainingPhilosophy.eyebrow}
+                      <T o={course.trainingPhilosophy} k="eyebrow" />
                     </span>
                   )}
                   <h2 className="text-lg sm:text-xl font-bold text-slate-900 tracking-tight">
-                    {course.trainingPhilosophy.title}
+                    <T o={course.trainingPhilosophy} k="title" />
                   </h2>
                   {course.trainingPhilosophy.intro && (
                     <p className="text-xs sm:text-sm text-slate-600 leading-relaxed max-w-2xl">
-                      {course.trainingPhilosophy.intro}
+                      <T o={course.trainingPhilosophy} k="intro" />
                     </p>
                   )}
                 </div>
@@ -1132,8 +1152,8 @@ export function CourseDetailView({ course, preview = false }) {
                   <div className="grid sm:grid-cols-3 gap-3.5">
                     {course.trainingPhilosophy.cards.map((card, idx) => (
                       <div key={idx} className="p-4.5 rounded-2xl bg-slate-50/70 border border-slate-100 space-y-1.5">
-                        <div className="text-sm font-bold text-slate-900">{card.title}</div>
-                        <p className="text-xs text-slate-600 leading-relaxed">{card.desc}</p>
+                        <div className="text-sm font-bold text-slate-900"><T o={card} k="title" /></div>
+                        <p className="text-xs text-slate-600 leading-relaxed"><T o={card} k="desc" /></p>
                       </div>
                     ))}
                   </div>
@@ -1145,17 +1165,17 @@ export function CourseDetailView({ course, preview = false }) {
             <section className="rounded-[2rem] bg-white border border-slate-200/90 p-7 sm:p-8 lg:p-9 shadow-[0_4px_24px_rgba(0,0,0,0.03)] space-y-6 sm:space-y-7">
               <div className="border-b border-slate-100 pb-3.5 space-y-1.5">
                 <span className="inline-block text-[11px] font-mono font-bold uppercase tracking-wider text-slate-900 border-b-2 border-[#34E06E] pb-0.5 w-fit">
-                  {course.whoShouldAttend?.eyebrow || c.labels.eligibilityEyebrow}
+                  {course.whoShouldAttend?.eyebrow ? <T o={course.whoShouldAttend} k="eyebrow" /> : L('eligibilityEyebrow')}
                 </span>
                 <h2 className="text-xl font-bold text-slate-950 tracking-tight">
-                  {course.whoShouldAttend?.title || c.labels.eligibilityTitle}
+                  {course.whoShouldAttend?.title ? <T o={course.whoShouldAttend} k="title" /> : L('eligibilityTitle')}
                 </h2>
               </div>
 
               {course.whoShouldAttend?.intro && (
                 <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-50 border border-emerald-200/80 text-xs sm:text-sm font-bold text-emerald-900">
                   <RiCheckboxCircleFill className="w-4 h-4 text-emerald-600 shrink-0" />
-                  <span>{course.whoShouldAttend.intro}</span>
+                  <span><T o={course.whoShouldAttend} k="intro" /></span>
                 </div>
               )}
 
@@ -1184,7 +1204,7 @@ export function CourseDetailView({ course, preview = false }) {
                         }`}
                       >
                         <RiCheckboxCircleFill className="w-4 h-4 text-[#16a952] shrink-0" />
-                        <span>{item.title}</span>
+                        <span>{editing ? <T o={course.whoShouldAttend.points} k={idx} /> : item.title}</span>
                       </div>
                     )
                   })}
@@ -1193,7 +1213,7 @@ export function CourseDetailView({ course, preview = false }) {
 
               {course.whoShouldAttend?.outro && (
                 <p className="text-xs sm:text-sm text-slate-500 leading-relaxed pt-1 border-t border-slate-100">
-                  {course.whoShouldAttend.outro}
+                  <T o={course.whoShouldAttend} k="outro" />
                 </p>
               )}
             </section>
@@ -1203,20 +1223,20 @@ export function CourseDetailView({ course, preview = false }) {
               <section className="rounded-[2rem] bg-white border border-slate-200/90 p-7 sm:p-8 lg:p-9 shadow-[0_4px_24px_rgba(0,0,0,0.03)] space-y-5 sm:space-y-6">
                 <div className="space-y-1.5">
                   <span className="inline-block text-[11px] font-mono font-bold uppercase tracking-wider text-slate-900 border-b-2 border-[#34E06E] pb-0.5 w-fit">
-                    {c.labels.entryReqEyebrow}
+                    {L('entryReqEyebrow')}
                   </span>
-                  <h2 className="text-xl font-bold text-slate-950 tracking-tight">{c.labels.entryReqTitle}</h2>
+                  <h2 className="text-xl font-bold text-slate-950 tracking-tight">{L('entryReqTitle')}</h2>
                   {course.entryRequirements?.intro && (
                     <p className="text-xs sm:text-sm text-slate-500 leading-relaxed pt-1">
-                      {course.entryRequirements.intro}
+                      <T o={course.entryRequirements} k="intro" />
                     </p>
                   )}
                 </div>
                 <div className="grid sm:grid-cols-2 gap-3.5">
-                  {entryRequirements.map((item, idx) => (
+                  {entryRequirements.map((_, idx) => (
                     <div key={idx} className="flex items-start gap-2.5 p-3.5 rounded-2xl bg-slate-50/70 border border-slate-100 text-xs sm:text-sm text-slate-700 leading-snug">
                       <RiCheckboxCircleFill className="w-4 h-4 text-[#16a952] shrink-0 mt-0.5" />
-                      <span>{item}</span>
+                      <span><T o={entryRequirements} k={idx} /></span>
                     </div>
                   ))}
                 </div>
@@ -1230,15 +1250,15 @@ export function CourseDetailView({ course, preview = false }) {
                   <div className="rounded-[2rem] bg-white border border-slate-200/90 p-7 sm:p-8 shadow-[0_4px_24px_rgba(0,0,0,0.03)] space-y-4">
                     <div className="space-y-1.5">
                       <span className="inline-block text-[11px] font-mono font-bold uppercase tracking-wider text-slate-900 border-b-2 border-[#34E06E] pb-0.5 w-fit">
-                        {c.labels.assessmentEyebrow}
+                        {L('assessmentEyebrow')}
                       </span>
-                      <h2 className="text-lg font-bold text-slate-950 tracking-tight">{c.labels.assessmentTitle}</h2>
+                      <h2 className="text-lg font-bold text-slate-950 tracking-tight">{L('assessmentTitle')}</h2>
                     </div>
                     <div className="space-y-2.5">
-                      {assessmentPoints.map((item, idx) => (
+                      {assessmentPoints.map((_, idx) => (
                         <div key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-700 leading-snug">
                           <RiCheckboxCircleFill className="w-4 h-4 text-[#16a952] shrink-0 mt-0.5" />
-                          <span>{item}</span>
+                          <span><T o={assessmentPoints} k={idx} /></span>
                         </div>
                       ))}
                     </div>
@@ -1249,13 +1269,13 @@ export function CourseDetailView({ course, preview = false }) {
                   <div className="rounded-[2rem] bg-white border border-slate-200/90 p-7 sm:p-8 shadow-[0_4px_24px_rgba(0,0,0,0.03)] space-y-4">
                     <div className="space-y-1.5">
                       <span className="inline-block text-[11px] font-mono font-bold uppercase tracking-wider text-slate-900 border-b-2 border-[#34E06E] pb-0.5 w-fit">
-                        {c.labels.certEyebrow}
+                        {L('certEyebrow')}
                       </span>
-                      <h2 className="text-lg font-bold text-slate-950 tracking-tight">{c.labels.certTitle}</h2>
+                      <h2 className="text-lg font-bold text-slate-950 tracking-tight">{L('certTitle')}</h2>
                     </div>
                     <div className="flex items-start gap-3.5 p-4 rounded-2xl bg-emerald-50/70 border border-emerald-200/80">
                       <TbCertificate className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
-                      <p className="text-xs sm:text-sm text-slate-800 leading-relaxed font-medium">{certificationText}</p>
+                      <p className="text-xs sm:text-sm text-slate-800 leading-relaxed font-medium"><T o={course.certification} k="text" /></p>
                     </div>
                   </div>
                 )}
@@ -1270,13 +1290,13 @@ export function CourseDetailView({ course, preview = false }) {
             >
               <div className="space-y-2 max-w-md">
                 <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 border border-white/15 text-[#34E06E] font-mono text-xs font-bold uppercase tracking-wider">
-                  {course.bottomBanner?.eyebrow || c.labels.admissionsEyebrow}
+                  {course.bottomBanner?.eyebrow ? <T o={course.bottomBanner} k="eyebrow" /> : L('admissionsEyebrow')}
                 </span>
                 <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-white leading-tight">
-                  {course.bottomBanner?.title || c.labels.admissionsTitle}
+                  {course.bottomBanner?.title ? <T o={course.bottomBanner} k="title" /> : L('admissionsTitle')}
                 </h3>
                 <p className="text-xs sm:text-sm text-slate-300 font-normal leading-relaxed">
-                  {course.bottomBanner?.desc || c.labels.admissionsDesc}
+                  {course.bottomBanner?.desc ? <T o={course.bottomBanner} k="desc" /> : L('admissionsDesc')}
                 </p>
               </div>
 
@@ -1286,14 +1306,14 @@ export function CourseDetailView({ course, preview = false }) {
                     to={contactHref}
                     className="inline-flex items-center justify-center gap-2 bg-[#34E06E] hover:bg-[#28c85e] text-slate-950 font-extrabold py-3.5 px-7 rounded-full text-xs uppercase tracking-wider transition-all duration-150 shadow-[0_4px_20px_rgba(52,224,110,0.35)] hover:-translate-y-0.5 cursor-pointer"
                   >
-                    <span>{course.bottomBanner?.ctaLabel || 'Request a Corporate Quote'}</span>
+                    <span>{course.bottomBanner?.ctaLabel ? <T o={course.bottomBanner} k="ctaLabel" /> : 'Request a Corporate Quote'}</span>
                   </Link>
                 ) : (
                   <Link
                     to={enrollHref}
                     className="inline-flex items-center justify-center gap-2 bg-[#34E06E] hover:bg-[#28c85e] text-slate-950 font-extrabold py-3.5 px-7 rounded-full text-xs uppercase tracking-wider transition-all duration-150 shadow-[0_4px_20px_rgba(52,224,110,0.35)] hover:-translate-y-0.5 cursor-pointer"
                   >
-                    <span>{c.labels.admissionsApplyLabel}</span>
+                    <span>{L('admissionsApplyLabel')}</span>
                   </Link>
                 )}
 
@@ -1304,7 +1324,7 @@ export function CourseDetailView({ course, preview = false }) {
                   className="inline-flex items-center justify-center gap-2 border border-white/20 bg-white/5 hover:bg-white/10 text-white font-semibold py-3.5 px-5 rounded-full text-xs transition-colors cursor-pointer"
                 >
                   <RiWhatsappFill className="w-4 h-4 text-[#25D366]" />
-                  <span>{c.labels.admissionsWhatsappLabel}</span>
+                  <span>{L('admissionsWhatsappLabel')}</span>
                 </a>
               </div>
             </section>
@@ -1318,13 +1338,13 @@ export function CourseDetailView({ course, preview = false }) {
           <aside
             className={`lg:col-span-5 xl:col-span-4 lg:sticky text-slate-900 ${
               dgBlock
-                ? 'p-3 rounded-md'
+                ? 'p-1.5 rounded-2xl shadow-[0_4px_24px_rgba(0,0,0,0.04)]'
                 : 'bg-white border border-slate-200/90 rounded-[2rem] p-6 sm:p-7 shadow-[0_4px_24px_rgba(0,0,0,0.03)]'
             }`}
             style={{ ...(dgBlock ? dgHatch : {}), top: sidebarTop }}
             aria-label="Programme overview"
           >
-            <div className={dgBlock ? 'bg-white rounded-sm p-6 sm:p-7 space-y-6' : 'space-y-6'}>
+            <div className={dgBlock ? 'bg-white rounded-xl p-6 sm:p-7 space-y-6' : 'space-y-6'}>
             {/* Top Course Card Thumbnail - Rounded inset frame */}
             <div
               ref={sidebarImgRef}
@@ -1337,6 +1357,7 @@ export function CourseDetailView({ course, preview = false }) {
                 alt={course.title}
                 className={`w-full h-full object-center ${sidebarBanner ? 'object-contain' : 'object-cover'}`}
               />
+              <CmsImageButton path="courseMedia.cardImage" folder="courses" />
             </div>
 
             {dgBlock ? (
@@ -1349,26 +1370,26 @@ export function CourseDetailView({ course, preview = false }) {
                 {course.isCorporate ? (
                   <>
                     <span className="block text-[11px] font-mono uppercase text-slate-400 tracking-wider">
-                      {c.labels.sidebarTuitionLabel}
+                      {L('sidebarTuitionLabel')}
                     </span>
                     <strong className="block text-2xl sm:text-3xl font-extrabold text-slate-950 tracking-tight leading-tight mt-0.5">
-                      {course.rateCard?.value && course.rateCard.value !== 'Corporate Rate' ? course.rateCard.value : 'Training Fee'}
+                      {fields.rateCard?.value && fields.rateCard.value !== 'Corporate Rate' ? F('rateCard.value') : 'Training Fee'}
                     </strong>
                     <p className="text-xs text-slate-600 font-normal mt-2 leading-relaxed">
-                      {course.rateCard?.note ||
+                      {F('rateCard.note') ||
                         "Custom quote, based on group size and delivery format, tailored to the operator's operational environment."}
                     </p>
                   </>
                 ) : (
                   <>
                     <span className="block text-[11px] font-mono uppercase text-slate-400 tracking-wider">
-                      {c.labels.sidebarTuitionLabel}
+                      {L('sidebarTuitionLabel')}
                     </span>
                     <strong className="block text-3xl sm:text-4xl font-extrabold text-slate-950 tracking-tight leading-tight mt-0.5">
                       {formatPrice(course.price) || 'Contact for Pricing'}
                     </strong>
                     <small className="block text-xs text-slate-500 font-normal mt-1 leading-relaxed">
-                      {course.price?.note ||
+                      {F('price.note') ||
                         (formatPrice(course.price)
                           ? isIndiaProgram
                             ? '+ 18% GST / Track · Inclusive of official materials'
@@ -1395,7 +1416,7 @@ export function CourseDetailView({ course, preview = false }) {
                     to={contactHref}
                     className="w-full block text-center bg-white hover:bg-slate-50 border border-slate-200/90 text-slate-800 font-bold py-3 px-4 rounded-full text-xs transition-colors cursor-pointer"
                   >
-                    {course.rateCard?.secondaryCtaLabel || 'Contact Training Team'}
+                    {F('rateCard.secondaryCtaLabel') || 'Contact Training Team'}
                   </Link>
                 </>
               ) : (
@@ -1404,7 +1425,7 @@ export function CourseDetailView({ course, preview = false }) {
                     to={enrollHref}
                     className="w-full block text-center bg-[#34E06E] hover:bg-[#28c85e] text-slate-950 font-extrabold py-3.5 px-5 rounded-full text-xs uppercase tracking-wider transition-all duration-150 shadow-[0_4px_20px_rgba(52,224,110,0.35)] hover:-translate-y-0.5 cursor-pointer"
                   >
-                    {c.labels.sidebarEnrollLabel}
+                    {L('sidebarEnrollLabel')}
                   </Link>
 
                   <a
@@ -1414,19 +1435,19 @@ export function CourseDetailView({ course, preview = false }) {
                     className="w-full flex items-center justify-center gap-2 bg-emerald-50/80 hover:bg-emerald-100 border border-emerald-200/80 text-emerald-950 font-bold py-3 px-4 rounded-full text-xs transition-colors cursor-pointer"
                   >
                     <RiWhatsappFill className="w-4 h-4 text-[#25D366]" />
-                    <span>{c.labels.sidebarWhatsappLabel}</span>
+                    <span>{L('sidebarWhatsappLabel')}</span>
                   </a>
                 </>
               )}
             </div>
 
             {/* Specifications Rows */}
-            {course.sidebarSpecs?.length > 0 ? (
+            {fields.sidebarSpecs?.length > 0 ? (
               <div className="border-t border-slate-100 pt-3 space-y-2.5 text-xs sm:text-[13px]">
-                {course.sidebarSpecs.map((spec, idx) => (
+                {fields.sidebarSpecs.map((_, idx) => (
                   <div key={idx} className="flex justify-between items-center gap-4 py-1.5 border-b border-slate-100/70">
-                    <span className="text-slate-500 font-medium">{spec.label}</span>
-                    <strong className="font-bold text-slate-950 text-right">{spec.value}</strong>
+                    <span className="text-slate-500 font-medium">{F(`sidebarSpecs.${idx}.label`)}</span>
+                    <strong className="font-bold text-slate-950 text-right">{F(`sidebarSpecs.${idx}.value`)}</strong>
                   </div>
                 ))}
               </div>
@@ -1435,35 +1456,35 @@ export function CourseDetailView({ course, preview = false }) {
                 <div className="flex justify-between items-center gap-4 py-1.5 border-b border-slate-100/70">
                   <span className="text-slate-500 font-medium flex items-center gap-2 shrink-0">
                     <TbClockHour4 className="w-4 h-4 text-slate-400" />
-                    <span>{c.labels.sidebarDurationLabel}</span>
+                    <span>{L('sidebarDurationLabel')}</span>
                   </span>
-                  <strong className="font-bold text-slate-950 text-right">{course.duration || '5 Weeks'}</strong>
+                  <strong className="font-bold text-slate-950 text-right">{course.duration ? <T o={course} k="duration" /> : '5 Weeks'}</strong>
                 </div>
 
                 <div className="flex justify-between items-center gap-4 py-1.5 border-b border-slate-100/70">
                   <span className="text-slate-500 font-medium flex items-center gap-2 shrink-0">
                     <RiCalendarEventLine className="w-4 h-4 text-slate-400" />
-                    <span>{c.labels.sidebarIntakeLabel}</span>
+                    <span>{L('sidebarIntakeLabel')}</span>
                   </span>
                   <strong className="font-bold text-slate-950 font-mono text-right">
-                    {formatDate(schedule.startDate) || course.intakeLabel || 'Contact for dates'}
+                    {formatDate(schedule.startDate) || (course.intakeLabel && <T o={course} k="intakeLabel" />) || 'Contact for dates'}
                   </strong>
                 </div>
 
                 <div className="flex justify-between items-start gap-4 py-1.5 border-b border-slate-100/70">
                   <span className="text-slate-500 font-medium flex items-center gap-2 shrink-0 pt-0.5">
                     <RiMapPin2Line className="w-4 h-4 text-slate-400" />
-                    <span>{c.labels.sidebarLocationLabel}</span>
+                    <span>{L('sidebarLocationLabel')}</span>
                   </span>
                   <strong className="font-bold text-slate-950 text-right leading-snug">
-                    {course.location || (isIndiaProgram ? 'New Delhi' : 'Online 2 Weeks, 3 Weeks Onsite Sønderborg (Denmark)')}
+                    {(course.location && <T o={course} k="location" />) || (isIndiaProgram ? 'New Delhi' : 'Online 2 Weeks, 3 Weeks Onsite Sønderborg (Denmark)')}
                   </strong>
                 </div>
 
                 <div className="flex justify-between items-center gap-4 py-1.5 border-b border-slate-100/70">
                   <span className="text-slate-500 font-medium flex items-center gap-2 shrink-0">
                     <RiStackLine className="w-4 h-4 text-slate-400" />
-                    <span>{c.labels.sidebarDeliveryLabel}</span>
+                    <span>{L('sidebarDeliveryLabel')}</span>
                   </span>
                   <strong className="font-bold text-slate-950 text-right">{schedule.mode || (isIndiaProgram ? 'Onsite' : 'Hybrid')}</strong>
                 </div>
@@ -1471,35 +1492,35 @@ export function CourseDetailView({ course, preview = false }) {
                 <div className="flex justify-between items-center gap-4 py-1.5 border-b border-slate-100/70">
                   <span className="text-slate-500 font-medium flex items-center gap-2 shrink-0">
                     <RiShieldCheckFill className="w-4 h-4 text-slate-400" />
-                    <span>{c.labels.sidebarStandardLabel}</span>
+                    <span>{L('sidebarStandardLabel')}</span>
                   </span>
                   <strong className="font-bold text-slate-950 text-right">
                     {isIndiaProgram
-                      ? c.labels.sidebarStandardValueDgca
+                      ? L('sidebarStandardValueDgca')
                       : isFaaProgram
-                        ? c.labels.sidebarStandardValueFaa
-                        : c.labels.sidebarStandardValueEasa}
+                        ? L('sidebarStandardValueFaa')
+                        : L('sidebarStandardValueEasa')}
                   </strong>
                 </div>
 
                 <div className="flex justify-between items-center gap-4 py-1.5">
                   <span className="text-slate-500 font-medium flex items-center gap-2 shrink-0">
                     <TbCertificate className="w-4 h-4 text-slate-400" />
-                    <span>{c.labels.sidebarCertificateLabel}</span>
+                    <span>{L('sidebarCertificateLabel')}</span>
                   </span>
-                  <strong className="font-bold text-slate-950 text-right">{c.labels.sidebarCertificateValue}</strong>
+                  <strong className="font-bold text-slate-950 text-right">{L('sidebarCertificateValue')}</strong>
                 </div>
               </div>
             )}
 
             {overview?.sidebarNote && (
-              <p className="text-[11px] text-slate-500 leading-relaxed">{overview.sidebarNote}</p>
+              <p className="text-[11px] text-slate-500 leading-relaxed"><T o={overview} k="sidebarNote" /></p>
             )}
 
             {/* Trust Badge at bottom of sidebar */}
             {course.isCorporate && (
               <div className="rounded-2xl bg-emerald-50/90 text-emerald-900 border border-emerald-200/90 p-3 text-center text-xs font-bold">
-                {course.rateCard?.trustBadge || 'Delivered to 70+ operators worldwide'}
+                {course.rateCard?.trustBadge ? <T o={course.rateCard} k="trustBadge" /> : 'Delivered to 70+ operators worldwide'}
               </div>
             )}
 
@@ -1530,7 +1551,7 @@ export function CourseDetailView({ course, preview = false }) {
 
             {/* Help line */}
             <div className="pt-4 border-t border-slate-100 flex items-center justify-between gap-3 text-xs">
-              <span className="text-slate-500">{c.labels.sidebarSupportTitle}</span>
+              <span className="text-slate-500">{L('sidebarSupportTitle')}</span>
               <a
                 href="mailto:info@theifoa.com"
                 className="inline-flex items-center gap-1.5 font-bold text-slate-900 hover:text-[#16a952] transition-colors"
@@ -1545,6 +1566,7 @@ export function CourseDetailView({ course, preview = false }) {
       </div>
     </div>
     </DgProvider>
+    </OverviewEditProvider>
   )
 }
 

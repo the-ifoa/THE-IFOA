@@ -1,9 +1,12 @@
 import { Link } from 'react-router-dom'
-import { RiCalendarEventLine, RiArrowRightLine } from 'react-icons/ri'
+import { RiArrowRightLine } from 'react-icons/ri'
 import { Seo } from '@/components/common/Seo'
 import { Reveal } from '@/components/common/Reveal'
-import { graph, organizationSchema, breadcrumbSchema } from '@/lib/seo'
+import { graph, organizationSchema, breadcrumbSchema, courseListSchema } from '@/lib/seo'
 import bannerHero from '@/assets/shared/photos/IOFA-banner_10@1920x1280.jpg'
+
+// Shared column layout for the board's heading row and course rows.
+const ROW_GRID = 'lg:grid-cols-[150px_minmax(0,1.7fr)_minmax(0,0.9fr)_minmax(0,1.3fr)_90px_170px] lg:gap-x-4'
 
 // Open courses individuals can book themselves, next start date first.
 const COURSES = [
@@ -63,7 +66,11 @@ export function UpcomingCoursesPage() {
           breadcrumbSchema([
             { name: 'Home', path: '/' },
             { name: 'Upcoming courses', path: '/upcoming-courses' }
-          ])
+          ]),
+          courseListSchema(
+            'Upcoming IFOA courses',
+            COURSES.map((c) => ({ name: c.title, description: c.desc, path: `/courses/${c.slug}` }))
+          )
         )}
       />
 
@@ -82,67 +89,75 @@ export function UpcomingCoursesPage() {
         </div>
       </section>
 
-      {/* 2. DEPARTURES BOARD */}
+      {/* 2. DEPARTURES BOARD: one table, identical columns on every row */}
       <Reveal as="section" className="py-14 sm:py-20" data-purpose="upcoming-board">
         <div className="max-w-[1280px] mx-auto px-6 space-y-4">
-          {COURSES.map((course) => (
-            <article
-              key={course.slug}
-              className="rounded-2xl bg-white border border-slate-200/90 shadow-[0_4px_24px_rgba(0,0,0,0.03)] hover:shadow-[0_16px_40px_rgba(15,23,42,0.08)] hover:border-slate-300 transition-all duration-300 overflow-hidden group"
-            >
-              <div className="grid grid-cols-1 md:grid-cols-[180px_1.2fr_1fr_180px] gap-6 lg:gap-8 items-center p-6 sm:p-7">
-                {/* When */}
-                <div className="flex md:flex-col items-center md:items-start gap-3.5">
-                  <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-700 group-hover:bg-slate-950 group-hover:text-[#34E06E] transition-colors shrink-0">
-                    <RiCalendarEventLine className="w-5 h-5" />
-                  </div>
+          <div className="rounded-2xl bg-white border border-slate-200/90 overflow-hidden">
+            {/* Column headings (desktop) */}
+            <div className={`hidden lg:grid ${ROW_GRID} px-7 py-3.5 bg-slate-50 border-b border-slate-200 text-[10px] font-mono font-bold uppercase tracking-widest text-slate-400`}>
+              <span>Next start</span>
+              <span>Course</span>
+              <span>Duration</span>
+              <span>Where</span>
+              <span>Fee</span>
+              <span />
+            </div>
+
+            {COURSES.map((course, i) => {
+              const fact = Object.fromEntries(course.facts)
+              return (
+                <article
+                  key={course.slug}
+                  className={`grid grid-cols-1 ${ROW_GRID} gap-y-4 px-6 sm:px-7 py-6 items-center ${
+                    i > 0 ? 'border-t border-slate-100' : ''
+                  }`}
+                >
+                  {/* When */}
                   <div>
-                    <b className="block text-2xl sm:text-[26px] font-extrabold text-slate-950 tracking-tight leading-none">{course.when}</b>
-                    <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-600 mt-1 font-mono uppercase tracking-wider">{course.whenNote}</span>
+                    <b className="block text-xl font-extrabold text-slate-950 tracking-tight leading-none">{course.when}</b>
+                    <span className="block mt-1.5 text-xs font-semibold text-[#16a952]">{course.whenNote}</span>
                   </div>
-                </div>
 
-                {/* What */}
-                <div className="space-y-1.5">
-                  <h2 className="text-lg sm:text-xl font-bold text-slate-950 tracking-tight">
-                    <Link to={`/courses/${course.slug}`} className="hover:text-[#16a952] transition-colors">
-                      {course.title}
-                    </Link>
-                  </h2>
-                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">{course.desc}</p>
-                </div>
+                  {/* Course */}
+                  <div className="pr-4">
+                    <h2 className="text-base sm:text-lg font-bold text-slate-950 tracking-tight">
+                      <Link to={`/courses/${course.slug}`} className="hover:text-[#16a952] transition-colors">
+                        {course.title}
+                      </Link>
+                    </h2>
+                    <p className="mt-1 text-[13px] text-slate-600 leading-relaxed">{course.desc}</p>
+                  </div>
 
-                {/* Facts */}
-                <div className="rounded-xl bg-slate-50/80 border border-slate-100 p-3.5 space-y-1.5 text-xs">
-                  {course.facts.map(([label, value]) => (
-                    <div key={label} className="flex items-baseline justify-between gap-3">
-                      <span className="font-mono text-[11px] font-bold uppercase tracking-wider text-slate-400 shrink-0">{label}</span>
-                      <span className="font-semibold text-slate-900 text-right truncate">{value}</span>
+                  {/* Facts: own columns on desktop, labelled list on mobile */}
+                  {['Duration', 'Where', 'Fee'].map((label) => (
+                    <div key={label} className="flex lg:block justify-between gap-4 text-sm lg:pr-4">
+                      <span className="lg:hidden text-xs text-slate-500">{label}</span>
+                      <span className="font-semibold text-slate-900 text-right lg:text-left leading-snug">{fact[label]}</span>
                     </div>
                   ))}
-                </div>
 
-                {/* Actions */}
-                <div className="flex flex-col gap-2.5">
-                  <Link
-                    to={course.cta.to}
-                    className="w-full text-center bg-slate-950 hover:bg-slate-800 text-white font-bold py-3 px-5 rounded-xl text-xs uppercase tracking-wider transition-all shadow-xs hover:shadow-md cursor-pointer"
-                  >
-                    {course.cta.label}
-                  </Link>
-                  <Link
-                    to={`/courses/${course.slug}`}
-                    className="inline-flex items-center justify-center gap-1.5 text-xs font-bold text-slate-600 hover:text-slate-950 py-1 transition-colors group/link"
-                  >
-                    <span>Course details</span>
-                    <RiArrowRightLine className="w-3.5 h-3.5 text-slate-400 group-hover/link:translate-x-0.5 group-hover/link:text-slate-950 transition-all" />
-                  </Link>
-                </div>
-              </div>
-            </article>
-          ))}
+                  {/* Actions */}
+                  <div className="flex flex-col gap-2 pt-1 lg:pt-0">
+                    <Link
+                      to={course.cta.to}
+                      className="w-full text-center bg-slate-950 hover:bg-slate-800 text-white font-bold py-2.5 px-4 rounded-full text-xs transition-colors"
+                    >
+                      {course.cta.label}
+                    </Link>
+                    <Link
+                      to={`/courses/${course.slug}`}
+                      className="group/link inline-flex items-center justify-center gap-1 text-xs font-semibold text-slate-600 hover:text-slate-950 transition-colors"
+                    >
+                      Course details
+                      <RiArrowRightLine className="w-3.5 h-3.5 group-hover/link:translate-x-0.5 transition-transform" />
+                    </Link>
+                  </div>
+                </article>
+              )
+            })}
+          </div>
 
-          <p className="text-xs sm:text-sm text-slate-500 pt-2">
+          <p className="text-xs sm:text-sm text-slate-500">
             Dates can change. Your place is confirmed once your application is accepted and payment is received, as set out in
             our Terms and Conditions.
           </p>

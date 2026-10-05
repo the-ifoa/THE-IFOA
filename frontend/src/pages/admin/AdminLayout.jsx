@@ -1,17 +1,14 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   BookOpen,
   Users,
   LogOut,
-  Plus,
   ExternalLink,
   ShieldCheck,
   Globe,
   ChevronRight,
-  FileText,
-  LayoutTemplate,
   Mail,
   LayoutDashboard,
   Info,
@@ -63,27 +60,27 @@ function NavItem({ to, icon: Icon, children, end, badge }) {
 // Structured Step-by-Step Help & Operational Guidance for each admin view
 const HELP = {
   overview: {
-    title: 'Console Overview & Navigation',
-    category: 'Dashboard Quickstart',
-    summary: 'Your central command center for controlling course offerings, customizing public website copy, and managing incoming student leads.',
+    title: 'Dashboard',
+    category: 'Start here',
+    summary: 'Everything you edit is one click from here: website pages, course pages and their application forms.',
     steps: [
       {
         step: '01',
-        title: 'Content You Edit (CMS & Courses)',
-        desc: 'Manage your training programs in the Courses Catalog and edit public text across all 6 marketing pages in Site Pages CMS.'
+        title: 'Edit a website page',
+        desc: 'Under Website Pages, click Edit. The live page opens; click any text or "Replace image" to change it, then Save.'
       },
       {
         step: '02',
-        title: 'Inbound Leads & Submissions',
-        desc: 'Review candidate applications in Registrations and prospective airline queries in Contact Messages in real time.'
+        title: 'Edit a course page or form',
+        desc: 'Under Course Pages, use Edit Page for the course page and Edit Form for its application page. Settings holds price, dates and status.'
       },
       {
         step: '03',
-        title: 'Direct Quick-Launch Navigation',
-        desc: 'Use the quick action buttons to immediately create new courses, build custom forms, or view the live website.'
+        title: 'Follow up on leads',
+        desc: 'The cards at the top show new registrations and contact messages. Click one to open the list.'
       }
     ],
-    proTip: 'Updates made in the CMS or Courses Catalog go live immediately upon saving without requiring a code redeploy.'
+    proTip: 'Changes go live as soon as you save. No redeploy needed.'
   },
   coursesList: {
     title: 'Courses Catalog Management',
@@ -111,35 +108,7 @@ const HELP = {
         desc: 'Click "Preview" to open the live public course page in a new tab and verify the user experience.'
       }
     ],
-    proTip: 'Click the "+ Add Course" button in the top header anytime you want to launch a new academic program or cohort.'
-  },
-  coursesNew: {
-    title: 'New Course Creation Wizard',
-    category: 'Course Setup',
-    summary: 'Step-by-step workflow to configure and publish a brand-new training program into the public catalog.',
-    steps: [
-      {
-        step: '01',
-        title: 'Set Course Identification',
-        desc: 'Enter the program title, URL slug, training category (Dispatch, Ground, Ramp, Instructor), and regulatory authority.'
-      },
-      {
-        step: '02',
-        title: 'Configure Schedule & Pricing',
-        desc: 'Define course duration, delivery mode (Onsite, Virtual, Hybrid), tuition fees, and upcoming intake dates.'
-      },
-      {
-        step: '03',
-        title: 'Add Curriculum Modules',
-        desc: 'Outline the syllabus phases, topics, competency outcomes, and entry prerequisites.'
-      },
-      {
-        step: '04',
-        title: 'Publish & Assign Schema',
-        desc: 'Save the course. It will automatically inherit the Default Form Template until you choose to customize it.'
-      }
-    ],
-    proTip: 'After saving, use the "Preview" button to verify formatting and mobile layout on the live site.'
+    proTip: 'Click "Edit Page" on any course to change its wording right on the live page.'
   },
   courseEditor: {
     title: 'Course Metadata & Specifications',
@@ -209,29 +178,6 @@ const HELP = {
       }
     ],
     proTip: 'Courses with their own custom saved forms will NOT be overwritten by changes to this master template.'
-  },
-  pagesList: {
-    title: 'Site Pages CMS Directory',
-    category: 'Content Management',
-    summary: 'Manage headlines, text copy, badges, and imagery across all marketing pages without writing code.',
-    steps: [
-      {
-        step: '01',
-        title: 'Choose a Page to Edit',
-        desc: 'Select Home, Services, About, Contact, Events, or Foxtrot Delta magazine from the cards list.'
-      },
-      {
-        step: '02',
-        title: 'Manage Shared Templates',
-        desc: 'Access global default wording for the Course Detail and Course Enrollment template pages.'
-      },
-      {
-        step: '03',
-        title: 'Launch Live Preview CMS',
-        desc: 'Click "Edit" on any page card to launch the interactive split-screen editor with live preview.'
-      }
-    ],
-    proTip: 'Click "View Live Page" on any card to see how the published page currently looks to public visitors.'
   },
   pageEditor: {
     title: 'Live Page Content Editor',
@@ -335,17 +281,13 @@ export function AdminLayout() {
   // Generate breadcrumb / title based on pathname
   const getPageInfo = () => {
     if (location.pathname === '/admin')
-      return { title: 'Overview', crumb: 'Overview', sub: 'Admin Dashboard', help: HELP.overview }
-    if (location.pathname === '/admin/courses/new')
-      return { title: 'Create New Course', crumb: 'Curriculum', sub: 'New Course Editor', help: HELP.coursesNew }
+      return { title: 'Dashboard', crumb: 'Dashboard', sub: 'Pages & Courses', help: HELP.overview }
     if (/^\/admin\/courses\/[^/]+\/content\/[^/]+$/.test(location.pathname))
       return { title: 'Edit Page Text', crumb: 'Curriculum', sub: 'Per-Course Content', help: HELP.courseContentEditor }
     if (location.pathname.endsWith('/form'))
       return { title: 'Enrollment Form Schema', crumb: 'Forms', sub: 'Custom Builder', help: HELP.form }
     if (location.pathname === '/admin/form-template')
       return { title: 'Default Form Template', crumb: 'Forms', sub: 'Master Blueprint', help: HELP.formTemplate }
-    if (location.pathname === '/admin/pages')
-      return { title: 'Site Pages & Content', crumb: 'CMS', sub: 'Static Pages', help: HELP.pagesList }
     if (location.pathname.startsWith('/admin/pages/'))
       return { title: 'Edit Page Content', crumb: 'CMS', sub: 'Live Content Editor', help: HELP.pageEditor }
     if (location.pathname.startsWith('/admin/submissions'))
@@ -404,14 +346,6 @@ export function AdminLayout() {
         {/* Right: Actions */}
         <div className="flex items-center gap-3 px-6 sm:px-8">
           <Link
-            to="/admin/courses/new"
-            className="inline-flex items-center gap-2 bg-[#34E06E] hover:bg-[#28c85e] text-slate-950 font-extrabold text-xs uppercase tracking-wider px-4 py-2.5 rounded-xl transition-all shadow-sm hover:shadow-emerald-500/20 active:scale-[0.99] cursor-pointer"
-          >
-            <Plus className="w-3.5 h-3.5 text-slate-950" />
-            <span>New Course</span>
-          </Link>
-
-          <Link
             to="/"
             target="_blank"
             rel="noreferrer"
@@ -434,42 +368,19 @@ export function AdminLayout() {
               <span>Admin Console</span>
             </div>
 
-            <nav className="space-y-4 pt-1">
-              <div className="space-y-1">
-                <NavItem to="/admin" icon={LayoutDashboard} end>
-                  Overview
-                </NavItem>
-                <NavItem to="/admin/pages" icon={LayoutTemplate}>
-                  Pages
-                </NavItem>
-              </div>
-
-              <div className="space-y-1">
-                <div className="text-[10px] font-bold uppercase tracking-widest text-slate-400 px-3 pb-1">
-                  Curriculum
-                </div>
-                <NavItem to="/admin/courses" icon={BookOpen} end>
-                  Courses Catalog
-                </NavItem>
-                <NavItem to="/admin/courses/new" icon={Plus}>
-                  Add New Course
-                </NavItem>
-                <NavItem to="/admin/form-template" icon={FileText}>
-                  Form Template
-                </NavItem>
-              </div>
-
-              <div className="space-y-1">
-                <div className="text-[10px] font-bold uppercase tracking-widest text-slate-400 px-3 pb-1">
-                  Admissions &amp; Leads
-                </div>
-                <NavItem to="/admin/submissions" icon={Users}>
-                  Registrations
-                </NavItem>
-                <NavItem to="/admin/contact-messages" icon={Mail}>
-                  Contact Messages
-                </NavItem>
-              </div>
+            <nav className="space-y-1 pt-1">
+              <NavItem to="/admin" icon={LayoutDashboard} end>
+                Dashboard
+              </NavItem>
+              <NavItem to="/admin/courses" icon={BookOpen}>
+                Courses
+              </NavItem>
+              <NavItem to="/admin/submissions" icon={Users}>
+                Registrations
+              </NavItem>
+              <NavItem to="/admin/contact-messages" icon={Mail}>
+                Contact Messages
+              </NavItem>
             </nav>
           </div>
 

@@ -10,6 +10,15 @@ export const SITE_URL = import.meta.env.VITE_SITE_URL || 'https://theifoa.com'
 export const SITE_NOINDEX = import.meta.env.VITE_NOINDEX === 'true'
 export const SITE_NAME = 'IFOA'
 export const SITE_LEGAL_NAME = 'IFOA International Flight Operations Academy'
+// Names people type to find us ("theifoa" is the domain). Google uses these
+// for brand queries and the site name shown above search results.
+export const SITE_ALTERNATE_NAMES = ['theIFOA', 'The IFOA', 'International Flight Operations Academy']
+export const SOCIAL_PROFILES = [
+  'https://www.linkedin.com/company/71556135/',
+  'https://www.instagram.com/theifoa/',
+  'https://www.facebook.com/profile.php?id=100069215447113',
+  'https://www.youtube.com/channel/UCH2vo2z3uLuPOTI1TwFaT7A'
+]
 export const DEFAULT_OG_IMAGE = `${SITE_URL}/og-default.jpg`
 
 export function absoluteUrl(path = '/') {
@@ -68,8 +77,9 @@ export function organizationSchema() {
     '@id': ORGANIZATION_ID,
     name: SITE_NAME,
     legalName: SITE_LEGAL_NAME,
-    alternateName: 'International Flight Operations Academy',
+    alternateName: SITE_ALTERNATE_NAMES,
     url: SITE_URL,
+    sameAs: SOCIAL_PROFILES,
     logo: `${SITE_URL}/favicon.png`,
     email: 'info@theifoa.com',
     description:
@@ -150,37 +160,83 @@ function courseModeFor(course) {
   return hit ? COURSE_MODE[hit] : 'Blended'
 }
 
+// "280 Hours · 7 Weeks" -> "PT280H"; schema.org wants ISO 8601 durations.
+// Hours win over weeks because they describe the workload, not the calendar.
+function isoDuration(text) {
+  const raw = `${text || ''}`.toLowerCase()
+  const n = (unit) => raw.match(new RegExp(`(\\d+)\\s*${unit}`))?.[1]
+  if (n('hour')) return `PT${n('hour')}H`
+  if (n('week')) return `P${n('week')}W`
+  if (n('day')) return `P${n('day')}D`
+  return undefined
+}
+
+// Titles of the overview's accordion/cards items, used as the syllabus when
+// the course page is driven by overview blocks rather than courseContent.
+function overviewSyllabus(course) {
+  const names = []
+  for (const block of course.overview?.blocks || []) {
+    if (block.type === 'accordion') {
+      for (const group of block.groups || []) for (const item of group.items || []) names.push(item.title)
+    }
+  }
+  return names.filter(Boolean)
+}
+
+function offerFor(course, amount, currency, extra = {}) {
+  return {
+    '@type': 'Offer',
+    price: amount,
+    priceCurrency: currency || 'EUR',
+    category: 'Tuition',
+    availability:
+      course.registrationOpen === false ? 'https://schema.org/PreOrder' : 'https://schema.org/InStock',
+    url: absoluteUrl(`/courses/${course.slug}`),
+    ...extra
+  }
+}
+
 // Course rich results need provider + at least one hasCourseInstance carrying
-// courseMode and a real start date, otherwise Search Console rejects the item.
+// courseMode and courseWorkload (or a schedule), otherwise Search Console
+// rejects the item. Courses without a published date still get an instance.
 export function courseSchema(course) {
   if (!course) return null
 
+  const workload = isoDuration(course.duration)
+  const place = course.location ? { '@type': 'Place', name: course.location } : undefined
+  const instance = (extra) => ({
+    '@type': 'CourseInstance',
+    name: course.title,
+    courseMode: courseModeFor(course),
+    courseWorkload: workload,
+    location: place,
+    ...extra
+  })
+
   const instances = (course.intakes || [])
-    .filter((i) => i.startDate)
-    .map((i) => ({
-      '@type': 'CourseInstance',
-      name: i.label || course.title,
-      courseMode: courseModeFor(course),
-      startDate: new Date(i.startDate).toISOString().slice(0, 10),
-      location: course.location
-        ? { '@type': 'Place', name: course.location }
-        : undefined
-    }))
+    .filter((i) => i.startDate && i.isActive !== false)
+    .map((i) => instance({ name: i.label || course.title, startDate: new Date(i.startDate).toISOString().slice(0, 10) }))
 
   if (instances.length === 0 && course.schedule?.startDate) {
-    instances.push({
-      '@type': 'CourseInstance',
-      name: course.title,
-      courseMode: courseModeFor(course),
-      startDate: new Date(course.schedule.startDate).toISOString().slice(0, 10),
-      endDate: course.schedule.endDate
-        ? new Date(course.schedule.endDate).toISOString().slice(0, 10)
-        : undefined,
-      location: course.location
-        ? { '@type': 'Place', name: course.location }
-        : undefined
-    })
+    instances.push(
+      instance({
+        startDate: new Date(course.schedule.startDate).toISOString().slice(0, 10),
+        endDate: course.schedule.endDate ? new Date(course.schedule.endDate).toISOString().slice(0, 10) : undefined
+      })
+    )
   }
+  if (instances.length === 0 && workload) instances.push(instance())
+
+  const offers = []
+  if (course.price?.amount != null) offers.push(offerFor(course, course.price.amount, course.price.currency))
+  for (const lp of course.locationPrices || []) {
+    if (lp?.amount != null) {
+      offers.push(offerFor(course, lp.amount, lp.currency, { areaServed: lp.location, name: `${course.title}, ${lp.location}` }))
+    }
+  }
+
+  const syllabus = (course.courseContent?.modules || []).map((m) => (typeof m === 'string' ? m : m?.title)).filter(Boolean)
+  const sections = syllabus.length ? syllabus : overviewSyllabus(course)
 
   return {
     '@type': 'Course',
@@ -195,27 +251,30 @@ export function courseSchema(course) {
     provider: { '@id': ORGANIZATION_ID },
     inLanguage: 'en',
     teaches: (course.whatYouWillLearn?.points || []).slice(0, 10),
-    syllabusSections: (course.courseContent?.modules || []).slice(0, 25).map((m, i) => ({
-      '@type': 'Syllabus',
-      position: i + 1,
-      name: typeof m === 'string' ? m : m?.title
-    })),
-    timeRequired: course.duration || undefined,
+    syllabusSections: sections.slice(0, 25).map((name, i) => ({ '@type': 'Syllabus', position: i + 1, name })),
+    timeRequired: workload,
     hasCourseInstance: instances.length > 0 ? instances : undefined,
-    offers:
-      course.price?.amount != null
-        ? {
-            '@type': 'Offer',
-            price: course.price.amount,
-            priceCurrency: course.price.currency || 'USD',
-            category: 'Tuition',
-            availability:
-              course.registrationOpen === false
-                ? 'https://schema.org/PreOrder'
-                : 'https://schema.org/InStock',
-            url: absoluteUrl(`/courses/${course.slug}/enroll`)
-          }
-        : undefined
+    offers: offers.length === 1 ? offers[0] : offers.length ? offers : undefined
+  }
+}
+
+// Minimal Course entity for list pages (services, upcoming courses): enough
+// for an ItemList of courses without duplicating the full course page graph.
+export function courseListSchema(name, items = []) {
+  return {
+    '@type': 'ItemList',
+    name,
+    itemListElement: items.map((item, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      item: {
+        '@type': 'Course',
+        name: item.name,
+        description: clampDescription(item.description, 200),
+        url: absoluteUrl(item.path),
+        provider: { '@id': ORGANIZATION_ID }
+      }
+    }))
   }
 }
 

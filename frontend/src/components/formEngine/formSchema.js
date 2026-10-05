@@ -104,7 +104,8 @@ export function getSubmissionQuickInfo(submission) {
     email: null,
     phone: null,
     citizenship: null,
-    passportNumber: null
+    passportNumber: null,
+    trainingLocation: null // dispatcher forms ask where to train
   }
 
   for (const section of sections) {
@@ -115,6 +116,7 @@ export function getSubmissionQuickInfo(submission) {
       if (field.type === 'tel' && !info.phone) info.phone = val
       if (field.id === 'citizenship' && !info.citizenship) info.citizenship = val
       if (field.id === 'passportNumber' && !info.passportNumber) info.passportNumber = val
+      if (field.id === 'trainingCountry' && !info.trainingLocation) info.trainingLocation = val
     }
   }
 

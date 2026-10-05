@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import {
   RiCheckboxCircleFill,
   RiLoader4Line,
@@ -15,8 +15,18 @@ import {
 } from '@/components/formEngine/formSchema'
 import { downloadEnrollmentPdf } from '@/pdf/generateEnrollmentPdf'
 
-export function RegistrationForm({ slug, courseTitle, onAnswersChange, locationPrices = [] }) {
-  const [sections, setSections] = useState(null)
+// `liveSections` is the admin editor's in-progress form (preview iframe only):
+// it replaces the saved sections and tags each section/field with its path in
+// that array, so their wording renders click-to-edit. `text` holds the
+// header/submit wording (strings, or editable nodes in the admin preview).
+export function RegistrationForm({ slug, courseTitle, onAnswersChange, locationPrices = [], liveSections, text = {} }) {
+  const [savedSections, setSections] = useState(null)
+  const sections = useMemo(() => {
+    if (!Array.isArray(liveSections)) return savedSections
+    return liveSections
+      .map((s, i) => ({ ...s, _path: `form.${i}`, fields: (s.fields || []).map((f, j) => ({ ...f, _path: `form.${i}.fields.${j}` })) }))
+      .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+  }, [liveSections, savedSections])
   const [formAvailable, setFormAvailable] = useState(true)
   const [course, setCourse] = useState(null)
   const [answers, setAnswers] = useState(null)
@@ -95,6 +105,8 @@ export function RegistrationForm({ slug, courseTitle, onAnswersChange, locationP
 
   async function handleSubmit(e) {
     e.preventDefault()
+    // Admin editor preview: never send a real application.
+    if (liveSections) return
     const detailed = getDetailedValidationErrors(sections, answers)
 
     // Require an intake choice only when the course offers intakes.
@@ -285,13 +297,13 @@ export function RegistrationForm({ slug, courseTitle, onAnswersChange, locationP
         <div className="flex items-start justify-between gap-4">
           <div className="space-y-1.5">
             <span className="text-xs font-mono font-bold uppercase tracking-widest text-[#34E06E] inline-block">
-              Candidate Registration Form
+              {text.eyebrow || 'Candidate Registration Form'}
             </span>
             <h2 className="text-xl sm:text-2xl lg:text-3xl font-extrabold tracking-tight text-white leading-tight">
-              {courseTitle || 'Flight Operations & Dispatch Program'}
+              {text.title || courseTitle || 'Flight Operations & Dispatch Program'}
             </h2>
             <p className="text-xs sm:text-sm text-slate-300">
-              Please complete all required fields marked with an asterisk (<span className="text-red-400 font-bold">*</span>)
+              {text.instructions || 'Please complete all required fields marked with an asterisk'} (<span className="text-red-400 font-bold">*</span>)
             </p>
           </div>
         </div>
@@ -343,7 +355,7 @@ export function RegistrationForm({ slug, courseTitle, onAnswersChange, locationP
             className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#34E06E] hover:bg-[#28c85e] text-slate-950 font-extrabold text-xs uppercase tracking-wider px-8 py-4 rounded-full shadow-[0_4px_20px_rgba(52,224,110,0.35)] disabled:opacity-60 disabled:cursor-not-allowed transition transform hover:-translate-y-0.5"
           >
             {submitting && <RiLoader4Line className="w-4 h-4 animate-spin" />}
-            {submitting ? 'Submitting Application…' : 'Submit Application Now'}
+            {submitting ? 'Submitting Application…' : text.submitLabel || 'Submit Application Now'}
           </button>
         </div>
       </div>

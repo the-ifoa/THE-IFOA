@@ -1,7 +1,50 @@
-import React from 'react'
 import { Link } from 'react-router-dom'
 import { RiLinkedinFill, RiFacebookFill, RiInstagramLine, RiYoutubeFill, RiArrowUpLine } from 'react-icons/ri'
 import ifoaLogo from '@/assets/shared/brand/ifoa-logoweb.webp'
+
+// Footer link groups. Courses split by who books them so each column stays
+// short; every course entry opens its own course page.
+const course = (label, slug) => ({ label, to: `/courses/${slug}` })
+const LINK_GROUPS = [
+  {
+    title: 'For individuals',
+    links: [
+      course('Flight Dispatcher Initial', 'flight-dispatcher-initial-certification'),
+      course('FAA Aircraft Dispatcher', 'aircraft-dispatcher-training-faa-part-65'),
+      course('Double Programme', 'flight-dispatcher-double-programme'),
+      { label: 'Upcoming courses', to: '/upcoming-courses' }
+    ]
+  },
+  {
+    title: 'For operators',
+    links: [
+      course('Dangerous Goods', 'dangerous-goods-regulations-cbta-initial'),
+      course('Train the Trainer', 'train-the-trainer-icao-cbta-instructor'),
+      course('Human Factors for the OCC', 'human-factors-in-the-occ'),
+      course('Crew Control', 'airline-crew-control-flight-rostering'),
+      course('OCC Consulting', 'airline-occ-setup-operational-consulting')
+    ]
+  },
+  {
+    title: 'IFOA',
+    links: [
+      { label: 'About', to: '/about' },
+      { label: 'All services', to: '/services' },
+      { label: 'Foxtrot Delta', to: '/foxtrot-delta' },
+      { label: 'Agent for Service', href: 'https://agent.theifoa.com/' },
+      { label: 'Contact', to: '/contact' }
+    ]
+  }
+]
+
+const SOCIALS = [
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/company/71556135/', Icon: RiLinkedinFill },
+  { label: 'Facebook', href: 'https://www.facebook.com/profile.php?id=100069215447113', Icon: RiFacebookFill },
+  { label: 'Instagram', href: 'https://www.instagram.com/theifoa/', Icon: RiInstagramLine },
+  { label: 'YouTube', href: 'https://www.youtube.com/channel/UCH2vo2z3uLuPOTI1TwFaT7A', Icon: RiYoutubeFill }
+]
+
+const LINK_CLASS = 'text-slate-400 hover:text-white transition-colors'
 
 export function Footer() {
   const currentYear = new Date().getFullYear()
@@ -11,159 +54,66 @@ export function Footer() {
   }
 
   return (
-    <footer className="bg-[#020617] pt-16 pb-12 border-t border-white/10 text-white select-none" data-purpose="main-footer">
+    <footer className="bg-[#020617] pt-16 sm:pt-20 pb-8 border-t border-white/10 text-white select-none" data-purpose="main-footer">
       <div className="max-w-[1280px] mx-auto px-6 sm:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-8 gap-10 lg:gap-8 mb-14 items-start">
-          {/* Brand Info & Mission */}
-          <div className="lg:col-span-4 space-y-4">
-            <Link to="/" className="inline-flex items-center gap-3">
-              <img
-                src={ifoaLogo}
-                alt="IFOA"
-                className="h-9 sm:h-10 w-auto object-contain brightness-110 hover:scale-105 transition-transform"
-              />
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-[1.4fr_1fr_1fr_1fr] gap-x-8 gap-y-12 pb-14">
+          {/* Brand */}
+          <div className="col-span-2 sm:col-span-3 lg:col-span-1 space-y-5">
+            <Link to="/" className="inline-flex" aria-label="IFOA home">
+              <img src={ifoaLogo} alt="IFOA" className="h-9 w-auto object-contain brightness-110" />
             </Link>
-            <p className="text-slate-400 text-sm leading-relaxed max-w-sm font-normal">
-              International Flight Operations Academy. World-class flight dispatch education, FAA Part 65 certification, and EASA ORO.GEN.110 operational compliance.
+            <p className="text-slate-400 text-sm leading-relaxed max-w-xs">
+              Flight dispatch and operations control training to FAA, ICAO and EASA standards.
             </p>
-
-            {/* Circular Social Media Links matching reference */}
-            <div className="flex items-center gap-2.5 pt-2">
-              {/* LinkedIn */}
-              <a
-                href="https://www.linkedin.com/company/71556135/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-9 h-9 rounded-full bg-white/10 hover:bg-[#34E06E] text-slate-300 hover:text-slate-950 flex items-center justify-center transition-all duration-200 shadow-sm"
-                aria-label="LinkedIn"
-                title="LinkedIn"
-              >
-                <RiLinkedinFill className="w-4 h-4" />
-              </a>
-
-              {/* Facebook */}
-              <a
-                href="https://www.facebook.com/profile.php?id=100069215447113"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-9 h-9 rounded-full bg-white/10 hover:bg-[#34E06E] text-slate-300 hover:text-slate-950 flex items-center justify-center transition-all duration-200 shadow-sm"
-                aria-label="Facebook"
-                title="Facebook"
-              >
-                <RiFacebookFill className="w-4 h-4" />
-              </a>
-
-              {/* Instagram */}
-              <a
-                href="https://www.instagram.com/theifoa/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-9 h-9 rounded-full bg-white/10 hover:bg-[#34E06E] text-slate-300 hover:text-slate-950 flex items-center justify-center transition-all duration-200 shadow-sm"
-                aria-label="Instagram"
-                title="Instagram"
-              >
-                <RiInstagramLine className="w-4 h-4" />
-              </a>
-
-              {/* YouTube */}
-              <a
-                href="https://www.youtube.com/channel/UCH2vo2z3uLuPOTI1TwFaT7A"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-9 h-9 rounded-full bg-white/10 hover:bg-[#34E06E] text-slate-300 hover:text-slate-950 flex items-center justify-center transition-all duration-200 shadow-sm"
-                aria-label="YouTube"
-                title="YouTube"
-              >
-                <RiYoutubeFill className="w-4 h-4" />
-              </a>
+            <div className="flex items-center gap-2">
+              {SOCIALS.map(({ label, href, Icon }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={label}
+                  title={label}
+                  className="w-8 h-8 rounded-full bg-white/10 hover:bg-[#34E06E] text-slate-300 hover:text-slate-950 flex items-center justify-center transition-colors duration-200"
+                >
+                  <Icon className="w-4 h-4" />
+                </a>
+              ))}
             </div>
           </div>
 
-          {/* Quick Links */}
-          <div className="lg:col-span-2 space-y-4">
-            <h4 className="font-bold text-sm text-white tracking-tight">
-              Quick Links
-            </h4>
-            <ul className="space-y-2.5 text-sm text-slate-400">
-              <li>
-                <Link to="/" className="hover:text-white transition-colors">
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link to="/about" className="hover:text-[#34E06E] transition-colors">
-                  About
-                </Link>
-              </li>
-              <li>
-                <Link to="/services" className="hover:text-white transition-colors">
-                  Services
-                </Link>
-              </li>
-              <li>
-                <Link to="/foxtrot-delta" className="hover:text-[#34E06E] transition-colors font-medium">
-                  Foxtrot Delta
-                </Link>
-              </li>
-              <li>
-                <Link to="/contact" className="hover:text-white transition-colors">
-                  Contact
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Services Links */}
-          <div className="lg:col-span-2 space-y-4">
-            <h4 className="font-bold text-sm text-white tracking-tight">
-              Services
-            </h4>
-            <ul className="space-y-2.5 text-sm text-slate-400">
-              <li>
-                <Link to="/services" className="hover:text-white transition-colors">
-                  Initial Dispatch
-                </Link>
-              </li>
-              <li>
-                <Link to="/services" className="hover:text-white transition-colors">
-                  Recurrent Refresher
-                </Link>
-              </li>
-              <li>
-                <Link to="/services" className="hover:text-white transition-colors">
-                  Dangerous Goods
-                </Link>
-              </li>
-              <li>
-                <Link to="/services" className="hover:text-white transition-colors">
-                  OCC Consulting
-                </Link>
-              </li>
-              <li>
-                <a
-                  href="https://agent.theifoa.com/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-white transition-colors"
-                >
-                  Agent for Service
-                </a>
-              </li>
-            </ul>
-          </div>
+          {/* Link groups */}
+          {LINK_GROUPS.map((group) => (
+            <nav key={group.title} aria-label={group.title} className="space-y-5">
+              <h4 className="text-[11px] font-mono font-bold uppercase tracking-widest text-slate-500">{group.title}</h4>
+              <ul className="space-y-3 text-sm">
+                {group.links.map((link) => (
+                  <li key={link.label}>
+                    {link.href ? (
+                      <a href={link.href} target="_blank" rel="noopener noreferrer" className={LINK_CLASS}>
+                        {link.label}
+                      </a>
+                    ) : (
+                      <Link to={link.to} className={LINK_CLASS}>
+                        {link.label}
+                      </Link>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          ))}
         </div>
 
-        {/* Bottom Legal Bar */}
-        <div className="pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-500 gap-4">
-          <p>© {currentYear} International Flight Operations Academy GmbH · Professional Flight Dispatcher Certification</p>
-
+        {/* Bottom bar */}
+        <div className="pt-7 border-t border-white/10 flex items-center justify-between gap-4 text-xs text-slate-500">
+          <p>© {currentYear} International Flight Operations Academy GmbH</p>
           <button
             onClick={scrollToTop}
-            className="group inline-flex items-center gap-2 py-1 text-slate-400 hover:text-white transition-colors duration-200 cursor-pointer"
-            title="Back to top"
+            className="group inline-flex items-center gap-2 text-slate-400 hover:text-white transition-colors duration-200 cursor-pointer shrink-0"
             aria-label="Back to top"
           >
-            <span className="text-xs font-semibold tracking-wide">Back to top</span>
+            <span className="hidden sm:inline font-semibold">Back to top</span>
             <span className="w-7 h-7 rounded-full border border-slate-600 group-hover:border-[#34E06E] group-hover:text-[#34E06E] flex items-center justify-center transition-colors duration-200">
               <RiArrowUpLine className="w-3.5 h-3.5 transition-transform duration-200 group-hover:-translate-y-0.5" />
             </span>

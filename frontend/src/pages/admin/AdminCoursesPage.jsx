@@ -1,11 +1,8 @@
-import React, { useEffect, useState, useMemo } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import {
   Loader2,
   Pencil,
-  Trash2,
-  Plus,
-  Eye,
   Search,
   BookOpen,
   CheckCircle2,
@@ -24,9 +21,12 @@ import {
   DollarSign,
   FileText,
   Link as LinkIcon,
-  ChevronRight
+  ChevronRight,
+  Mail
 } from 'lucide-react'
 import { api } from '@/lib/api'
+import { hasEnrollmentForm, resolveCard } from '@/components/course/CourseCard'
+import { SERVICE_IMAGE_BY_SLUG } from '@/data/serviceImages'
 
 // Helper to get category visual tone and icon
 function getCategoryMeta(category = '') {
@@ -56,8 +56,6 @@ export function AdminCoursesPage() {
   const [categoryFilter, setCategoryFilter] = useState('all')
   const [searchQuery, setSearchQuery] = useState('')
   const [copiedId, setCopiedId] = useState(null)
-  const [deleteTarget, setDeleteTarget] = useState(null)
-  const [deleting, setDeleting] = useState(false)
 
   async function load() {
     setLoading(true)
@@ -83,19 +81,7 @@ export function AdminCoursesPage() {
     setTimeout(() => setCopiedId(null), 2000)
   }
 
-  async function confirmDelete() {
-    if (!deleteTarget) return
-    setDeleting(true)
-    try {
-      await api.adminDeleteCourse(deleteTarget._id)
-      setCourses((prev) => prev.filter((c) => c._id !== deleteTarget._id))
-      setDeleteTarget(null)
-    } catch (err) {
-      alert(err.message)
-    } finally {
-      setDeleting(false)
-    }
-  }
+
 
   // Filtered courses based on search & category
   const filteredCourses = useMemo(() => {
@@ -268,6 +254,16 @@ export function AdminCoursesPage() {
               <option value="consulting">Airline Consulting</option>
             </select>
 
+            {/* Default application form new courses start from */}
+            <Link
+              to="/admin/form-template"
+              title="The application form every new course starts from"
+              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 hover:text-slate-900 hover:bg-slate-100 transition-colors shrink-0"
+            >
+              <FileText className="w-3.5 h-3.5 text-slate-500" />
+              <span>Default form</span>
+            </Link>
+
             {/* Reload Button */}
             <button
               onClick={load}
@@ -305,33 +301,10 @@ export function AdminCoursesPage() {
               Try adjusting your search query or status filter to find the course you are looking for.
             </p>
           </div>
-          <div className="pt-2">
-            <Link
-              to="/admin/courses/new"
-              className="inline-flex items-center gap-2 bg-[#020617] hover:bg-[#34E06E] text-white hover:text-black font-extrabold text-xs uppercase tracking-wider px-5 py-2.5 rounded-xl transition-all shadow-sm cursor-pointer"
-            >
-              <Plus className="w-4 h-4 text-emerald-400" />
-              <span>Create New Course</span>
-            </Link>
-          </div>
         </div>
       ) : (
         <div className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
-            {/* Add New Course tile */}
-            <Link
-              to="/admin/courses/new"
-              className="flex flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-slate-300 bg-slate-50/60 hover:bg-emerald-50/60 hover:border-emerald-300 transition-all min-h-[260px] text-slate-500 hover:text-emerald-700 cursor-pointer"
-            >
-              <div className="w-12 h-12 rounded-2xl bg-white border border-slate-200 flex items-center justify-center shadow-xs">
-                <Plus className="w-6 h-6" />
-              </div>
-              <span className="text-sm font-bold">Add New Course</span>
-              <span className="text-[11px] text-slate-400 text-center max-w-[180px]">
-                Create a new curriculum program
-              </span>
-            </Link>
-
             {filteredCourses.map((course) => {
               const meta = getCategoryMeta(course.category)
               const CategoryIcon = meta.icon
@@ -348,6 +321,16 @@ export function AdminCoursesPage() {
                   key={course._id}
                   className="flex flex-col justify-between rounded-2xl border border-slate-200/90 bg-white shadow-[0_2px_12px_rgba(0,0,0,0.03)] hover:shadow-md hover:border-slate-300 transition-all overflow-hidden group"
                 >
+                  {/* Course image (same photo as on the Services page) */}
+                  <Link to={`/admin/courses/${course._id}/text`} className="relative block aspect-[16/9] bg-slate-100 overflow-hidden">
+                    <img
+                      src={SERVICE_IMAGE_BY_SLUG[course.slug] || resolveCard(course).image}
+                      alt={course.title}
+                      loading="lazy"
+                      className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500"
+                    />
+                  </Link>
+
                   {/* Header */}
                   <div className="p-5 space-y-3">
                     <div className="flex items-start justify-between gap-2">
@@ -367,7 +350,7 @@ export function AdminCoursesPage() {
 
                     <div className="space-y-1">
                       <Link
-                        to={`/admin/courses/${course._id}`}
+                        to={`/admin/courses/${course._id}/text`}
                         className="font-bold text-slate-900 hover:text-emerald-600 transition-colors leading-snug line-clamp-2 block"
                         title={course.title}
                       >
@@ -416,26 +399,32 @@ export function AdminCoursesPage() {
 
                     {/* Registration Form & Page Overrides badge */}
                     <div className="flex flex-wrap items-center gap-1.5 pt-1">
-                      <Link
-                        to={`/admin/courses/${course._id}/form`}
-                        title="Configure the candidate enrollment form questions for this course"
-                        className={`inline-flex items-center gap-1.5 text-[11px] font-bold px-2.5 py-1 rounded-full border transition-colors ${
-                          course.hasCustomForm
-                            ? 'bg-emerald-50 text-emerald-700 border-emerald-200/80 hover:bg-emerald-100'
-                            : 'bg-slate-100 text-slate-600 border-slate-200/80 hover:bg-slate-200'
-                        }`}
-                      >
-                        <FileText className="w-3 h-3" />
-                        <span>{course.hasCustomForm ? 'Custom Form' : 'Default Form'}</span>
-                        <LinkIcon className="w-2.5 h-2.5 opacity-60" />
-                      </Link>
+                      {hasEnrollmentForm(course) ? (
+                        <Link
+                          to={`/admin/courses/${course._id}/form`}
+                          title="Edit the online application form for this course"
+                          className="inline-flex items-center gap-1.5 text-[11px] font-bold px-2.5 py-1 rounded-full border transition-colors bg-emerald-50 text-emerald-700 border-emerald-200/80 hover:bg-emerald-100"
+                        >
+                          <FileText className="w-3 h-3" />
+                          <span>Online application</span>
+                          <LinkIcon className="w-2.5 h-2.5 opacity-60" />
+                        </Link>
+                      ) : (
+                        <span
+                          title="This course has no application form - its buttons send visitors to the Contact page"
+                          className="inline-flex items-center gap-1.5 text-[11px] font-bold px-2.5 py-1 rounded-full border bg-slate-100 text-slate-600 border-slate-200/80"
+                        >
+                          <Mail className="w-3 h-3" />
+                          <span>Enquiries via Contact</span>
+                        </span>
+                      )}
 
                       <Link
-                        to={`/admin/courses/${course._id}/content/courseDetail`}
-                        title="Override page copy and headers for this specific course"
+                        to={`/admin/courses/${course._id}`}
+                        title="Price, dates, images, status and other course settings"
                         className="inline-flex items-center gap-1 text-[11px] font-semibold text-slate-500 hover:text-slate-800 bg-slate-50 hover:bg-slate-100 border border-slate-200 px-2 py-1 rounded-full transition-colors"
                       >
-                        <span>Page Text</span>
+                        <span>Settings</span>
                         <ChevronRight className="w-3 h-3 text-slate-400" />
                       </Link>
                     </div>
@@ -444,37 +433,23 @@ export function AdminCoursesPage() {
                   {/* Actions Bar */}
                   <div className="border-t border-slate-100 bg-slate-50/80 p-3 flex items-center gap-2">
                     <Link
-                      to={`/admin/courses/${course._id}`}
+                      to={`/admin/courses/${course._id}/text`}
                       className="flex-1 inline-flex items-center justify-center gap-1.5 bg-[#020617] hover:bg-[#34E06E] text-white hover:text-black text-[11px] font-extrabold uppercase tracking-wider px-3 py-2 rounded-xl transition-all cursor-pointer shadow-xs"
-                      title="Edit course title, summary, schedule, tuition pricing, and syllabus modules"
+                      title="Open the live course page and click any text to edit it"
                     >
                       <Pencil className="w-3.5 h-3.5" />
-                      <span>Edit Course</span>
+                      <span>Edit Page</span>
                     </Link>
-                    <Link
-                      to={`/admin/courses/${course._id}/form`}
-                      className="inline-flex items-center justify-center gap-1 border border-slate-200 bg-white text-slate-700 hover:bg-slate-100 text-[11px] font-bold px-2.5 py-2 rounded-xl transition-all cursor-pointer shadow-2xs"
-                      title="Edit enrollment form questions"
-                    >
-                      <FileText className="w-3.5 h-3.5 text-slate-500" />
-                      <span>Form</span>
-                    </Link>
-                    <a
-                      href={`/admin/courses/${course._id}/preview`}
-                      target="_blank"
-                      rel="noreferrer"
-                      title="Open Live Course Preview in a new window"
-                      className="p-2 rounded-xl border border-slate-200 bg-white text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all cursor-pointer shadow-2xs"
-                    >
-                      <Eye className="w-4 h-4" />
-                    </a>
-                    <button
-                      onClick={() => setDeleteTarget(course)}
-                      title="Delete Course Program"
-                      className="p-2 rounded-xl border border-slate-200 bg-white text-slate-400 hover:text-red-600 hover:bg-red-50 hover:border-red-200 transition-all cursor-pointer shadow-2xs"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
+                    {hasEnrollmentForm(course) && (
+                      <Link
+                        to={`/admin/courses/${course._id}/form`}
+                        className="inline-flex items-center justify-center gap-1 border border-slate-200 bg-white text-slate-700 hover:bg-slate-100 text-[11px] font-bold px-2.5 py-2 rounded-xl transition-all cursor-pointer shadow-2xs"
+                        title="Edit the online application form"
+                      >
+                        <FileText className="w-3.5 h-3.5 text-slate-500" />
+                        <span>Form</span>
+                      </Link>
+                    )}
                   </div>
                 </div>
               )
@@ -492,49 +467,6 @@ export function AdminCoursesPage() {
         </div>
       )}
 
-      {/* 4. DELETE CONFIRMATION MODAL */}
-      {deleteTarget && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-xs animate-in fade-in-0 duration-150">
-          <div className="w-full max-w-md bg-white rounded-3xl p-6 shadow-2xl border border-slate-200 space-y-5 animate-in zoom-in-95 duration-200">
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 rounded-2xl bg-red-50 text-red-600 flex items-center justify-center shrink-0 border border-red-100">
-                <AlertTriangle className="w-6 h-6 text-red-500" />
-              </div>
-              <div className="space-y-1">
-                <h3 className="text-base font-bold text-slate-900">Delete Course Program?</h3>
-                <p className="text-xs text-slate-500 leading-relaxed">
-                  Are you sure you want to permanently delete{' '}
-                  <strong className="text-slate-900">"{deleteTarget.title}"</strong>? This will remove its curriculum, syllabus data, and uploaded media.
-                </p>
-              </div>
-            </div>
-
-            <div className="p-3.5 bg-slate-50 rounded-2xl border border-slate-200/80 text-xs font-mono text-slate-600">
-              Ref: <span className="font-bold text-slate-900">{deleteTarget.refCode || 'N/A'}</span> | Slug: /{deleteTarget.slug}
-            </div>
-
-            <div className="flex items-center justify-end gap-3 pt-2">
-              <button
-                type="button"
-                onClick={() => setDeleteTarget(null)}
-                disabled={deleting}
-                className="px-4 py-2.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer"
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                onClick={confirmDelete}
-                disabled={deleting}
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white text-xs font-bold uppercase tracking-wider transition-all shadow-sm hover:shadow-red-500/25 cursor-pointer"
-              >
-                {deleting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Trash2 className="w-4 h-4" />}
-                <span>Delete Program</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   )
 }

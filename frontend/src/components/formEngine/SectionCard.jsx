@@ -3,7 +3,6 @@ export function SectionCard({
   title,
   stepNumber,
   description,
-  icon,
   isCompleted,
   children,
 }) {

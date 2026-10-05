@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { ArrowLeft, Loader2, FileText, Download, Trash2, Pencil, Check } from 'lucide-react'
 import { api } from '@/lib/api'
 import { openEnrollmentPdf, downloadEnrollmentPdf } from '@/pdf/generateEnrollmentPdf'
 import { SubmissionSummary } from '@/components/formEngine/SubmissionSummary'
 import { DynamicSection } from '@/components/formEngine/DynamicSection'
-import { getSubmissionDisplayName } from '@/components/formEngine/formSchema'
+import { getSubmissionDisplayName, getSubmissionQuickInfo } from '@/components/formEngine/formSchema'
 
 const STATUSES = ['new', 'contacted', 'confirmed', 'rejected']
 
@@ -60,6 +60,7 @@ export function AdminSubmissionDetailPage() {
 
   const sections = [...(submission.formSchemaSnapshot || [])].sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
   const name = getSubmissionDisplayName(submission)
+  const { trainingLocation } = getSubmissionQuickInfo(submission)
 
   async function patch(body, successMsg) {
     setSaving(true)
@@ -119,6 +120,11 @@ export function AdminSubmissionDetailPage() {
               {submission.intake && (
                 <span className="rounded-md border border-blue-200 bg-blue-50 px-2 py-0.5 text-[11px] font-bold text-ifoa-navy">
                   Intake: {submission.intake}
+                </span>
+              )}
+              {trainingLocation && (
+                <span className="rounded-md border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-[11px] font-bold text-emerald-700">
+                  Location: {trainingLocation}
                 </span>
               )}
             </div>

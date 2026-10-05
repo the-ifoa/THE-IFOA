@@ -1,4 +1,5 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { api } from '@/lib/api'
 
 // True inline editing for admin page content: the admin's live-preview iframe
 // (?__preview=1, see usePageContent) renders the exact public page, and text
@@ -13,7 +14,7 @@ export function isPreviewEditMode() {
 
 const debounceTimers = {}
 
-function postEdit(path, value) {
+export function postEdit(path, value) {
   window.parent.postMessage({ type: 'ifoa-edit-change', path, value }, window.location.origin)
 }
 
@@ -115,5 +116,77 @@ export function CmsAddItem({ listPath, blank, label = 'Add' }) {
     >
       + {label}
     </button>
+  )
+}
+
+// "Replace image" control shown over an image in edit mode only. Uploads the
+// picked file to Cloudflare R2 from inside the preview iframe (same origin, so
+// the admin session cookie applies) and posts the { url, key, alt } result to
+// `path` through the same channel as CmsText. Place it inside a positioned
+// container that sits above the image; the editor's Save persists it, and
+// the backend drops the old R2 object once nothing references it.
+// `multiple` uploads several files and posts them as an array (logo rows).
+// `onUploaded` takes the result instead of posting it to `path` (for callers
+// that rebuild a whole list, e.g. replacing one logo in a row).
+export function CmsImageButton({
+  path,
+  folder = 'pages',
+  className = 'top-3 right-3',
+  multiple = false,
+  label = 'Replace image',
+  onUploaded
+}) {
+  const inputRef = useRef(null)
+  const [busy, setBusy] = useState(false)
+  const [error, setError] = useState('')
+  if (!isPreviewEditMode()) return null
+
+  async function handleFile(e) {
+    const files = Array.from(e.target.files || [])
+    if (!files.length) return
+    setBusy(true)
+    setError('')
+    try {
+      const { images } = await api.adminUpload(multiple ? files : [files[0]], folder)
+      const uploaded = images.map((img) => ({ ...img, alt: img.alt || '' }))
+      const result = multiple ? uploaded : uploaded[0]
+      if (onUploaded) onUploaded(result)
+      else postEdit(path, result)
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setBusy(false)
+      if (inputRef.current) inputRef.current.value = ''
+    }
+  }
+
+  return (
+    <div
+      className={`ifoa-cms-image absolute z-30 flex flex-col items-end gap-1 ${className}`}
+      onClick={(e) => {
+        e.stopPropagation()
+        // The file input's own click bubbles here too; cancelling it would
+        // stop the browser opening the file picker.
+        if (e.target !== inputRef.current) e.preventDefault()
+      }}
+    >
+      <button
+        type="button"
+        disabled={busy}
+        onClick={() => inputRef.current?.click()}
+        className="inline-flex items-center gap-1.5 rounded-full bg-black/75 px-3 py-1.5 text-[11px] font-bold text-white shadow-md ring-1 ring-white/20 hover:bg-black disabled:opacity-60 cursor-pointer"
+      >
+        {busy ? 'Uploading…' : label}
+      </button>
+      {error && <span className="rounded bg-red-600 px-2 py-0.5 text-[10px] font-semibold text-white">{error}</span>}
+      <input
+        ref={inputRef}
+        type="file"
+        accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml"
+        multiple={multiple}
+        onChange={handleFile}
+        className="hidden"
+      />
+    </div>
   )
 }

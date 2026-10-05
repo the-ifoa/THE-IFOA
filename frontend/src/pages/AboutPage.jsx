@@ -1,19 +1,8 @@
-import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Button } from '@/components/ui/button'
-import {
-  RiShieldCheckFill,
-  RiAwardFill,
-  RiGlobeLine,
-  RiPlaneFill,
-  RiArrowRightLine
-} from 'react-icons/ri'
-import { PiAirplaneTiltFill } from 'react-icons/pi'
 import { HiArrowUpRight } from 'react-icons/hi2'
 
-import { CosmicParallaxBg } from '@/components/common/CosmicParallaxBg'
 import { Reveal } from '@/components/common/Reveal'
-import { CmsText, CmsRemoveItem, CmsAddItem } from '@/components/admin/CmsEditable'
+import { CmsText, CmsRemoveItem, CmsAddItem, CmsImageButton } from '@/components/admin/CmsEditable'
 import { usePageContent } from '@/hooks/usePageContent'
 import { Seo } from '@/components/common/Seo'
 import { graph, organizationSchema, breadcrumbSchema } from '@/lib/seo'
@@ -137,6 +126,7 @@ export function AboutPage() {
           />
           <div className="absolute inset-0 bg-gradient-to-b from-[#020617]/90 via-[#020617]/75 to-[#020617]" />
         </div>
+        <CmsImageButton path="hero.image" className="top-24 right-4 sm:right-6" />
 
         <div className="relative z-10 w-full max-w-[1280px] mx-auto px-6 sm:px-8 text-center space-y-6 flex flex-col items-center justify-center">
           <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white max-w-4xl mx-auto leading-tight">

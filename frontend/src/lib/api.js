@@ -61,9 +61,7 @@ export const api = {
     return request(`/admin/courses${qs ? `?${qs}` : ''}`)
   },
   adminGetCourse: (id) => request(`/admin/courses/${id}`),
-  adminCreateCourse: (payload) => request('/admin/courses', { method: 'POST', body: payload }),
   adminUpdateCourse: (id, payload) => request(`/admin/courses/${id}`, { method: 'PUT', body: payload }),
-  adminDeleteCourse: (id) => request(`/admin/courses/${id}`, { method: 'DELETE' }),
 
   // ---- Admin: per-course enrollment form schema ----
   adminGetCourseForm: (courseId) => request(`/admin/courses/${courseId}/form-schema`),
@@ -82,6 +80,11 @@ export const api = {
   adminGetPage: (page) => request(`/admin/pages/${page}`),
   adminUpdatePage: (page, data) => request(`/admin/pages/${page}`, { method: 'PUT', body: { data } }),
   adminResetPage: (page) => request(`/admin/pages/${page}`, { method: 'DELETE' }),
+
+  adminUpdateCourseTextFields: (id, fields) =>
+    request(`/admin/courses/${id}/text-fields`, { method: 'PUT', body: { fields } }),
+  adminUpdateCourseOverview: (id, overview) =>
+    request(`/admin/courses/${id}/overview`, { method: 'PUT', body: { overview } }),
 
   // ---- Admin: per-course chrome overrides (courseDetail/courseEnrollment) ----
   adminGetCourseContent: (id, page) => request(`/admin/courses/${id}/content/${page}`),

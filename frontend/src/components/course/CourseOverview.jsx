@@ -1,6 +1,8 @@
-import React, { createContext, useContext, useEffect, useRef, useState } from 'react'
+import React, { createContext, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { RiAddLine, RiSubtractLine, RiArrowDownSLine, RiArrowRightSLine, RiCheckLine, RiUser3Line } from 'react-icons/ri'
+import { CmsText, isPreviewEditMode } from '@/components/admin/CmsEditable'
+import { COURSE_TEXT_FIELDS } from '@/lib/courseText'
 
 // Data-driven course overview. When a course has `overview` set (see
 // backend/scripts/courseOverviews.js), CourseDetailView renders these blocks
@@ -57,16 +59,76 @@ function Rich({ text }) {
   })
 }
 
-function Heading({ title, intro, compact }) {
+// ---- Inline editing (admin preview) ---------------------------------------
+// In the admin's live preview every overview string becomes click-to-edit.
+// Paths are found by object identity: the provider walks the overview once
+// and records where each object/array sits, so a renderer only needs to say
+// "field k of object o". Anything not found (derived objects) renders plain.
+const EditPathContext = createContext(null)
+
+export function OverviewEditProvider({ overview, course, children }) {
+  const paths = useMemo(() => {
+    if ((!overview && !course) || !isPreviewEditMode()) return null
+    const map = new WeakMap()
+    const walk = (value, path) => {
+      if (!value || typeof value !== 'object') return
+      map.set(value, path)
+      for (const key of Object.keys(value)) walk(value[key], `${path}.${key}`)
+    }
+    // Course text fields (older page layout, sidebar) edit under "course.*".
+    if (course) {
+      map.set(course, 'course')
+      for (const key of COURSE_TEXT_FIELDS) walk(course[key], `course.${key}`)
+    }
+    if (overview) walk(overview, 'overview')
+    return map
+  }, [overview, course])
+  return <EditPathContext.Provider value={paths}>{children}</EditPathContext.Provider>
+}
+
+// Channel the admin course-text editor streams this course's edits on.
+export const coursePreviewKey = (slug) => `course:${slug}`
+
+// Inside the admin editor's preview iframe: the editor's in-progress text for
+// this course ({ overview, courseDetail, courseEnrollment }), else null.
+export function useCoursePreview(course) {
+  const [live, setLive] = useState(null)
+  const slug = course?.slug
+  useEffect(() => {
+    if (!slug || !isPreviewEditMode()) return
+    const key = coursePreviewKey(slug)
+    const onMessage = (event) => {
+      if (event.origin !== window.location.origin) return
+      const msg = event.data
+      if (msg?.type === 'ifoa-preview-content' && msg.page === key && msg.data) setLive(msg.data)
+    }
+    window.addEventListener('message', onMessage)
+    window.parent.postMessage({ type: 'ifoa-preview-ready', page: key }, window.location.origin)
+    return () => window.removeEventListener('message', onMessage)
+  }, [slug])
+  return live
+}
+
+export function E({ o, k, rich }) {
+  const paths = useContext(EditPathContext)
+  const value = o?.[k]
+  const base = paths && o && typeof o === 'object' ? paths.get(o) : undefined
+  // The course object itself only exposes its whitelisted text fields.
+  const allowed = base !== 'course' || COURSE_TEXT_FIELDS.includes(k)
+  if (base === undefined || !allowed || typeof value !== 'string') return rich ? <Rich text={value} /> : value ?? null
+  return <CmsText path={`${base}.${k}`} value={value} />
+}
+
+function Heading({ title, intro, compact, o }) {
   if (!title && !intro) return null
   return (
     <div className="space-y-1.5">
       {title && (
-        <h2 className={compact ? 'text-lg sm:text-xl font-bold text-slate-950 tracking-tight' : H2}>{title}</h2>
+        <h2 className={compact ? 'text-lg sm:text-xl font-bold text-slate-950 tracking-tight' : H2}>{o ? <E o={o} k="title" /> : title}</h2>
       )}
       {intro && (
         <p className={MUTED}>
-          <Rich text={intro} />
+          {o ? <E o={o} k="intro" rich /> : <Rich text={intro} />}
         </p>
       )}
     </div>
@@ -86,22 +148,26 @@ function Track({ block }) {
         {block.items.map((item, i) => {
           const on = item.tone === 'on'
           const prep = item.tone === 'prep'
+          // Odd count on the 2-column phone grid: last item takes the full row.
+          const lone = cols % 2 === 1 && i === cols - 1
           return (
             <div
               key={i}
               className={`p-3.5 sm:p-4 min-h-[92px] flex flex-col justify-between gap-2 border-slate-200 ${
                 i < cols - 1 ? 'sm:border-r' : ''
-              } ${i % 2 === 0 ? 'border-r sm:border-r' : ''} ${i < cols - 2 ? 'border-b sm:border-b-0' : ''} ${
+              } ${i % 2 === 0 && !lone ? 'border-r sm:border-r' : ''} ${i < cols - (lone ? 1 : 2) ? 'border-b sm:border-b-0' : ''} ${
+                lone ? 'col-span-2 sm:col-span-1' : ''
+              } ${
                 on ? 'bg-slate-950 text-white' : prep ? 'bg-slate-100 text-slate-950' : 'bg-white text-slate-950'
               }`}
             >
               {item.label && (
                 <span className={`text-[11px] font-mono uppercase tracking-wider ${on ? 'text-slate-300' : 'text-slate-500'}`}>
-                  {item.label}
+                  <E o={item} k="label" />
                 </span>
               )}
-              <strong className="text-sm sm:text-base font-bold leading-snug">{item.title}</strong>
-              {item.sub && <small className={`text-[11px] leading-snug ${on ? 'text-slate-300' : 'text-slate-500'}`}>{item.sub}</small>}
+              <strong className="text-sm sm:text-base font-bold leading-snug"><E o={item} k="title" /></strong>
+              {item.sub && <small className={`text-[11px] leading-snug ${on ? 'text-slate-300' : 'text-slate-500'}`}><E o={item} k="sub" /></small>}
             </div>
           )
         })}
@@ -119,12 +185,12 @@ function Track({ block }) {
                       : 'bg-white border-slate-300'
                 }`}
               />
-              {k.label}
+              <E o={k} k="label" />
             </span>
           ))}
         </div>
       )}
-      {block.note && <p className={MUTED}>{block.note}</p>}
+      {block.note && <p className={MUTED}><E o={block} k="note" /></p>}
     </div>
   )
 }
@@ -143,12 +209,12 @@ function Split({ block }) {
               i === 0 ? 'bg-slate-950' : 'bg-slate-900 border-l border-slate-800'
             }`}
           >
-            <b className="text-3xl sm:text-4xl font-extrabold leading-none tracking-tight">{item.value}</b>
-            <span className="text-xs sm:text-sm text-slate-300 font-medium opacity-90">{item.label}</span>
+            <b className="text-3xl sm:text-4xl font-extrabold leading-none tracking-tight"><E o={item} k="value" /></b>
+            <span className="text-xs sm:text-sm text-slate-300 font-medium opacity-90"><E o={item} k="label" /></span>
           </div>
         ))}
       </div>
-      {block.note && <p className={MUTED}>{block.note}</p>}
+      {block.note && <p className={MUTED}><E o={block} k="note" /></p>}
     </div>
   )
 }
@@ -158,12 +224,12 @@ export function OverviewHero({ hero, fallbackTitle, fallbackLead }) {
     <div className="space-y-5">
       <div className="space-y-3.5">
         <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-[40px] font-extrabold text-slate-950 tracking-tight leading-[1.14] [text-wrap:balance]">
-          {hero.title || fallbackTitle}
+          {hero.title ? <E o={hero} k="title" /> : fallbackTitle}
         </h1>
-        {hero.slogan && <p className="text-lg sm:text-xl font-bold text-[#16a952] leading-snug">{hero.slogan}</p>}
+        {hero.slogan && <p className="text-lg sm:text-xl font-bold text-[#16a952] leading-snug"><E o={hero} k="slogan" /></p>}
         {(hero.lead || fallbackLead) && (
           <p className="text-sm sm:text-base md:text-[16px] text-slate-600 font-normal leading-relaxed max-w-3xl">
-            <Rich text={hero.lead || fallbackLead} />
+            {hero.lead ? <E o={hero} k="lead" rich /> : <Rich text={fallbackLead} />}
           </p>
         )}
       </div>
@@ -183,12 +249,20 @@ const canHover = () => typeof window !== 'undefined' && window.matchMedia?.('(ho
 // One-open-at-a-time state for a cluster of expandable rows.
 function useCluster(initial = -1) {
   const [active, setActive] = useState(initial)
+  const timer = useRef(null)
+  useEffect(() => () => clearTimeout(timer.current), [])
   return {
     active,
     rowProps: (i) => ({
       // Hovering a row opens it and it stays open until another row is
-      // hovered - moving the mouse away doesn't close it.
-      onMouseEnter: () => canHover() && setActive(i),
+      // hovered - moving the mouse away doesn't close it. A short hover-intent
+      // delay stops rows flickering open while the pointer passes over them.
+      onMouseEnter: () => {
+        if (!canHover()) return
+        clearTimeout(timer.current)
+        timer.current = setTimeout(() => setActive(i), 140)
+      },
+      onMouseLeave: () => clearTimeout(timer.current),
       // Tap/click toggles (the only trigger on touch screens).
       onClick: () => setActive((a) => (a === i && !canHover() ? -1 : i))
     }),
@@ -198,15 +272,25 @@ function useCluster(initial = -1) {
 }
 
 // Smooth height reveal (grid-rows 0fr -> 1fr) without measuring content.
-function Reveal({ open, children, className = '' }) {
+function Reveal({ open, children, className = '', inline = false }) {
+  // inline: spans instead of divs, for use inside buttons.
+  const Box = inline ? 'span' : 'div'
   return (
-    <div
-      className={`grid transition-[grid-template-rows,opacity] duration-300 ease-out ${
-        open ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
+    <Box
+      className={`grid transition-[grid-template-rows] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none ${
+        open ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
       }`}
     >
-      <div className={`overflow-hidden ${className}`}>{children}</div>
-    </div>
+      <Box className={`block overflow-hidden min-h-0 ${className}`}>
+        <Box
+          className={`block transition-[opacity,translate] duration-300 ease-out motion-reduce:transition-none ${
+            open ? 'opacity-100 translate-y-0 delay-100' : 'opacity-0 -translate-y-1'
+          }`}
+        >
+          {children}
+        </Box>
+      </Box>
+    </Box>
   )
 }
 
@@ -227,7 +311,7 @@ function AccordionItem({ item, index, isStatic, open, rowProps }) {
   const num = item.num || String(index + 1).padStart(2, '0')
   return (
     <li
-      className={`relative rounded-2xl border transition-all duration-300 overflow-hidden ${
+      className={`relative rounded-2xl border transition-[background-color,border-color,box-shadow] duration-500 ease-out overflow-hidden ${
         open
           ? 'bg-white border-slate-200 shadow-[0_6px_24px_rgba(15,23,42,0.06)]'
           : 'bg-slate-50/60 border-slate-200/70 hover:bg-white hover:border-slate-300'
@@ -247,12 +331,14 @@ function AccordionItem({ item, index, isStatic, open, rowProps }) {
           {num}
         </span>
         <span className="min-w-0 flex-1">
-          <span className="block text-sm sm:text-[15px] font-semibold text-slate-900 leading-snug">{item.title}</span>
-          {isStatic && item.text && <span className="block mt-1 text-xs text-slate-600 leading-relaxed">{item.text}</span>}
-          {hasBody && !open && item.bullets?.length > 0 && (
-            <span className="block mt-0.5 text-[11px] text-slate-400">
-              {item.bullets.length} {item.bullets.length === 1 ? 'topic' : 'topics'}
-            </span>
+          <span className="block text-sm sm:text-[15px] font-semibold text-slate-900 leading-snug"><E o={item} k="title" /></span>
+          {isStatic && item.text && <span className="block mt-1 text-xs text-slate-600 leading-relaxed"><E o={item} k="text" /></span>}
+          {hasBody && item.bullets?.length > 0 && (
+            <Reveal open={!open} inline>
+              <span className="block mt-0.5 text-[11px] text-slate-400">
+                {item.bullets.length} {item.bullets.length === 1 ? 'topic' : 'topics'}
+              </span>
+            </Reveal>
           )}
         </span>
 
@@ -262,11 +348,11 @@ function AccordionItem({ item, index, isStatic, open, rowProps }) {
               item.tagTone === 'accent' ? 'bg-red-50 text-red-700 border border-red-100' : 'text-slate-500 bg-slate-100 border border-slate-200'
             }`}
           >
-            {item.tag}
+            <E o={item} k="tag" />
           </span>
         ) : hasBody ? (
           <RiArrowDownSLine
-            className={`w-5 h-5 shrink-0 transition-transform duration-300 ${open ? 'rotate-180 text-slate-900' : 'text-slate-400'}`}
+            className={`w-5 h-5 shrink-0 transition-[rotate,color] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${open ? 'rotate-180 text-slate-900' : 'text-slate-400'}`}
           />
         ) : null}
       </button>
@@ -275,13 +361,13 @@ function AccordionItem({ item, index, isStatic, open, rowProps }) {
         <Reveal open={open}>
           <div className="px-4 sm:px-5 pb-4 sm:pl-[4.6rem] space-y-3">
             <div className="h-px bg-slate-100" />
-            {item.text && <p className="text-[13px] text-slate-600 leading-relaxed">{item.text}</p>}
+            {item.text && <p className="text-[13px] text-slate-600 leading-relaxed"><E o={item} k="text" /></p>}
             {item.bullets?.length > 0 && (
               <ul className="grid sm:grid-cols-2 gap-x-6 gap-y-2">
                 {item.bullets.map((b, j) => (
                   <li key={j} className="flex items-start gap-2 text-[13px] text-slate-700 leading-snug">
                     <RiCheckLine className="w-3.5 h-3.5 text-[#16a952] shrink-0 mt-[3px]" />
-                    <span>{b}</span>
+                    <span><E o={item.bullets} k={j} /></span>
                   </li>
                 ))}
               </ul>
@@ -289,7 +375,7 @@ function AccordionItem({ item, index, isStatic, open, rowProps }) {
             {item.competency && (
               <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold px-2.5 py-1 rounded-full bg-slate-100 text-slate-700">
                 <RiCheckLine className="w-3.5 h-3.5 text-[#16a952] shrink-0" />
-                {item.competency}
+                <E o={item} k="competency" />
               </span>
             )}
           </div>
@@ -321,8 +407,8 @@ function ItemList({ items, startIndex = 0, isStatic }) {
 function Practice({ practice }) {
   return (
     <div className="mt-4 p-3.5 rounded-xl bg-emerald-50/80 border border-emerald-200/80 text-xs text-slate-700 space-y-1">
-      <strong className="block font-bold text-slate-950">{practice.title}</strong>
-      <p className="text-slate-600 leading-relaxed font-normal">{practice.text}</p>
+      <strong className="block font-bold text-slate-950"><E o={practice} k="title" /></strong>
+      <p className="text-slate-600 leading-relaxed font-normal"><E o={practice} k="text" /></p>
     </div>
   )
 }
@@ -336,22 +422,22 @@ function ModuleCard({ item, index }) {
         <span className="font-mono text-[11px] font-bold text-[#16a952] bg-emerald-50 border border-emerald-100/80 px-1.5 py-0.5 rounded shrink-0">
           {item.num || String(index + 1).padStart(2, '0')}
         </span>
-        <strong className="text-xs sm:text-[13px] font-bold text-slate-950 leading-snug">{item.title}</strong>
+        <strong className="text-xs sm:text-[13px] font-bold text-slate-950 leading-snug"><E o={item} k="title" /></strong>
       </div>
-      {item.text && <p className="text-[11.5px] text-slate-600 leading-relaxed">{item.text}</p>}
+      {item.text && <p className="text-[11.5px] text-slate-600 leading-relaxed"><E o={item} k="text" /></p>}
       {item.bullets?.length > 0 && (
         <ul className="space-y-1 text-[11.5px] text-slate-600 leading-relaxed">
           {item.bullets.map((b, j) => (
             <li key={j} className="flex items-start gap-1.5">
               <RiCheckLine className="w-3.5 h-3.5 text-[#16a952] shrink-0 mt-[3px]" />
-              <span>{b}</span>
+              <span><E o={item.bullets} k={j} /></span>
             </li>
           ))}
         </ul>
       )}
       {item.competency && (
         <span className="inline-block text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-50 text-emerald-800 border border-emerald-100">
-          {item.competency}
+          <E o={item} k="competency" />
         </span>
       )}
     </div>
@@ -431,8 +517,8 @@ function GroupAccordion({ groups }) {
                 aria-hidden={!open}
               >
                 <div className="flex items-baseline justify-between gap-3 pb-2.5 mb-3.5 border-b border-slate-200/70">
-                  <h3 className="text-lg font-bold text-slate-950 tracking-tight">{group.title}</h3>
-                  {group.subtitle && <span className="text-xs font-medium text-slate-500">{group.subtitle}</span>}
+                  <h3 className="text-lg font-bold text-slate-950 tracking-tight"><E o={group} k="title" /></h3>
+                  {group.subtitle && <span className="text-xs font-medium text-slate-500"><E o={group} k="subtitle" /></span>}
                 </div>
                 <GroupContent group={group} start={starts[gi]} cols={cols} />
               </div>
@@ -444,15 +530,15 @@ function GroupAccordion({ groups }) {
                 }`}
                 aria-hidden={open}
               >
-                <h3 className="text-base font-bold text-slate-900 tracking-tight">{group.title}</h3>
-                {group.subtitle && <span className="mt-1 text-xs font-medium text-slate-500 leading-snug">{group.subtitle}</span>}
+                <h3 className="text-base font-bold text-slate-900 tracking-tight"><E o={group} k="title" /></h3>
+                {group.subtitle && <span className="mt-1 text-xs font-medium text-slate-500 leading-snug"><E o={group} k="subtitle" /></span>}
                 <span className="mt-3 inline-flex w-fit items-center text-[11px] font-mono font-bold text-[#16a952] bg-emerald-50 border border-emerald-100 px-2 py-0.5 rounded">
                   {group.items.length} {group.items.length === 1 ? unit.replace(/s$/, '') : unit}
                 </span>
                 <ul className="mt-4 space-y-2 text-[11.5px] text-slate-500 leading-snug">
                   {group.items.map((item, i) => (
                     <li key={i} className="line-clamp-2">
-                      {item.title}
+                      <E o={item} k="title" />
                     </li>
                   ))}
                 </ul>
@@ -478,8 +564,8 @@ function GroupAccordion({ groups }) {
                 className="w-full flex items-center justify-between gap-3 text-left cursor-pointer"
               >
                 <span>
-                  <span className="block text-base font-bold text-slate-950">{group.title}</span>
-                  {group.subtitle && <span className="block text-xs text-slate-500 mt-0.5">{group.subtitle}</span>}
+                  <span className="block text-base font-bold text-slate-950"><E o={group} k="title" /></span>
+                  {group.subtitle && <span className="block text-xs text-slate-500 mt-0.5"><E o={group} k="subtitle" /></span>}
                 </span>
                 <PlusMinus open={open} />
               </button>
@@ -501,7 +587,7 @@ function Accordion({ block }) {
   const titled = groups.length > 1 && groups.every((g) => g.title)
   return (
     <section id={block.anchor || undefined} className={`${CARD} space-y-6 scroll-mt-28`}>
-      <Heading title={block.title} intro={block.intro} />
+      <Heading o={block} title={block.title} intro={block.intro} />
       {titled && block.layout === 'vertical' ? (
         // Long parts stack vertically: a heading per part, then its topics
         // as a vertical accordion (height-only).
@@ -509,8 +595,8 @@ function Accordion({ block }) {
           {groups.map((group, gi) => (
             <div key={gi} className="space-y-3">
               <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 pb-2.5 border-b border-slate-200/70">
-                <h3 className="text-base sm:text-lg font-bold text-slate-950 tracking-tight">{group.title}</h3>
-                {group.subtitle && <span className="text-xs font-medium text-slate-500 sm:text-right">{group.subtitle}</span>}
+                <h3 className="text-base sm:text-lg font-bold text-slate-950 tracking-tight"><E o={group} k="title" /></h3>
+                {group.subtitle && <span className="text-xs font-medium text-slate-500 sm:text-right"><E o={group} k="subtitle" /></span>}
               </div>
               <ItemList items={group.items} isStatic={block.static} />
               {group.practice && <Practice practice={group.practice} />}
@@ -534,7 +620,7 @@ function Accordion({ block }) {
 function Checks({ block, bare, fill }) {
   const body = (
     <div className={`space-y-4 ${fill ? 'flex-1 flex flex-col' : ''}`}>
-      <Heading title={block.title} intro={block.intro} compact={bare} />
+      <Heading o={block} title={block.title} intro={block.intro} compact={bare} />
       <ul
         className={`rounded-2xl border border-slate-200/80 bg-white divide-y divide-slate-100 ${fill ? 'flex-1 flex flex-col' : ''}`}
       >
@@ -547,7 +633,7 @@ function Checks({ block, bare, fill }) {
 <RiCheckLine className="w-3.5 h-3.5" />
 </span>
             <span className="flex-1">
-              <Rich text={item} />
+              <E o={block.items} k={i} rich />
             </span>
           </li>
         ))}
@@ -560,10 +646,10 @@ function Checks({ block, bare, fill }) {
 function Facts({ block, bare, fill }) {
   const body = (
     <>
-      <Heading title={block.title} intro={block.intro} compact={bare} />
+      <Heading o={block} title={block.title} intro={block.intro} compact={bare} />
       {block.text && (
         <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">
-          <Rich text={block.text} />
+          <E o={block} k="text" rich />
         </p>
       )}
       {block.boxes?.length > 0 && (
@@ -573,8 +659,8 @@ function Facts({ block, bare, fill }) {
               key={i}
               className={`p-4 ${i < block.boxes.length - 1 ? 'border-b sm:border-b-0 sm:border-r border-slate-200' : 'bg-red-50'}`}
             >
-              <strong className="block text-sm font-bold text-slate-950">{box.title}</strong>
-              <span className="text-xs text-slate-600">{box.text}</span>
+              <strong className="block text-sm font-bold text-slate-950"><E o={box} k="title" /></strong>
+              <span className="text-xs text-slate-600"><E o={box} k="text" /></span>
             </div>
           ))}
         </div>
@@ -591,9 +677,9 @@ function Facts({ block, bare, fill }) {
                 {String(i + 1).padStart(2, '0')}
               </span>
               <div className="min-w-0">
-                <strong className="block text-sm font-bold text-slate-950">{fact.title}</strong>
+                <strong className="block text-sm font-bold text-slate-950"><E o={fact} k="title" /></strong>
                 <p className="mt-1 text-[13px] text-slate-600 leading-relaxed">
-                  <Rich text={fact.text} />
+                  <E o={fact} k="text" rich />
                 </p>
               </div>
             </div>
@@ -606,8 +692,8 @@ function Facts({ block, bare, fill }) {
           <div className="rounded-2xl border border-slate-200/80 bg-slate-50/60 divide-y divide-slate-200/60">
             {block.standards.map((s, i) => (
               <div key={i} className="grid grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] gap-4 px-4 py-2.5 items-baseline">
-                <strong className="text-[13px] font-bold text-slate-900">{s.title}</strong>
-                <span className="text-xs text-slate-500 leading-snug">{s.text}</span>
+                <strong className="text-[13px] font-bold text-slate-900"><E o={s} k="title" /></strong>
+                <span className="text-xs text-slate-500 leading-snug"><E o={s} k="text" /></span>
               </div>
             ))}
           </div>
@@ -625,7 +711,7 @@ function Facts({ block, bare, fill }) {
 function Pills({ block, bare }) {
   const body = (
     <div className="space-y-3.5">
-      <Heading title={block.title} intro={block.intro} compact={bare} />
+      <Heading o={block} title={block.title} intro={block.intro} compact={bare} />
       <ul className="space-y-2.5">
         {block.items.map((item, i) => (
           <li
@@ -648,12 +734,12 @@ function Pills({ block, bare }) {
 function Standards({ block, bare }) {
   const body = (
     <>
-      <Heading title={block.title} intro={block.intro} />
+      <Heading o={block} title={block.title} intro={block.intro} />
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
         {block.items.map((s, i) => (
           <div key={i} className="rounded-2xl border border-slate-200/80 bg-slate-50/60 px-4 py-3.5 hover:bg-white hover:border-slate-300 transition-colors">
-            <strong className="block text-sm font-bold text-slate-950">{s.title}</strong>
-            <span className="block mt-0.5 text-xs text-slate-500 leading-snug">{s.text}</span>
+            <strong className="block text-sm font-bold text-slate-950"><E o={s} k="title" /></strong>
+            <span className="block mt-0.5 text-xs text-slate-500 leading-snug"><E o={s} k="text" /></span>
           </div>
         ))}
       </div>
@@ -667,19 +753,19 @@ function Proof({ block, bare }) {
     <div className="text-center space-y-5">
       {block.title && (
         <h2 className="text-xl sm:text-2xl font-bold text-slate-950 tracking-tight text-center">
-          {block.title}
+          <E o={block} k="title" />
         </h2>
       )}
       {block.intro && (
         <p className="text-xs sm:text-sm text-slate-500 leading-relaxed max-w-xl mx-auto text-center">
-          <Rich text={block.intro} />
+          <E o={block} k="intro" rich />
         </p>
       )}
       <div className="flex flex-wrap items-center justify-center gap-8 sm:gap-14 pt-1">
         {block.items.map((p, i) => (
           <div key={i} className="text-center">
-            <b className="block text-3xl sm:text-4xl font-extrabold text-slate-950 leading-none tracking-tight">{p.value}</b>
-            <span className="text-xs sm:text-sm text-slate-500 block mt-1.5 font-medium">{p.label}</span>
+            <b className="block text-3xl sm:text-4xl font-extrabold text-slate-950 leading-none tracking-tight"><E o={p} k="value" /></b>
+            <span className="text-xs sm:text-sm text-slate-500 block mt-1.5 font-medium"><E o={p} k="label" /></span>
           </div>
         ))}
       </div>
@@ -696,7 +782,7 @@ function TabCards({ block }) {
   const item = block.items[active]
   return (
     <section id={block.anchor || undefined} className={`${CARD} space-y-6 scroll-mt-28`}>
-      <Heading title={block.title} intro={block.intro} />
+      <Heading o={block} title={block.title} intro={block.intro} />
 
       {/* md+: list + detail panel */}
       <div className="hidden md:grid grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] gap-5">
@@ -721,7 +807,7 @@ function TabCards({ block }) {
                   >
                     {String(i + 1).padStart(2, '0')}
                   </span>
-                  <span className="flex-1 text-sm font-semibold leading-snug">{it.title}</span>
+                  <span className="flex-1 text-sm font-semibold leading-snug"><E o={it} k="title" /></span>
                   <RiArrowDownSLine className={`w-4 h-4 -rotate-90 shrink-0 ${on ? 'text-[#34E06E]' : 'text-slate-300'}`} />
                 </button>
               </li>
@@ -733,19 +819,19 @@ function TabCards({ block }) {
           <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-slate-400">
             {String(active + 1).padStart(2, '0')} / {String(block.items.length).padStart(2, '0')}
           </span>
-          <h3 className="mt-2 text-lg sm:text-xl font-bold text-slate-950 tracking-tight">{item.title}</h3>
-          {item.text && <p className="mt-2 text-sm text-slate-600 leading-relaxed">{item.text}</p>}
+          <h3 className="mt-2 text-lg sm:text-xl font-bold text-slate-950 tracking-tight"><E o={item} k="title" /></h3>
+          {item.text && <p className="mt-2 text-sm text-slate-600 leading-relaxed"><E o={item} k="text" /></p>}
           {item.bullets?.length > 0 && (
             <ul className="mt-5 pt-4 border-t border-slate-200/70 space-y-2.5">
               {item.bullets.map((b, j) => (
                 <li key={j} className="flex items-center gap-3 text-sm text-slate-800">
                   <RiCheckLine className="w-3.5 h-3.5 text-[#16a952] shrink-0" />
-                  {b}
+                  <E o={item.bullets} k={j} />
                 </li>
               ))}
             </ul>
           )}
-          {item.who && <span className="mt-auto pt-4 text-xs font-bold text-slate-900">{item.who}</span>}
+          {item.who && <span className="mt-auto pt-4 text-xs font-bold text-slate-900"><E o={item} k="who" /></span>}
         </div>
       </div>
 
@@ -762,23 +848,23 @@ function Cards({ block }) {
   const n = block.items.length
   return (
     <section id={block.anchor || undefined} className={`${CARD} space-y-5 scroll-mt-28`}>
-      <Heading title={block.title} intro={block.intro} />
+      <Heading o={block} title={block.title} intro={block.intro} />
       <div className={`grid gap-4 ${n % 3 === 0 ? 'md:grid-cols-3' : n === 2 || n === 4 ? 'md:grid-cols-2' : 'md:grid-cols-3'}`}>
         {block.items.map((item, i) => (
           <div key={i} className="p-5 rounded-2xl bg-slate-50/70 border border-slate-200/80 flex flex-col gap-2">
-            <h3 className="text-base font-bold text-slate-950">{item.title}</h3>
-            {item.text && <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">{item.text}</p>}
+            <h3 className="text-base font-bold text-slate-950"><E o={item} k="title" /></h3>
+            {item.text && <p className="text-xs sm:text-sm text-slate-600 leading-relaxed"><E o={item} k="text" /></p>}
             {item.bullets?.length > 0 && (
               <ul className="mt-auto pt-3 border-t border-slate-200 space-y-1 text-xs text-slate-700">
                 {item.bullets.map((b, j) => (
                   <li key={j} className="flex items-center gap-2">
                     <span className="w-2.5 h-[3px] bg-[#34E06E] shrink-0" />
-                    {b}
+                    <E o={item.bullets} k={j} />
                   </li>
                 ))}
               </ul>
             )}
-            {item.who && <span className="mt-auto pt-1 text-xs font-bold text-slate-900">{item.who}</span>}
+            {item.who && <span className="mt-auto pt-1 text-xs font-bold text-slate-900"><E o={item} k="who" /></span>}
           </div>
         ))}
       </div>
@@ -799,10 +885,10 @@ function Notice({ block }) {
         !
       </div>
       <div className="space-y-3">
-        <h2 className={H2}>{block.title}</h2>
+        <h2 className={H2}><E o={block} k="title" /></h2>
         {block.paragraphs.map((p, i) => (
           <p key={i} className="text-xs sm:text-sm text-slate-700 leading-relaxed">
-            <Rich text={p} />
+            <E o={block.paragraphs} k={i} rich />
           </p>
         ))}
       </div>
@@ -816,11 +902,42 @@ function Table({ block }) {
   const cols = head.length - 1
   return (
     <section id={block.anchor || undefined} className={`${CARD} space-y-6 scroll-mt-28`}>
-      <Heading title={block.title} intro={block.intro} />
+      <Heading o={block} title={block.title} intro={block.intro} />
 
-      <div className="rounded-2xl border border-slate-200/90 bg-white overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full min-w-[640px] table-fixed text-left border-collapse">
+      {/* Narrow containers (phones, tablet column): one card per course */}
+      <div className="@container">
+      <div className="grid gap-3 @[640px]:hidden">
+        {head.slice(1).map((name, ci) => {
+          const col = ci + 1
+          const hl = col === block.highlight
+          return (
+            <div
+              key={col}
+              className={`rounded-2xl border overflow-hidden ${hl ? 'border-[#34E06E]/60 bg-emerald-50/40' : 'border-slate-200/90 bg-white'}`}
+            >
+              <div className={`px-4 py-3 border-b ${hl ? 'border-[#34E06E]/30' : 'border-slate-100'}`}>
+                {hl && (
+                  <span className="block text-[10px] font-mono font-bold uppercase tracking-widest text-[#16a952]">This course</span>
+                )}
+                <strong className="block text-[15px] font-bold text-slate-950">{name}</strong>
+              </div>
+              <dl className="divide-y divide-slate-100">
+                {block.rows.map((row, ri) => (
+                  <div key={ri} className="px-4 py-2.5 grid grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] gap-3">
+                    <dt className="text-xs font-medium text-slate-500"><E o={row} k={0} /></dt>
+                    <dd className={`text-[13px] leading-snug ${hl ? 'font-semibold text-slate-950' : 'text-slate-800'}`}><E o={row} k={col} /></dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+          )
+        })}
+      </div>
+
+      {/* Wide containers: full comparison table */}
+      <div className="hidden @[640px]:block rounded-2xl border border-slate-200/90 bg-white overflow-hidden">
+        <div>
+          <table className="w-full table-fixed text-left border-collapse">
             <colgroup>
               <col className="w-[24%]" />
               {Array.from({ length: cols }, (_, i) => (
@@ -856,7 +973,7 @@ function Table({ block }) {
                   {row.map((cell, j) =>
                     j === 0 ? (
                       <th key={j} scope="row" className="px-5 py-4 align-top text-[13px] font-medium text-slate-500">
-                        {cell}
+                        <E o={row} k={j} />
                       </th>
                     ) : (
                       <td
@@ -865,7 +982,7 @@ function Table({ block }) {
                           j === block.highlight ? 'bg-emerald-50/60 text-slate-950 font-semibold' : 'text-slate-700'
                         }`}
                       >
-                        {cell}
+                        <E o={row} k={j} />
                       </td>
                     )
                   )}
@@ -874,6 +991,7 @@ function Table({ block }) {
             </tbody>
           </table>
         </div>
+      </div>
       </div>
 
       {block.links?.length > 0 && (
@@ -884,7 +1002,7 @@ function Table({ block }) {
               href={l.href}
               className="group inline-flex items-center gap-1.5 text-sm font-semibold text-slate-900 hover:text-[#16a952] transition-colors"
             >
-              {l.label}
+              <E o={l} k="label" />
               <RiArrowRightSLine className="w-4 h-4 text-slate-400 group-hover:text-[#16a952] group-hover:translate-x-0.5 transition-transform" />
             </SmartLink>
           ))}
@@ -908,12 +1026,12 @@ function Faq({ block }) {
               aria-expanded={open === i}
               className="w-full flex items-center justify-between gap-4 py-4 text-left cursor-pointer"
             >
-              <span className="text-sm sm:text-base font-bold text-slate-950">{item.q}</span>
+              <span className="text-sm sm:text-base font-bold text-slate-950"><E o={item} k="q" /></span>
               {open === i ? <RiSubtractLine className="w-5 h-5 text-[#16a952] shrink-0" /> : <RiAddLine className="w-5 h-5 text-[#16a952] shrink-0" />}
             </button>
             {open === i && (
               <p className="pb-4 text-xs sm:text-sm text-slate-600 leading-relaxed">
-                <Rich text={item.a} />
+                <E o={item} k="a" rich />
               </p>
             )}
           </div>
@@ -926,9 +1044,9 @@ function Faq({ block }) {
 function Related({ block }) {
   return (
     <section className="rounded-2xl bg-emerald-50 border border-emerald-100 px-6 py-5 flex flex-wrap items-center justify-between gap-4">
-      <p className="text-xs sm:text-sm text-slate-800">{block.text}</p>
+      <p className="text-xs sm:text-sm text-slate-800"><E o={block} k="text" /></p>
       <SmartLink href={block.href} className="text-xs sm:text-sm font-bold text-slate-950 underline underline-offset-4 hover:text-[#16a952]">
-        {block.label}
+        <E o={block} k="label" />
       </SmartLink>
     </section>
   )
@@ -938,14 +1056,14 @@ function Band({ block }) {
   return (
     <section id={block.anchor || undefined} className="rounded-[2rem] bg-gradient-to-br from-slate-950 via-[#0a1120] to-[#040814] text-white p-8 sm:p-9 grid md:grid-cols-2 gap-6 scroll-mt-28">
       <div className="space-y-3">
-        <h2 className="text-xl sm:text-2xl font-bold tracking-tight">{block.title}</h2>
-        {block.intro && <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">{block.intro}</p>}
+        <h2 className="text-xl sm:text-2xl font-bold tracking-tight"><E o={block} k="title" /></h2>
+        {block.intro && <p className="text-xs sm:text-sm text-slate-300 leading-relaxed"><E o={block} k="intro" /></p>}
         {block.ctaLabel && (
           <SmartLink
             href={block.href || '/contact'}
             className="inline-flex mt-2 items-center justify-center bg-[#34E06E] hover:bg-[#28c85e] text-slate-950 font-extrabold py-3 px-6 rounded-full text-xs uppercase tracking-wider"
           >
-            {block.ctaLabel}
+            <E o={block} k="ctaLabel" />
           </SmartLink>
         )}
       </div>
@@ -969,7 +1087,7 @@ function Text({ block, bare }) {
       <Heading title={block.title} />
       {block.paragraphs.map((p, i) => (
         <p key={i} className={`text-xs sm:text-sm leading-relaxed ${block.mutedLast && i === block.paragraphs.length - 1 ? 'text-slate-500' : 'text-slate-700'}`}>
-          <Rich text={p} />
+          <E o={block.paragraphs} k={i} rich />
         </p>
       ))}
     </>
@@ -1034,22 +1152,34 @@ function useDg(block) {
 
 // Sidebar course card for Dangerous Goods: reflects the chosen role and
 // operation, with an Initial / Recurrent switch.
+// Sidebar wording lives in the dgExplorer block (block.sidebar) so it can be
+// edited in the admin; these defaults cover data saved before it existed.
+const DG_SIDEBAR_DEFAULTS = {
+  priceTitle: 'Price per group',
+  priceNote: 'on request',
+  rows: [
+    { label: 'Duration', value: '4 hours' },
+    { label: 'Format', value: 'Self-paced online' },
+    { label: 'Assessment', value: '' },
+    { label: 'Certificate', value: 'Valid 24 months' },
+    { label: 'Start', value: 'Scheduled with your group' }
+  ],
+  ctaLabel: 'Request a proposal',
+  secondaryLabel: 'What operators get'
+}
+
 export function DgSidebar({ block, contactHref = '/contact' }) {
   const { role, type, setType, opDef, roleLabel } = useDg(block)
-  const rows = [
-    ['Duration', block.duration || '4 hours'],
-    ['Format', 'Self-paced online'],
-    ['Assessment', block.assessShort?.[role]],
-    ['Certificate', 'Valid 24 months'],
-    ['Start', 'Scheduled with your group']
-  ]
+  const sb = block.sidebar || DG_SIDEBAR_DEFAULTS
+  // The Assessment row follows the selected role unless it has its own text.
+  const rowValue = (row) => (row.label === 'Assessment' && !row.value ? block.assessShort?.[role] : null)
   return (
     <div className="space-y-5">
       <div>
         <h2 className="text-2xl font-extrabold text-slate-950 tracking-tight">
           {roleLabel}, {type}
         </h2>
-        <p className="text-sm text-slate-500 mt-0.5">{opDef.label}</p>
+        <p className="text-sm text-slate-500 mt-0.5"><E o={opDef} k="label" /></p>
       </div>
       <div className="inline-flex rounded-lg border border-slate-200 p-0.5" role="group" aria-label="Course type">
         {['initial', 'recurrent'].map((k) => (
@@ -1067,13 +1197,13 @@ export function DgSidebar({ block, contactHref = '/contact' }) {
         ))}
       </div>
       <p className="text-3xl font-extrabold text-slate-950 tracking-tight leading-none">
-        Price per group <small className="text-sm font-medium text-slate-500">on request</small>
+        <E o={sb} k="priceTitle" /> <small className="text-sm font-medium text-slate-500"><E o={sb} k="priceNote" /></small>
       </p>
       <dl className="border-t border-slate-100 text-xs sm:text-[13px]">
-        {rows.map(([label, value]) => (
-          <div key={label} className="flex justify-between gap-4 py-2.5 border-b border-slate-100">
-            <dt className="text-slate-500">{label}</dt>
-            <dd className="font-bold text-slate-950 text-right">{value}</dd>
+        {sb.rows.map((row, i) => (
+          <div key={i} className="flex justify-between gap-4 py-2.5 border-b border-slate-100">
+            <dt className="text-slate-500"><E o={row} k="label" /></dt>
+            <dd className="font-bold text-slate-950 text-right">{rowValue(row) ?? <E o={row} k="value" />}</dd>
           </div>
         ))}
       </dl>
@@ -1082,13 +1212,13 @@ export function DgSidebar({ block, contactHref = '/contact' }) {
           to={contactHref}
           className="block w-full text-center bg-slate-950 hover:bg-[#C8102E] text-white font-extrabold py-3.5 px-5 rounded-xl text-xs uppercase tracking-wider transition-colors"
         >
-          Request a proposal
+          <E o={sb} k="ctaLabel" />
         </Link>
         <a
           href="#operators"
           className="block w-full text-center border border-slate-300 hover:border-slate-950 text-slate-900 font-bold py-3 px-4 rounded-xl text-xs transition-colors"
         >
-          What operators get
+          <E o={sb} k="secondaryLabel" />
         </a>
       </div>
     </div>
@@ -1109,7 +1239,7 @@ function Seg({ items, value, onChange, disabled = () => false }) {
           value === k ? 'bg-slate-950 border-slate-950 text-white' : 'bg-white border-slate-200 text-slate-800 hover:border-slate-400'
         } disabled:opacity-40 disabled:line-through disabled:cursor-not-allowed cursor-pointer`}
       >
-        {v.label}
+        <E o={v} k="label" />
       </button>
     ))}
   </div>
@@ -1151,7 +1281,7 @@ function DgExplorer({ block }) {
             <li key={i} className="grid grid-cols-[44px_1fr_auto] gap-3 items-baseline py-4 border-b border-slate-100">
               <b className="font-mono text-sm font-bold text-slate-400">{String(i + 1).padStart(2, '0')}</b>
               <div>
-                <h3 className="text-sm sm:text-[15px] font-bold text-slate-950">{m.t}</h3>
+                <h3 className="text-sm sm:text-[15px] font-bold text-slate-950"><E o={m} k="t" /></h3>
                 <p className="text-xs sm:text-sm text-slate-600 mt-0.5">{pick(m.d)}</p>
               </div>
               <span

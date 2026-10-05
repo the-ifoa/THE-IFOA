@@ -1,33 +1,22 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Button } from '@/components/ui/button'
 import { api } from '@/lib/api'
 import {
   RiWhatsappFill,
-  RiGlobeLine,
-  RiNotification3Line,
-  RiCheckboxCircleFill,
-  RiCalendarEventLine,
   RiMapPin2Line,
-  RiBuildingLine,
-  RiStackLine,
   RiComputerLine,
   RiArrowRightSLine
 } from 'react-icons/ri'
-import { TbClockHour4 } from 'react-icons/tb'
-import { HiArrowUpRight, HiArrowRight } from 'react-icons/hi2'
-import { MdOutlineMail } from 'react-icons/md'
+import { HiArrowUpRight } from 'react-icons/hi2'
 
-import { CosmicParallaxBg } from '@/components/common/CosmicParallaxBg'
 import { Reveal } from '@/components/common/Reveal'
-import { CmsText, CmsRemoveItem } from '@/components/admin/CmsEditable'
-import { CourseCard } from '@/components/course/CourseCard'
-import { AviationIcon } from '@/components/common/AviationIcon'
+import { CmsText, CmsRemoveItem, CmsImageButton } from '@/components/admin/CmsEditable'
 import { usePageContent } from '@/hooks/usePageContent'
 import { Seo } from '@/components/common/Seo'
 import { readPreload } from '@/lib/preload'
 import { graph, organizationSchema, breadcrumbSchema, absoluteUrl } from '@/lib/seo'
-import bannerEventsHero from '@/assets/events/course_banner_dispatcher_3d.jpg'
+// Hero background: FAA aircraft dispatcher certificate, cropped from the IFOA USA poster.
+import bannerEventsHero from '@/assets/events/events_hero_faa_card.webp'
 import multipleAirImg from '@/assets/events/multiple-air.webp'
 import logoFaa from '@/assets/shared/standards-logos/logo-faa.webp'
 import logoEasa from '@/assets/shared/standards-logos/logo-easa.webp'
@@ -149,33 +138,6 @@ const FALLBACK = {
   }
 }
 
-const formatIntakeDate = (isoString) => {
-  if (!isoString) return null
-  try {
-    return new Date(isoString).toLocaleDateString('en-GB', {
-      day: '2-digit',
-      month: 'short',
-      year: 'numeric'
-    })
-  } catch {
-    return null
-  }
-}
-
-function getModeIcon(mode = '') {
-  const m = String(mode).toLowerCase()
-  if (m.includes('onsite') || m.includes('in-person') || m.includes('classroom') || m.includes('station')) {
-    return <RiBuildingLine className="w-3.5 h-3.5 text-slate-500 shrink-0" />
-  }
-  if (m.includes('hybrid') || m.includes('blended')) {
-    return <RiStackLine className="w-3.5 h-3.5 text-slate-500 shrink-0" />
-  }
-  if (m.includes('online') || m.includes('virtual') || m.includes('distance')) {
-    return <RiComputerLine className="w-3.5 h-3.5 text-slate-500 shrink-0" />
-  }
-  return <RiGlobeLine className="w-3.5 h-3.5 text-slate-500 shrink-0" />
-}
-
 // Events lists fixed-date, open-enrollment cohorts. Every other discipline
 // (Crew Control, Dangerous Goods, Train the Trainer, etc.) is discovered from
 // the Services page instead, so only the flagship Flight Dispatch programmes
@@ -199,7 +161,7 @@ export function EventsPage() {
       <Seo
         path="/events"
         title="Flight Dispatcher Course Dates & Upcoming Intakes | IFOA"
-        description="Open-enrollment flight dispatcher and flight operations courses with confirmed start dates in New Delhi, Europe and online. Find the next available intake."
+        description="Open-enrollment flight dispatcher courses in Denmark, Florida and Europe, including the FAA and EASA Double Programme. Fees, formats and next intakes."
         jsonLd={graph(
           organizationSchema(),
           breadcrumbSchema([
@@ -222,15 +184,24 @@ export function EventsPage() {
       <section className="relative min-h-[460px] md:min-h-[500px] flex flex-col items-center justify-center bg-[#020617] text-white pt-28 pb-16 overflow-hidden">
         {/* Ambient Aviation Background */}
         <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+          {/* Blurred copy fills the sides; the sharp image is fitted to the
+              hero height so the whole certificate stays in view. */}
+          <img
+            src={c.hero.image?.url || bannerEventsHero}
+            alt=""
+            aria-hidden="true"
+            className="absolute inset-0 w-full h-full object-cover blur-2xl opacity-40 scale-110"
+          />
           <img
             src={c.hero.image?.url || bannerEventsHero}
             alt="IFOA Training Events and Courses"
-            className="w-full h-full object-cover object-center opacity-40 scale-105"
+            className="relative mx-auto h-full w-auto max-w-none object-contain opacity-75 [mask-image:linear-gradient(to_right,transparent,black_18%,black_82%,transparent)]"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#020617]/90 via-[#020617]/75 to-[#020617]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#020617]/70 via-[#020617]/55 to-[#020617]/95" />
         </div>
+        <CmsImageButton path="hero.image" className="top-24 right-4 sm:right-6" />
 
-        <div className="relative z-10 w-full max-w-[1280px] mx-auto px-6 text-center space-y-6 flex flex-col items-center justify-center">
+        <div className="relative z-10 w-full max-w-[1280px] mx-auto px-6 text-center space-y-6 [text-shadow:0_2px_12px_rgba(2,6,23,0.85)] flex flex-col items-center justify-center">
           <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white max-w-4xl mx-auto leading-tight">
             <CmsText path="hero.title" value={c.hero.title} />
           </h1>
@@ -312,7 +283,7 @@ export function EventsPage() {
                     <h3 className="text-lg sm:text-xl font-bold text-slate-950 tracking-tight leading-snug line-clamp-2 min-h-[48px] flex items-center">
                       Double Programme: FAA & EASA
                     </h3>
-                    <p className="text-xs text-slate-600 leading-relaxed font-normal line-clamp-2 min-h-[34px]">
+                    <p className="text-xs text-slate-600 leading-relaxed font-normal min-h-[34px]">
                       The FAA Part 65 approved course plus ICAO and EASA operations in one programme. The FAA certificate is issued by the FAA.
                     </p>
                   </div>
@@ -329,9 +300,9 @@ export function EventsPage() {
                     <div className="space-y-0.5 min-w-0">
                       <div className="flex items-center gap-1.5 text-slate-900 text-xs font-bold truncate">
                         <RiMapPin2Line className="w-3.5 h-3.5 text-slate-500 shrink-0" />
-                        <span className="truncate">Europe</span>
+                        <span className="truncate">Sønderborg, Denmark</span>
                       </div>
-                      <p className="text-[11px] text-slate-500 font-medium pl-5 truncate">FAA, EASA & ICAO</p>
+                      <p className="text-[11px] text-slate-500 font-medium pl-5 truncate">Air Alsie Facilities</p>
                     </div>
                   </div>
                 </div>
@@ -399,7 +370,7 @@ export function EventsPage() {
                     <h3 className="text-lg sm:text-xl font-bold text-slate-950 tracking-tight leading-snug line-clamp-2 min-h-[48px] flex items-center">
                       Flight Dispatcher Initial Training
                     </h3>
-                    <p className="text-xs text-slate-600 leading-relaxed font-normal line-clamp-2 min-h-[34px]">
+                    <p className="text-xs text-slate-600 leading-relaxed font-normal min-h-[34px]">
                       EASA-aligned professional training for aspiring Flight Dispatchers. Build the knowledge and operational skills required for an OCC career.
                     </p>
                   </div>
@@ -416,7 +387,7 @@ export function EventsPage() {
                     <div className="space-y-0.5 min-w-0">
                       <div className="flex items-center gap-1.5 text-slate-900 text-xs font-bold truncate">
                         <RiMapPin2Line className="w-3.5 h-3.5 text-slate-500 shrink-0" />
-                        <span className="truncate">Denmark</span>
+                        <span className="truncate">Sønderborg, Denmark</span>
                       </div>
                       <p className="text-[11px] text-slate-500 font-medium pl-5 truncate">Air Alsie Facilities</p>
                     </div>
@@ -457,13 +428,13 @@ export function EventsPage() {
               </div>
             </div>
 
-            {/* CARD 2: Aircraft Dispatcher Certification Course */}
+            {/* CARD 2: Aircraft Dispatcher Course */}
             <div className="rounded-2xl overflow-hidden border border-slate-200/90 bg-white shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between group text-left">
               {/* Image Banner */}
               <div className="relative h-48 sm:h-52 w-full overflow-hidden bg-slate-950 select-none">
                 <img
                   src={faaTarmacHero}
-                  alt="Aircraft Dispatcher Certification Course"
+                  alt="Aircraft Dispatcher Course"
                   className="w-full h-full object-cover object-[center_35%] group-hover:scale-105 transition-transform duration-700"
                 />
               </div>
@@ -484,10 +455,10 @@ export function EventsPage() {
                   {/* Title & Desc */}
                   <div className="space-y-1.5">
                     <h3 className="text-lg sm:text-xl font-bold text-slate-950 tracking-tight leading-snug line-clamp-2 min-h-[48px] flex items-center">
-                      Aircraft Dispatcher Certification Course
+                      Aircraft Dispatcher Course
                     </h3>
-                    <p className="text-xs text-slate-600 leading-relaxed font-normal line-clamp-2 min-h-[34px]">
-                      FAA-approved training leading toward Aircraft Dispatcher certification. Develop the technical knowledge and decision-making skills for a professional career in aviation.
+                    <p className="text-xs text-slate-600 leading-relaxed font-normal min-h-[34px]">
+                      FAA-approved training leading toward Aircraft Dispatcher certification. Develop the technical knowledge and decision making skills for a professional career in aviation.
                     </p>
                   </div>
 
@@ -503,9 +474,9 @@ export function EventsPage() {
                     <div className="space-y-0.5 min-w-0">
                       <div className="flex items-center gap-1.5 text-slate-900 text-xs font-bold truncate">
                         <RiMapPin2Line className="w-3.5 h-3.5 text-slate-500 shrink-0" />
-                        <span className="truncate">Florida, USA</span>
+                        <span className="truncate">Daytona Beach, USA</span>
                       </div>
-                      <p className="text-[11px] text-slate-500 font-medium pl-5 truncate">Near Space Center</p>
+                      <p className="text-[11px] text-slate-500 font-medium pl-5 truncate">Florida, near Space Center</p>
                     </div>
                   </div>
                 </div>

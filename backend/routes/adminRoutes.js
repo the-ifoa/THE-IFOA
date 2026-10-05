@@ -30,10 +30,10 @@ router.use(requireAdmin)
 
 // ---- Courses ----
 router.get('/courses', courses.listAdmin)
-router.post('/courses', courses.create)
 router.get('/courses/:id', courses.getById)
 router.put('/courses/:id', courses.update)
-router.delete('/courses/:id', courses.remove)
+router.put('/courses/:id/overview', courses.updateOverview)
+router.put('/courses/:id/text-fields', courses.updateTextFields)
 
 // ---- Per-course enrollment form schema ----
 router.get('/courses/:id/form-schema', formSchema.getCourseSchema)

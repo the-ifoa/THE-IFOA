@@ -1,4 +1,3 @@
-import React from 'react'
 
 const iconPaths = {
   // 1. Radar & Air Traffic Management

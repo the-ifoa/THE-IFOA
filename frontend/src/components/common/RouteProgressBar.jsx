@@ -1,36 +1,52 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useLocation } from 'react-router-dom'
 
 export function RouteProgressBar() {
   const location = useLocation()
   const [visible, setVisible] = useState(false)
   const [progress, setProgress] = useState(0)
-  const [isDone, setIsDone] = useState(false)
+  const [opacity, setOpacity] = useState(0)
+  const isFirstMount = useRef(true)
 
   useEffect(() => {
-    // Reset and trigger smooth progress on route changes
-    setIsDone(false)
+    // Avoid showing on the initial page mount
+    if (isFirstMount.current) {
+      isFirstMount.current = false
+      return
+    }
+
+    // Reset and trigger ultra-smooth progress
     setVisible(true)
-    setProgress(30)
+    setOpacity(1)
+    setProgress(20)
 
     const t1 = setTimeout(() => {
-      setProgress(75)
-    }, 70)
+      setProgress(65)
+    }, 80)
 
     const t2 = setTimeout(() => {
-      setProgress(100)
-      setIsDone(true)
-    }, 180)
+      setProgress(90)
+    }, 220)
 
     const t3 = setTimeout(() => {
+      setProgress(100)
+    }, 380)
+
+    const t4 = setTimeout(() => {
+      setOpacity(0)
+    }, 550)
+
+    const t5 = setTimeout(() => {
       setVisible(false)
       setProgress(0)
-    }, 450)
+    }, 850)
 
     return () => {
       clearTimeout(t1)
       clearTimeout(t2)
       clearTimeout(t3)
+      clearTimeout(t4)
+      clearTimeout(t5)
     }
   }, [location.pathname, location.search])
 
@@ -38,19 +54,23 @@ export function RouteProgressBar() {
 
   return (
     <div
-      className="fixed top-0 left-0 right-0 z-[99999] pointer-events-none h-[3px] overflow-hidden"
+      className="fixed top-0 left-0 right-0 z-[99999] pointer-events-none h-[2.5px] overflow-hidden"
       aria-hidden="true"
     >
       <div
-        className="h-full bg-gradient-to-r from-[#28c85e] via-[#34E06E] to-[#6ee7b7] transition-all"
+        className="relative h-full bg-gradient-to-r from-emerald-500 via-[#34E06E] to-[#4ade80]"
         style={{
           width: `${progress}%`,
-          transitionDuration: isDone ? '200ms' : '120ms',
-          transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
-          opacity: isDone ? 0 : 1,
-          boxShadow: '0 0 12px rgba(52, 224, 110, 0.85), 0 0 4px rgba(52, 224, 110, 0.5)'
+          opacity,
+          transition: `width ${progress === 100 ? '250ms' : '200ms'} cubic-bezier(0.16, 1, 0.3, 1), opacity 300ms ease-out`,
+          boxShadow: '0 0 10px rgba(52, 224, 110, 0.7), 0 0 4px rgba(52, 224, 110, 0.4)'
         }}
-      />
+      >
+        {/* Leading subtle spark at the head of the bar */}
+        <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-r from-transparent to-white/50" />
+      </div>
     </div>
   )
 }
+
+export default RouteProgressBar

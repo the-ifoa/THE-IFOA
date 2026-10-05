@@ -1,4 +1,4 @@
-import React, { useEffect, lazy, Suspense } from 'react'
+import { useEffect, lazy, Suspense } from 'react'
 import { Routes, Route, useLocation, Navigate } from 'react-router-dom'
 import { Navbar } from './components/layout/Navbar'
 import { Footer } from './components/layout/Footer'
@@ -32,10 +32,9 @@ const AdminSubmissionDetailPage = lazy(() => import('./pages/admin/AdminSubmissi
 const AdminContactMessagesPage = lazy(() => import('./pages/admin/AdminContactMessagesPage').then((m) => ({ default: m.AdminContactMessagesPage })))
 const AdminContactMessageDetailPage = lazy(() => import('./pages/admin/AdminContactMessageDetailPage').then((m) => ({ default: m.AdminContactMessageDetailPage })))
 const AdminFormBuilderPage = lazy(() => import('./pages/admin/AdminFormBuilderPage').then((m) => ({ default: m.AdminFormBuilderPage })))
-const AdminPagesPage = lazy(() => import('./pages/admin/AdminPagesPage').then((m) => ({ default: m.AdminPagesPage })))
 const AdminPageEditorPage = lazy(() => import('./pages/admin/AdminPageEditorPage').then((m) => ({ default: m.AdminPageEditorPage })))
-const AdminCoursePageContentEditor = lazy(() =>
-  import('./pages/admin/AdminCoursePageContentEditor').then((m) => ({ default: m.AdminCoursePageContentEditor }))
+const AdminCourseTextEditor = lazy(() =>
+  import('./pages/admin/AdminCourseTextEditor').then((m) => ({ default: m.AdminCourseTextEditor }))
 )
 
 function AdminLoadingFallback() {
@@ -172,12 +171,11 @@ export function AppRoutes({ publicPages }) {
             >
               <Route index element={<AdminOverviewPage />} />
               <Route path="courses" element={<AdminCoursesPage />} />
-              <Route path="courses/new" element={<AdminCourseFormPage />} />
               <Route path="courses/:id" element={<AdminCourseFormPage />} />
               <Route path="courses/:id/form" element={<AdminFormBuilderPage />} />
-              <Route path="courses/:id/content/:page" element={<AdminCoursePageContentEditor />} />
+              <Route path="courses/:id/text" element={<AdminCourseTextEditor />} />
               <Route path="form-template" element={<AdminFormBuilderPage />} />
-              <Route path="pages" element={<AdminPagesPage />} />
+              <Route path="pages" element={<Navigate to="/admin" replace />} />
               <Route path="pages/:page" element={<AdminPageEditorPage />} />
               <Route path="submissions" element={<AdminSubmissionsPage />} />
               <Route path="submissions/:id" element={<AdminSubmissionDetailPage />} />

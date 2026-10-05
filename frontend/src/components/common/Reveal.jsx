@@ -28,10 +28,15 @@ export const Reveal = forwardRef(function Reveal(
     const rect = el.getBoundingClientRect()
     const alreadyInView = rect.top < window.innerHeight * 0.9 && rect.bottom > 0
     if (alreadyInView) return // stays at its default visible state
+    // Respect the OS "reduce motion" setting: no hide/slide at all.
+    if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return
 
     el.style.opacity = '0'
     el.style.transform = `translateY(${y}px)`
 
+    // threshold 0 = reveal as soon as any part is on screen. A ratio threshold
+    // (e.g. 0.2) never fires for sections taller than ~5 screens, which is
+    // common on phones, and left those sections permanently invisible.
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (!entry.isIntersecting) return
@@ -40,7 +45,7 @@ export const Reveal = forwardRef(function Reveal(
         el.style.transform = 'none'
         observer.disconnect()
       },
-      { rootMargin: '0px 0px -80px 0px', threshold: 0.2 }
+      { rootMargin: '0px 0px -60px 0px', threshold: 0 }
     )
     observer.observe(el)
     return () => observer.disconnect()

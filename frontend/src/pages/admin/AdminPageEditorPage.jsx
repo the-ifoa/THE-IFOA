@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import {
   Loader2,
@@ -6,41 +6,13 @@ import {
   ArrowLeft,
   RotateCcw,
   ExternalLink,
-  Pencil,
-  FileText,
-  FileEdit,
-  Eye,
-  Users,
   RefreshCw,
   MousePointerClick
 } from 'lucide-react'
 import { api } from '@/lib/api'
-import { clone } from '@/components/admin/SchemaFieldEditors'
 import { PATH_BY_PAGE } from './pagesMeta'
+import { clone, getAtPath, setAtPath } from '@/lib/objectPath'
 
-// Pages whose editor also shows the cross-link panel to individual course
-// pages (and their submissions) that live "behind" this page's cards - the
-// two shared course-layout templates, plus Services and Events, whose cards
-// each point at a real course page.
-const SHOWS_COURSE_PICKER = new Set(['courseDetail', 'courseEnrollment', 'services', 'events'])
-
-function getAtPath(obj, path) {
-  return path.split('.').reduce((o, k) => (o == null ? undefined : o[k]), obj)
-}
-
-// Mutates `obj` in place, creating intermediate objects as needed. Array
-// segments are plain numeric-string keys (e.g. "disciplines.2.title"), which
-// work the same way on arrays as on objects.
-function setAtPath(obj, path, value) {
-  const keys = path.split('.')
-  let cur = obj
-  for (let i = 0; i < keys.length - 1; i++) {
-    const k = keys[i]
-    if (cur[k] == null || typeof cur[k] !== 'object') cur[k] = /^\d+$/.test(keys[i + 1]) ? [] : {}
-    cur = cur[k]
-  }
-  cur[keys[keys.length - 1]] = value
-}
 
 // The iframe renders the real public page (?__preview=1) with its text
 // wrapped in <CmsText> (see components/admin/CmsEditable.jsx), which becomes
@@ -48,11 +20,11 @@ function setAtPath(obj, path, value) {
 // this component is the only place that owns `data`, and it echoes the
 // updated state back down through the same channel the old split-preview
 // used - so what's on screen in the iframe IS the save target, not a copy.
-function EditablePreview({ page, data, onEditChange, onEditAdd, onEditRemove }) {
+export function EditablePreview({ page, data, onEditChange, onEditAdd, onEditRemove, path }) {
   const iframeRef = useRef(null)
   const debounceRef = useRef(null)
   const [iframeKey, setIframeKey] = useState(0)
-  const previewPath = PATH_BY_PAGE[page]
+  const previewPath = path || PATH_BY_PAGE[page]
 
   const sendContent = () => {
     iframeRef.current?.contentWindow?.postMessage(
@@ -93,7 +65,7 @@ function EditablePreview({ page, data, onEditChange, onEditAdd, onEditRemove }) 
 
   return (
     <div className="overflow-hidden rounded-2xl border border-gray-200/90 bg-[#020617] shadow-xs">
-      <div className="flex items-center justify-between gap-2 px-4 py-2.5">
+      <div className="flex items-center justify-between gap-2 px-4 py-2">
         <span className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-[#34E06E]">
           <MousePointerClick className="h-3.5 w-3.5" /> Click any text below to edit it directly
         </span>
@@ -106,14 +78,14 @@ function EditablePreview({ page, data, onEditChange, onEditAdd, onEditRemove }) 
           <RefreshCw className="h-3 w-3" /> Refresh
         </button>
       </div>
-      <div className="border-t border-white/5 bg-slate-900 p-3">
+      <div className="border-t border-white/5 bg-slate-900 p-1.5">
         <div className="overflow-hidden rounded-xl border border-white/10 bg-white">
           <iframe
             key={iframeKey}
             ref={iframeRef}
             src={`${previewPath}?__preview=1`}
             title="Editable page preview"
-            className="h-[85vh] w-full"
+            className="h-[calc(100vh-13rem)] min-h-[560px] w-full"
             onLoad={sendContent}
           />
         </div>
@@ -131,8 +103,6 @@ export function AdminPageEditorPage() {
   const [saving, setSaving] = useState(false)
   const [message, setMessage] = useState('')
   const [error, setError] = useState('')
-  const [courses, setCourses] = useState(null)
-  const [coursesError, setCoursesError] = useState('')
 
   async function load() {
     setLoading(true)
@@ -151,16 +121,6 @@ export function AdminPageEditorPage() {
   useEffect(() => {
     load()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page])
-
-  useEffect(() => {
-    if (!SHOWS_COURSE_PICKER.has(page)) return
-    setCourses(null)
-    setCoursesError('')
-    api
-      .adminListCourses({})
-      .then((res) => setCourses(res.courses || []))
-      .catch((err) => setCoursesError(err.message))
   }, [page])
 
   const handleEditChange = (path, value) =>
@@ -238,14 +198,14 @@ export function AdminPageEditorPage() {
   const label = page.charAt(0).toUpperCase() + page.slice(1)
 
   return (
-    <div className="space-y-6 pb-20 max-w-7xl mx-auto">
+    <div className="space-y-4 pb-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-white p-5 rounded-2xl border border-gray-200/80 shadow-xs">
         <div>
           <Link
-            to="/admin/pages"
+            to="/admin"
             className="inline-flex items-center gap-1.5 text-xs font-bold text-gray-500 hover:text-rocket-dark uppercase tracking-wider"
           >
-            <ArrowLeft className="w-3.5 h-3.5" /> All pages
+            <ArrowLeft className="w-3.5 h-3.5" /> Dashboard
           </Link>
           <h1 className="text-xl sm:text-2xl font-black text-rocket-dark mt-1">{label} page content</h1>
           <p className="text-xs text-gray-500 mt-0.5">
@@ -314,88 +274,6 @@ export function AdminPageEditorPage() {
         onEditRemove={handleEditRemove}
       />
 
-      {SHOWS_COURSE_PICKER.has(page) && (
-        <div className="space-y-3 pt-2">
-          <div className="px-1">
-            <h2 className="text-base font-extrabold text-rocket-dark">Connected course pages</h2>
-            <p className="text-xs text-gray-500 mt-0.5">
-              {page === 'events'
-                ? 'Events links visitors into these individual course pages. Jump straight to any one’s content, form, or submissions.'
-                : page === 'services'
-                  ? 'Each discipline card on this page points at one of these course pages. Jump straight to any one’s content, form, or submissions.'
-                  : 'The fields above are the default template new courses start from. Each course can customize its own copy below.'}
-            </p>
-          </div>
-
-          {coursesError && (
-            <div className="rounded-2xl border border-red-200 bg-red-50 p-4 text-xs font-semibold text-red-700">
-              {coursesError}
-            </div>
-          )}
-
-          {!courses && !coursesError && (
-            <div className="flex items-center justify-center py-10 text-gray-400">
-              <Loader2 className="h-5 w-5 animate-spin text-ifoa-navy" />
-            </div>
-          )}
-
-          {courses && courses.length === 0 && (
-            <div className="rounded-2xl border border-dashed border-gray-300 bg-white p-6 text-center text-xs font-semibold text-gray-500">
-              No courses yet.
-            </div>
-          )}
-
-          {courses && courses.length > 0 && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {courses.map((course) => (
-                <div
-                  key={course._id}
-                  className="rounded-2xl border border-gray-200/90 bg-white p-4 shadow-xs space-y-3"
-                >
-                  <div>
-                    <p className="text-sm font-bold text-rocket-dark leading-snug line-clamp-2">{course.title}</p>
-                    <p className="text-[11px] font-semibold text-gray-400 mt-0.5">{course.slug}</p>
-                  </div>
-                  <div className="flex items-center gap-1.5 flex-wrap">
-                    <Link
-                      to={`/admin/courses/${course._id}`}
-                      className="inline-flex items-center gap-1 rounded-lg border border-gray-200 bg-white px-2.5 py-1.5 text-[11px] font-bold text-gray-700 hover:bg-gray-100 transition-colors"
-                    >
-                      <Pencil className="h-3 w-3" /> Edit Course Info
-                    </Link>
-                    <Link
-                      to={`/admin/courses/${course._id}/content/courseDetail`}
-                      className="inline-flex items-center gap-1 rounded-lg border border-gray-200 bg-white px-2.5 py-1.5 text-[11px] font-bold text-gray-700 hover:bg-gray-100 transition-colors"
-                    >
-                      <FileEdit className="h-3 w-3" /> Edit Page Text
-                    </Link>
-                    <Link
-                      to={`/admin/courses/${course._id}/form`}
-                      className="inline-flex items-center gap-1 rounded-lg border border-gray-200 bg-white px-2.5 py-1.5 text-[11px] font-bold text-gray-700 hover:bg-gray-100 transition-colors"
-                    >
-                      <FileText className="h-3 w-3" /> {course.hasCustomForm ? 'Edit Form' : 'Create Form'}
-                    </Link>
-                    <Link
-                      to={`/admin/courses/${course._id}/preview`}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center gap-1 rounded-lg border border-gray-200 bg-white px-2.5 py-1.5 text-[11px] font-bold text-gray-700 hover:bg-gray-100 transition-colors"
-                    >
-                      <Eye className="h-3 w-3" /> Preview
-                    </Link>
-                    <Link
-                      to={`/admin/submissions?course=${course._id}`}
-                      className="inline-flex items-center gap-1 rounded-lg border border-emerald-200 bg-emerald-50 px-2.5 py-1.5 text-[11px] font-bold text-emerald-700 hover:bg-emerald-100 transition-colors"
-                    >
-                      <Users className="h-3 w-3" /> Submissions
-                    </Link>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      )}
     </div>
   )
 }

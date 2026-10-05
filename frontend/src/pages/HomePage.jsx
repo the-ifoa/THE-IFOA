@@ -1,56 +1,33 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Seo } from '@/components/common/Seo'
 import { Reveal } from '@/components/common/Reveal'
-import { graph, organizationSchema, ORGANIZATION_ID, SITE_NAME, SITE_URL } from '@/lib/seo'
+import { graph, organizationSchema, ORGANIZATION_ID, SITE_NAME, SITE_URL, SITE_ALTERNATE_NAMES } from '@/lib/seo'
 import {
-  RiCompass3Line,
   RiStarFill,
   RiUser3Line,
   RiArrowLeftSLine,
   RiArrowRightSLine,
-  RiArrowRightLine,
   RiGlobalLine,
-  RiStackLine,
   RiComputerLine,
   RiMapPin2Line,
-  RiCalendarEventLine,
-  RiCoinsLine,
   RiCheckLine
 } from 'react-icons/ri'
 import {
-  PiAirplaneTiltFill,
-  PiAirplaneTakeoffFill,
-  PiAirplaneLandingFill
+  PiAirplaneTakeoffFill
 } from 'react-icons/pi'
 import {
-  TbClockHour4,
-  TbCertificate,
-  TbRadar2,
-  TbPlaneInflight
-} from 'react-icons/tb'
-import {
   HiArrowUpRight,
-  HiArrowRight,
-  HiSparkles
+  HiArrowRight
 } from 'react-icons/hi2'
 
 import { usePageContent } from '@/hooks/usePageContent'
+import { useSwipe } from '@/hooks/useSwipe'
 import { CmsText, CmsRemoveItem, CmsAddItem, isPreviewEditMode } from '@/components/admin/CmsEditable'
 import { CosmicParallaxBg } from '@/components/common/CosmicParallaxBg'
 import hero3dMockup from '@/assets/home/hero-3d-mockup.webp'
 import hero3dMockupPng from '@/assets/home/hero-3d-mockup.webp'
-import heroBanner from '@/assets/shared/photos/IOFA-banner_10@1920x1280.jpg'
-import bannerSuccess from '@/assets/home/IOFA-banner_08@1920x1280.jpg'
-import imgDHL from '@/assets/home/DHL-Austria-Initial-Training.jpeg'
-import imgENAC from '@/assets/home/EANC-2025.jpg'
-import worldGlobeBg from '@/assets/home/earth-cosmic-globe.jpg'
-import worldMapBg from '@/assets/home/world-map-blue.webp'
-import ifoaIndiaLogo from '@/assets/home/IFOA_India_blanc_orange_vert-953x1024.webp'
-import ifoaUsaLogo from '@/assets/home/IFOA_USA_blanc_V-932x1024.webp'
-import ifoaBahrainLogo from '@/assets/home/IFOA_BAHRAIN_Blanc_Doree.webp'
-import ifoaLogo from '@/assets/shared/brand/ifoa-logoweb.webp'
 
 // Tarmac Photography Banners
 const easaTarmacHero = '/course-images/EASA.jpeg'
@@ -83,12 +60,9 @@ import logoEasa from '@/assets/shared/standards-logos/logo-easa.webp'
 import logoIcao from '@/assets/shared/standards-logos/logo-icao.webp'
 import logoDgca from '@/assets/shared/standards-logos/logo-dgca.webp'
 
-// Accent per region card (Europe, USA, India), cycled for extra cards.
-const REGION_COLORS = ['#E5A83B', '#38BDF8', '#34E06E']
-
 const STANDARD_LOGOS = { icao: logoIcao, faa: logoFaa, easa: logoEasa, dgca: logoDgca }
 
-import imageData from '../../assets/image.json'
+import imageData from '@/data/image.json'
 
 // Vite eager glob import for all downloaded partner images
 const partnerImageModules = import.meta.glob('/src/assets/partners/*.{webp,jpg,jpeg,svg}', {
@@ -213,7 +187,7 @@ const FALLBACK = {
         link1Label: 'FAA Aircraft Dispatcher',
         link1Slug: 'aircraft-dispatcher-training-faa-part-65',
         link2Label: 'Double FAA & EASA Programme',
-        link2Slug: 'events-courses'
+        link2Slug: 'flight-dispatcher-double-programme'
       },
       {
         name: 'India',
@@ -601,13 +575,16 @@ export function HomePage() {
     setPathwayIndex((prev) => (prev === 0 ? totalPathwayPages - 1 : prev - 1))
   }
 
+  const pathwaySwipe = useSwipe(handlePrevPathway, handleNextPathway)
+  const testimonialSwipe = useSwipe(handlePrevTestimonial, handleNextTestimonial)
+
 
   return (
     <div className="font-sans text-rocket-dark bg-white">
       <Seo
         path="/"
-        title="Flight Dispatcher Courses & EASA / FAA Certification | IFOA"
-        description="Train as a certified flight dispatcher with IFOA. EASA ORO.GEN.110 and FAA Part 65 flight operations courses taught by active airline dispatchers."
+        title="Flight Dispatcher Training: FAA Part 65, ICAO & EASA | The IFOA"
+        description="Flight dispatcher training in Europe, the USA and India. FAA Part 65 and ICAO/EASA courses for individuals, and tailored OCC training for operators."
         jsonLd={graph(
           organizationSchema(),
           {
@@ -615,6 +592,7 @@ export function HomePage() {
             '@id': `${SITE_URL}/#website`,
             url: SITE_URL,
             name: SITE_NAME,
+            alternateName: [...SITE_ALTERNATE_NAMES, 'theifoa.com'],
             publisher: { '@id': ORGANIZATION_ID },
             inLanguage: 'en'
           }
@@ -804,7 +782,7 @@ export function HomePage() {
                     <h3 className="text-lg sm:text-xl font-bold text-slate-950 tracking-tight leading-snug line-clamp-2 min-h-[48px] flex items-center">
                       Double Programme: FAA & EASA
                     </h3>
-                    <p className="text-xs text-slate-600 leading-relaxed font-normal line-clamp-2 min-h-[34px]">
+                    <p className="text-xs text-slate-600 leading-relaxed font-normal min-h-[34px]">
                       The FAA Part 65 approved course plus ICAO and EASA operations in one programme. The FAA certificate is issued by the FAA.
                     </p>
                   </div>
@@ -821,9 +799,9 @@ export function HomePage() {
                     <div className="space-y-0.5 min-w-0">
                       <div className="flex items-center gap-1.5 text-slate-900 text-xs font-bold truncate">
                         <RiMapPin2Line className="w-3.5 h-3.5 text-slate-500 shrink-0" />
-                        <span className="truncate">Europe</span>
+                        <span className="truncate">Sønderborg, Denmark</span>
                       </div>
-                      <p className="text-[11px] text-slate-500 font-medium pl-5 truncate">FAA, EASA & ICAO</p>
+                      <p className="text-[11px] text-slate-500 font-medium pl-5 truncate">Air Alsie Facilities</p>
                     </div>
                   </div>
                 </div>
@@ -891,7 +869,7 @@ export function HomePage() {
                     <h3 className="text-lg sm:text-xl font-bold text-slate-950 tracking-tight leading-snug line-clamp-2 min-h-[48px] flex items-center">
                       Flight Dispatcher Initial Training
                     </h3>
-                    <p className="text-xs text-slate-600 leading-relaxed font-normal line-clamp-2 min-h-[34px]">
+                    <p className="text-xs text-slate-600 leading-relaxed font-normal min-h-[34px]">
                       EASA-aligned professional training for aspiring Flight Dispatchers. Build the knowledge and operational skills required for an OCC career.
                     </p>
                   </div>
@@ -908,7 +886,7 @@ export function HomePage() {
                     <div className="space-y-0.5 min-w-0">
                       <div className="flex items-center gap-1.5 text-slate-900 text-xs font-bold truncate">
                         <RiMapPin2Line className="w-3.5 h-3.5 text-slate-500 shrink-0" />
-                        <span className="truncate">Denmark</span>
+                        <span className="truncate">Sønderborg, Denmark</span>
                       </div>
                       <p className="text-[11px] text-slate-500 font-medium pl-5 truncate">Air Alsie Facilities</p>
                     </div>
@@ -949,13 +927,13 @@ export function HomePage() {
               </div>
             </div>
 
-            {/* CARD 2: Aircraft Dispatcher Certification Course */}
+            {/* CARD 2: Aircraft Dispatcher Course */}
             <div className="rounded-2xl overflow-hidden border border-slate-200/90 bg-white shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between group">
               {/* Image Banner */}
               <div className="relative h-48 sm:h-52 w-full overflow-hidden bg-slate-950 select-none">
                 <img
                   src={faaTarmacHero}
-                  alt="Aircraft Dispatcher Certification Course"
+                  alt="Aircraft Dispatcher Course"
                   className="w-full h-full object-cover object-[center_35%] group-hover:scale-105 transition-transform duration-700"
                 />
               </div>
@@ -976,10 +954,10 @@ export function HomePage() {
                   {/* Title & Desc */}
                   <div className="space-y-1.5">
                     <h3 className="text-lg sm:text-xl font-bold text-slate-950 tracking-tight leading-snug line-clamp-2 min-h-[48px] flex items-center">
-                      Aircraft Dispatcher Certification Course
+                      Aircraft Dispatcher Course
                     </h3>
-                    <p className="text-xs text-slate-600 leading-relaxed font-normal line-clamp-2 min-h-[34px]">
-                      FAA-approved training leading toward Aircraft Dispatcher certification. Develop the technical knowledge and decision-making skills for a professional career in aviation.
+                    <p className="text-xs text-slate-600 leading-relaxed font-normal min-h-[34px]">
+                      FAA-approved training leading toward Aircraft Dispatcher certification. Develop the technical knowledge and decision making skills for a professional career in aviation.
                     </p>
                   </div>
 
@@ -995,9 +973,9 @@ export function HomePage() {
                     <div className="space-y-0.5 min-w-0">
                       <div className="flex items-center gap-1.5 text-slate-900 text-xs font-bold truncate">
                         <RiMapPin2Line className="w-3.5 h-3.5 text-slate-500 shrink-0" />
-                        <span className="truncate">Florida, USA</span>
+                        <span className="truncate">Daytona Beach, USA</span>
                       </div>
-                      <p className="text-[11px] text-slate-500 font-medium pl-5 truncate">Near Space Center</p>
+                      <p className="text-[11px] text-slate-500 font-medium pl-5 truncate">Florida, near Space Center</p>
                     </div>
                   </div>
                 </div>
@@ -1056,7 +1034,7 @@ export function HomePage() {
           </div>
 
           {/* 3-Column Clean Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 items-stretch">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 items-stretch">
             {c.regions.cards.map((region, i) => {
               const links = [
                 { label: region.link1Label, slug: region.link1Slug, n: 1 },
@@ -1276,7 +1254,7 @@ export function HomePage() {
           </div>
 
           {/* Carousel Slide Window - 100% Clean Grid View with 0 Card Cutoffs */}
-          <div className="relative overflow-hidden">
+          <div className="relative overflow-hidden touch-pan-y" {...pathwaySwipe}>
             <div
               className="flex transition-transform duration-500 ease-in-out"
               style={{
@@ -1573,7 +1551,7 @@ export function HomePage() {
           </div>
 
           {/* Review cards: square media, caption below; every card the same size */}
-          <div className="relative overflow-hidden">
+          <div className="relative overflow-hidden touch-pan-y" {...testimonialSwipe}>
             <AnimatePresence mode="wait">
               <motion.div
                 key={`${feedbackTab}-${safePage}`}
