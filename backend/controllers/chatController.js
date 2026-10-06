@@ -21,17 +21,30 @@ let kbCache = { text: '', at: 0 }
 function priceLine(price) {
   if (!price || price.amount == null) return 'price on request'
   const sym = price.currency === 'INR' ? '₹' : price.currency === 'EUR' ? '€' : '$'
-  return `${sym}${price.amount.toLocaleString()} ${price.currency || ''}`.trim()
+  // Dollars carry the code ("$4,500 USD"), as on the site; euro and rupee signs stand alone.
+  return price.currency === 'USD' ? `${sym}${price.amount.toLocaleString()} USD` : `${sym}${price.amount.toLocaleString()}`
 }
 
 // Courses with a live online application form (mirrors hasEnrollmentForm in
 // frontend/src/components/course/CourseCard.jsx). Every other course is
-// enquired about through the Contact page.
+// inquired about through the Contact page.
+// The India and USA editions of Flight Dispatcher Initial apply through that
+// course's form, with the training location pre-selected.
 const ONLINE_APPLICATION = new Set([
   'flight-dispatcher-initial-certification',
+  'flight-dispatcher-initial-training-india',
+  'flight-dispatcher-initial-training-usa',
   'aircraft-dispatcher-training-faa-part-65',
   'flight-dispatcher-double-programme'
 ])
+
+// Published courses the site promotes outside the Services page (footer,
+// Upcoming courses, the course page's location switch): the bot knows them too.
+const ALSO_SHOWN = [
+  'flight-dispatcher-initial-training-india',
+  'flight-dispatcher-initial-training-usa',
+  'flight-dispatcher-double-programme'
+]
 
 const clean = (s) => String(s || '').replace(/\*\*/g, '').replace(/\[([^\]]+)\]\([^)]+\)/g, '$1').trim()
 
@@ -51,7 +64,7 @@ function overviewText(ov) {
         ;(b.paragraphs || []).forEach(push)
         break
       case 'accordion':
-        push(`${b.title || 'Programme'}: ${b.intro || ''}`)
+        push(`${b.title || 'Program'}: ${b.intro || ''}`)
         ;(b.groups || [{ items: b.items || [] }]).forEach((g) => {
           if (g.title) push(`${g.title}${g.subtitle ? ` (${g.subtitle})` : ''}:`)
           ;(g.items || []).forEach((it) => {
@@ -145,7 +158,9 @@ async function buildKnowledge() {
     .lean()
 
   const courseLines = courses.map((c) => {
-    const intakes = (c.intakes || []).filter((i) => i.isActive !== false).map((i) => i.label)
+    const intakes = (c.intakes || [])
+      .filter((i) => i.isActive !== false)
+      .map((i) => (i.locations?.length ? `${i.label} (${i.locations.join(', ')} only)` : i.label))
     const online = ONLINE_APPLICATION.has(c.slug)
     const bits = [
       `### ${displayName(c)} (slug: ${c.slug})`,
@@ -203,12 +218,13 @@ async function buildKnowledge() {
 
   // Courses the website actually promotes (linked from the Services page).
   // Anything else is published but hidden - only mention it if asked about.
-  const promoted = new Set(
-    (services.specialist?.disciplines || []).flatMap((d) =>
+  const promoted = new Set([
+    ...ALSO_SHOWN,
+    ...(services.specialist?.disciplines || []).flatMap((d) =>
       d.courseChoices?.length ? d.courseChoices.map((ch) => ch.courseSlug) : d.courseSlug ? [d.courseSlug] : []
     )
-  )
-  const catalogue = courses
+  ])
+  const catalog = courses
     .filter((c) => promoted.has(c.slug))
     .map((c) => `  ${displayName(c)} - /courses/${c.slug}`)
   // Only courses the website shows are described to the bot.
@@ -230,8 +246,8 @@ async function buildKnowledge() {
   kbCache = {
     at: Date.now(),
     text: [
-      'FULL CATALOGUE (everything on the Services page - list ALL of these when asked what courses or services are available):',
-      catalogue.join('\n'),
+      'FULL CATALOG (everything IFOA offers: the Services page plus the India and USA editions and the Double Program - list ALL of these when asked what courses or services are available):',
+      catalog.join('\n'),
       '',
       'COURSE DETAILS:',
       shownCourseLines.join('\n') || '  (none published yet)',
@@ -239,19 +255,36 @@ async function buildKnowledge() {
       'SERVICES OFFERED (from the Services page - use these when a user asks what IFOA does or offers, and link to the specific course page listed):',
       disciplineLines.join('\n') || '  (see published courses above)',
       '',
-      'EVENTS PAGE (/events): ' + (events.hero?.subtitle || 'Fixed-date, open-enrollment cohorts you can register for directly.'),
+      'COURSES PAGE (/events): ' + (events.hero?.subtitle || 'Fixed-date, open-enrollment cohorts you can register for directly.'),
       '',
-      'UPCOMING COURSES PAGE (/upcoming-courses): courses individuals can book themselves, next start date first -',
-      '  Flight Dispatcher Initial: 4 Jan 2027, seats open, apply at /courses/flight-dispatcher-initial-certification/enroll',
-      '  FAA Aircraft Dispatcher: rolling admissions, start when ready, apply at /courses/aircraft-dispatcher-training-faa-part-65/enroll',
+      'UPCOMING COURSES PAGE (/upcoming-courses): courses individuals can book themselves -',
+      '  Flight Dispatcher Initial (Denmark): January 4, 2027, seats open, apply at /courses/flight-dispatcher-initial-certification/enroll',
+      '  Flight Dispatcher Initial (USA): dates on request, apply at /courses/flight-dispatcher-initial-training-usa/enroll',
+      '  Flight Dispatcher Initial (India): rolling admissions, starts once 10 registrations are received, apply at /courses/flight-dispatcher-initial-training-india/enroll',
+      '  FAA Aircraft Dispatcher: rolling admissions in Denmark and the USA; India has four batches in 2027 (Feb 8 - Mar 12, May 3 - Jun 4, Aug 30 - Oct 1, Nov 15 - Dec 17); apply at /courses/aircraft-dispatcher-training-faa-part-65/enroll',
+      '  Double Program: FAA & EASA: dates to be confirmed, apply at /courses/flight-dispatcher-double-programme/enroll',
       '  Train the Trainer: next date to be announced, ask via /contact',
       "  Dates can change. A place is confirmed once the application is accepted and payment is received. Operators don't wait for public dates: IFOA schedules team training around their operation, online or at their base.",
+      '',
+      'HOW THE LOCATIONS DIFFER (use these exact facts):',
+      '  Flight Dispatcher Initial: Denmark (Sønderborg, Air Alsie) and USA (Daytona Beach): 200 hours, 5 weeks, 2 weeks online then 3 weeks on-site, EUR 3,500 + VAT where applicable. India (New Delhi): 4 weeks, online preparation then on-site, EUR 1,000 + GST, rolling admissions with a minimum of 10 registrations.',
+      '  FAA Aircraft Dispatcher: USD 4,500 at every location (Denmark, USA, India), 200 hours, Part 65 approved. Denmark and USA: 6 weeks including one exam week. India: 2 weeks online then 3 weeks on-site (5 weeks), with the 1-week exam taken within 6 months. ADX preparation is self-study on top, using the learning portal and weekly masterclasses. FAA test fees are separate: ADX knowledge test USD 175, practical test USD 600 paid to the examiner, so USD 5,275 in total to the certificate.',
+      '  Double Program: FAA & EASA: USD 5,500 at every location (Denmark and India), 280 hours over 7 weeks including one exam week, hybrid. Same FAA test fees on top (USD 175 + USD 600, USD 6,275 in total).',
+      '  Tax: GST applies to courses taught in India, VAT where applicable elsewhere. Travel, accommodation, meals and visa are never included.',
+      '  Fees: there is no separate registration fee. You pay the course fee only. Payment, cancellation and refunds follow the Terms and Conditions on the application form.',
+      '',
+      'FAQ PAGE (/faq): questions grouped by service. Short answers you can give:',
+      '  No EASA flight dispatcher license exists. Each European operator decides who may dispatch; the IFOA Certificate of Completion shows structured training built on ICAO Doc 10106.',
+      '  No course can guarantee a job.',
+      '  The IFOA Certificate of Completion is not the FAA certificate. The FAA issues the Aircraft Dispatcher certificate after the ADX knowledge test (valid 24 months) and the practical test with an FAA examiner. Minimum age 21 for the ADX, 23 for the certificate; English required; any nationality; no dispatch experience needed.',
+      '  Visas and accommodation are not included: contact IFOA before applying to learn what support is available.',
+      '  Dangerous Goods certificates are valid 24 months; recurrent training follows.',
       '',
       'WHERE WE TRAIN:',
       regionLines.join('\n') || '  Europe (Sønderborg, Denmark), USA (Daytona Beach, Florida), India (New Delhi)',
       '',
       'CONTACT PAGE (/contact): visitors choose "An individual" or "An operator", then a topic and message. ' +
-        (direct.replyNote || 'We reply to every enquiry within two working days.'),
+        (direct.replyNote || 'We reply to every inquiry within two working days.'),
       directLines.join('\n'),
       '',
       'OFFICES:',
@@ -267,32 +300,33 @@ async function buildKnowledge() {
 function systemPrompt(kb) {
   return [
     'You are the IFOA assistant, a helpful chat bot on the International Flight Operations Academy (IFOA) website.',
-    'IFOA trains flight dispatchers and flight operations / OCC staff (EASA, FAA Part 65, ICAO Doc 10106) and runs consulting for airlines.',
+    'IFOA trains flight dispatchers and flight operations / OCC staff (FAA Part 65, and ICAO Doc 10106 with EASA operations) and runs consulting for airlines.',
     '',
     'Rules:',
     '- Answer only from the information below and general aviation-training knowledge. If you do not know, say so and point the user to the Contact page.',
     '- Be concise and professional. 1-3 short sentences for most answers.',
     '- Plain text only. No markdown, no asterisks, no bold, no headings.',
+    '- Write in US English (program, center, license, enroll, inquiry, canceled). Write dates like January 4, 2027 and prices like $4,500 USD or EUR 3,500.',
     '- Never use em dashes. Use commas, colons or a plain hyphen instead.',
     '- Put each course you list on its own line as: "Course name - /courses/<slug>".',
-    '- When the user asks what courses or services are available, list EVERY item in the FULL CATALOGUE (one per line), not a subset.',
+    '- When the user asks what courses or services are available, list EVERY item in the FULL CATALOG (one per line), not a subset.',
     '- When the user asks for a recommendation, list only the 1-3 best matches.',
-    '- If the user asks about a course or topic that is not in the FULL CATALOGUE, say IFOA does not currently list it as a course, suggest at most 1-2 closest catalogue items if genuinely related, and point to the Contact page. Do not list the whole catalogue in that case.',
+    '- If the user asks about a course or topic that is not in the FULL CATALOG, say IFOA does not currently list it as a course, suggest at most 1-2 closest catalog items if genuinely related, and point to the Contact page. Do not list the whole catalog in that case.',
     '- When one course clearly fits, recommend just that one with its course page, and its /enroll page only if it has an online application form.',
-    '- Be precise about qualifications: only the FAA issues the FAA Aircraft Dispatcher certificate; there is no EASA dispatcher licence; IFOA issues course completion certificates.',
+    '- Be precise about qualifications: only the FAA issues the FAA Aircraft Dispatcher certificate; there is no EASA dispatcher license; IFOA issues the IFOA Certificate of Completion, which is not an FAA certificate.',
     '- Never invent prices, dates, or accreditations. Do not promise admission or discounts.',
     '- You cannot take payments, book seats, or change records. For those, direct users to the Contact page or WhatsApp.',
     '- Stay on IFOA / aviation-training topics. Politely decline unrelated requests in one sentence.',
     '',
-    'When a user asks how to buy, book, enrol, register, or pay for a course, walk them through',
+    'When a user asks how to buy, book, enroll, register, or pay for a course, walk them through',
     'the ENROLLMENT PROCESS below as short numbered steps (1., 2., 3. ...), in order. If you know',
-    'which course they want, use that course\'s real enrol link in step 2 and skip asking; otherwise',
-    'ask which programme they want first, then give the steps.',
+    'which course they want, use that course\'s real enroll link in step 2 and skip asking; otherwise',
+    'ask which program they want first, then give the steps.',
     '',
     'ENROLLMENT PROCESS:',
-    '1. Pick a programme. See start dates on the Upcoming courses page (/upcoming-courses) or browse a course page (/courses/<slug>).',
-    '2. Open that course\'s application page (/courses/<slug>/enroll) and click "Apply online". Only Flight Dispatcher Initial, FAA Aircraft Dispatcher and the Double Programme have online applications; for other courses use the Contact page.',
-    '3. Complete the online application form: first choose where you want to train and your intake, then personal and contact details and background.',
+    '1. Pick a program. See start dates on the Upcoming courses page (/upcoming-courses) or browse a course page (/courses/<slug>).',
+    '2. Open that course\'s application page (/courses/<slug>/enroll) and click "Apply online". Flight Dispatcher Initial (Denmark, USA and India), FAA Aircraft Dispatcher and the Double Program have online applications; for other courses use the Contact page.',
+    '3. Complete the online application form: first choose where you want to train (Denmark, USA or India) and the intake offered for that location, then personal and contact details and background.',
     '4. Submit the form. You get a reference number and can download your completed application as a PDF.',
     '5. Sign the PDF and email the signed copy plus two photo-ID copies to info@theifoa.com.',
     '6. Admissions reviews your prerequisites, confirms your seat, and sends an invoice.',

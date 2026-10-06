@@ -37,6 +37,7 @@ export function usePageContent(page, fallback) {
     if (isPreviewMode()) {
       // Inside the admin's live-preview iframe: skip the network entirely and
       // just wait for postMessage'd in-progress edits from the parent tab.
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- loading/reset state at the start of an effect that syncs with an external source
       setLoaded(true)
 
       const onMessage = (event) => {

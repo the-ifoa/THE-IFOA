@@ -15,7 +15,7 @@ const { connectDB } = require('../config/db')
 const Course = require('../models/Course')
 
 const ICAO_INTRO =
-  'This programme is delivered under the IFOA Competency-Based Training and Assessment (CBTA) framework, aligned with ICAO Annex 1 & 6 and ICAO Doc 10106.'
+  'This program is delivered under the IFOA Competency-Based Training and Assessment (CBTA) framework, aligned with ICAO Annex 1 & 6 and ICAO Doc 10106.'
 
 const courses = [
   {
@@ -23,8 +23,8 @@ const courses = [
     authority: "EASA / FAA Part 65 Standards",
     format: "Hybrid: 2 Weeks Online, 3 Weeks Onsite Sønderborg (Denmark)",
     careerPath: "Commercial Airline Dispatcher, Cargo Flight Follower, Corporate OCC Specialist",
-    intakeLabel: "Next Intake: 4th Jan 2027",
-    title: 'Flight Dispatcher Initial Training',
+    intakeLabel: 'Intake: 4 January 2027',
+    title: 'Flight Dispatcher Initial',
     refCode: 'FD-INITIAL',
     category: 'dispatch',
     featured: true,
@@ -93,17 +93,17 @@ const courses = [
         'Mass & Balance Calculation, Fuel Policies & ETOPS / EDTO Requirements',
         'Real-Time OCC Simulator Practicum: High-Stress In-Flight Emergency Scenarios'
       ],
-      note: 'Curriculum draws on both FAA Part 65 and EASA-aligned flight dispatch training content.'
+      note: 'Curriculum draws on both FAA Part 65 and ICAO Doc 10106 and EASA flight dispatch training content.'
     },
     certification: {
-      text: 'You receive an IFOA Flight Dispatch Completion Certificate when you pass. It does not expire. It shows an operator you have completed structured training built on ICAO Doc 10106.',
+      text: 'You receive an IFOA Certificate of Completion when you pass. It does not expire. It shows an operator you have completed structured training built on ICAO Doc 10106.',
       points: ['Practical and multiple-choice exam', 'Pass mark of 80%']
     },
     heroNote:
-      'There is no EASA flight dispatcher licence. In Europe, each operator decides who is qualified to dispatch its flights. This course gives you an IFOA Flight Dispatch Completion Certificate, built on ICAO Doc 10106. If you need a government-issued dispatcher licence, see our FAA Aircraft Dispatcher course.',
+      'There is no EASA flight dispatcher license. In Europe, each operator decides who is qualified to dispatch its flights. This course gives you an IFOA Certificate of Completion, built on ICAO Doc 10106. If you need a government-issued dispatcher license, see our FAA Aircraft Dispatcher course.',
     processSteps: ['Week 1: Online', 'Week 2: Online', 'Week 3: Sønderborg', 'Week 4: Sønderborg', 'Week 5: Sønderborg'],
     curriculum: {
-      eyebrow: 'The Programme',
+      eyebrow: 'The Program',
       title: 'Five phases',
       subtitle: 'From the rules that govern the operation to the decisions you make on shift.',
       phases: [
@@ -115,8 +115,8 @@ const courses = [
       ]
     },
     seo: {
-      metaTitle: 'Flight Dispatcher Initial Training: 5 Weeks, Hybrid | IFOA',
-      metaDescription: 'A 5-week flight dispatcher course built on ICAO Doc 10106: 2 weeks online, 3 weeks on-site in Sønderborg, Denmark. €3,500. Next intake 4 January 2027.'
+      metaTitle: 'Flight Dispatcher Initial: 200 Hours, 5 Weeks, Hybrid | IFOA',
+      metaDescription: 'A 5-week flight dispatcher course built on ICAO Doc 10106: 2 weeks online, 3 weeks on-site in Sønderborg, Denmark. €3,500. Intake 4 January 2027.'
     }
 
   },
@@ -127,26 +127,26 @@ const courses = [
     // pageContent.courseDetail.curriculum.phases below.
     slug: 'aircraft-dispatcher-training-faa-part-65',
     authority: 'FAA Part 65 Standards',
-    format: 'Online preparation, then on-site (Daytona Beach, FL)',
+    format: 'Online preparation, then on-site in Denmark, the USA or India',
     careerPath: 'Commercial Airline Dispatcher, Cargo Flight Follower, Corporate OCC Specialist',
     intakeLabel: 'Rolling Admissions',
-    title: 'Aircraft Dispatcher Initial Certification',
+    title: 'FAA Aircraft Dispatcher',
     refCode: 'AD-FAA65',
     category: 'dispatch',
     featured: true,
     order: 15,
     summary:
-      'A 200-hour FAA Part 65 approved course. It covers every knowledge area the FAA requires and prepares you to earn the FAA Aircraft Dispatcher certificate.',
-    trustStat: '500+ dispatchers trained across 70+ operators',
+      'A 200-hour FAA Part 65 approved course. It covers every knowledge area the FAA requires and prepares you to earn the FAA Aircraft Dispatcher licence.',
+    trustStat: '500+ professionals trained a year, across 70+ operators',
     // No heroImage: falls back to the same "Flight Dispatch" Services image
     // as the EASA course (frontend/src/components/course/CourseCard.jsx).
     heroImage: null,
     schedule: {
       mode: 'Hybrid',
-      timeText: 'Online preparation, then on-site, Daytona Beach (FL)'
+      timeText: 'Online preparation, then on-site in Sønderborg, Florida or New Delhi'
     },
     duration: '200 Hours',
-    location: 'Daytona Beach, FL',
+    location: 'Sønderborg, Denmark · Florida, USA · New Delhi, India',
     price: { amount: 4500, currency: 'USD', note: 'Tuition. Travel, accommodation, meals and visa are not included.' },
     whatYouWillLearn: {
       intro: "What you'll be able to do:",
@@ -160,10 +160,10 @@ const courses = [
       ]
     },
     delivery: {
-      intro: 'Online preparation, then on-site at IFOA USA, Daytona Beach (FL).',
+      intro: 'Online preparation, then on-site in Florida, USA.',
       items: [
         { label: 'School', title: 'IFOA USA', description: 'FAA Part 65 approved aircraft dispatcher school' },
-        { label: 'Format', title: 'Online preparation, then on-site', description: 'Daytona Beach (FL)' }
+        { label: 'Format', title: 'Online preparation, then on-site', description: 'Florida, USA' }
       ]
     },
     trainingStandards: {
@@ -180,7 +180,7 @@ const courses = [
       points: [
         'People starting a career in flight dispatch',
         'Airline and OCC staff',
-        'Aviation professionals who want an FAA certificate'
+        'Aviation professionals who want an FAA licence'
       ],
       outro: ''
     },
@@ -188,7 +188,7 @@ const courses = [
       intro: 'FAA eligibility:',
       points: [
         'At least 21 to take the ADX knowledge test',
-        'At least 23 to be issued the FAA certificate',
+        'At least 23 to be issued the FAA licence',
         'Able to read, speak, write and understand English',
         'No previous dispatch experience required'
       ]
@@ -212,16 +212,16 @@ const courses = [
     },
     certification: {
       text:
-        'IFOA graduation certificate: issued when you complete the approved course, and presented at your practical test. It is not the FAA certificate. ADX knowledge test: FAA multiple-choice test at an approved testing centre; your result stays valid for 24 months. Practical test: with an FAA examiner. Pass it and the FAA issues your Aircraft Dispatcher certificate.',
+        'IFOA Certificate of Completion: issued when you complete the approved course, and presented at your practical test. It is not the FAA licence. ADX knowledge test: FAA multiple-choice test at an approved testing center; your result stays valid for 24 months. Practical test: with an FAA examiner. Pass it and the FAA issues your Aircraft Dispatcher licence.',
       points: ['ADX Knowledge Test', 'Practical Test with FAA Examiner']
     },
     additionalCosts: {
-      intro: 'Full cost to FAA certificate',
+      intro: 'Full cost to FAA licence',
       items: [
         { label: 'Tuition', amount: '$4,500 USD' },
         { label: 'ADX knowledge test', amount: '$175 USD' },
         { label: 'Practical test, paid to the examiner', amount: '$600 USD' },
-        { label: 'Total to FAA certificate', amount: '$5,275 USD' }
+        { label: 'Total to FAA licence', amount: '$5,275 USD' }
       ],
       note: 'Payment, cancellation and refunds: see our Terms and Conditions.'
     },
@@ -253,7 +253,7 @@ const courses = [
         },
         curriculum: {
           eyebrow: 'Curriculum Framework',
-          title: 'What the Aircraft Dispatcher Programme Covers',
+          title: 'What the Aircraft Dispatcher Program Covers',
           subtitle: 'All eight knowledge areas required by Appendix A to 14 CFR Part 65, in the same order. Select an area to see what it covers.',
           phases: [
             {
@@ -342,30 +342,30 @@ const courses = [
       }
     },
     heroNote:
-      'We train dispatchers, not test takers. The 200 hours cover the FAA knowledge areas. ADX preparation is extra and done alongside, in your own time. The certificate itself is issued by the FAA.',
-    processSteps: ['Complete the 200-hour course', 'Pass the ADX knowledge test', 'Pass the practical test with an FAA examiner', 'FAA Aircraft Dispatcher certificate, issued by the FAA'],
+      'We train dispatchers, not test takers. The 200 hours cover the FAA knowledge areas. ADX preparation is extra and done alongside, in your own time. The licence itself is issued by the FAA.',
+    processSteps: ['Complete the 200-hour course', 'Pass the ADX knowledge test', 'Pass the practical test with an FAA examiner', 'FAA Aircraft Dispatcher licence, issued by the FAA'],
     seo: {
-      metaTitle: 'FAA Aircraft Dispatcher Course: Part 65 Approved, 200 Hours | IFOA',
-      metaDescription: 'FAA Part 65 approved 200-hour Aircraft Dispatcher course in Florida. Covers all eight Appendix A knowledge areas and prepares you for the ADX and practical test. $4,500 USD.'
+      metaTitle: 'FAA Aircraft Dispatcher: Part 65 Approved, 200 Hours, 6 Weeks | IFOA',
+      metaDescription: 'FAA Part 65 approved 200-hour Aircraft Dispatcher course in Denmark, the USA and India. Covers all eight Appendix A knowledge areas and prepares you for the ADX and practical test. $4,500 USD.'
     }
 
   },
   {
     // FAA Part 65 approved course (200 h) + ICAO/EASA operations (80 h),
-    // taught as one programme. Only the FAA issues the dispatcher
+    // taught as one program. Only the FAA issues the dispatcher
     // certificate - IFOA issues a course completion certificate.
     slug: 'flight-dispatcher-double-programme',
     authority: 'FAA Part 65, ICAO & EASA',
-    format: 'Hybrid, Europe',
+    format: 'Hybrid, Denmark or India',
     careerPath: 'Flight Dispatcher for US and European operators',
     intakeLabel: 'Start date to be confirmed',
-    title: 'Flight Dispatcher Double Programme',
+    title: 'Double Program: FAA & EASA',
     refCode: 'FD-DOUBLE',
     category: 'dispatch',
     featured: true,
     order: 5,
     summary:
-      'One 280-hour programme over 7 weeks: the FAA Part 65 approved course, plus ICAO and EASA operations. It prepares you to earn the FAA Aircraft Dispatcher certificate, issued by the FAA, and to dispatch under European rules too.',
+      'One 280-hour program over 7 weeks: the FAA Part 65 approved course, plus ICAO and EASA operations. It prepares you to earn the FAA Aircraft Dispatcher certificate, issued by the FAA, and to dispatch under European rules too.',
     heroNote:
       'We train dispatchers, not test takers. 200 hours FAA Part 65 approved course plus 80 hours ICAO and EASA operations. ADX preparation is extra and done in your own time; it is not part of the 280 hours.',
     badges: ['FAA Part 65 Approved', 'ICAO Doc 10106', 'EASA Air Operations'],
@@ -376,10 +376,10 @@ const courses = [
     },
     schedule: {
       mode: 'Hybrid',
-      timeText: 'Hybrid, Europe'
+      timeText: 'Hybrid, Denmark or India'
     },
     duration: '280 Hours · 7 Weeks',
-    location: 'Sønderborg, Denmark',
+    location: 'Denmark · India',
     price: {
       amount: 5500,
       currency: 'USD',
@@ -397,7 +397,7 @@ const courses = [
       ]
     },
     delivery: {
-      intro: 'Two parts, taught as one hybrid programme in Europe.',
+      intro: 'Two parts, taught as one hybrid program in Europe.',
       items: [
         { label: 'School', title: 'IFOA', description: 'Delivered by the International Flight Operations Academy' },
         { label: 'Format', title: 'Hybrid', description: '280 hours over 7 weeks, plus ADX self-study' }
@@ -409,8 +409,8 @@ const courses = [
       logos: []
     },
     curriculum: {
-      eyebrow: 'The Programme',
-      title: 'Two parts, taught as one programme',
+      eyebrow: 'The Program',
+      title: 'Two parts, taught as one program',
       subtitle:
         'FAA Part 65 approved course: 200 hours, all eight knowledge areas in Appendix A to 14 CFR Part 65. ICAO and EASA operations: 80 hours, built on ICAO Doc 10106.',
       layout: 'accordion',
@@ -449,7 +449,7 @@ const courses = [
       ]
     },
     courseContent: {
-      intro: 'Two parts, taught as one programme:',
+      intro: 'Two parts, taught as one program:',
       modules: [
         'FAA Part 65 approved course (200 hours): all eight knowledge areas in Appendix A to 14 CFR Part 65',
         'ICAO and EASA operations (80 hours): built on ICAO Doc 10106'
@@ -458,7 +458,7 @@ const courses = [
     },
     certification: {
       text:
-        'From the FAA: the Aircraft Dispatcher certificate under 14 CFR Part 65. Only the FAA issues it, once you pass the ADX knowledge test and the practical test with an FAA examiner. From IFOA: a course completion certificate, which you present at your practical test as proof you completed the approved course. It is not an FAA certificate. There is no EASA flight dispatcher licence: in Europe, operators decide who may dispatch their flights.',
+        'From the FAA: the Aircraft Dispatcher certificate under 14 CFR Part 65. Only the FAA issues it, once you pass the ADX knowledge test and the practical test with an FAA examiner. From IFOA: a course completion certificate, which you present at your practical test as proof you completed the approved course. It is not an FAA certificate. There is no EASA flight dispatcher license: in Europe, operators decide who may dispatch their flights.',
       points: ['ADX Knowledge Test', 'Practical Test with FAA Examiner']
     },
     additionalCosts: {
@@ -485,9 +485,9 @@ const courses = [
       desc: '280 hours · FAA Part 65, ICAO and EASA · $5,500 USD'
     },
     seo: {
-      metaTitle: 'Flight Dispatcher Double Programme: FAA, ICAO & EASA, 280 Hours | IFOA',
+      metaTitle: 'Flight Dispatcher Double Program: FAA, ICAO & EASA, 280 Hours | IFOA',
       metaDescription:
-        'A 280-hour, 7-week hybrid programme in Europe, $5,500 USD: the FAA Part 65 approved dispatcher course plus ICAO and EASA operations. Prepares you for the FAA Aircraft Dispatcher certificate.'
+        'A 280-hour, 7-week hybrid program in Europe, $5,500 USD: the FAA Part 65 approved dispatcher course plus ICAO and EASA operations. Prepares you for the FAA Aircraft Dispatcher certificate.'
     },
     registrationOpen: true
   },
@@ -516,7 +516,7 @@ const courses = [
       title: "What you'll be able to do",
       intro: 'Outcomes depend on your role and operation. Every course includes:',
       points: [
-        'Recognise hidden DG in cargo, baggage, bookings and the cabin',
+        'Recognize hidden DG in cargo, baggage, bookings and the cabin',
         'Apply the rules for items passengers and crew may carry',
         'Handle a DG emergency, including a lithium battery or device fire',
         'Report DG incidents and undeclared DG',
@@ -567,7 +567,7 @@ const courses = [
           code: '',
           title: 'Pilots',
           scenarios: [
-            'Recognise hidden DG in cargo, baggage and the cabin',
+            'Recognize hidden DG in cargo, baggage and the cabin',
             'Apply the rules for items passengers and crew may carry',
             'Handle a DG emergency in flight, including a device fire',
             'Report DG incidents and undeclared DG',
@@ -593,7 +593,7 @@ const courses = [
           code: '',
           title: 'Cabin Crew',
           scenarios: [
-            'Recognise hidden DG and suspicious items at boarding and in flight',
+            'Recognize hidden DG and suspicious items at boarding and in flight',
             'Brief passengers on restricted items',
             'Handle a lithium battery or device fire in the cabin',
             'Report DG incidents and undeclared DG',
@@ -606,7 +606,7 @@ const courses = [
         {
           id: 'nocarry-ba',
           title: 'No-Carry Business Aviation',
-          descriptor: 'Recognising DG, refusing it and reporting it. No acceptance procedures you’ll never use.',
+          descriptor: 'Recognizing DG, refusing it and reporting it. No acceptance procedures you’ll never use.',
           acceptance: 'Spotting DG in cargo, mail and company material paperwork.',
           loading: 'What to refuse, how to refuse it, and how to back the decision.'
         },
@@ -641,7 +641,7 @@ const courses = [
       outro: "Ground handling, acceptance and freight staff need a different course. Contact us and we'll tell you which one applies."
     },
     courseContent: {
-      intro: 'For operators: one programme for pilots, dispatchers and cabin crew, adapted to your manuals and ready for audit.',
+      intro: 'For operators: one program for pilots, dispatchers and cabin crew, adapted to your manuals and ready for audit.',
       modules: [
         'Content matched to your operations manual, DG policy and fleet',
         'One price per group, whatever the mix of roles',
@@ -658,7 +658,7 @@ const courses = [
     isCorporate: true,
     eyebrow: 'By role and operation',
     ctaLabel: 'Request a proposal',
-    trustStat: '4.7/5 from 458 post-training surveys · 70+ operators trained',
+    trustStat: '4.7/5 from 458 post-training surveys · IFOA has trained staff from 70+ operators',
     rateCard: {
       eyebrow: 'Training Fee',
       value: 'Price per group, on request',
@@ -685,7 +685,7 @@ const courses = [
     },
     bottomBanner: {
       eyebrow: 'For Operators',
-      title: 'One DG programme for your whole operation',
+      title: 'One DG program for your whole operation',
       desc: 'Pilots, dispatchers and cabin crew · Adapted to your manuals · Ready for audit',
       ctaLabel: 'Request a proposal'
     },
@@ -708,7 +708,7 @@ const courses = [
     eyebrow: 'IFOA CORPORATE TRAINING',
     order: 45,
     summary:
-      'Two days for the people who keep crews legal, rested and in position, from short-haul rotations to long-haul acclimatisation. Taught on EASA Part FTL, or built entirely around your own OM-A Chapter 7.',
+      'Two days for the people who keep crews legal, rested and in position, from short-haul rotations to long-haul acclimatization. Taught on EASA Part FTL, or built entirely around your own OM-A Chapter 7.',
     heroImage: { url: '/course-images/05_crew_control.webp', key: '', alt: 'Crew Control Training' },
     badges: ['EASA Part FTL', 'OM-A Chapter 7', 'Fatigue Risk Management', '2 Days', 'Online or at your base'],
     schedule: { mode: 'Hybrid', timeText: '2 days · Online or at your base' },
@@ -720,19 +720,19 @@ const courses = [
       value: 'Price on request',
       note: 'Based on group size, course version and delivery.',
       secondaryCtaLabel: 'Contact Training Team',
-      trustBadge: 'Delivered by IFOA: trusted by 70+ operators worldwide'
+      trustBadge: 'IFOA has trained staff from 70+ operators worldwide'
     },
     sidebarSpecs: [
       { label: 'Duration', value: '2 days' },
-      { label: 'Basis', value: 'EASA Part FTL or your OM-A Chapter 7' },
+      { label: 'Basis', value: 'EASA FTL or your OM-A Chapter 7' },
       { label: 'Format', value: 'Instructor-led' },
       { label: 'Delivery', value: 'Online or at your base' },
       { label: 'Modules', value: '6' },
-      { label: 'Assessment', value: 'FDP and long-haul exercises, scenarios, test' },
-      { label: 'Certificate', value: 'IFOA Certificate' }
+      { label: 'Assessment', value: 'FDP exercises, scenarios, test' },
+      { label: 'Certificate', value: 'IFOA Certificate of Completion' }
     ],
     curriculum: {
-      eyebrow: 'The Programme',
+      eyebrow: 'The Program',
       title: 'Six modules over two days',
       subtitle: 'In the tailored version, every module and exercise follows your OM-A Chapter 7. Select a module to see what it covers.',
       layout: 'accordion',
@@ -741,7 +741,7 @@ const courses = [
         { num: '02', label: 'DAY 1', title: 'Crew Legality', focus: 'Day 1: The rules', topics: ['Checking legality against duty and rest history', 'Cumulative duty and flight time limits', 'Standby, reserve and rest after disruption'] },
         { num: '03', label: 'DAY 1', title: 'Air Taxi FTL', focus: 'Day 1: The rules', topics: ['Which rules apply to air taxi operations', 'Key differences from CS FTL.1', 'Operators running both CAT and air taxi'] },
         { num: '04', label: 'DAY 2', title: 'Fatigue Risk', focus: 'Day 2: Applying them', topics: ['Fatigue hazards beyond legal compliance', 'Fatigue reporting, assessment and mitigation', 'FRM principles in crew planning'] },
-        { num: '05', label: 'DAY 2', title: 'FTL Application', focus: 'Day 2: Applying them', topics: ['Worked FDP, duty and rest calculations', "Acclimatisation: determining a crew member's state across time zones", 'Long-haul exercises, from reporting time to rest on return', 'Extensions, unforeseen circumstances and disruption cases'] },
+        { num: '05', label: 'DAY 2', title: 'FTL Application', focus: 'Day 2: Applying them', topics: ['Worked FDP, duty and rest calculations', "Acclimatization: determining a crew member's state across time zones", 'Long-haul exercises, from reporting time to rest on return', 'Extensions, unforeseen circumstances and disruption cases'] },
         { num: '06', label: 'DAY 2', title: 'Crew Control Operations', focus: 'Day 2: Applying them', topics: ['Disruption recovery and crew swaps', 'Reserve and standby management', 'Communicating with crew and shift handover'] }
       ]
     },
@@ -753,8 +753,8 @@ const courses = [
         'Interpret EASA FTL requirements',
         'Assess crew legality against duty and rest history',
         'Apply the correct rules to air taxi operations',
-        'Recognise fatigue hazards and apply FRM principles to crewing decisions',
-        'Calculate FDP, duty and rest limitations accurately, including acclimatisation on long-haul rotations',
+        'Recognize fatigue hazards and apply FRM principles to crewing decisions',
+        'Calculate FDP, duty and rest limitations accurately, including acclimatization on long-haul rotations',
         'Restore a disrupted crewing plan legally and safely'
       ]
     },
@@ -765,7 +765,7 @@ const courses = [
       intro: 'Two versions: the standard course on ORO.FTL and CS FTL.1, with exercises on typical CAT rosters, or a version built around your approved FTL scheme and company procedures, where every exercise uses your own rosters.',
       cards: [
         { code: 'ORO.FTL', title: 'Flight and duty time limitations and rest requirements' },
-        { code: 'CS FTL.1', title: 'Commercial air transport by aeroplane' },
+        { code: 'CS FTL.1', title: 'Commercial air transport by airplane' },
         { code: 'Air taxi', title: 'National FTL rules under Article 8 of Regulation (EU) 965/2012' },
         { code: 'Fatigue risk management', title: 'ORO.FTL.120 and FRM principles' },
         { code: 'OM-A Chapter 7', title: 'Your approved FTL scheme, in the tailored version' }
@@ -798,7 +798,7 @@ const courses = [
       title: 'How your team is assessed',
       intro: '',
       cards: [
-        { title: 'FDP calculation exercises', desc: 'Calculating maximum FDP, duty and rest for real rosters, including acclimatisation, long-haul rotations, extensions and disruptions.' },
+        { title: 'FDP calculation exercises', desc: 'Calculating maximum FDP, duty and rest for real rosters, including acclimatization, long-haul rotations, extensions and disruptions.' },
         { title: 'Operational scenarios', desc: 'Disruption cases where participants restore the crewing plan and justify each decision on legality and fatigue.' },
         { title: 'Written test', desc: 'A final test on FTL rules, legality and fatigue risk management.' }
       ]
@@ -814,13 +814,13 @@ const courses = [
     },
     seo: {
       metaTitle: 'Crew Control Training: FTL, Fatigue and Operations | IFOA',
-      metaDescription: 'A 2-day crew control course: EASA FTL, acclimatisation and long-haul exercises, crew legality, fatigue risk management and day-to-day crew control operations. Online or at your base.'
+      metaDescription: 'A 2-day crew control course: EASA FTL, acclimatization and long-haul exercises, crew legality, fatigue risk management and day-to-day crew control operations. Online or at your base.'
     }
 
   },
   {
     slug: 'train-the-trainer-icao-cbta-instructor',
-    authority: 'Instructor Development Programme',
+    authority: 'Instructor Development Program',
     format: 'Instructor-led',
     careerPath: 'Aviation Instructor, OCC Training Captain, Airline CBTA Assessor',
     intakeLabel: '',
@@ -847,7 +847,7 @@ const courses = [
       value: 'Price on request',
       note: 'Ask us for dates and price, or about training your own instructors in-house.',
       secondaryCtaLabel: 'Train your instructors in-house',
-      trustBadge: 'Delivered by IFOA: trusted by 70+ operators worldwide'
+      trustBadge: 'IFOA has trained staff from 70+ operators worldwide'
     },
     sidebarSpecs: [
       { label: 'Duration', value: '4 days' },
@@ -857,20 +857,20 @@ const courses = [
       { label: 'Certificate', value: 'IFOA Certificate of Completion' }
     ],
     curriculum: {
-      eyebrow: 'The Programme',
+      eyebrow: 'The Program',
       title: 'Ten modules over four days',
       subtitle: 'Select a module to see what it covers. Both teaching practices get structured feedback; the 20-minute session is your final assessment.',
       layout: 'accordion',
       phases: [
         { num: 'M1', label: 'DAY 1', title: 'Introduction', focus: 'Day 1: How adults learn', topics: ['Course aims and how the four days run', "The instructor's role in aviation training", 'Opens with a presentation by the course instructor'] },
-        { num: 'M2', label: 'DAY 1', title: 'Adult Teaching and Learning', focus: 'Day 1: How adults learn', topics: ['Key differences between adult and child learning', "Knowles' six principles of adult learning", 'Building a learner-centred strategy'] },
+        { num: 'M2', label: 'DAY 1', title: 'Adult Teaching and Learning', focus: 'Day 1: How adults learn', topics: ['Key differences between adult and child learning', "Knowles' six principles of adult learning", 'Building a learner-centered strategy'] },
         { num: 'M3', label: 'DAY 1', title: 'Cross-Cultural Awareness', focus: 'Day 1: How adults learn', topics: ["Hofstede's cultural dimensions", 'How culture affects questions, feedback and participation', 'Teaching multinational groups'] },
         { num: 'M4', label: 'DAY 1', title: 'Preparation of the Training Facility', focus: 'Day 1: How adults learn', topics: ['Room layout for the type of session', 'Equipment and materials checks', 'What to confirm before participants arrive'] },
         { num: 'M5', label: 'DAY 2', title: 'Designing a Course', focus: 'Day 2: Design and first practice', topics: ['Writing clear learning objectives', 'Structuring and sequencing content', 'Evaluating whether a course works'] },
         { num: 'M6', label: 'DAY 2', title: 'Learning Styles and Strategies', focus: 'Day 2: Design and first practice', topics: ['The main dimensions of learning styles', 'Perceptual preference and information processing', 'Choosing a teaching strategy for the group'] },
         { num: 'M7', label: 'DAY 2', title: 'Planning and Presentation', focus: 'Day 2: Design and first practice', topics: ['Writing a lesson plan', 'Opening, structuring and closing a session', 'Timing and pace', 'Practice: 5-minute presentations. Each participant teaches a short session and gets feedback from the group and instructor.'] },
         { num: 'M8', label: 'DAY 3', title: 'Advanced Presentation Skills', focus: 'Day 3: Delivery and feedback', topics: ['Voice, body language and use of space', 'Questioning techniques', 'Handling objections and difficult situations'] },
-        { num: 'M9', label: 'DAY 3', title: 'Feedback', focus: 'Day 3: Delivery and feedback', topics: ['Structured feedback models', 'Giving feedback that changes behaviour', 'Receiving feedback', 'Preparation: 1 to 2 hours to prepare your final 20-minute presentation.'] },
+        { num: 'M9', label: 'DAY 3', title: 'Feedback', focus: 'Day 3: Delivery and feedback', topics: ['Structured feedback models', 'Giving feedback that changes behavior', 'Receiving feedback', 'Preparation: 1 to 2 hours to prepare your final 20-minute presentation.'] },
         { num: 'M10', label: 'DAY 4', title: '20-Minute Presentations', focus: 'Day 4: Final assessment', topics: ['Each participant delivers a 20-minute session', 'Assessed by the instructor', 'Individual debrief and course close'] }
       ]
     },
@@ -879,7 +879,7 @@ const courses = [
       title: "What you'll be able to do",
       intro: '',
       points: [
-        'Build a learner-centred strategy using adult learning principles',
+        'Build a learner-centered strategy using adult learning principles',
         'Adapt your delivery to multinational and multicultural groups',
         'Prepare the training room, equipment and materials before a session',
         'Design a course with clear objectives, and evaluate it',
@@ -901,7 +901,7 @@ const courses = [
       intro:
         'On Day 4 you deliver a 20-minute training session on a topic from your own field. The instructor assesses your preparation, structure, delivery and how you engage the group, then debriefs you.',
       cards: [
-        { code: 'Practised before assessed', title: 'The 5-minute session on Day 2 is a practice run with feedback, so the final session is never your first attempt.' },
+        { code: 'Practiced before assessed', title: 'The 5-minute session on Day 2 is a practice run with feedback, so the final session is never your first attempt.' },
         { code: 'IFOA Certificate of Completion', title: 'Issued when you pass the final presentation.' }
       ],
       logos: []
@@ -935,7 +935,7 @@ const courses = [
   },
   {
     slug: 'human-factors-in-the-occ',
-    authority: 'TEM-Based Human Factors Programme',
+    authority: 'TEM-Based Human Factors Program',
     format: 'Classroom / Blended',
     careerPath: 'Flight Dispatcher, Operations Controller, Crew Control / Scheduling, MCC',
     intakeLabel: 'Dates on request',
@@ -963,23 +963,23 @@ const courses = [
       value: 'Price on request',
       note: 'Tell us your team size, roles and preferred location.',
       secondaryCtaLabel: 'Contact Training Team',
-      trustBadge: 'Delivered by IFOA: trusted by 70+ operators worldwide'
+      trustBadge: 'IFOA has trained staff from 70+ operators worldwide'
     },
     sidebarSpecs: [
       { label: 'Duration', value: '2 days' },
       { label: 'Format', value: 'Classroom, scenario-based' },
-      { label: 'Delivery', value: 'At your OCC or an IFOA facility' },
+      { label: 'Delivery', value: 'Your OCC or an IFOA facility' },
       { label: 'Modules', value: '11' },
       { label: 'Assessment', value: 'Scenario and group assessment' },
-      { label: 'Certificate', value: 'IFOA Certificate' }
+      { label: 'Certificate', value: 'IFOA Certificate of Completion' }
     ],
     curriculum: {
-      eyebrow: 'The Programme',
+      eyebrow: 'The Program',
       title: 'Eleven modules over two days',
       subtitle: 'Each module is mapped to an ICAO Doc 10106 competency. Select a module to see what it covers.',
       layout: 'accordion',
       phases: [
-        { num: '01', label: 'DAY 1', title: 'Hard Skills vs. Soft Skills', focus: 'All non-technical competencies', description: "Why technical competency alone doesn't make a strong OCC operator, and why judgement, communication and self-management usually decide how a shift goes." },
+        { num: '01', label: 'DAY 1', title: 'Hard Skills vs. Soft Skills', focus: 'All non-technical competencies', description: "Why technical competency alone doesn't make a strong OCC operator, and why judgment, communication and self-management usually decide how a shift goes." },
         { num: '02', label: 'DAY 1', title: 'The OCC Environment', focus: 'Situational awareness', description: '24/7 shift work, many stakeholders and constant change: the pressures that are specific to the operations floor.' },
         { num: '03', label: 'DAY 1', title: 'Stress and Performance', focus: 'Workload management', description: 'The stress-performance curve, and how to read your own position on it during an irregular-operations day.' },
         { num: '04', label: 'DAY 1', title: 'Fatigue', focus: 'Workload management', description: 'Acute tiredness versus cumulative fatigue, high-risk roster patterns, and countermeasures on shift.' },
@@ -997,10 +997,10 @@ const courses = [
       title: 'What your team will be able to do',
       intro: '',
       points: [
-        'Recognise why soft skills, not just technical competency, define a strong OCC operator',
+        'Recognize why soft skills, not just technical competency, define a strong OCC operator',
         'Describe the human-performance pressures specific to a 24/7 OCC',
         'Read your own position on the stress-performance curve during IROPS',
-        'Distinguish acute tiredness from cumulative fatigue and recognise high-risk rosters',
+        'Distinguish acute tiredness from cumulative fatigue and recognize high-risk rosters',
         'Build individual and team resilience for disruption and recovery',
         'Apply structured decision-making under uncertainty',
         'Close communication gaps across dispatch, crew control, ground handling and management',
@@ -1033,7 +1033,7 @@ const courses = [
       eyebrow: 'Who Should Attend',
       title: "Who it's for",
       intro: 'We recommend mixing roles: dispatch, crew control and MCC working through the same scenario is where most communication gaps show up.',
-      points: ['Flight dispatchers', 'Operations controllers', 'Crew control and scheduling', 'Maintenance Control Centre (MCC)', 'OCC duty managers'],
+      points: ['Flight dispatchers', 'Operations controllers', 'Crew control and scheduling', 'Maintenance Control Center (MCC)', 'OCC duty managers'],
       outro: ''
     },
     bottomBanner: {
@@ -1121,10 +1121,10 @@ const courses = [
       subtitle: 'Each available on its own or as part of a larger engagement.',
       layout: 'accordion',
       phases: [
-        { num: '01', label: '01', title: 'OCC assessment', focus: 'Independent review and action plan', description: 'An independent review of how your operational control works in practice, with a prioritised action plan.', topics: ['Structure, roles and staffing', 'Procedures and handovers', 'Tools and information flow'] },
+        { num: '01', label: '01', title: 'OCC assessment', focus: 'Independent review and action plan', description: 'An independent review of how your operational control works in practice, with a prioritized action plan.', topics: ['Structure, roles and staffing', 'Procedures and handovers', 'Tools and information flow'] },
         { num: '02', label: '02', title: 'Operational control setup', focus: 'New AOC, new base or growing fleet', description: 'Designing your method of operational control for a new AOC, a new base or a growing fleet.', topics: ['OCC structure and roles', 'Shift patterns and handovers', 'Dispatch or flight-watch model'] },
         { num: '03', label: '03', title: 'Manuals and procedures', focus: 'The manual sections your OCC works from', description: 'Writing and reviewing the operations manual sections your OCC works from every day.', topics: ['Operational control and dispatch', 'Flight time limitations (OM-A Chapter 7)', 'Dangerous goods policy'] },
-        { num: '04', label: '04', title: 'CBTA training programmes', focus: 'Based on ICAO Doc 10106', description: 'Building a competency-based training programme for your OCC staff, based on ICAO Doc 10106.', topics: ['Competency frameworks', 'Instructor and assessor standards', 'Training records'] },
+        { num: '04', label: '04', title: 'CBTA training programs', focus: 'Based on ICAO Doc 10106', description: 'Building a competency-based training program for your OCC staff, based on ICAO Doc 10106.', topics: ['Competency frameworks', 'Instructor and assessor standards', 'Training records'] },
         { num: '05', label: '05', title: 'Authority audits and approvals', focus: 'Before and after the audit', description: "Preparing for an authority audit or approval, and closing findings once it's done.", topics: ['Pre-audit review', 'Findings and corrective actions', 'Evidence and documentation'] },
         { num: '06', label: '06', title: 'AI and decision-support readiness', focus: 'Keeping human control', description: 'Introducing AI decision-support tools without losing human control of the operation.', topics: ['Tool evaluation', 'Human-in-the-loop procedures', 'Automation risk and training'] }
       ]
@@ -1132,7 +1132,7 @@ const courses = [
     whoShouldAttend: {
       eyebrow: 'Clients',
       title: 'Who we work with',
-      intro: 'We size the work to the operation: a small operator usually needs a focused review or one manual section, not a full programme.',
+      intro: 'We size the work to the operation: a small operator usually needs a focused review or one manual section, not a full program.',
       points: ['Airlines', 'Cargo operators', 'Business aviation operators', 'New AOC applicants', 'OCC and flight operations managers', 'Accountable managers and nominated persons'],
       outro: 'Foreign operator flying to the United States and need an FAA agent for service? See our Agent for Service at agent.theifoa.com.'
     },
@@ -1178,29 +1178,29 @@ const courses = [
     entryRequirements: { intro: '', points: [] },
     seo: {
       metaTitle: 'OCC and Flight Operations Consulting | IFOA',
-      metaDescription: 'Consulting for operations control: OCC assessments, operational control setup, manuals, CBTA training programmes, authority approvals and AI readiness. EASA, FAA and ICAO.'
+      metaDescription: 'Consulting for operations control: OCC assessments, operational control setup, manuals, CBTA training programs, authority approvals and AI readiness. EASA, FAA and ICAO.'
     }
 
   }
 ]
 
 // India edition of Flight Dispatcher Initial: the same ICAO Doc 10106
-// programme, taught in 4 weeks on-site in New Delhi, €1,000. Built
+// program, taught in 4 weeks on-site in New Delhi, €1,000. Built
 // from the EASA entry so the shared syllabus lives in one place.
 const easaInitial = courses.find((c) => c.slug === 'flight-dispatcher-initial-certification')
 courses.splice(courses.indexOf(easaInitial) + 1, 0, {
   ...easaInitial,
   slug: 'flight-dispatcher-initial-training-india',
-  title: 'Flight Dispatcher Initial Training (India)',
+  title: 'Flight Dispatcher Initial (India)',
   refCode: 'FD-INITIAL-IN',
   featured: false,
   order: 11,
   authority: 'ICAO Doc 10106',
-  format: '4 Weeks On-site, New Delhi (India)',
-  intakeLabel: 'Next intake: contact us',
+  format: '4 Weeks, online preparation then on-site, New Delhi (India)',
+  intakeLabel: 'Intake: contact us',
   summary:
-    "Four weeks on-site in New Delhi to learn how to plan, release and follow a flight, and make the calls when it doesn't go to plan. Built on ICAO Doc 10106 and taught by working dispatchers.",
-  schedule: { mode: 'Onsite', startDate: null, endDate: null, timeText: '4 Weeks On-site, New Delhi (India)' },
+    "Four weeks in New Delhi, after online preparation, to learn how to plan, release and follow a flight, and make the calls when it doesn't go to plan. Built on ICAO Doc 10106 and taught by working dispatchers.",
+  schedule: { mode: 'Onsite', startDate: null, endDate: null, timeText: '4 Weeks, online preparation then on-site, New Delhi (India)' },
   duration: '4 Weeks',
   location: 'New Delhi, India',
   price: {
@@ -1209,33 +1209,33 @@ courses.splice(courses.indexOf(easaInitial) + 1, 0, {
     note: 'Includes training materials, examination and certificate. Travel, accommodation and meals are not included.'
   },
   delivery: {
-    intro: 'All four weeks are on-site in New Delhi, in the classroom with your instructors.',
+    intro: 'Online preparation first, then four weeks in New Delhi, in the classroom with your instructors.',
     items: [
       { label: 'School', title: 'IFOA India', description: 'Taught by working dispatchers' },
-      { label: 'Format', title: '4 weeks on-site', description: 'New Delhi, India' }
+      { label: 'Format', title: 'Online preparation, then 4 weeks on-site', description: 'New Delhi, India' }
     ]
   },
   heroNote:
-    'This course gives you an IFOA Flight Dispatch Completion Certificate, built on ICAO Doc 10106. If you need a government-issued dispatcher licence, see our FAA Aircraft Dispatcher course.',
+    'This course gives you an IFOA Certificate of Completion, built on ICAO Doc 10106. If you need a government-issued dispatcher license, see our FAA Aircraft Dispatcher course.',
   processSteps: ['Week 1: New Delhi', 'Week 2: New Delhi', 'Week 3: New Delhi', 'Week 4: New Delhi'],
   seo: {
-    metaTitle: 'Flight Dispatcher Initial Training India: 4 Weeks, New Delhi | IFOA',
+    metaTitle: 'Flight Dispatcher Initial, India: 4 Weeks, New Delhi | IFOA',
     metaDescription:
-      'A 4-week on-site flight dispatcher course in New Delhi, built on ICAO Doc 10106. €1,000 + GST, including training materials, examination and certificate.'
+      'A 4-week flight dispatcher course in New Delhi, with online preparation first, built on ICAO Doc 10106. €1,000 + GST, including training materials, examination and certificate.'
   }
 })
 
-// USA edition of Flight Dispatcher Initial: same programme and fee, with the
+// USA edition of Flight Dispatcher Initial: same program and fee, with the
 // on-site weeks in Daytona Beach, Florida.
 courses.splice(courses.indexOf(easaInitial) + 2, 0, {
   ...easaInitial,
   slug: 'flight-dispatcher-initial-training-usa',
-  title: 'Flight Dispatcher Initial Training (USA)',
+  title: 'Flight Dispatcher Initial (USA)',
   refCode: 'FD-INITIAL-US',
   featured: false,
   order: 12,
   format: 'Hybrid: 2 Weeks Online, 3 Weeks Onsite Daytona Beach (Florida)',
-  intakeLabel: 'Next intake: contact us',
+  intakeLabel: 'Intake: contact us',
   schedule: { mode: 'Hybrid', startDate: null, endDate: null, timeText: '2 Weeks Online, 3 Weeks On-site Daytona Beach (Florida)' },
   location: 'Daytona Beach, Florida',
   delivery: {
@@ -1247,7 +1247,7 @@ courses.splice(courses.indexOf(easaInitial) + 2, 0, {
   },
   processSteps: ['Week 1: Online', 'Week 2: Online', 'Week 3: Daytona Beach', 'Week 4: Daytona Beach', 'Week 5: Daytona Beach'],
   seo: {
-    metaTitle: 'Flight Dispatcher Initial Training USA: 5 Weeks, Florida | IFOA',
+    metaTitle: 'Flight Dispatcher Initial, USA: 200 Hours, 5 Weeks, Florida | IFOA',
     metaDescription: 'A 5-week flight dispatcher course built on ICAO Doc 10106: 2 weeks online, 3 weeks on-site in Daytona Beach, Florida. €3,500.'
   }
 })

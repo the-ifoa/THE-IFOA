@@ -87,10 +87,12 @@ export function OverviewEditProvider({ overview, course, children }) {
 }
 
 // Channel the admin course-text editor streams this course's edits on.
+// eslint-disable-next-line react-refresh/only-export-components -- helper co-located with its component on purpose; only affects dev hot reload
 export const coursePreviewKey = (slug) => `course:${slug}`
 
 // Inside the admin editor's preview iframe: the editor's in-progress text for
 // this course ({ overview, courseDetail, courseEnrollment }), else null.
+// eslint-disable-next-line react-refresh/only-export-components -- helper co-located with its component on purpose; only affects dev hot reload
 export function useCoursePreview(course) {
   const [live, setLive] = useState(null)
   const slug = course?.slug
@@ -460,7 +462,7 @@ function GroupContent({ group, start, cols }) {
 const ACTIVE_GROW = 3.2
 const GAP = 16
 
-// Titled groups (days, programme parts) as a horizontal accordion on large
+// Titled groups (days, program parts) as a horizontal accordion on large
 // screens: hovering a panel widens it, the others shrink to a summary. The
 // open panel's content is laid out at a fixed width (the width an open panel
 // gets), so switching panels changes width only - the row height stays put.

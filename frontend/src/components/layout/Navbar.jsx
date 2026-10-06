@@ -146,9 +146,10 @@ export function Navbar({ variant = 'fixed' }) {
   const navLinks = [
     { name: 'Home', path: '/' },
     { name: 'Services', path: '/services' },
-    { name: 'Events', path: '/events' },
+    { name: 'Courses', path: '/events' },
     { name: 'Agent for Service', path: 'https://agent.theifoa.com/', external: true },
     { name: 'Smart Talent', path: 'https://talent.theifoa.com/', external: true },
+    { name: 'FAQ', path: '/faq' },
     { name: 'Contact', path: '/contact' }
   ]
 
@@ -157,12 +158,14 @@ export function Navbar({ variant = 'fixed' }) {
     if (path === '/services' && (location.pathname === '/services' || location.pathname.startsWith('/services/'))) return true
     if (path === '/events' && (location.pathname === '/events' || location.pathname.startsWith('/events/'))) return true
     if (path === '/foxtrot-delta' && (location.pathname.startsWith('/foxtrot-delta') || location.pathname.startsWith('/magazine'))) return true
+    if (path === '/faq' && location.pathname === '/faq') return true
     if (path === '/contact' && (location.pathname === '/contact' || location.pathname.startsWith('/contact/'))) return true
     return false
   }
 
   // Close mobile drawer on route changes
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- loading/reset state at the start of an effect that syncs with an external source
     setMobileMenuOpen(false)
   }, [location.pathname])
 
@@ -189,7 +192,7 @@ export function Navbar({ variant = 'fixed' }) {
 
           {/* Nav Links with Smooth Underline Animation (Desktop) */}
           <nav className="hidden lg:flex items-center gap-6 xl:gap-8 whitespace-nowrap text-sm font-medium">
-            {navLinks.filter((link) => link.name !== 'Contact').map((link) => {
+            {navLinks.filter((link) => link.name !== 'Contact' && link.name !== 'FAQ').map((link) => {
               const active = isActive(link.path)
               if (link.external) {
                 return (
@@ -229,6 +232,16 @@ export function Navbar({ variant = 'fixed' }) {
           {/* CTA Button / Admin badge & Mobile Toggle */}
           <div className="flex items-center gap-3">
             {admin && <AdminMenu admin={admin} onLogout={handleLogout} />}
+
+            {/* FAQ: outlined pill beside Contact. */}
+            <Link
+              to="/faq"
+              className={`hidden lg:inline-flex items-center border font-bold px-5 py-2 rounded-full text-sm transition-colors duration-200 outline-none focus:outline-none ${
+                isActive('/faq') ? 'border-[#34E06E] text-[#34E06E]' : 'border-white/30 text-white hover:border-white hover:bg-white/10'
+              }`}
+            >
+              FAQ
+            </Link>
 
             {/* Contact: always-visible green pill on the right, apart from the page links. */}
             <Link

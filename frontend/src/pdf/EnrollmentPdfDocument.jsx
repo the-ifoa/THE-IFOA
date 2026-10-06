@@ -2,7 +2,7 @@ import { Document, Page, View, Text, Image, StyleSheet, Svg, Polyline } from '@r
 import logoSrc from '../assets/shared/brand/ifoa-logo.png';
 import watermarkSrc from '../assets/shared/brand/ifoa-watermark.png';
 import signatureSrc from '../assets/shared/brand/ifoa-signature.png';
-import { isFieldVisible } from '../components/formEngine/formSchema.js';
+import { isFieldVisible, termsForLocation } from '../components/formEngine/formSchema.js';
 
 const NAVY = '#000021';
 const HEADER_BAR = '#464667';
@@ -164,7 +164,7 @@ const formatDate = (date) => {
   if (!date) return null;
   const d = new Date(date);
   if (Number.isNaN(d.getTime())) return null;
-  return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+  return d.toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' });
 };
 
 const formatValue = (field, value) => {
@@ -368,7 +368,7 @@ function TermsBlock({ content }) {
   );
 }
 
-function renderSectionBody(section, sectionAnswers) {
+function renderSectionBody(section, sectionAnswers, location = '') {
   const fields = [...section.fields]
     .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
     .filter((field) => isFieldVisible(field, sectionAnswers));
@@ -415,7 +415,7 @@ function renderSectionBody(section, sectionAnswers) {
             ) : field.id === 'bankDetails' ? (
               <BankDetailsBlock content={field.content} />
             ) : field.id === 'termsText' ? (
-              <TermsBlock content={field.content} />
+              <TermsBlock content={termsForLocation(field.content, location)} />
             ) : (
               <Text style={styles.staticBlock}>{field.content}</Text>
             )}
@@ -491,7 +491,7 @@ export function EnrollmentPdfDocument({ submission }) {
         <View style={styles.masthead}>
           <View>
             <Text style={styles.title}>ENROLLMENT FORM</Text>
-            <Text style={styles.subtitle}>{submission.courseTitle || 'IFOA Training Programme'}</Text>
+            <Text style={styles.subtitle}>{submission.courseTitle || 'IFOA Training Program'}</Text>
             <Text style={styles.promo}>
               Intake: <Text style={styles.promoStrong}>{intake}</Text>
               {'  |  Submitted: '}
@@ -508,7 +508,7 @@ export function EnrollmentPdfDocument({ submission }) {
               <View style={styles.sectionHeader}>
                 <Text>{section.title}</Text>
               </View>
-              <View style={styles.fieldsTable}>{renderSectionBody(section, sectionAnswers)}</View>
+              <View style={styles.fieldsTable}>{renderSectionBody(section, sectionAnswers, answers?.intake?.trainingCountry)}</View>
             </View>
           );
         })}

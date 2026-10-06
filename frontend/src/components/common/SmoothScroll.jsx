@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom'
 
 const LenisContext = createContext(null)
 
+// eslint-disable-next-line react-refresh/only-export-components -- helper co-located with its component on purpose; only affects dev hot reload
 export function useLenis() {
   return useContext(LenisContext)
 }

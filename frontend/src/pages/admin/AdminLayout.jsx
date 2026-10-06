@@ -249,7 +249,7 @@ const HELP = {
     proTip: 'Contact applicants via WhatsApp or Email directly using the quick-action buttons in the detail drawer.'
   },
   contactMessages: {
-    title: 'Contact Enquiries Inbox',
+    title: 'Contact Inquiries Inbox',
     category: 'Communications Inbox',
     summary: 'Direct repository for all corporate, airline, and individual messages submitted through the public Contact page.',
     steps: [
@@ -269,7 +269,7 @@ const HELP = {
         desc: 'Mark resolved inquiries and track ongoing airline training consultations.'
       }
     ],
-    proTip: 'All messages are securely saved in the database first, so you never lose an enquiry even if email relay is delayed.'
+    proTip: 'All messages are securely saved in the database first, so you never lose an inquiry even if email relay is delayed.'
   }
 }
 
@@ -293,7 +293,7 @@ export function AdminLayout() {
     if (location.pathname.startsWith('/admin/submissions'))
       return { title: 'Student Submissions', crumb: 'Admissions', sub: 'Registrations Pipeline', help: HELP.submissions }
     if (location.pathname.startsWith('/admin/contact-messages'))
-      return { title: 'Contact Messages', crumb: 'Admissions', sub: 'Enquiry Inbox', help: HELP.contactMessages }
+      return { title: 'Contact Messages', crumb: 'Admissions', sub: 'Inquiry Inbox', help: HELP.contactMessages }
     if (/^\/admin\/courses\/[^/]+$/.test(location.pathname))
       return { title: 'Course Editor', crumb: 'Curriculum', sub: 'Course Specifications', help: HELP.courseEditor }
     return { title: 'Courses Catalog', crumb: 'Curriculum', sub: 'All Academic Programs', help: HELP.coursesList }

@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom'
 import './index.css'
 import { AppRoutes } from './App.jsx'
 import { lazyPublicPages, preloadForPath, prefetchPublicPages } from './pages/lazyPublicPages'
+import { startImagePrefetch } from './lib/imagePrefetch'
 
 // The lazyPublicPages import (and the BrowserRouter composition) lives here,
 // not in App.jsx, so entry-server.jsx's module graph never touches it - see
@@ -21,4 +22,6 @@ preloadForPath(window.location.pathname).then(() => {
     </StrictMode>,
   )
   prefetchPublicPages()
+  // After the page code, warm the browser cache with the pictures of the pages visitors open next.
+  startImagePrefetch()
 })

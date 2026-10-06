@@ -36,8 +36,7 @@ const FALLBACK = {
     topics: [
       'FAA Aircraft Dispatcher',
       'Flight Dispatcher Initial',
-      'Double Programme: FAA & EASA',
-      'Dangerous Goods',
+      'Double Program: FAA & EASA',
       'Train the Trainer',
       'Which course is right for me?',
       'Something else'
@@ -53,7 +52,16 @@ const FALLBACK = {
     ],
     // Shown only when the "Flight Dispatch" topic is selected - two
     // certification pathways exist for that discipline.
-    flightDispatchPathways: ['EASA', 'FAA Part 65']
+    flightDispatchPathways: ['ICAO & EASA', 'FAA Part 65'],
+    locationLabel: 'Where do you want to train?',
+      locationOptions: [
+        'Denmark (Sønderborg)',
+        'United States (Daytona Beach)',
+        'India (New Delhi)',
+        'Online',
+        'At our base (for operators)',
+        'Not sure yet'
+      ]
   },
   offices: {
     eyebrow: 'OFFICES',
@@ -90,7 +98,7 @@ const FALLBACK = {
       { label: 'Email', value: 'info@theifoa.com', href: 'mailto:info@theifoa.com' },
       { label: 'WhatsApp', value: '+41 78 227 3103', href: 'https://wa.me/41782273103' }
     ],
-    replyNote: 'We reply to every enquiry within two working days.',
+    replyNote: 'We reply to every inquiry within two working days.',
     coursesPrefix: 'Looking for a course date? See',
     coursesLinkLabel: 'upcoming courses'
   }
@@ -100,7 +108,9 @@ const FALLBACK = {
 const COURSE_TOPICS = {
   'flight-dispatcher-initial-certification': { topic: 'Flight Dispatcher Initial', audience: 'individual' },
   'aircraft-dispatcher-training-faa-part-65': { topic: 'FAA Aircraft Dispatcher', audience: 'individual' },
-  'flight-dispatcher-double-programme': { topic: 'Double Programme: FAA & EASA', audience: 'individual' },
+  'flight-dispatcher-initial-training-india': { topic: 'Flight Dispatcher Initial', audience: 'individual' },
+  'flight-dispatcher-initial-training-usa': { topic: 'Flight Dispatcher Initial', audience: 'individual' },
+  'flight-dispatcher-double-programme': { topic: 'Double Program: FAA & EASA', audience: 'individual' },
   'train-the-trainer-icao-cbta-instructor': { topic: 'Train the Trainer', audience: 'individual' },
   'dangerous-goods-regulations-cbta-initial': { topic: 'Dangerous Goods for our crews', audience: 'operator' },
   'airline-crew-control-flight-rostering': { topic: 'Crew Control', audience: 'operator' },
@@ -116,8 +126,8 @@ export function ContactPage() {
   // course as the topic, and "An operator" for team/corporate courses.
   const [searchParams] = useSearchParams()
   const fromCourse = COURSE_TOPICS[searchParams.get('course')] || null
-  // ?location=india from a region card / course page: sent with the enquiry.
-  const location = LOCATION_NAMES[(searchParams.get('location') || '').toLowerCase()] || ''
+  // ?location=india from a region card / course page pre-selects where they want to train.
+  const presetLocation = LOCATION_NAMES[(searchParams.get('location') || '').toLowerCase()] || ''
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -126,6 +136,7 @@ export function ContactPage() {
     audience: fromCourse?.audience || 'individual',
     topic: fromCourse?.topic || '',
     pathway: '',
+    location: presetLocation,
     message: ''
   })
   const [submitted, setSubmitted] = useState(false)
@@ -141,7 +152,11 @@ export function ContactPage() {
         formData.topic === 'Flight Dispatch' && formData.pathway
           ? `Flight Dispatch: ${formData.pathway}`
           : formData.topic
-      await api.sendContact({ ...formData, topic: topic || topicOptions[0], location })
+      if (!formData.location) {
+        setError('Please choose where you want to train.')
+        return
+      }
+      await api.sendContact({ ...formData, topic: topic || topicOptions[0], location: formData.location })
       setSubmitted(true)
     } catch (err) {
       setError(err.message || 'Could not send your message. Please try again.')
@@ -163,7 +178,7 @@ export function ContactPage() {
     <div className="bg-white text-rocket-dark selection:bg-[#34E06E] selection:text-slate-950" data-purpose="contact-page">
       <Seo
         path="/contact"
-        title="Contact IFOA | Flight Dispatch Training Enquiries"
+        title="Contact IFOA | Flight Dispatch Training Inquiries"
         description="Talk to IFOA about a flight dispatcher course or training for your team. Offices in Switzerland, the United States and India. We reply within two working days."
         jsonLd={graph(
           organizationSchema(),
@@ -365,11 +380,23 @@ export function ContactPage() {
                         <CustomSelect
                           value={formData.pathway}
                           onChange={(val) => setFormData({ ...formData, pathway: val })}
-                          options={c.form.flightDispatchPathways || ['EASA', 'FAA Part 65']}
+                          options={c.form.flightDispatchPathways || ['ICAO & EASA', 'FAA Part 65']}
                           placeholder="Select EASA or FAA Part 65..."
                         />
                       </div>
                     ) : null}
+
+                    <div className="space-y-1.5">
+                      <label className="text-xs font-mono font-bold uppercase text-slate-500 tracking-wider">
+                        {c.form.locationLabel || FALLBACK.form.locationLabel}
+                      </label>
+                      <CustomSelect
+                        value={formData.location}
+                        onChange={(val) => setFormData({ ...formData, location: val })}
+                        options={c.form.locationOptions || FALLBACK.form.locationOptions}
+                        placeholder="Select a location..."
+                      />
+                    </div>
 
                     <div className="space-y-1.5 flex-1 flex flex-col">
                       <label className="text-xs font-mono font-bold uppercase text-slate-500 tracking-wider">

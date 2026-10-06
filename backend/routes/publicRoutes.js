@@ -7,8 +7,11 @@ const pageContent = require('../controllers/pageContentController')
 const chat = require('../controllers/chatController')
 const contact = require('../controllers/contactController')
 const newsletter = require('../controllers/newsletterController')
+const rates = require('../controllers/ratesController')
 
 const router = express.Router()
+
+router.get('/rates', rates.getRates)
 
 // Chat bot - keep bursts in check per IP.
 const chatLimiter = rateLimit({

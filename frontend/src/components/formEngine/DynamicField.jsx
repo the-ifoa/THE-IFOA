@@ -1,7 +1,7 @@
 import { CmsText } from '@/components/admin/CmsEditable';
 import { FormField, SelectField, RadioGroup, CheckboxField, CountrySelectField, PhoneInputField } from './FormField.jsx';
 
-// First line is "Programme name, <price>"; any further lines are details
+// First line is "Program name, <price>"; any further lines are details
 // ("- " lines render as bullets, blank lines separate paragraphs).
 function ProgramInfoBlock({ content }) {
   const [firstLine, ...rest] = content.split('\n')

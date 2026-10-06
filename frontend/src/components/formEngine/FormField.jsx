@@ -154,7 +154,7 @@ export function SelectField({
           onClick={() => setIsOpen((prev) => !prev)}
           aria-haspopup="listbox"
           aria-expanded={isOpen}
-          className={`flex w-full items-center justify-between rounded-lg border bg-white px-3.5 py-2.5 text-left text-sm shadow-xs transition-all duration-150 focus:outline-none focus:ring-2 cursor-pointer ${
+          className={`flex w-full items-center justify-between gap-2 rounded-lg border bg-white px-3.5 py-2.5 text-left text-sm shadow-xs transition-all duration-150 focus:outline-none focus:ring-2 cursor-pointer ${
             isOpen
               ? 'border-ifoa-navy ring-2 ring-ifoa-navy/15'
               : error
@@ -162,7 +162,7 @@ export function SelectField({
               : 'border-slate-200 hover:border-slate-300'
           }`}
         >
-          <span className={isSelected ? 'font-medium text-slate-800' : 'text-slate-400'}>
+          <span className={`min-w-0 truncate ${isSelected ? 'font-medium text-slate-800' : 'text-slate-400'}`} title={getDisplayText()}>
             {getDisplayText()}
           </span>
           <svg
@@ -248,6 +248,7 @@ export function CountrySelectField({
 
   useEffect(() => {
     if (!isOpen) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- loading/reset state at the start of an effect that syncs with an external source
       setSearch('');
       return;
     }
@@ -463,10 +464,13 @@ export function PhoneInputField({
   const [selectedCountry, setSelectedCountry] = useState(parsed.country);
   const [phoneNumber, setPhoneNumber] = useState(parsed.rawNumber);
 
-  useEffect(() => {
+  // Follow the value prop when it changes from outside (adjusted during render, not in an effect).
+  const [prevParsed, setPrevParsed] = useState(parsed);
+  if (prevParsed !== parsed) {
+    setPrevParsed(parsed);
     setSelectedCountry(parsed.country);
     setPhoneNumber(parsed.rawNumber);
-  }, [parsed]);
+  }
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -480,6 +484,7 @@ export function PhoneInputField({
 
   useEffect(() => {
     if (!isOpen) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- loading/reset state at the start of an effect that syncs with an external source
       setSearch('');
       return;
     }

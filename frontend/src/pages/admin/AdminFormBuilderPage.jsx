@@ -300,6 +300,7 @@ export function AdminFormBuilderPage() {
   }
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- loading/reset state at the start of an effect that syncs with an external source
     load()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [courseId])

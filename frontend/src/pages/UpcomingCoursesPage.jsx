@@ -16,27 +16,55 @@ const COURSES = [
     whenNote: 'Seats open',
     title: 'Flight Dispatcher Initial',
     slug: 'flight-dispatcher-initial-certification',
-    desc: 'ICAO and EASA-focused dispatcher training built on ICAO Doc 10106.',
+    desc: 'ICAO Doc 10106, with EASA operations.',
     facts: [
-      ['Duration', '5 weeks'],
+      ['Duration', '200 hours, 5 weeks'],
       ['Where', '2 weeks online, 3 weeks in Sønderborg, Denmark'],
       ['Fee', '€3,500']
     ],
-    cta: { label: 'Apply online', to: '/courses/flight-dispatcher-initial-certification/enroll' }
+    cta: { label: 'Apply', to: '/courses/flight-dispatcher-initial-certification/enroll' }
+  },
+  {
+    color: '#A86A12',
+    when: 'Rolling',
+    whenNote: 'Starts at 10 registrations',
+    title: 'Flight Dispatcher Initial (India)',
+    slug: 'flight-dispatcher-initial-training-india',
+    desc: 'ICAO Doc 10106, taught in New Delhi after online preparation.',
+    facts: [
+      ['Duration', '4 weeks'],
+      ['Where', 'Online preparation, then New Delhi, India'],
+      ['Fee', '€1,000 + GST']
+    ],
+    cta: { label: 'Apply', to: '/courses/flight-dispatcher-initial-certification/enroll?location=india' }
   },
   {
     color: '#2F5D8C',
     when: 'Rolling',
-    whenNote: "Start when you're ready",
+    whenNote: 'India batches from 8 Feb 2027',
     title: 'FAA Aircraft Dispatcher',
     slug: 'aircraft-dispatcher-training-faa-part-65',
     desc: 'FAA Part 65 approved. Prepares you for the FAA Aircraft Dispatcher certificate.',
     facts: [
-      ['Duration', '200 hours, plus ADX self-study'],
-      ['Where', 'Online preparation, then Daytona Beach, Florida'],
+      ['Duration', '200 hours, 6 weeks (India: 5 weeks + exam week), plus ADX self-study'],
+      ['Where', 'Online preparation, then Sønderborg, Florida or New Delhi'],
       ['Fee', '$4,500 USD']
     ],
-    cta: { label: 'Apply online', to: '/courses/aircraft-dispatcher-training-faa-part-65/enroll' }
+    cta: { label: 'Apply', to: '/courses/aircraft-dispatcher-training-faa-part-65/enroll' }
+  },
+  {
+    color: '#2F5D8C',
+    when: 'To be confirmed',
+    whenNote: 'Contact us for dates',
+    title: 'Double Program: FAA & EASA',
+    slug: 'flight-dispatcher-double-programme',
+    desc: 'The FAA Part 65 approved course plus ICAO and EASA operations. One FAA certificate, trained for both rule sets.',
+    facts: [
+      ['Duration', '280 hours, 7 weeks, plus ADX self-study'],
+      ['Where', 'Hybrid, Denmark · India'],
+      ['Fee', '$5,500 USD']
+    ],
+    cta: { label: 'Apply', to: '/courses/flight-dispatcher-double-programme/enroll' }
   },
   {
     color: '#0B6E99',
@@ -47,10 +75,10 @@ const COURSES = [
     desc: 'For aviation professionals who teach. You teach twice, with feedback each time.',
     facts: [
       ['Duration', '4 days'],
-      ['Where', 'Classroom'],
+      ['Where', 'Open course, or in-house at your base'],
       ['Fee', 'On request']
     ],
-    cta: { label: 'Ask for the next date', to: '/contact?course=train-the-trainer-icao-cbta-instructor' }
+    cta: { label: 'Request a proposal', to: '/contact?course=train-the-trainer-icao-cbta-instructor' }
   }
 ]
 
@@ -60,7 +88,7 @@ export function UpcomingCoursesPage() {
       <Seo
         path="/upcoming-courses"
         title="Upcoming Courses and Start Dates | IFOA"
-        description="Next start dates for IFOA courses: Flight Dispatcher Initial (4 January 2027), FAA Aircraft Dispatcher (rolling admissions), and Train the Trainer."
+        description="Next start dates for IFOA courses: Flight Dispatcher Initial in Denmark (4 January 2027) and India, FAA Aircraft Dispatcher (rolling admissions), the Double Program and Train the Trainer."
         jsonLd={graph(
           organizationSchema(),
           breadcrumbSchema([
@@ -128,7 +156,7 @@ export function UpcomingCoursesPage() {
                     <p className="mt-1 text-[13px] text-slate-600 leading-relaxed">{course.desc}</p>
                   </div>
 
-                  {/* Facts: own columns on desktop, labelled list on mobile */}
+                  {/* Facts: own columns on desktop, labeled list on mobile */}
                   {['Duration', 'Where', 'Fee'].map((label) => (
                     <div key={label} className="flex lg:block justify-between gap-4 text-sm lg:pr-4">
                       <span className="lg:hidden text-xs text-slate-500">{label}</span>

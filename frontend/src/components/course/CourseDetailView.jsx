@@ -26,7 +26,7 @@ import { mergeContent } from '@/hooks/usePageContent'
 
 // Assets
 import { resolveCard, programmeBanner, hasEnrollmentForm, enrollPath, courseEditions } from '@/components/course/CourseCard'
-import { PriceTag, hasGst, GST_NOTE } from '@/components/course/PriceTag'
+import { PriceTag, InrConverter, taxNote } from '@/components/course/PriceTag'
 import { OverviewHero, OverviewBlocks, DgProvider, DgSidebar, OverviewEditProvider, useCoursePreview, E as T } from '@/components/course/CourseOverview'
 import { CmsText, CmsImageButton } from '@/components/admin/CmsEditable'
 import { getAtPath } from '@/lib/objectPath'
@@ -60,7 +60,7 @@ const FALLBACK = {
     dgcaComplianceBadge: 'DGCA & ICAO Aligned Training',
     faaComplianceBadge: 'FAA Part 65 Aligned',
     cbtaBadge: 'Competency-Based Training (CBTA)',
-    applyOnlineLabel: 'Enroll in Programme',
+    applyOnlineLabel: 'Enroll in Program',
     viewModulesLabel: 'Explore Curriculum',
     outcomesEyebrow: 'Competency Outcomes',
     outcomesTitle: 'Built for Operational Control',
@@ -73,7 +73,7 @@ const FALLBACK = {
     complianceTag1Faa: 'FAA 14 CFR Part 65',
     complianceTag2: 'ICAO Doc 10106',
     complianceTag3: 'CBTA Framework',
-    glanceLabel: 'Programme at a Glance',
+    glanceLabel: 'Program at a Glance',
     eligibilityEyebrow: 'Eligibility Profile',
     eligibilityTitle: 'Who Should Attend?',
     entryReqEyebrow: 'Admissions & Prerequisites',
@@ -92,7 +92,7 @@ const FALLBACK = {
     admissionsApplyLabel: 'Apply Online ↗',
     admissionsWhatsappLabel: 'WhatsApp Admissions',
     sidebarAdmissionsOpenBadge: 'Admissions Open',
-    sidebarOverviewLabel: 'Programme Overview',
+    sidebarOverviewLabel: 'Program Overview',
     sidebarTuitionLabel: 'Training Fee',
     sidebarTuitionNote: 'Inclusive of official study materials & examination fee',
     sidebarEnrollLabel: 'Enroll Now - Apply Online ↗',
@@ -106,13 +106,13 @@ const FALLBACK = {
     sidebarStandardValueDgca: 'DGCA / EASA Aligned',
     sidebarStandardValueFaa: 'FAA Part 65',
     sidebarCertificateLabel: 'Certificate Awarded',
-    sidebarCertificateValue: 'IFOA Certificate',
+    sidebarCertificateValue: 'IFOA Certificate of Completion',
     sidebarSupportTitle: 'Admissions Support',
     sidebarSupportDesc: 'Questions about eligibility, visa letters, or group bookings?'
   },
   curriculum: {
     eyebrow: 'Curriculum Framework',
-    title: 'What the Flight Dispatch Programme Covers',
+    title: 'What the Flight Dispatch Program Covers',
     subtitle: 'Structured around the core operational competencies required for airline dispatch worldwide.',
     phases: [
       {
@@ -182,9 +182,9 @@ const FALLBACK = {
 // null when no real date is set - callers fall back to the course's own
 // intakeLabel (e.g. "[Next cohort start date]" or "Rolling Admissions")
 // instead of a fake hardcoded date.
-function formatDate(value, opts = { day: '2-digit', month: '2-digit', year: 'numeric' }) {
+function formatDate(value, opts = { month: 'long', day: 'numeric', year: 'numeric' }) {
   if (!value) return null
-  return new Date(value).toLocaleDateString('en-GB', opts)
+  return new Date(value).toLocaleDateString('en-US', opts)
 }
 
 // null when no real amount is set - callers show the course's own price.note
@@ -194,6 +194,27 @@ function formatPrice(price) {
   const symbol = price.currency === 'INR' ? '₹' : price.currency === 'EUR' ? '€' : '$'
   return `${symbol}${price.amount.toLocaleString('en-US')}`
 }
+
+// India: the course itself is 5 weeks (2 online + 3 on-site); the one-week FAA exam is taken separately, in Florida, within 6 months.
+const FAA_WEEKS_NOTE = /The 6 weeks include one week for the FAA exams, taken in Florida, USA\./
+const FAA_INDIA_NOTE = 'In India the course is 5 weeks (2 online, 3 on-site). The one-week FAA exam is taken separately in Florida, USA, within 6 months.'
+function heroForLocation(hero, location) {
+  if (location !== 'india' || !hero.blocks?.some((b) => FAA_WEEKS_NOTE.test(b?.note || ''))) return hero
+  return { ...hero, blocks: hero.blocks.map((b) => (b?.note ? { ...b, note: b.note.replace(FAA_WEEKS_NOTE, FAA_INDIA_NOTE) } : b)) }
+}
+
+// FAA course taught in India: the Meteorology area also covers Indian meteorology.
+function blocksForLocation(blocks, location, slug) {
+  if (location !== 'india' || !slug?.includes('part-65')) return blocks
+  const addTopic = (item) =>
+    item.title === 'Meteorology' && !item.bullets?.includes(INDIAN_MET)
+      ? { ...item, bullets: [...(item.bullets || []), INDIAN_MET] }
+      : item
+  return blocks.map((b) =>
+    b.type === 'accordion' ? { ...b, groups: (b.groups || []).map((g) => ({ ...g, items: (g.items || []).map(addTopic) })) } : b
+  )
+}
+const INDIAN_MET = 'Indian meteorology: IMD weather reports and regional hazards'
 
 export function CourseDetailView({ course: savedCourse, preview = false }) {
   const handleBack = useGoBack('/events')
@@ -292,6 +313,7 @@ export function CourseDetailView({ course: savedCourse, preview = false }) {
         const m = /^(.*?)\s*\((.*)\)$/.exec(locationOverride)
         if (!m) return locationOverride
         const [city, region] = m[2].split(',').map((x) => x.trim())
+        if (region === 'Florida') return 'Florida, USA'
         return region && region !== 'Europe' ? `${city}, ${region}` : `${city}, ${m[1].trim()}`
       })()
     : null
@@ -299,14 +321,21 @@ export function CourseDetailView({ course: savedCourse, preview = false }) {
     if (!locationOverride) return null
     if (/^location$/i.test(label)) return overrideLocationLabel
     if (/^duration$/i.test(label) && overridePrice?.duration) return overridePrice.duration
+    // FAA course taught in New Delhi: same 2 online + 3 on-site split as Flight Dispatcher Initial.
+    if (/^format$/i.test(label) && preferredLocation === 'india' && course.slug?.includes('part-65')) return '2 weeks online, 3 weeks on-site'
+    if (/^duration$/i.test(label) && preferredLocation === 'india' && course.slug?.includes('part-65')) return '200 h, 5 weeks + ADX self-study'
     return null
   }
 
   const { schedule = {} } = course
+  // OCC consulting is a service, not a course: its fee is scoped per engagement.
+  const isConsulting = course.slug?.includes('consulting')
   const isIndiaProgram =
     course.slug?.includes('india') ||
     course.refCode?.includes('IPIN') ||
     course.title?.toLowerCase().includes('india')
+  // GST applies to anything taught in India, including another course with India picked in the location switch.
+  const taxIsGst = isIndiaProgram || preferredLocation === 'india'
   // Slug/refCode only - course.authority often *mentions* FAA on non-FAA
   // courses too (e.g. the EASA course's authority is "EASA / FAA Part 65
   // Standards" as a comparison), which caused false positives here.
@@ -395,7 +424,7 @@ export function CourseDetailView({ course: savedCourse, preview = false }) {
   // Dangerous Goods: the sidebar card follows the role/operation picked in the page body.
   const dgBlock = overview?.blocks?.find((b) => b.type === 'dgExplorer') || null
   // Uploaded course image (live from the admin editor while editing) wins over
-  // the bundled programme banners.
+  // the bundled program banners.
   const cardImageUrl = liveCourse?.courseMedia ? liveCourse.courseMedia.cardImage?.url : course.card?.image?.url
   const sidebarBanner = cardImageUrl ? null : programmeBanner(course)
   // Contact links carry the course so the Contact form pre-selects its topic.
@@ -441,60 +470,67 @@ export function CourseDetailView({ course: savedCourse, preview = false }) {
             {/* 1. HERO SECTION (Executive, Sleek & Clean) */}
             <section id="overview" className="space-y-6 sm:space-y-8">
               {/* Sleek Breadcrumb & Action Bar */}
-              <div className="flex items-center justify-between gap-3 pb-3.5 border-b border-slate-200/80">
-                <div className="flex items-center gap-2 text-xs font-medium text-slate-500 min-w-0">
+              <div className="flex flex-wrap sm:flex-nowrap items-center justify-between gap-2.5 sm:gap-3 pb-3.5 border-b border-slate-200/80">
+                <div className="flex flex-wrap sm:flex-nowrap items-center gap-2 text-xs font-medium text-slate-500 min-w-0 max-w-full flex-1 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden py-0.5">
                   <button
                     type="button"
                     onClick={handleBack}
-                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-slate-950 hover:bg-slate-800 text-white transition-all text-xs font-semibold shadow-xs group cursor-pointer shrink-0"
+                    className="inline-flex items-center gap-2 h-10 px-4 rounded-full bg-slate-950 hover:bg-slate-800 text-white transition-colors text-[13px] font-semibold shadow-sm group cursor-pointer shrink-0"
                   >
-                    <RiArrowLeftLine className="w-3.5 h-3.5 text-slate-300 group-hover:text-white group-hover:-translate-x-0.5 transition-transform" />
+                    <RiArrowLeftLine className="w-4 h-4 text-slate-300 group-hover:text-white group-hover:-translate-x-0.5 transition-transform" />
                     <span>Back</span>
                   </button>
                   {locationItems.length > 1 && !editing && (
-                    <div
-                      className="inline-flex flex-wrap items-center gap-1 rounded-full border border-slate-200/90 bg-white p-1 shadow-2xs"
-                      role="tablist"
-                      aria-label="Training location"
-                    >
-                      <RiMapPin2Line className="ml-1.5 w-3.5 h-3.5 text-slate-400 shrink-0" />
-                      {locationItems.map((item) => {
-                        const active = item === activeItem
-                        return (
-                          <Link
-                            key={item.opt}
-                            to={`/courses/${item.slug}?location=${item.key}`}
-                            replace
-                            preventScrollReset
-                            state={{ keepScroll: true }}
-                            role="tab"
-                            aria-selected={active}
-                            className={`px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap transition-colors ${
-                              active ? 'bg-slate-950 text-white' : 'text-slate-600 hover:text-slate-950 hover:bg-slate-50'
-                            }`}
-                          >
-                            {item.label}
-                          </Link>
-                        )
-                      })}
+                    <div className="flex items-center gap-3 min-w-0 max-w-full max-sm:w-full max-sm:order-last">
+                      <span className="hidden 2xl:inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500 shrink-0">
+                        <RiMapPin2Line className="w-4 h-4" />
+                        Training location
+                      </span>
+                      <div
+                        className="inline-flex items-center gap-1 h-10 rounded-full bg-white p-1 max-sm:w-full border border-slate-300 shadow-sm max-w-full overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+                        role="tablist"
+                        aria-label="Training location"
+                      >
+                        {locationItems.map((item) => {
+                          const active = item === activeItem
+                          return (
+                            <Link
+                              key={item.opt}
+                              to={`/courses/${item.slug}?location=${item.key}`}
+                              replace
+                              preventScrollReset
+                              state={{ keepScroll: true }}
+                              role="tab"
+                              aria-selected={active}
+                              className={`max-sm:flex-1 max-sm:text-center inline-flex items-center justify-center h-8 px-2 sm:px-4 rounded-full text-[13px] font-semibold whitespace-nowrap transition-colors shrink-0 outline-none ${
+                                active
+                                  ? 'bg-slate-950 text-white shadow-sm'
+                                  : 'text-slate-700 hover:text-slate-950 hover:bg-slate-100 focus-visible:bg-slate-100 focus-visible:text-slate-950'
+                              }`}
+                            >
+                              {item.label}
+                            </Link>
+                          )
+                        })}
+                      </div>
                     </div>
                   )}
                 </div>
 
-                <div className="flex items-center gap-2.5 shrink-0">
+                <div className="flex items-center gap-2.5 shrink-0 ml-auto sm:ml-0 max-sm:self-start">
                   <button
                     type="button"
                     onClick={handleShare}
-                    className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-700 hover:text-slate-950 bg-white hover:bg-slate-50 border border-slate-200/90 px-3.5 py-1.5 rounded-full transition-all shadow-2xs cursor-pointer active:scale-95"
+                    className="inline-flex items-center gap-2 h-10 text-[13px] font-semibold text-slate-800 hover:text-slate-950 bg-white hover:bg-slate-100 border border-slate-300 px-4 rounded-full transition-colors shadow-sm cursor-pointer active:scale-95 shrink-0 outline-none focus-visible:bg-slate-100"
                   >
-                    <RiShareForwardLine className="w-3.5 h-3.5 text-slate-500" />
+                    <RiShareForwardLine className="w-4 h-4 text-slate-600" />
                     <span>{copied ? L('copiedLabel') : L('shareLabel')}</span>
                   </button>
                 </div>
               </div>
 
               {overview ? (
-                <OverviewHero hero={overview.hero || {}} fallbackTitle={course.title} fallbackLead={course.summary} />
+                <OverviewHero hero={heroForLocation(overview.hero || {}, preferredLocation)} fallbackTitle={course.title} fallbackLead={course.summary} />
               ) : (
                 <>
               {/* Title & Authoritative Headline */}
@@ -603,7 +639,7 @@ export function CourseDetailView({ course: savedCourse, preview = false }) {
             </section>
 
             {overview ? (
-              <OverviewBlocks blocks={overview.blocks || []} courseSlug={course.slug} />
+              <OverviewBlocks blocks={editing ? overview.blocks || [] : blocksForLocation(overview.blocks || [], preferredLocation, course.slug)} courseSlug={course.slug} />
             ) : (
               <>
             {/* 2B. ROLE + OPERATION EXPLORER (Dangerous Goods only - dgrExplorer set) */}
@@ -1445,7 +1481,7 @@ export function CourseDetailView({ course: savedCourse, preview = false }) {
                 : 'bg-white border border-slate-200/90 rounded-[2rem] p-6 sm:p-7 shadow-[0_4px_24px_rgba(0,0,0,0.03)]'
             }`}
             style={{ ...(dgBlock ? dgHatch : {}), top: sidebarTop }}
-            aria-label="Programme overview"
+            aria-label="Program overview"
           >
             <div className={dgBlock ? 'bg-white rounded-xl p-6 sm:p-7 space-y-6' : 'space-y-6'}>
             {/* Top Course Card Thumbnail - Rounded inset frame */}
@@ -1472,29 +1508,30 @@ export function CourseDetailView({ course: savedCourse, preview = false }) {
               <div>
                 {course.isCorporate ? (
                   <>
-                    <span className="block text-[11px] font-mono uppercase text-slate-400 tracking-wider">
-                      {L('sidebarTuitionLabel')}
+                    <span className="block text-xs font-mono font-semibold uppercase text-slate-500 tracking-wider">
+                      {isConsulting ? 'Consulting Fee' : L('sidebarTuitionLabel')}
                     </span>
                     <strong className="block text-2xl sm:text-3xl font-extrabold text-slate-950 tracking-tight leading-tight mt-0.5">
                       {fields.rateCard?.value && fields.rateCard.value !== 'Corporate Rate' ? F('rateCard.value') : 'Training Fee'}
                     </strong>
-                    <p className="text-xs text-slate-600 font-normal mt-2 leading-relaxed">
+                    <p className="text-sm text-slate-700 font-normal mt-2 leading-relaxed">
                       {F('rateCard.note') ||
                         "Custom quote, based on group size and delivery format, tailored to the operator's operational environment."}
                     </p>
                   </>
                 ) : (
                   <>
-                    <span className="block text-[11px] font-mono uppercase text-slate-400 tracking-wider">
+                    <span className="block text-xs font-mono font-semibold uppercase text-slate-500 tracking-wider">
                       {L('sidebarTuitionLabel')}
                     </span>
                     <strong className="block text-3xl sm:text-4xl font-extrabold text-slate-950 tracking-tight leading-tight mt-0.5">
                       {formatPrice(sidebarPrice) ? <PriceTag price={sidebarPrice} /> : 'Contact for Pricing'}
                     </strong>
-                    {hasGst(sidebarPrice) && (
-                      <span className="block text-xs font-semibold text-slate-700 mt-1">{GST_NOTE}</span>
+                    {taxNote(sidebarPrice, taxIsGst) && (
+                      <span className="block text-sm font-semibold text-slate-800 mt-1.5">{taxNote(sidebarPrice, taxIsGst)}</span>
                     )}
-                    <small className="block text-xs text-slate-500 font-normal mt-1 leading-relaxed">
+                    {taxIsGst && <InrConverter price={sidebarPrice} />}
+                    <small className="block text-sm text-slate-700 font-normal mt-2 leading-relaxed">
                       {F('price.note') ||
                         (formatPrice(course.price)
                           ? isIndiaProgram
@@ -1549,11 +1586,15 @@ export function CourseDetailView({ course: savedCourse, preview = false }) {
 
             {/* Specifications Rows */}
             {fields.sidebarSpecs?.length > 0 ? (
-              <div className="border-t border-slate-100 pt-3 space-y-2.5 text-xs sm:text-[13px]">
+              <div className="border-t border-slate-100 pt-3 space-y-1 text-[13px] sm:text-sm">
                 {fields.sidebarSpecs.map((_, idx) => (
-                  <div key={idx} className="flex justify-between items-center gap-4 py-1.5 border-b border-slate-100/70">
-                    <span className="text-slate-500 font-medium">{F(`sidebarSpecs.${idx}.label`)}</span>
-                    <strong className="font-bold text-slate-950 text-right">
+                  // One line per row: label never wraps, a value too long for the card ends in "…" (full text on hover).
+                  <div key={idx} className="flex justify-between items-center gap-3 py-2 border-b border-slate-200/80 whitespace-nowrap">
+                    <span className="text-slate-600 font-medium shrink-0">{F(`sidebarSpecs.${idx}.label`)}</span>
+                    <strong
+                      className="font-bold text-slate-950 text-right min-w-0 truncate"
+                      title={specOverride(fields.sidebarSpecs[idx]?.label) || fields.sidebarSpecs[idx]?.value || undefined}
+                    >
                       {specOverride(fields.sidebarSpecs[idx]?.label) || F(`sidebarSpecs.${idx}.value`)}
                     </strong>
                   </div>
@@ -1622,7 +1663,7 @@ export function CourseDetailView({ course: savedCourse, preview = false }) {
             )}
 
             {overview?.sidebarNote && (
-              <p className="text-[11px] text-slate-500 leading-relaxed"><T o={overview} k="sidebarNote" /></p>
+              <p className="text-xs text-slate-600 leading-relaxed"><T o={overview} k="sidebarNote" /></p>
             )}
 
             {/* Trust Badge at bottom of sidebar */}
@@ -1637,20 +1678,38 @@ export function CourseDetailView({ course: savedCourse, preview = false }) {
 
             {/* Additional Certification Costs */}
             {course.additionalCosts?.items?.length > 0 && (
-              <div className="rounded-2xl bg-slate-50 p-4 border border-slate-100 space-y-2 text-xs">
+              <div className="rounded-2xl border border-slate-200 bg-slate-50/70 px-5 py-4">
                 {course.additionalCosts.intro && (
-                  <span className="font-bold text-slate-900 block">{course.additionalCosts.intro}</span>
+                  <p className="text-[11px] font-mono font-semibold uppercase tracking-wider text-slate-500 pb-3 mb-1 border-b border-slate-200">
+                    {course.additionalCosts.intro}
+                  </p>
                 )}
-                <div className="space-y-1.5">
-                  {course.additionalCosts.items.map((item, idx) => (
-                    <div key={idx} className="flex items-center justify-between gap-3">
-                      <span className="text-slate-600">{item.label}</span>
-                      <span className="font-bold text-slate-900">{item.amount}</span>
-                    </div>
-                  ))}
-                </div>
+                <dl className="divide-y divide-slate-200/70">
+                  {course.additionalCosts.items.map((item, idx) => {
+                    const isTotal = /^total\b/i.test(item.label || '')
+                    return (
+                      <div
+                        key={idx}
+                        className={`grid grid-cols-[1fr_auto] items-baseline gap-x-4 ${
+                          isTotal ? 'pt-3.5 mt-1 border-t-2 border-slate-900 !divide-y-0' : 'py-2.5'
+                        }`}
+                      >
+                        <dt className={`leading-snug ${isTotal ? 'text-sm font-bold text-slate-950' : 'text-[13px] text-slate-600'}`}>
+                          {item.label}
+                        </dt>
+                        <dd
+                          className={`whitespace-nowrap text-right tabular-nums ${
+                            isTotal ? 'text-base font-extrabold text-slate-950' : 'text-sm font-semibold text-slate-900'
+                          }`}
+                        >
+                          {item.amount}
+                        </dd>
+                      </div>
+                    )
+                  })}
+                </dl>
                 {course.additionalCosts.note && (
-                  <p className="text-slate-500 text-[11px] leading-relaxed pt-1 border-t border-slate-200/80">
+                  <p className="text-slate-600 text-xs leading-relaxed pt-3 mt-1 border-t border-slate-200">
                     {course.additionalCosts.note}
                   </p>
                 )}
@@ -1658,13 +1717,13 @@ export function CourseDetailView({ course: savedCourse, preview = false }) {
             )}
 
             {/* Help line */}
-            <div className="pt-4 border-t border-slate-100 flex items-center justify-between gap-3 text-xs">
-              <span className="text-slate-500">{L('sidebarSupportTitle')}</span>
+            <div className="pt-4 border-t border-slate-200 flex items-center justify-between gap-3 text-[13px] sm:text-sm">
+              <span className="text-slate-600">{course.isCorporate ? 'Operator inquiries' : L('sidebarSupportTitle')}</span>
               <a
                 href={`mailto:${supportEmail}`}
                 className="inline-flex items-center gap-1.5 font-bold text-slate-900 hover:text-[#16a952] transition-colors"
               >
-                <MdOutlineMail className="w-3.5 h-3.5 text-slate-400" />
+                <MdOutlineMail className="w-4 h-4 text-slate-500" />
                 {supportEmail}
               </a>
             </div>

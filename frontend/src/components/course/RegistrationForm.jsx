@@ -11,7 +11,8 @@ import {
   buildEmptyAnswers,
   isSectionComplete,
   isTrackableSection,
-  getDetailedValidationErrors
+  getDetailedValidationErrors,
+  termsForLocation
 } from '@/components/formEngine/formSchema'
 import { downloadEnrollmentPdf } from '@/pdf/generateEnrollmentPdf'
 
@@ -43,6 +44,7 @@ export function RegistrationForm({ slug, courseTitle, onAnswersChange, locationP
 
   useEffect(() => {
     let cancelled = false
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- loading/reset state at the start of an effect that syncs with an external source
     setLoading(true)
     setLoadError('')
     api
@@ -75,25 +77,32 @@ export function RegistrationForm({ slug, courseTitle, onAnswersChange, locationP
     }
   }, [slug, initialLocation])
 
-  const intakes = course?.intakes || []
+  const allIntakes = useMemo(() => course?.intakes || [], [course])
 
   // The "Selected Training Program" box shows the price for the chosen
   // training location when the course has one (e.g. India in INR).
   const trainingCountry = answers?.intake?.trainingCountry
+  // Intakes tied to a training location only show once that location is chosen.
+  const intakes = useMemo(() => {
+    if (!trainingCountry) return allIntakes
+    const picked = trainingCountry.toLowerCase()
+    return allIntakes.filter(
+      (i) => !i.locations?.length || i.locations.some((loc) => picked.includes(String(loc).toLowerCase()))
+    )
+  }, [allIntakes, trainingCountry])
   const displaySections = useMemo(() => {
     const lp = locationPrices.find((p) => p.location === trainingCountry)
-    if (!lp) return sections
-    const priceText = `${Number(lp.amount).toLocaleString('en-IN')} ${lp.currency}`
+    const priceText = lp ? `${Number(lp.amount).toLocaleString('en-IN')} ${lp.currency}` : null
+    if (!sections) return sections
     return sections.map((s) => ({
       ...s,
-      fields: s.fields.map((f) =>
-        f.id === 'programInfo' && f.content
-          ? {
-              ...f,
-              content: f.content.replace(/^(.*?),\s*[\d.,]+\s*[A-Z]{2,4}(\s*)$/m, `$1, ${priceText}$2`)
-            }
-          : f
-      )
+      fields: s.fields.map((f) => {
+        if (f.id === 'termsText' && f.content) return { ...f, content: termsForLocation(f.content, trainingCountry) }
+        if (priceText && f.id === 'programInfo' && f.content) {
+          return { ...f, content: f.content.replace(/^(.*?),\s*[\d.,]+\s*[A-Z]{2,4}(\s*)$/m, `$1, ${priceText}$2`) }
+        }
+        return f
+      })
     }))
   }, [sections, locationPrices, trainingCountry])
 

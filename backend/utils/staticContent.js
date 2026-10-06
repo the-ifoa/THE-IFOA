@@ -16,15 +16,13 @@ const BANK_DETAILS = {
 }
 
 const COURSE_ACKNOWLEDGEMENT_TEXT =
-  'I understand that with the absence of European regulatory requirements in the licensing of Flight Dispatchers in Europe, I will not receive a Flight Dispatcher certificate delivered by EASA. The International Flight Operations Academy GmbH will deliver a Flight Dispatcher certificate based on the EASA regulations specified in EASA Part ORO.GEN.110(c)&(e) and the prerequisite learning objectives set in the ICAO Doc 10106 Manuals.'
+  'I understand that IFOA issues an IFOA Certificate of Completion when I complete the course. It is not a government-issued licence or certificate.'
 
 const TERMS_AND_CONDITIONS = [
   'The enrollment form duly filled out and signed shall be emailed to info@theIFOA.com',
-  'Students must provide accurate information on the enrolment form. Students discovered to have falsified or misrepresented information may be liable to expulsion from the program.',
-  'A registration fee of 1000 EUR is required to guarantee a place at the course session.',
+  'Students must provide accurate information on the enrollment form. Students discovered to have falsified or misrepresented information may be liable to expulsion from the program.',
   'The total tuition fee is due at least one month before the start of the training.',
   'Cancellation Policy: a) Cancellation 30 days or less before the training start date: IFOA is entitled to charge 50% of the tuition fee. b) Cancellation 14 days or less before the training start date: IFOA is entitled to charge the full tuition fee. c) IFOA reserves the right to cancel or re-schedule courses within three (3) days’ notice for Force Majeure or if the minimum number of students required to ensure efficient training is not reached. All pre-paid fees will automatically be refunded or move toward the next available course in case of cancellation. All other costs, fees, and disbursements will be the student’s responsibility.',
-  'Absence/Non-appearance during the confirmed training course automatically forfeits the registration fee.',
   'IFOA cannot be held responsible if the EU immigration officer denies the EU entry at the port of entry.',
   'Changing the date is allowed only once for the same paid course. Notify and email info@theIFOA.com. Our team will re-schedule contingent on the next available training date.',
   'Participants can only be transferred or changed once for the same paid course. To do so, notify and email info@theIFOA.com.',

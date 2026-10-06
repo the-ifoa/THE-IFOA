@@ -8,12 +8,14 @@ import { api } from '@/lib/api'
 // state and echoes it back down through the existing preview channel - same
 // round trip the live-preview already used, just now driven from inside the
 // iframe instead of a separate form.
+// eslint-disable-next-line react-refresh/only-export-components -- helper co-located with its component on purpose; only affects dev hot reload
 export function isPreviewEditMode() {
   return typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('__preview') === '1'
 }
 
 const debounceTimers = {}
 
+// eslint-disable-next-line react-refresh/only-export-components -- helper co-located with its component on purpose; only affects dev hot reload
 export function postEdit(path, value) {
   window.parent.postMessage({ type: 'ifoa-edit-change', path, value }, window.location.origin)
 }

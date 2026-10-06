@@ -3,8 +3,6 @@ import { Link, useNavigate } from 'react-router-dom'
 import { api } from '@/lib/api'
 import {
   RiWhatsappFill,
-  RiMapPin2Line,
-  RiComputerLine,
   RiArrowRightSLine
 } from 'react-icons/ri'
 import { HiArrowUpRight } from 'react-icons/hi2'
@@ -29,18 +27,18 @@ const doubleProgrammeHero = '/course-images/Flight-Dispatch-Webpage-Small.jpg'
 // Content the page ships with; editable at /admin/pages/events.
 const FALLBACK = {
   hero: {
-    title: 'Open-enrollment cohorts, worldwide.',
+    title: 'Courses you can apply for, worldwide.',
     subtitle:
-      'Fixed-date, classroom and virtual programs you can register for directly, alongside the custom fleet training we build for airlines and operators.',
-    primaryLabel: 'View Open Programs',
-    secondaryLabel: 'Inquire on WhatsApp',
+      'Dispatcher courses you can apply for directly, on published dates or rolling admissions, alongside the custom fleet training we build for airlines and operators.',
+    primaryLabel: 'View Open Courses',
+    secondaryLabel: 'Ask us on WhatsApp',
     image: null
   },
   programs: {
-    eyebrow: 'Open-Enrollment Programs',
+    eyebrow: 'Open-Enrollment Courses',
     title: 'Your Next Step in Aviation Starts Here',
     intro:
-      'Explore our range of open-enrollment programs, developed to build practical knowledge, professional skills, and operational capability across aviation. Find your program and join an upcoming intake.',
+      'Explore our range of open-enrollment courses, developed to build practical knowledge, professional skills, and operational capability across aviation. Find your course and join an upcoming intake.',
     badge: 'Rolling Global Intakes',
     emptyTitle: 'No open intakes right now',
     emptyDesc: 'New cohorts are published here as admissions open. Leave your email below to be notified.'
@@ -61,31 +59,31 @@ const FALLBACK = {
         num: '01',
         title: 'The Operating Environment',
         iconName: 'airspace',
-        items: ['Air Law & Regulations', 'ICAO / EASA / DGCA', 'Air Traffic Management', 'Communications']
+        items: ['Air law and regulations', 'ICAO and EASA framework', 'Air traffic management', 'Aeronautical communications']
       },
       {
         num: '02',
         title: 'Know the Aircraft',
         iconName: 'altimeter',
-        items: ['Aircraft Systems', 'Instrumentation', 'Principles of Flight', 'B737-NG Technical']
+        items: ['Aircraft systems for dispatchers', 'Mass and balance', 'Aircraft performance', 'MEL and CDL']
       },
       {
         num: '03',
         title: 'Plan the Flight',
         iconName: 'flight-route',
-        items: ['Navigation', 'Meteorology', 'Mass & Balance', 'Performance & Flight Planning']
+        items: ['Aviation meteorology', 'Navigation and route planning', 'Fuel planning and alternates', 'NOTAMs and flight plan filing']
       },
       {
         num: '04',
         title: 'Control the Operation',
         iconName: 'dispatcher-headset',
-        items: ['Flight Monitoring', 'Operational Procedures', 'Human Performance', 'Operational Coordination']
+        items: ['Flight following and monitoring', 'Operational control', 'Communicating with crew and stakeholders', 'Managing disruptions']
       },
       {
         num: '05',
         title: 'Make the Decision',
         iconName: 'situational-awareness',
-        items: ['Situational Awareness', 'Risk Assessment', 'Collaborative Decision-Making', 'Scenario Exercises']
+        items: ['Decision-making under uncertainty', 'Threat and error management', 'Human factors in dispatch', 'Scenario exercises']
       }
     ]
   },
@@ -96,51 +94,17 @@ const FALLBACK = {
       'Take aircraft knowledge beyond the classroom. Our training connects aircraft systems, performance, limitations, mass and balance, and flight planning to the operational decisions professionals make every day.',
     tags: ['AIRCRAFT SYSTEMS', 'PERFORMANCE', 'MASS & BALANCE', 'FLIGHT PLANNING', 'LIMITATIONS']
   },
-  recent: {
-    eyebrow: 'Recent Cohorts',
-    title: "What's Run Recently",
-    intro: "A look at the open-enrollment programs we've successfully delivered across our global hubs.",
-    cohorts: [
-      {
-        code: 'IPIN2501',
-        title: '4-Week Flight Operations & Flight Dispatch Program',
-        dates: '31 Mar - 25 Apr 2025',
-        location: 'New Delhi (Onsite)',
-        pricing: '₹99,000 plus 18% GST',
-        description:
-          'Delivered onsite at Indian Aviation Academy. Comprehensive syllabus aligned with ICAO Doc 10106, EASA ORO.GEN 110, and DGCA standards.'
-      },
-      {
-        code: 'IDIN2402',
-        title: '3-Week Initial Flight Dispatch Course',
-        dates: '21 Oct - 08 Nov 2024',
-        location: 'Virtual Classroom',
-        pricing: 'Online Live Cohort',
-        description:
-          'Part-time, interactive digital delivery designed for developing-country markets entering professional flight operations.'
-      },
-      {
-        code: 'CPIN2401',
-        title: '3-Week Commercial Pilot Introductory Course',
-        dates: '12 - 30 Aug 2024',
-        location: 'Virtual Classroom',
-        pricing: 'Online Live Cohort',
-        description:
-          'Foundational ground theory and flight operational fundamentals for individuals preparing for commercial pilot certification.'
-      }
-    ]
-  },
   finalCta: {
     title: 'Want fleet-wide training instead of an open cohort?',
     desc: "Airlines and operators don't wait for a public calendar date: we schedule custom training around your ops.",
     primaryLabel: 'Talk to Us About Your Team',
-    secondaryLabel: 'Browse Training Programs'
+    secondaryLabel: 'Browse Training Courses'
   }
 }
 
 // Events lists fixed-date, open-enrollment cohorts. Every other discipline
 // (Crew Control, Dangerous Goods, Train the Trainer, etc.) is discovered from
-// the Services page instead, so only the flagship Flight Dispatch programmes
+// the Services page instead, so only the flagship Flight Dispatch programs
 // (EASA and FAA) show here.
 const EVENTS_SLUGS = ['flight-dispatcher-double-programme', 'flight-dispatcher-initial-certification', 'aircraft-dispatcher-training-faa-part-65']
 
@@ -153,20 +117,22 @@ export function EventsPage() {
     api
       .listCourses()
       .then((data) => setLiveCourses((data.courses || []).filter((course) => EVENTS_SLUGS.includes(course.slug))))
-      .catch(() => setLiveCourses([]))
+      .catch(() => {
+        // Keep the prerendered/cached cards when the API is slow or down.
+      })
   }, [])
 
   return (
     <div className="bg-white text-rocket-dark selection:bg-[#34E06E] selection:text-slate-950" data-purpose="events-page">
       <Seo
         path="/events"
-        title="Flight Dispatcher Course Dates & Upcoming Intakes | IFOA"
-        description="Open-enrollment flight dispatcher courses in Denmark, Florida and Europe, including the FAA and EASA Double Programme. Fees, formats and next intakes."
+        title="Flight Dispatcher Courses and Start Dates | IFOA"
+        description="Open-enrollment flight dispatcher courses in Sønderborg, Denmark · Florida, USA · New Delhi, India, including the Double Program: FAA & EASA. Fees, formats and next intakes."
         jsonLd={graph(
           organizationSchema(),
           breadcrumbSchema([
             { name: 'Home', path: '/' },
-            { name: 'Events & Programs', path: '/events' }
+            { name: 'Courses', path: '/events' }
           ]),
           liveCourses.length > 0 && {
             '@type': 'ItemList',
@@ -253,13 +219,13 @@ export function EventsPage() {
 
           {/* Cards Grid: 3 Clean & Compact High-Impact Cards matching Image 2 */}
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-7 max-w-[1280px] mx-auto">
-            {/* CARD 0: Double Programme FAA + EASA */}
+            {/* CARD 0: Double Program FAA + EASA */}
             <div className="rounded-2xl overflow-hidden border border-slate-200/90 bg-white shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between group text-left">
               {/* Image Banner */}
               <div className="relative h-48 sm:h-52 w-full overflow-hidden bg-slate-950 select-none">
                 <img
                   src={doubleProgrammeHero}
-                  alt="Double Programme: FAA & EASA"
+                  alt="Double Program: FAA & EASA"
                   className="w-full h-full object-cover object-[center_60%] group-hover:scale-105 transition-transform duration-700"
                 />
               </div>
@@ -267,7 +233,7 @@ export function EventsPage() {
               {/* Card Body */}
               <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
                 <div className="space-y-3">
-                  {/* Programme badges */}
+                  {/* Program badges */}
                   <div className="flex items-center justify-between gap-2">
                     <span className="inline-flex items-center px-2.5 py-1 rounded-md bg-slate-950 text-white font-mono text-[10px] font-bold tracking-wider uppercase">
                       FAA & EASA
@@ -281,29 +247,11 @@ export function EventsPage() {
                   {/* Title & Desc */}
                   <div className="space-y-1.5">
                     <h3 className="text-lg sm:text-xl font-bold text-slate-950 tracking-tight leading-snug line-clamp-2 min-h-[48px] flex items-center">
-                      Double Programme: FAA & EASA
+                      Double Program: FAA & EASA
                     </h3>
-                    <p className="text-xs text-slate-600 leading-relaxed font-normal min-h-[34px]">
-                      The FAA Part 65 approved course plus ICAO and EASA operations in one programme. The FAA certificate is issued by the FAA.
+                    <p className="text-xs text-slate-600 leading-relaxed font-normal min-h-[3.75rem] line-clamp-3">
+                      The FAA Part 65 approved course plus ICAO and EASA operations in one program. The FAA issues the certificate.
                     </p>
-                  </div>
-
-                  {/* Compact Specs Grid */}
-                  <div className="grid grid-cols-2 gap-2 p-2.5 rounded-xl bg-slate-50/90 border border-slate-100 text-left">
-                    <div className="space-y-0.5 min-w-0">
-                      <div className="flex items-center gap-1.5 text-slate-900 text-xs font-bold truncate">
-                        <RiComputerLine className="w-3.5 h-3.5 text-slate-500 shrink-0" />
-                        <span className="truncate">Hybrid</span>
-                      </div>
-                      <p className="text-[11px] text-slate-500 font-medium pl-5 truncate">280 Hrs · 7 Weeks</p>
-                    </div>
-                    <div className="space-y-0.5 min-w-0">
-                      <div className="flex items-center gap-1.5 text-slate-900 text-xs font-bold truncate">
-                        <RiMapPin2Line className="w-3.5 h-3.5 text-slate-500 shrink-0" />
-                        <span className="truncate">Sønderborg, Denmark</span>
-                      </div>
-                      <p className="text-[11px] text-slate-500 font-medium pl-5 truncate">Air Alsie Facilities</p>
-                    </div>
                   </div>
                 </div>
 
@@ -322,7 +270,7 @@ export function EventsPage() {
                       to="/courses/flight-dispatcher-double-programme/enroll"
                       className="inline-flex items-center justify-center gap-1 px-3 py-2.5 rounded-xl bg-slate-950 hover:bg-slate-800 text-white text-[11px] font-bold uppercase tracking-wider transition-all shadow-xs cursor-pointer text-center group/btn"
                     >
-                      <span>REGISTER INTEREST</span>
+                      <span>APPLY</span>
                       <RiArrowRightSLine className="w-3.5 h-3.5 text-slate-300 group-hover/btn:translate-x-0.5 transition-transform" />
                     </Link>
                   </div>
@@ -336,7 +284,7 @@ export function EventsPage() {
               <div className="relative h-48 sm:h-52 w-full overflow-hidden bg-slate-950 select-none">
                 <img
                   src={easaTarmacHero}
-                  alt="Flight Dispatcher Initial Training"
+                  alt="Flight Dispatcher Initial"
                   className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700"
                 />
               </div>
@@ -344,42 +292,24 @@ export function EventsPage() {
               {/* Card Body */}
               <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
                 <div className="space-y-3">
-                  {/* Programme badges */}
+                  {/* Program badges */}
                   <div className="flex items-center justify-between gap-2">
                     <span className="inline-flex items-center px-2.5 py-1 rounded-md bg-slate-950 text-white font-mono text-[10px] font-bold tracking-wider uppercase">
-                      FD - INITIAL
+                      ICAO DOC 10106
                     </span>
                     <div className="inline-flex items-center gap-1.5 px-2 py-1 rounded-md bg-slate-50 border border-slate-200">
                       <img src={logoEasa} alt="EASA" className="h-4 w-auto object-contain" />
-                      <span className="text-[9px] font-mono font-bold uppercase tracking-wider text-slate-800">EASA-Aligned</span>
+                      <span className="text-[9px] font-mono font-bold uppercase tracking-wider text-slate-800">With EASA ops</span>
                     </div>
                   </div>
                   {/* Title & Desc */}
                   <div className="space-y-1.5">
                     <h3 className="text-lg sm:text-xl font-bold text-slate-950 tracking-tight leading-snug line-clamp-2 min-h-[48px] flex items-center">
-                      Flight Dispatcher Initial Training
+                      Flight Dispatcher Initial
                     </h3>
-                    <p className="text-xs text-slate-600 leading-relaxed font-normal min-h-[34px]">
-                      EASA-aligned professional training for aspiring Flight Dispatchers. Build the knowledge and operational skills required for an OCC career.
+                    <p className="text-xs text-slate-600 leading-relaxed font-normal min-h-[3.75rem] line-clamp-3">
+                      ICAO Doc 10106, with EASA operations. Build the knowledge and skills for an OCC career.
                     </p>
-                  </div>
-
-                  {/* Compact Specs Grid */}
-                  <div className="grid grid-cols-2 gap-2 p-2.5 rounded-xl bg-slate-50/90 border border-slate-100 text-left">
-                    <div className="space-y-0.5 min-w-0">
-                      <div className="flex items-center gap-1.5 text-slate-900 text-xs font-bold truncate">
-                        <RiComputerLine className="w-3.5 h-3.5 text-slate-500 shrink-0" />
-                        <span className="truncate">Hybrid</span>
-                      </div>
-                      <p className="text-[11px] text-slate-500 font-medium pl-5 truncate">200 Hrs · 5 Weeks</p>
-                    </div>
-                    <div className="space-y-0.5 min-w-0">
-                      <div className="flex items-center gap-1.5 text-slate-900 text-xs font-bold truncate">
-                        <RiMapPin2Line className="w-3.5 h-3.5 text-slate-500 shrink-0" />
-                        <span className="truncate">Sønderborg, Denmark</span>
-                      </div>
-                      <p className="text-[11px] text-slate-500 font-medium pl-5 truncate">Air Alsie Facilities</p>
-                    </div>
                   </div>
                 </div>
 
@@ -398,7 +328,7 @@ export function EventsPage() {
                       to="/courses/flight-dispatcher-initial-certification/enroll"
                       className="inline-flex items-center justify-center gap-1 px-3 py-2.5 rounded-xl bg-slate-950 hover:bg-slate-800 text-white text-[11px] font-bold uppercase tracking-wider transition-all shadow-xs cursor-pointer text-center group/btn"
                     >
-                      <span>REGISTER INTEREST</span>
+                      <span>APPLY</span>
                       <RiArrowRightSLine className="w-3.5 h-3.5 text-slate-300 group-hover/btn:translate-x-0.5 transition-transform" />
                     </Link>
                   </div>
@@ -412,7 +342,7 @@ export function EventsPage() {
               <div className="relative h-48 sm:h-52 w-full overflow-hidden bg-slate-950 select-none">
                 <img
                   src={faaTarmacHero}
-                  alt="Aircraft Dispatcher Course"
+                  alt="FAA Aircraft Dispatcher"
                   className="w-full h-full object-cover object-[center_35%] group-hover:scale-105 transition-transform duration-700"
                 />
               </div>
@@ -420,7 +350,7 @@ export function EventsPage() {
               {/* Card Body */}
               <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
                 <div className="space-y-3">
-                  {/* Programme badges */}
+                  {/* Program badges */}
                   <div className="flex items-center justify-between gap-2">
                     <span className="inline-flex items-center px-2.5 py-1 rounded-md bg-slate-950 text-white font-mono text-[10px] font-bold tracking-wider uppercase">
                       FAA PART 65
@@ -433,29 +363,11 @@ export function EventsPage() {
                   {/* Title & Desc */}
                   <div className="space-y-1.5">
                     <h3 className="text-lg sm:text-xl font-bold text-slate-950 tracking-tight leading-snug line-clamp-2 min-h-[48px] flex items-center">
-                      Aircraft Dispatcher Course
+                      FAA Aircraft Dispatcher
                     </h3>
-                    <p className="text-xs text-slate-600 leading-relaxed font-normal min-h-[34px]">
-                      FAA-approved training leading toward Aircraft Dispatcher certification. Develop the technical knowledge and decision making skills for a professional career in aviation.
+                    <p className="text-xs text-slate-600 leading-relaxed font-normal min-h-[3.75rem] line-clamp-3">
+                      FAA Part 65 approved training that prepares you for the FAA Aircraft Dispatcher certificate.
                     </p>
-                  </div>
-
-                  {/* Compact Specs Grid */}
-                  <div className="grid grid-cols-2 gap-2 p-2.5 rounded-xl bg-slate-50/90 border border-slate-100 text-left">
-                    <div className="space-y-0.5 min-w-0">
-                      <div className="flex items-center gap-1.5 text-slate-900 text-xs font-bold truncate">
-                        <RiComputerLine className="w-3.5 h-3.5 text-slate-500 shrink-0" />
-                        <span className="truncate">Hybrid</span>
-                      </div>
-                      <p className="text-[11px] text-slate-500 font-medium pl-5 truncate">200 Hrs · 6 Weeks</p>
-                    </div>
-                    <div className="space-y-0.5 min-w-0">
-                      <div className="flex items-center gap-1.5 text-slate-900 text-xs font-bold truncate">
-                        <RiMapPin2Line className="w-3.5 h-3.5 text-slate-500 shrink-0" />
-                        <span className="truncate">Daytona Beach, USA</span>
-                      </div>
-                      <p className="text-[11px] text-slate-500 font-medium pl-5 truncate">Florida, near Space Center</p>
-                    </div>
                   </div>
                 </div>
 
@@ -474,13 +386,24 @@ export function EventsPage() {
                       to="/courses/aircraft-dispatcher-training-faa-part-65/enroll"
                       className="inline-flex items-center justify-center gap-1 px-3 py-2.5 rounded-xl bg-slate-950 hover:bg-slate-800 text-white text-[11px] font-bold uppercase tracking-wider transition-all shadow-xs cursor-pointer text-center group/btn"
                     >
-                      <span>REGISTER INTEREST</span>
+                      <span>APPLY</span>
                       <RiArrowRightSLine className="w-3.5 h-3.5 text-slate-300 group-hover/btn:translate-x-0.5 transition-transform" />
                     </Link>
                   </div>
                 </div>
               </div>
             </div>
+          </div>
+
+          {/* One simple route to every start date */}
+          <div className="mt-8 flex justify-center">
+            <Link
+              to="/upcoming-courses"
+              className="inline-flex items-center gap-2 rounded-full bg-slate-950 hover:bg-slate-800 text-white text-xs font-bold uppercase tracking-wider px-7 py-3.5 transition-colors"
+            >
+              Upcoming courses
+              <RiArrowRightSLine className="w-4 h-4" />
+            </Link>
           </div>
         </div>
       </Reveal>
@@ -595,7 +518,7 @@ export function EventsPage() {
             <div className="relative min-h-[260px] rounded-2xl overflow-hidden border border-white/10 bg-[#0f172a]">
               <img
                 src={multipleAirImg}
-                alt="B737-NG Aircraft Fleet Operations"
+                alt="Aircraft operations training"
                 className="absolute inset-0 w-full h-full object-cover"
                 loading="eager"
               />

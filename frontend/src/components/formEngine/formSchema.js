@@ -203,3 +203,19 @@ export function getDetailedValidationErrors(sections, answers) {
 export function validateSchemaAnswers(sections, answers) {
   return getDetailedValidationErrors(sections, answers).map((e) => e.message)
 }
+
+// Terms lines tagged "[India] " apply only to applicants training in India:
+// keep them (tag removed) when India is picked, drop them otherwise, and renumber.
+export function termsForLocation(content = '', location = '') {
+  if (!content.includes('[India] ')) return content;
+  const isIndia = /india/i.test(location || '');
+  let n = 0;
+  return content
+    .split('\n')
+    .filter((line) => isIndia || !/^\d+\.\s*\[India\] /.test(line.trim()))
+    .map((line) => {
+      const m = line.trim().match(/^\d+\.\s*(.*)$/);
+      return m ? `${++n}. ${m[1].replace('[India] ', '')}` : line;
+    })
+    .join('\n');
+}

@@ -33,6 +33,7 @@ export function CourseDetailPage() {
     // switching between courses the previous one stays on screen until the
     // new one arrives. Either way we refetch quietly to pick up recent edits.
     const known = readPreload(`course:${slug}`) || cachedCourse(slug)
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- loading/reset state at the start of an effect that syncs with an external source
     if (known) setCourse(known)
     else if (!shownRef.current) setLoading(true)
     setError('')
@@ -41,8 +42,14 @@ export function CourseDetailPage() {
       .then((data) => {
         if (!cancelled) setCourse(data)
       })
-      .catch(() => {
-        if (!cancelled) setError('This course could not be found.')
+      .catch((err) => {
+        // Keep a prerendered/cached course on screen if the API is slow or down;
+        // only a real 404 (course removed) switches to the not-available page.
+        if (cancelled) return
+        if (err?.status === 404 || !shownRef.current) {
+          setCourse(null)
+          setError('This course could not be found.')
+        }
       })
       .finally(() => {
         if (!cancelled) setLoading(false)
@@ -67,7 +74,7 @@ export function CourseDetailPage() {
         <Seo
           path={`/courses/${slug}`}
           title="Course not available | IFOA"
-          description="This training programme is no longer listed. Browse IFOA's current flight dispatcher and flight operations intakes."
+          description="This training program is no longer listed. Browse IFOA's current flight dispatcher and flight operations intakes."
           noindex
         />
         <h1 className="text-2xl font-bold text-rocket-dark">Course not available</h1>

@@ -67,6 +67,7 @@ export function AdminAuthProvider({ children }) {
   )
 }
 
+// eslint-disable-next-line react-refresh/only-export-components -- helper co-located with its component on purpose; only affects dev hot reload
 export function useAdminAuth() {
   const ctx = useContext(AdminAuthContext)
   if (!ctx) throw new Error('useAdminAuth must be used inside AdminAuthProvider')

@@ -131,7 +131,7 @@ export function AdminSubmissionDetailPage() {
             <h1 className="text-2xl font-black text-rocket-dark">{name}</h1>
             <p className="text-xs text-gray-500 mt-1">
               {submission.course?.title || submission.courseTitle} · submitted{' '}
-              {new Date(submission.submittedAt).toLocaleString('en-GB')}
+              {new Date(submission.submittedAt).toLocaleString('en-US')}
             </p>
           </div>
 

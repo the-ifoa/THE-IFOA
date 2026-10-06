@@ -32,8 +32,8 @@ const CATEGORY_IMG = {
 // Treat "" / null / undefined as "not set" so blank admin fields fall back.
 const first = (...vals) => vals.find((v) => v !== '' && v !== null && v !== undefined)
 
-// Tablet-mockup banners for the two initial dispatcher programmes. Used as the
-// programme-overview thumbnail and the registration-form thumbnail.
+// Tablet-mockup banners for the two initial dispatcher programs. Used as the
+// program-overview thumbnail and the registration-form thumbnail.
 const PROGRAMME_BANNER = {
   'flight-dispatcher-initial-certification': bannerDispatcher,
   'flight-dispatcher-initial-training-india': bannerDispatcher,
@@ -42,6 +42,7 @@ const PROGRAMME_BANNER = {
   'flight-dispatcher-double-programme': bannerDispatcher
 }
 
+// eslint-disable-next-line react-refresh/only-export-components -- helper co-located with its component on purpose; only affects dev hot reload
 export function programmeBanner(course = {}) {
   return PROGRAMME_BANNER[course.slug] || null
 }
@@ -58,26 +59,29 @@ const ENROLL_VIA = {
 const EDITIONS = [
   [
     { label: 'Denmark', location: 'denmark', slug: 'flight-dispatcher-initial-certification' },
-    { label: 'India', location: 'india', slug: 'flight-dispatcher-initial-training-india' },
-    { label: 'United States', location: 'united', slug: 'flight-dispatcher-initial-training-usa' }
+    { label: 'India', location: 'india', slug: 'flight-dispatcher-initial-training-india' }
   ]
 ]
 
+// eslint-disable-next-line react-refresh/only-export-components -- helper co-located with its component on purpose; only affects dev hot reload
 export function courseEditions(slug) {
   return EDITIONS.find((group) => group.some((e) => e.slug === slug)) || null
 }
 
 // Where a course's "Apply online" button goes.
+// eslint-disable-next-line react-refresh/only-export-components -- helper co-located with its component on purpose; only affects dev hot reload
 export function enrollPath(course = {}) {
   return ENROLL_VIA[course.slug] || `/courses/${course.slug}/enroll`
 }
 
-// Only these programmes have a published registration form; every other
+// Only these programs have a published registration form; every other
 // course's enroll CTA goes to the contact page instead.
+// eslint-disable-next-line react-refresh/only-export-components -- helper co-located with its component on purpose; only affects dev hot reload
 export function hasEnrollmentForm(course = {}) {
   return course.slug in PROGRAMME_BANNER
 }
 
+// eslint-disable-next-line react-refresh/only-export-components -- helper co-located with its component on purpose; only affects dev hot reload
 export function resolveCard(course = {}) {
   const c = course.card || {}
   const isGround = course.category === 'ground' || course.category === 'ramp'
@@ -120,7 +124,7 @@ export function resolveCard(course = {}) {
       c.blurb,
       course.summary,
       course.whatYouWillLearn?.intro,
-      'Comprehensive aviation programme aligned with international regulatory standards.'
+      'Comprehensive aviation program aligned with international regulatory standards.'
     )
   }
 }

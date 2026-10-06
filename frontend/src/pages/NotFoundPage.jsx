@@ -11,7 +11,7 @@ export function NotFoundPage() {
       <Seo
         path="/404"
         title="Page not found | IFOA"
-        description="This page does not exist. Browse IFOA's flight dispatcher training programmes and upcoming intakes."
+        description="This page does not exist. Browse IFOA's flight dispatcher training programs and upcoming intakes."
         noindex
       />
 

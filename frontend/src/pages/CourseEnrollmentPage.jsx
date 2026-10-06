@@ -17,7 +17,7 @@ import { useCoursePreview } from '@/components/course/CourseOverview'
 import { CmsText, CmsImageButton, postEdit } from '@/components/admin/CmsEditable'
 import { useGoBack } from '@/hooks/useGoBack'
 import { programmeBanner, resolveCard, enrollPath } from '@/components/course/CourseCard'
-import { PriceTag, hasGst, GST_NOTE } from '@/components/course/PriceTag'
+import { PriceTag, taxNote } from '@/components/course/PriceTag'
 
 // Standards Logos
 import logoEasa from '@/assets/shared/standards-logos/logo-easa.webp'
@@ -39,7 +39,7 @@ const logoSrc = (url = '') => (url.startsWith('std:') ? STANDARD_LOGOS[url.slice
 // price, dates, location, image, etc.) come from the courses API instead.
 const FALLBACK = {
   breadcrumb: {
-    eventsLabel: 'Events & Programs',
+    eventsLabel: 'Courses',
     enrollLabel: 'Online Enrollment'
   },
   header: {
@@ -52,10 +52,10 @@ const FALLBACK = {
     badgeLabel: 'Official Intake',
     tuitionLabel: 'Course Tuition',
     durationLabel: 'Duration',
-    intakeLabel: 'Next Intake',
+    intakeLabel: 'Intake',
     locationLabel: 'Location',
     credentialLabel: 'Credential',
-    credentialValue: 'IFOA Flight Dispatch Cert',
+    credentialValue: 'IFOA Certificate',
     accreditationLabel: 'Regulatory Framework'
   },
   form: {
@@ -71,7 +71,7 @@ const FALLBACK = {
   states: {
     loadingText: 'Loading Official Application Portal…',
     notFoundTitle: 'Application Portal Not Found',
-    notFoundCtaLabel: 'View All Open Programs'
+    notFoundCtaLabel: 'View All Open Courses'
   }
 }
 
@@ -119,6 +119,7 @@ export function CourseEnrollmentPage() {
   useEffect(() => {
     if (!activeSlug) return
     let cancelled = false
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- loading/reset state at the start of an effect that syncs with an external source
     setLoading(true)
     setError('')
 
@@ -142,8 +143,10 @@ export function CourseEnrollmentPage() {
   // Tuition follows the training location chosen in the form, when the course
   // has a price for that location (e.g. India in INR).
   const [trainingLocation, setTrainingLocation] = useState('')
+  const [selectedIntake, setSelectedIntake] = useState('')
   const handleAnswersChange = useCallback((answers) => {
     setTrainingLocation(answers?.intake?.trainingCountry || '')
+    setSelectedIntake(answers?.intake?.intake || '')
   }, [])
   const locationPrice = (course?.locationPrices || []).find((p) => p.location === trainingLocation)
   const activePrice = locationPrice ? { amount: locationPrice.amount, currency: locationPrice.currency } : course?.price
@@ -160,6 +163,30 @@ export function CourseEnrollmentPage() {
   }
   const activeLocation = trainingLocation ? locationLabel(trainingLocation) : course?.location
 
+  // Intakes offered for the chosen training location (same rule as the form).
+  const locationIntakes = (course?.intakes || []).filter(
+    (i) =>
+      i.isActive !== false &&
+      (!trainingLocation ||
+        !i.locations?.length ||
+        i.locations.some((loc) => trainingLocation.toLowerCase().includes(String(loc).toLowerCase())))
+  )
+  // Sidebar intake: the one picked in the form, else the only one on offer for
+  // the chosen location, else a prompt.
+  // Only the long rolling-admissions label is shortened (to keep the row on one line); every other intake shows as written.
+  const shortIntake = (label) => {
+    const min = /(\d+)\s+registrations/i.exec(label)
+    if (/^rolling admissions:/i.test(label)) return min ? `Rolling, min. ${min[1]} registrations` : 'Rolling admissions'
+    return label
+  }
+  const intakeText = (
+    (locationIntakes.some((i) => i.label === selectedIntake) && selectedIntake) ||
+    (trainingLocation && locationIntakes.length === 1 && locationIntakes[0].label) ||
+    (trainingLocation && locationIntakes.length > 1 && 'Select an intake') ||
+    null
+  )
+  const intakeShown = intakeText ? shortIntake(intakeText) : null
+
   const formatPrice = (price) =>
     price && price.amount != null ? <PriceTag price={price} /> : 'Contact Admissions'
 
@@ -167,7 +194,7 @@ export function CourseEnrollmentPage() {
     if (!isoString) return ''
     try {
       const d = new Date(isoString)
-      return d.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' })
+      return d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
     } catch {
       return isoString
     }
@@ -219,7 +246,7 @@ export function CourseEnrollmentPage() {
     (course.slug?.includes('faa') ||
       course.slug?.includes('part-65') ||
       course.refCode?.toLowerCase().includes('faa'))
-  const standardIds = isFaaProgram ? ['faa'] : isIndiaProgram ? ['dgca', 'icao'] : ['easa', 'icao']
+  const standardIds = isFaaProgram ? ['faa'] : isIndiaProgram ? ['dgca', 'icao'] : ['easa', 'icao', 'dgca']
   const rowLogos = customLogos.length
     ? customLogos
     : standardIds.map((id) => ({ url: `std:${id}`, key: '', alt: STANDARD_LOGOS[id].alt }))
@@ -297,8 +324,10 @@ export function CourseEnrollmentPage() {
                     formatPrice(activePrice)
                   )}
                 </div>
-                {!facts && hasGst(activePrice) && (
-                  <span className="block text-xs font-semibold text-slate-600">{GST_NOTE}</span>
+                {!facts && taxNote(activePrice, isIndiaProgram || /india/i.test(trainingLocation)) && (
+                  <span className="block text-xs font-semibold text-slate-600">
+                    {taxNote(activePrice, isIndiaProgram || /india/i.test(trainingLocation))}
+                  </span>
                 )}
                 {facts && !locationPrice && (
                   <span className="block text-[11px] text-slate-400">Leave the amount empty to show “Contact Admissions”.</span>
@@ -307,22 +336,22 @@ export function CourseEnrollmentPage() {
 
               {/* Key Quick Metadata */}
               <div className="space-y-2.5 text-xs sm:text-sm">
-                <div className="flex items-center justify-between gap-4 py-2 border-b border-slate-100">
-                  <span className="text-slate-500 flex items-center gap-2 shrink-0">
+                <div className="flex items-center justify-between gap-3 py-3 border-b border-slate-200/80 whitespace-nowrap text-[13px]">
+                  <span className="text-slate-600 flex items-center gap-2 shrink-0">
                     <TbClockHour4 className="w-4 h-4 text-slate-400" />
                     <span>{T('sidebar', 'durationLabel')}</span>
                   </span>
-                  <strong className="text-slate-900 text-right font-bold">
+                  <strong className="text-slate-950 text-right font-bold min-w-0 truncate">
                     {locationPrice?.duration || CF('duration', '4 Weeks')}
                   </strong>
                 </div>
 
-                <div className="flex items-center justify-between gap-4 py-2 border-b border-slate-100">
-                  <span className="text-slate-500 flex items-center gap-2 shrink-0">
+                <div className="flex items-center justify-between gap-3 py-3 border-b border-slate-200/80 whitespace-nowrap text-[13px]">
+                  <span className="text-slate-600 flex items-center gap-2 shrink-0">
                     <RiCalendarEventLine className="w-4 h-4 text-slate-400" />
                     <span>{T('sidebar', 'intakeLabel')}</span>
                   </span>
-                  <strong className="text-slate-900 text-right font-bold font-mono">
+                  <strong className="text-slate-950 text-right font-bold min-w-0 truncate">
                     {facts ? (
                       <span className="flex flex-col items-end gap-1">
                         <input
@@ -333,6 +362,8 @@ export function CourseEnrollmentPage() {
                         />
                         {!facts.startDate && CF('intakeLabel', 'To be announced')}
                       </span>
+                    ) : intakeShown ? (
+                      intakeShown
                     ) : schedule.startDate ? (
                       formatDate(schedule.startDate)
                     ) : (
@@ -341,22 +372,22 @@ export function CourseEnrollmentPage() {
                   </strong>
                 </div>
 
-                <div className="flex items-start justify-between gap-4 py-2 border-b border-slate-100">
-                  <span className="text-slate-500 flex items-center gap-2 shrink-0 pt-0.5">
+                <div className="flex items-center justify-between gap-3 py-3 border-b border-slate-200/80 whitespace-nowrap text-[13px]">
+                  <span className="text-slate-600 flex items-center gap-2 shrink-0">
                     <RiMapPin2Line className="w-4 h-4 text-slate-400" />
                     <span>{T('sidebar', 'locationLabel')}</span>
                   </span>
-                  <strong className="text-slate-900 text-right font-bold leading-snug">
+                  <strong className="text-slate-950 text-right font-bold min-w-0 truncate">
                     {liveCourse && !trainingLocation ? CF('location') : activeLocation || 'New Delhi (IAA)'}
                   </strong>
                 </div>
 
-                <div className="flex items-start justify-between gap-4 py-2 border-b border-slate-100">
-                  <span className="text-slate-500 flex items-center gap-2 shrink-0 pt-0.5">
+                <div className="flex items-center justify-between gap-3 py-3 border-b border-slate-200/80 whitespace-nowrap text-[13px]">
+                  <span className="text-slate-600 flex items-center gap-2 shrink-0">
                     <TbCertificate className="w-4 h-4 text-slate-400" />
                     <span>{T('sidebar', 'credentialLabel')}</span>
                   </span>
-                  <strong className="text-slate-900 text-right font-bold leading-snug">
+                  <strong className="text-slate-950 text-right font-bold min-w-0 truncate">
                     {T('sidebar', 'credentialValue')}
                   </strong>
                 </div>

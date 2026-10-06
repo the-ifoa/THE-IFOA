@@ -46,7 +46,7 @@ async function notifySubmission({ course, intake, sections, answers, submissionI
 
   // Always state where the applicant wants to train: the location they picked,
   // else the course's own location (courses without a location question).
-  const location = trainingLocation || course.location || 'Not specified'
+  const location = trainingLocation || (course.location ? `${course.location} (course location; not chosen on the form)` : 'Not specified')
 
   // Tuition for the chosen training location (falls back to the course price).
   const lp = (course.locationPrices || []).find((p) => p.location === trainingLocation)
@@ -99,7 +99,7 @@ async function notifySubmission({ course, intake, sections, answers, submissionI
   await sendMail({
     to: process.env.MAIL_TO || 'info@theifoa.com',
     replyTo,
-    subject: `New enrollment: ${course.title} - ${location}${intake ? ` (${intake})` : ''}${applicant ? ` - ${applicant}` : ''}`,
+    subject: `New enrollment: ${course.title} - ${trainingLocation || course.location || 'Location not specified'}${intake ? ` (${intake})` : ''}${applicant ? ` - ${applicant}` : ''}`,
     text,
     html
   })

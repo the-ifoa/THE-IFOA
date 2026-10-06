@@ -115,7 +115,7 @@ export function AdminContactMessageDetailPage() {
               )}
             </p>
             <p className="text-xs text-gray-400 mt-1">
-              received {new Date(message.createdAt).toLocaleString('en-GB')}
+              received {new Date(message.createdAt).toLocaleString('en-US')}
               {message.office ? ` · ${message.office}` : ''}
               {message.location ? ` · Training location: ${message.location}` : ''}
             </p>
@@ -123,7 +123,7 @@ export function AdminContactMessageDetailPage() {
 
           <div className="flex flex-wrap items-center gap-2.5">
             <a
-              href={`mailto:${message.email}?subject=Regarding your enquiry with IFOA`}
+              href={`mailto:${message.email}?subject=Regarding your inquiry with IFOA`}
               className="inline-flex items-center gap-1.5 rounded-xl bg-[#020617] hover:bg-[#34E06E] text-white hover:text-black px-4 py-2 text-xs font-extrabold uppercase tracking-wider transition-all cursor-pointer shadow-sm"
             >
               <Mail className="h-3.5 w-3.5" /> <span>Reply by Email</span>

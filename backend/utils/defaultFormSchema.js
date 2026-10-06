@@ -216,7 +216,7 @@ const defaultFormSchema = {
           id: 'programInfo',
           label: 'Selected Training Program',
           type: 'staticText',
-          content: 'FULL - 5 Initial Training Course Program, 3500 EUR',
+          content: 'Flight Dispatcher Initial, 3500 EUR',
           order: 0
         },
         {

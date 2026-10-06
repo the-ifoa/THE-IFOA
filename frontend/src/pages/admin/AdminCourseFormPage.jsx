@@ -150,7 +150,8 @@ export function AdminCourseFormPage() {
           intakes: (course.intakes || []).map((i) => ({
             label: i.label || '',
             startDate: toDateInput(i.startDate),
-            isActive: i.isActive !== false
+            isActive: i.isActive !== false,
+            locations: (i.locations || []).join(', ')
           }))
         })
       })
@@ -193,7 +194,12 @@ export function AdminCourseFormPage() {
         },
         intakes: form.intakes
           .filter((i) => i.label.trim())
-          .map((i) => ({ label: i.label.trim(), startDate: i.startDate || null, isActive: i.isActive !== false }))
+          .map((i) => ({
+            label: i.label.trim(),
+            startDate: i.startDate || null,
+            isActive: i.isActive !== false,
+            locations: String(i.locations || '').split(',').map((x) => x.trim()).filter(Boolean)
+          }))
       }
 
       await api.adminUpdateCourse(id, payload)
@@ -242,7 +248,7 @@ export function AdminCourseFormPage() {
           {isEdit && hasEnrollmentForm(form) && (
             <Link
               to={`/admin/courses/${id}/form`}
-              title="Customise this course's enrollment form"
+              title="Customize this course's enrollment form"
               className="inline-flex items-center gap-2 border border-gray-300 text-rocket-dark font-bold text-xs uppercase tracking-wider px-4 py-2.5 rounded-xl hover:bg-gray-100 transition-colors"
             >
               <FileText className="w-4 h-4" /> Enrollment Form
@@ -533,6 +539,17 @@ export function AdminCourseFormPage() {
                 }}
               />
             </Field>
+            <Field label="Only for locations (optional)" hint="Comma-separated, e.g. India. Empty = shown for every location." className="sm:col-span-4 sm:order-last">
+              <input
+                className={input}
+                value={intake.locations || ''}
+                onChange={(e) => {
+                  const next = [...form.intakes]
+                  next[i] = { ...intake, locations: e.target.value }
+                  setForm((prev) => ({ ...prev, intakes: next }))
+                }}
+              />
+            </Field>
             <label className="flex items-center gap-2 text-sm pb-2.5">
               <input
                 type="checkbox"
@@ -559,7 +576,7 @@ export function AdminCourseFormPage() {
         <button
           type="button"
           onClick={() =>
-            setForm((prev) => ({ ...prev, intakes: [...prev.intakes, { label: '', startDate: '', isActive: true }] }))
+            setForm((prev) => ({ ...prev, intakes: [...prev.intakes, { label: '', startDate: '', isActive: true, locations: '' }] }))
           }
           className="inline-flex items-center gap-1.5 text-xs font-bold text-rocket-dark hover:text-blue-600 bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded-lg transition-colors"
         >
@@ -570,7 +587,7 @@ export function AdminCourseFormPage() {
       {isEdit && (
         <Card title="Enrollment Form">
           <p className="text-sm text-gray-600 -mt-1">
-            The multi-section form candidates fill on the course page. Fully customisable - sections, fields,
+            The multi-section form candidates fill on the course page. Fully customizable - sections, fields,
             field types, required flags and order.
           </p>
           <Link

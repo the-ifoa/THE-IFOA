@@ -83,7 +83,7 @@ export function organizationSchema() {
     logo: `${SITE_URL}/favicon.png`,
     email: 'info@theifoa.com',
     description:
-      'Aviation training academy specialising in flight dispatcher certification and flight operations training to ICAO Doc 10106, EASA ORO.GEN.110 and FAA 14 CFR Part 65 standards.',
+      'Aviation training academy specializing in flight dispatcher certification and flight operations training to ICAO Doc 10106, EASA ORO.GEN.110 and FAA 14 CFR Part 65 standards.',
     address: OFFICES.map((o) => ({
       '@type': 'PostalAddress',
       streetAddress: o.street,

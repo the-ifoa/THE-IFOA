@@ -31,7 +31,14 @@ async function run() {
   let overwritten = 0
   let skipped = 0
 
+  // These editions apply through the Flight Dispatcher Initial form (see enrollPath in the frontend), so they get no form of their own.
+  const APPLY_VIA_OTHER_FORM = new Set(['flight-dispatcher-initial-training-india', 'flight-dispatcher-initial-training-usa'])
+
   for (const course of courses) {
+    if (APPLY_VIA_OTHER_FORM.has(course.slug)) {
+      skipped++
+      continue
+    }
     const existing = await FormSchema.findOne({ course: course._id })
     if (existing && !force) {
       skipped++

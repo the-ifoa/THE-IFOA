@@ -10,8 +10,10 @@ const LINK_GROUPS = [
     title: 'For individuals',
     links: [
       course('Flight Dispatcher Initial', 'flight-dispatcher-initial-certification'),
+      course('Flight Dispatcher Initial (India)', 'flight-dispatcher-initial-training-india'),
       course('FAA Aircraft Dispatcher', 'aircraft-dispatcher-training-faa-part-65'),
-      course('Double Programme', 'flight-dispatcher-double-programme'),
+      course('Double Program: FAA & EASA', 'flight-dispatcher-double-programme'),
+      course('Train the Trainer', 'train-the-trainer-icao-cbta-instructor'),
       { label: 'Upcoming courses', to: '/upcoming-courses' }
     ]
   },
@@ -30,6 +32,7 @@ const LINK_GROUPS = [
     links: [
       { label: 'About', to: '/about' },
       { label: 'All services', to: '/services' },
+      { label: 'FAQ', to: '/faq' },
       { label: 'Foxtrot Delta', to: '/foxtrot-delta' },
       { label: 'Agent for Service', href: 'https://agent.theifoa.com/' },
       { label: 'Contact', to: '/contact' }

@@ -140,6 +140,7 @@ export function AdminSubmissionsPage() {
   }
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- loading/reset state at the start of an effect that syncs with an external source
     load()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status, course])
@@ -464,7 +465,7 @@ export function AdminSubmissionsPage() {
                       {/* Submitted Date */}
                       <td className="px-5 py-4">
                         <div className="text-xs font-semibold text-slate-700">
-                          {new Date(s.submittedAt).toLocaleDateString('en-GB', {
+                          {new Date(s.submittedAt).toLocaleDateString('en-US', {
                             day: '2-digit',
                             month: 'short',
                             year: 'numeric'
@@ -586,7 +587,7 @@ export function AdminSubmissionsPage() {
                           </span>
                         </td>
                         <td className="px-4 py-3 text-slate-400">
-                          {new Date(r.createdAt).toLocaleDateString('en-GB', {
+                          {new Date(r.createdAt).toLocaleDateString('en-US', {
                             day: '2-digit',
                             month: 'short',
                             year: 'numeric'

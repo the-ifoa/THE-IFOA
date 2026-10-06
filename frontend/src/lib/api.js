@@ -11,6 +11,11 @@ async function request(path, { method = 'GET', body, isFormData = false } = {}) 
   const contentType = res.headers.get('content-type') || ''
   const data = contentType.includes('application/json') ? await res.json() : null
 
+  // Let the background image loader see pictures named in public course data.
+  if (data && method === 'GET' && typeof window !== 'undefined' && /^\/courses/.test(path)) {
+    window.dispatchEvent(new CustomEvent('ifoa:images', { detail: data }))
+  }
+
   if (!res.ok) {
     const error = new Error(data?.message || `Request failed (${res.status})`)
     error.status = res.status
@@ -22,6 +27,7 @@ async function request(path, { method = 'GET', body, isFormData = false } = {}) 
 
 export const api = {
   // ---- Public ----
+  getRates: () => request('/rates?v=2'),
   listCourses: (params = {}) => {
     const qs = new URLSearchParams(
       Object.entries(params).filter(([, v]) => v !== undefined && v !== '' && v !== 'all')
@@ -36,7 +42,7 @@ export const api = {
   // ---- Website chat bot ----
   chat: (messages) => request('/chat', { method: 'POST', body: { messages } }),
 
-  // ---- Contact page enquiry form ----
+  // ---- Contact page inquiry form ----
   sendContact: (payload) => request('/contact', { method: 'POST', body: payload }),
 
   // ---- Newsletter signup ----

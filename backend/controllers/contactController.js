@@ -21,7 +21,7 @@ const escapeHtml = (s) =>
 const send = asyncHandler(async (req, res) => {
   const { firstName, lastName, email, organization, topic, message, office } = req.body || {}
   // Training location carried from a course page (?location=india), if any.
-  const location = typeof req.body?.location === 'string' ? req.body.location.slice(0, 80) : ''
+  const location = (typeof req.body?.location === 'string' ? req.body.location.trim().slice(0, 80) : '') || 'Not specified'
   const audience = AUDIENCE_LABELS[req.body?.audience] ? req.body.audience : ''
   const audienceLabel = AUDIENCE_LABELS[audience]
 
@@ -32,7 +32,7 @@ const send = asyncHandler(async (req, res) => {
     return res.status(400).json({ message: 'A valid email is required' })
   }
 
-  // Save first so the enquiry is durable even if the email below fails.
+  // Save first so the inquiry is durable even if the email below fails.
   await ContactMessage.create({ firstName, lastName, email, audience, organization, topic, message, office, location })
 
   const to = process.env.MAIL_TO || OFFICE_INBOX[office] || OFFICE_INBOX.switzerland
@@ -43,7 +43,7 @@ const send = asyncHandler(async (req, res) => {
     `Email: ${email}`,
     organization ? `Organization: ${organization}` : null,
     topic ? `Topic: ${topic}` : null,
-    location ? `Training location: ${location}` : null,
+    `Training location: ${location}`,
     '',
     message
   ]
@@ -56,7 +56,7 @@ const send = asyncHandler(async (req, res) => {
     <p><strong>Email:</strong> ${escapeHtml(email)}</p>
     ${organization ? `<p><strong>Organization:</strong> ${escapeHtml(organization)}</p>` : ''}
     ${topic ? `<p><strong>Topic:</strong> ${escapeHtml(topic)}</p>` : ''}
-    ${location ? `<p><strong>Training location:</strong> ${escapeHtml(location)}</p>` : ''}
+    <p><strong>Training location:</strong> ${escapeHtml(location)}</p>
     <p>${escapeHtml(message).replace(/\n/g, '<br/>')}</p>
   `
 
@@ -66,7 +66,7 @@ const send = asyncHandler(async (req, res) => {
     await sendMail({
       to,
       replyTo: email,
-      subject: `theIFOA website enquiry${audienceLabel ? ` (${audienceLabel})` : ''}: ${topic || 'General'}${location ? ` - ${location}` : ''} - ${firstName} ${lastName}`,
+      subject: `theIFOA website inquiry${audienceLabel ? ` (${audienceLabel})` : ''}: ${topic || 'General'}${` - ${location}`} - ${firstName} ${lastName}`,
       text,
       html
     })

@@ -73,185 +73,144 @@ export function PrivacyPolicyPage() {
       <Seo
         path="/privacy-policy"
         title="Data Protection Policy | IFOA"
-        description="How International Flight Operations Academy GmbH collects, processes and protects your personal data under the GDPR."
+        description="How International Flight Operations Academy GmbH collects, uses and protects the personal data of course applicants, students and website visitors, under the Swiss FADP and the GDPR."
       />
       <p>
-        This document aims to explain how Flight Operations Academy GmbH (hereafter also referred to as &quot;we&quot; or
-        &quot;us&quot;) collects, processes, and protects personal data that you provide when communicating with us through
-        any media, including but not limited to Flight Operations Academy GmbH&apos;s online the service request form, chat,
-        phone, emails, and texts.
+        This policy explains how International Flight Operations Academy GmbH (&quot;IFOA&quot;, &quot;we&quot; or
+        &quot;us&quot;) collects, uses and protects personal data when you visit our website, use our chat assistant,
+        contact us, apply for a course or take part in our training and consulting services.
       </p>
       <p>
-        This information must be provided by the General Data Protection Regulation (article 13; Regulation (EU) 2016/679
-        of the European Parliament and the Council of 27 April 2016).
+        It follows the Swiss Federal Act on Data Protection (FADP, in force since 1 September 2023) and, for people in the
+        European Union and the European Economic Area, the General Data Protection Regulation (Regulation (EU) 2016/679,
+        article 13).
       </p>
-      <p>Please note that Flight Operations Academy GmbH does not carry out any automated decisions-making.</p>
+      <p>IFOA does not take decisions about you based solely on automated processing.</p>
 
-      <H2>1. Identity and contact details of the controller</H2>
+      <H2>1. Who is responsible</H2>
       <p>
-        The data controller is International Flight Operations Academy GmbH, with a registered office at Oberdorf 26, 4314
-        Zeiningen, Switzerland.
+        The controller is International Flight Operations Academy GmbH, Oberdorf 26, 4314 Zeiningen, Switzerland. IFOA also
+        trains through IFOA USA (Daytona Beach, Florida) and IFOA India (New Delhi); they act on our instructions and under
+        this policy.
       </p>
       <p>
-        For any data protection concerns, don&apos;t hesitate to contact Vincent Incammicia at the address{' '}
+        For any data protection question or request, contact Vincent Incammicia at{' '}
         <a href="mailto:vincent@theifoa.com" className="underline underline-offset-2">
           vincent@theifoa.com
         </a>{' '}
-        or call +41 78 227 3103
+        or on +41 78 227 3103.
       </p>
 
-      <H2>2. Purposes and legal basis for the processing</H2>
-      <p>International Flight Operations Academy GmbH collects personal data for the following purposes:</p>
-      <H3>a. To provide our services to you.</H3>
+      <H2>2. Why we process your data, and on what basis</H2>
+      <H3>a. To handle your inquiry or application, and to provide training and consulting</H3>
       <p>
-        This is the main reason why we need to collect personal data. We need information about you to answer service
-        requests (made with our online form, by phone, or WhatsApp), do service proposals, draft and conclude service level
-        agreements, send invoices, and organize and follow up services.
+        We use your data to answer your messages, assess your application against the entry requirements, confirm your
+        seat, invoice and collect payment, run the course and exams, keep training records and issue your IFOA Certificate
+        of Completion. For FAA courses, we also use it to prepare you for the FAA knowledge and practical tests.
       </p>
       <p>
-        In this regard, the collection of personal data is a contractual requirement and not a statutory one. It is a
-        condition to enter any contract with Flight Operations Academy GmbH. If you fail to provide the required data, it
-        can be impossible to agree, and International Flight Operations Academy GmbH will be unable to provide the requested
-        services.
+        Giving us this data is needed to enter into and perform a contract with you. Without it we cannot process your
+        application or deliver the course. Basis: performance of a contract (and steps taken at your request before one).
       </p>
+      <H3>b. To improve our services and keep you informed</H3>
       <p>
-        For this purpose, the legitimate ground for personal data collection is the necessity to process personal data to
-        enter into a contract with us.
+        We analyze how our website and courses are used so we can improve them, and we may send you news about similar
+        courses by email. You can opt out at any time with the &quot;unsubscribe&quot; link in our emails or by writing to
+        us. Basis: our legitimate interest in better services (and your consent where the law requires it).
       </p>
-      <H3>b. To improve your customer experience</H3>
+      <H3>c. To meet legal duties</H3>
       <p>
-        We process your data to improve our services. This includes tailoring our services to your needs and preferences,
-        facilitating the use of our website by analyzing the browsing history of its users, and sending promotional content
-        by post, email, WhatsApp, or online advertisements.
+        We keep some records because the law requires it, for example accounting and tax records, and we answer lawful
+        requests from authorities. Basis: legal obligation.
       </p>
-      <p>
-        Suppose you have requested or used our services and provided personal data to International Flight Operations
-        Academy GmbH in this context.
-      </p>
-      <p>We may use your contact details to send you marketing emails about similar services unless you have opted out.</p>
-      <p>
-        You can opt out anytime by clicking &quot;unsubscribe&quot; in promotional emails or contacting us at the address
-        above.
-      </p>
-      <p>
-        For this purpose, the legitimate ground for personal data collection is International Flight Operations Academy
-        GmbH&apos;s legitimate interest in offering better services.
-      </p>
-      <H3>c. To comply with the law</H3>
-      <p>
-        In some cases, we are legally required to collect some personal data. This is the case when banks conduct
-        anti-fraud checks or in the event of a formal request by a government entity.
-      </p>
-      <p>For this purpose, the legal ground for personal data collection is compliance with a legal obligation.</p>
 
-      <H2>3. Type of information collected</H2>
-      <p>Collected personal data includes:</p>
+      <H2>3. What data we collect</H2>
       <List
         items={[
-          'Contact details, such as name and surname, phone number, email address, and physical address;',
-          'Personal details, such as family members, personal preferences, and pets;',
-          'Travel information, such as passport details, aircraft, departure location, destination, and time of your flights;',
-          'Bank details when a credit card is used to book or pay for our services;',
-          "Usage Data includes information history of your use of Flight Operations Academy GmbH's services and website."
+          'Contact details: name, email address, phone number, postal address and country;',
+          'Application details: date of birth, nationality, education and work background, English level, the course, location and intake you choose;',
+          'Identity documents: copies of your passport or government photo ID, which we ask you to send us with your signed application;',
+          'Training records: attendance, assessment and exam results, and certificates issued;',
+          'Payment details: invoice and bank-transfer references. We do not collect or store card numbers;',
+          'Messages you send us through our contact form, email, WhatsApp, phone or chat assistant;',
+          'Usage data: technical information about how you use our website, such as pages visited, device and browser.'
         ]}
       />
+      <p>
+        We do not ask for special categories of personal data (such as health or religion) unless you volunteer it, for
+        example to request an adjustment for a course.
+      </p>
 
-      <H2>4. Recipients of the personal data</H2>
-      <p>The employees of International Flight Operations Academy GmbH process collected data.</p>
-      <p>The number of employees accessing your data is limited to those needing assistance for the intended activity.</p>
-      <p>In addition, under the circumstances listed below, we will share your data with the following people:</p>
+      <H2>4. Who receives your data</H2>
+      <p>
+        Our employees process your data, and only those who need it for their task have access. We also share it, where
+        needed, with:
+      </p>
       <List
         items={[
-          'When a service agreement is concluded with you: People whose intervention is mandatory to perform the contract (i.e., operators, terminal airport staff…);',
-          'When we need to store your data: Cloud storage providers;',
-          'When we communicate by email with you: Email services providers;',
-          "When you use our website: Analytic tools and the web site's IT developers;",
-          'Upon payment, when we are asked to provide information against fraud: Banks;',
-          'When you book or pay with a credit card: E-payment interface provider and payment service providers;',
-          'When you use our chat: Chat service provider.'
+          'Our training sites and partners that host or deliver your course (for example Air Alsie in Sønderborg, and IFOA USA and IFOA India), and instructors and examiners working for IFOA;',
+          'FAA-designated examiners and testing centers, when you take the FAA knowledge or practical test, and only what the test requires;',
+          'Banks and payment providers, to receive your payment and prevent fraud;',
+          'Cloud storage, email and website hosting providers, and web analytics tools;',
+          'The provider of our chat assistant, which processes the messages you type into it to generate answers. Please do not enter sensitive personal data in the chat;',
+          'Authorities and advisors (lawyers, auditors, accountants), when the law requires it or to protect our rights.'
         ]}
       />
+      <p>We do not sell your personal data.</p>
 
-      <H2>5. Personal data transfer to a third country</H2>
+      <H2>5. Transfers outside Switzerland and the EEA</H2>
       <p>
-        Depending on the service you ask for, your data may be transferred to a country outside of the EU (a third
-        country).
-      </p>
-      <p>
-        This can be the case if you wish to travel to or from such a third country, if you stay in such a third country
-        when data is transferred to or from International Flight Operations Academy GmbH or if the provider or partners
-        chosen is based in a third country.
-      </p>
-      <p>
-        In all of the above situations, the transfer is based on the need to process personal data to enter into a
-        contract with you.
+        Because we train in Denmark, the United States and India, and use international providers, your data can be
+        transferred to or accessed from countries outside Switzerland and the EEA, including the United States and India.
+        Where such a country does not offer an adequate level of data protection recognized by Switzerland or the EU, we
+        rely on safeguards such as the standard contractual clauses approved by the European Commission and recognized by
+        the Swiss Federal Data Protection and Information Commissioner (FDPIC), or on the transfer being necessary to
+        perform your contract.
       </p>
 
-      <H2>6. Storage period of the personal data</H2>
+      <H2>6. How long we keep your data</H2>
       <p>
-        Personal data are stored as long as necessary to fulfill the purposes set out here above. This means that data will
-        generally be stored for the time needed for the performance of the contract and possible future agreements with
-        Flight Operations Academy GmbH. Some personal data will be stored longer to comply with legal obligations, such as
-        tax purposes.
+        We keep data only as long as needed for the purposes above. Inquiries that do not lead to a contract are deleted
+        after a reasonable period. Application, payment and training records are kept for as long as needed to run the
+        contract, to answer questions about your certificate, and to meet legal retention periods (for example ten years
+        for accounting records under Swiss law). After that we delete or anonymize them.
       </p>
 
-      <H2>7. Confidentiality and safety measures</H2>
+      <H2>7. Security</H2>
       <p>
-        The information is securely stored systematically, ensuring that nobody outside International Flight Operations
-        Academy GmbH can access it.
+        We protect your data with technical and organizational measures, including access limited to staff who need it,
+        secure storage and encrypted connections to our website. Staff receive data protection training. No system is
+        completely secure, so please also protect your own devices and email.
       </p>
-      <p>Each new employee receives training in data protection to know how to handle our customers&apos; data.</p>
 
       <H2>8. Your rights</H2>
-      <p>Under the General Data Protection Regulation, you have the following rights:</p>
-      <H3>a. Right to request access to personal data (art. 15 of the Regulation)</H3>
+      <p>Under the FADP and, where it applies, the GDPR, you can:</p>
+      <List
+        items={[
+          'ask for access to the personal data we hold about you (FADP art. 25; GDPR art. 15);',
+          'ask us to correct inaccurate data (FADP art. 32; GDPR art. 16);',
+          'ask us to delete your data, when we no longer need it or you withdraw your consent (FADP art. 32; GDPR art. 17);',
+          'ask us to restrict processing in the cases the law provides for (GDPR art. 18);',
+          'object to processing based on our legitimate interest, and to direct marketing at any time (FADP art. 30; GDPR art. 21);',
+          'receive the data you gave us in a common electronic format, or have it passed to another controller (FADP art. 28; GDPR art. 20);',
+          'withdraw a consent you gave, at any time, without affecting what we did before.'
+        ]}
+      />
       <p>
-        This right allows you to ask Flight Operations Academy GmbH if you want to know and see what personal data we store
-        about you.
-      </p>
-      <H3>b. Right to request rectification of personal data (art. 16 of the Regulation)</H3>
-      <p>
-        If some personal data we hold about you needs to be corrected, you can ask Flight Operations Academy GmbH to rectify
-        it.
-      </p>
-      <H3>
-        c. Right to request the erasure of personal data, also referred to as the &quot;right to be forgotten&quot; (art. 17
-        of the Regulation)
-      </H3>
-      <p>
-        This right allows you to ask us to suppress personal data under specific circumstances; for example, the personal
-        data are no longer necessary concerning the purposes for which they were collected, when processing is based on
-        consent, and you withdraw your consent, or when your data have been unlawfully processed.
-      </p>
-      <H3>d. Right to restrict the processing of personal data (art. 18 of the Regulation)</H3>
-      <p>
-        You can ask Flight Operations Academy GmbH to restrict the processing of your personal under specific
-        circumstances. It is the case when you exercise the right of rectification – you can ask for a restriction of the
-        processing while we verify the accuracy of the concerned data. You can also exercise this right when the processing
-        is unlawful instead of asking for erasure (see right no. 3 above). Restriction of processing can as well be
-        requested when we no longer need the personal data for processing, but you require them for legal claims.
-      </p>
-      <H3>e. Right to object to the processing of personal data (art. 21 of the Regulation)</H3>
-      <p>
-        When your data is used to improve our services or direct marketing, you can object to the processing. Concerning
-        promotional emails, you can opt out by clicking on &quot;unsubscribe&quot; in the emails or by contacting us at the
-        address displayed here under.
-      </p>
-      <H3>f. Right to data portability (art. 20 of the Regulation)</H3>
-      <p>
-        This right enables you to receive the personal data concerning yourself, which you have provided to Flight
-        Operations Academy GmbH, in an easily readable format and transmit those data to another data controller.
-      </p>
-      <H3>g. Right to complain with a supervisory authority.</H3>
-      <p>This right enables you to address a complaint to the competent supervisory authority of the member state.</p>
-      <p>
-        If you want to exercise any of rights (a)-(g) listed above, or if you have any inquiry about data protection,
-        please send your request to Vincent Incammicia at the following email address:{' '}
+        To use any of these rights, write to{' '}
         <a href="mailto:vincent@theifoa.com" className="underline underline-offset-2">
           vincent@theifoa.com
         </a>
+        . We may ask you to prove your identity first, and we reply within 30 days.
       </p>
-      <p className="pt-2 text-slate-500">Zeiningen, 28 February 2023</p>
+      <p>
+        You can also complain to a data protection authority: in Switzerland the Federal Data Protection and Information
+        Commissioner (FDPIC, www.edoeb.admin.ch), or, if you live in the EU or EEA, the authority of your country.
+      </p>
+
+      <H2>9. Changes to this policy</H2>
+      <p>We may update this policy. The current version is always on this page, with the date of the last update below.</p>
+      <p className="pt-2 text-slate-500">Zeiningen, last updated 6 October 2026</p>
     </LegalLayout>
   )
 }

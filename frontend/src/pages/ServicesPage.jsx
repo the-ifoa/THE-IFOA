@@ -15,6 +15,7 @@ import { usePageContent } from '@/hooks/usePageContent'
 import { Seo } from '@/components/common/Seo'
 import { graph, organizationSchema, breadcrumbSchema, courseListSchema } from '@/lib/seo'
 import { CmsText, CmsRemoveItem, CmsAddItem, isPreviewEditMode, CmsImageButton } from '@/components/admin/CmsEditable'
+import { enrollPath } from '@/components/course/CourseCard'
 
 // Standards Logos
 import logoFaa from '@/assets/shared/standards-logos/logo-faa.webp'
@@ -58,28 +59,31 @@ const FALLBACK = {
       'Dispatcher courses for individuals, and tailored flight dispatch training for operators. Compare length, delivery and price.',
     cards: [
       {
-        region: 'Europe · India',
+        region: 'Denmark',
         title: 'Flight Dispatcher Initial',
-        desc: 'ICAO and EASA dispatcher training built on ICAO Doc 10106.',
+        courseSlug: 'flight-dispatcher-initial-certification',
+        desc: 'ICAO Doc 10106, with EASA operations.',
         badge1: '200 HRS · 5 WKS',
         badge2: '€3,500',
-        action: 'Enquire'
+        action: 'Apply'
       },
       {
-        region: 'USA',
+        region: 'Denmark · USA · India',
         title: 'FAA Aircraft Dispatcher',
-        desc: 'FAA Part 65 approved. Prepares you for the FAA certificate.',
+        courseSlug: 'aircraft-dispatcher-training-faa-part-65',
+        desc: 'FAA Part 65 approved. Prepares you for the FAA Aircraft Dispatcher certificate.',
         badge1: '200 HRS · 6 WKS',
         badge2: '$4,500 USD',
-        action: 'Enquire'
+        action: 'Apply'
       },
       {
-        region: 'Europe',
-        title: 'Double Programme: FAA & EASA',
-        desc: 'FAA Part 65 plus ICAO and EASA operations in one programme.',
+        region: 'Denmark · India',
+        title: 'Double Program: FAA & EASA',
+        courseSlug: 'flight-dispatcher-double-programme',
+        desc: 'FAA Part 65 plus ICAO and EASA operations in one program.',
         badge1: '280 HRS · 7 WKS',
         badge2: '$5,500 USD',
-        action: 'Enquire'
+        action: 'Apply'
       },
       {
         region: 'Operators',
@@ -87,7 +91,7 @@ const FALLBACK = {
         desc: 'Initial, recurrent and advanced training built around your operation.',
         badge1: 'ON REQUEST',
         badge2: 'TAILORED',
-        action: 'Get a proposal'
+        action: 'Request a proposal'
       }
     ]
   },
@@ -149,7 +153,7 @@ const FALLBACK = {
         id: '01',
         title: 'Flight Dispatch',
         subtitle: 'Own the operation from the ground.',
-        desc: 'FAA Part 65 approved and ICAO and EASA-based dispatcher courses for individuals, plus tailored initial, recurrent and advanced training for operators.',
+        desc: 'FAA Part 65 approved courses and ICAO Doc 10106 courses with EASA operations for individuals, plus tailored initial, recurrent and advanced training for operators.',
         audience: 'Individuals & Operators',
         forAudience: 'individuals operators',
         category: 'flight-ops',
@@ -159,15 +163,16 @@ const FALLBACK = {
         // Two pathways exist for this discipline - the card offers both
         // rather than picking one for the visitor.
         courseChoices: [
-          { label: 'EASA', courseSlug: 'flight-dispatcher-initial-certification' },
+          { label: 'ICAO & EASA', courseSlug: 'flight-dispatcher-initial-certification' },
           { label: 'FAA Part 65', courseSlug: 'aircraft-dispatcher-training-faa-part-65' }
         ]
       },
       {
         id: '02',
-        title: 'Double Programme: FAA & EASA',
-        subtitle: 'Two qualifications, one programme.',
-        desc: 'The FAA Part 65 approved course plus ICAO and EASA operations. 280 hours, 7 weeks, plus ADX self-study. Hybrid, Europe. $5,500 USD.',
+        title: 'Double Program: FAA & EASA',
+        subtitle: 'One FAA certificate, trained for both rule sets.',
+        desc: 'The FAA Part 65 approved course plus ICAO and EASA operations, taught as one program. ADX preparation is self-study.',
+        facts: '280 hours | 7 weeks | Hybrid',
         audience: 'Individuals',
         forAudience: 'individuals',
         category: 'flight-ops',
@@ -180,7 +185,8 @@ const FALLBACK = {
         id: '02',
         title: 'Dangerous Goods',
         subtitle: 'Know the risks. Move with confidence.',
-        desc: 'For pilots, dispatchers and cabin crew, adapted to carry or no-carry operations. Initial and recurrent, 4 hours, self-paced online, virtual or in-house.',
+        desc: 'For pilots, dispatchers and cabin crew, adapted to no-carry business aviation, carry business aviation, airline and cargo operations.',
+        facts: 'Initial and recurrent | Self-paced online | Live virtual | In-house',
         audience: 'Pilots, Dispatchers & Cabin Crew',
         forAudience: 'operators',
         category: 'flight-ops',
@@ -193,7 +199,8 @@ const FALLBACK = {
         id: '03',
         title: 'Train the Trainer',
         subtitle: 'Turn expertise into exceptional training.',
-        desc: 'For aviation professionals who teach. Ten modules and two assessed teaching practices over 4 days, as an open course or in-house.',
+        desc: 'For aviation professionals who teach. Ten modules and two assessed teaching practices.',
+        facts: '4 days | Open course | In-house',
         audience: 'Aviation Professionals Who Teach',
         forAudience: 'operators',
         category: 'train-trainer',
@@ -206,7 +213,8 @@ const FALLBACK = {
         id: '04',
         title: 'Human Factors for the OCC',
         subtitle: 'Performance under pressure starts with people.',
-        desc: 'Not CRM for flight crew. Fatigue, stress, decisions and working alongside AI tools. 2 days at your OCC or an IFOA facility.',
+        desc: 'Not CRM for flight crew. Fatigue, stress, decisions and working alongside AI tools.',
+        facts: '2 days | At your OCC | IFOA facility',
         audience: 'OCC & Flight Operations Personnel',
         forAudience: 'operators',
         category: 'flight-ops',
@@ -219,7 +227,8 @@ const FALLBACK = {
         id: '05',
         title: 'Crew Control',
         subtitle: 'Keep the operation moving.',
-        desc: 'EASA Part FTL or your OM-A Chapter 7, fatigue risk and crew control operations, with long-haul exercises. 2 days, online or at your base.',
+        desc: 'EASA Part FTL or your OM-A Chapter 7, fatigue risk and crew control operations, with long-haul exercises.',
+        facts: '2 days | Online | At your base',
         audience: 'Crew Schedulers & Controllers',
         forAudience: 'operators',
         category: 'flight-ops',
@@ -231,9 +240,11 @@ const FALLBACK = {
       {
         id: '06',
         title: 'OCC Consulting',
+        linkText: 'View service',
         subtitle: 'Turn operational challenges into better performance.',
-        desc: 'Assessments, operational control setup, manuals, CBTA programmes, audit support and AI readiness. Fixed scope or retainer, on-site or remote.',
-        audience: 'Airlines & Aviation Organisations',
+        desc: 'Assessments, operational control setup, manuals, CBTA programs, audit support and AI readiness.',
+        facts: 'Fixed scope or retainer | On-site or remote',
+        audience: 'Airlines & Aviation Organizations',
         forAudience: 'operators',
         category: 'consulting',
         tag: 'Aviation Advisory',
@@ -496,6 +507,30 @@ export function ServicesPage() {
                     <CmsText path={`${item._path}.desc`} value={item.desc} />
                   </p>
 
+                  {/* Key facts as chips, so numbers and formats scan at a glance */}
+                  {(item.facts || isPreviewEditMode()) && (
+                    <div className="mt-4 flex flex-wrap gap-1.5">
+                      {isPreviewEditMode() ? (
+                        <span className="text-xs text-slate-600">
+                          <CmsText path={`${item._path}.facts`} value={item.facts || ''} />
+                        </span>
+                      ) : (
+                        String(item.facts)
+                          .split('|')
+                          .map((f) => f.trim())
+                          .filter(Boolean)
+                          .map((f) => (
+                            <span
+                              key={f}
+                              className="inline-flex items-center rounded-md bg-slate-100 px-2.5 py-1 text-[11px] font-semibold text-slate-700"
+                            >
+                              {f}
+                            </span>
+                          ))
+                      )}
+                    </div>
+                  )}
+
                   {/* Who it's for + actions, pinned to the card bottom */}
                   <div className="mt-auto pt-4">
                     <p className="flex items-center gap-2 text-xs font-medium text-slate-500">
@@ -569,66 +604,42 @@ export function ServicesPage() {
             {certificationPathways.map((card, idx) => (
               <div
                 key={idx}
-                className="group relative rounded-[2rem] bg-white border border-slate-200/90 shadow-[0_4px_24px_rgba(0,0,0,0.03)] hover:shadow-[0_16px_40px_rgba(0,0,0,0.08)] hover:border-[#34E06E]/40 hover:-translate-y-1.5 p-7 flex flex-col justify-between transition-all duration-300 h-full"
+                className="group relative rounded-3xl bg-white border border-slate-200/90 hover:border-slate-300 hover:shadow-[0_12px_32px_rgba(15,23,42,0.07)] p-6 flex flex-col h-full transition-[border-color,box-shadow] duration-300"
               >
                 <CmsRemoveItem listPath="pathways.cards" index={card._index} label="Remove card" />
-                <div className="flex flex-col flex-1">
-                  {/* Standardized Header Row */}
-                  <div className="flex items-start justify-between gap-2 min-h-[2.5rem] mb-3">
-                    <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-slate-500 line-clamp-2 leading-tight flex-1">
-                      <CmsText path={`${card._path}.region`} value={card.region} />
-                    </span>
-                    <span className="text-[11px] font-mono font-black uppercase tracking-wider text-slate-950 border-b-2 border-[#34E06E] pb-0.5 whitespace-nowrap shrink-0 ml-2">
-                      <CmsText path={`${card._path}.badge2`} value={card.badge2} />
-                    </span>
-                  </div>
 
-                  {/* Standardized Logo Row */}
-                  <div className="h-10 flex items-center gap-3 shrink-0 mb-4">
-                    {card.logo && (
-                      <img
-                        src={card.logo}
-                        alt="Regulator Logo"
-                        className="h-7 max-h-7 w-auto object-contain"
-                      />
-                    )}
-                    {card.secondLogo && (
-                      <img
-                        src={card.secondLogo}
-                        alt="Second Regulator Logo"
-                        className="h-7 max-h-7 w-auto object-contain"
-                      />
-                    )}
-                  </div>
-
-                  {/* Standardized Title Heading */}
-                  <div className="min-h-[3.25rem] flex items-start shrink-0 mb-3">
-                    <h3 className="text-xl font-bold text-slate-950 tracking-tight leading-snug group-hover:text-[#34E06E] transition-colors line-clamp-2">
-                      <CmsText path={`${card._path}.title`} value={card.title} />
-                    </h3>
-                  </div>
-
-                  {/* Standardized Description Body */}
-                  <div className="flex-1 min-h-[5.5rem] mb-4">
-                    <p className="text-xs sm:text-sm text-slate-600 font-normal leading-relaxed line-clamp-4">
-                      <CmsText path={`${card._path}.desc`} value={card.desc} />
-                    </p>
-                  </div>
+                <div className="flex items-center gap-2.5 h-7">
+                  {card.logo && <img src={card.logo} alt="Regulator logo" className="h-6 w-auto object-contain" />}
+                  {card.secondLogo && <img src={card.secondLogo} alt="Regulator logo" className="h-6 w-auto object-contain" />}
                 </div>
 
-                {/* Standardized Footer Row */}
-                <div className="pt-4 border-t border-slate-100 flex items-center justify-between shrink-0 mt-auto">
-                  <span className="text-[11px] font-mono font-black uppercase tracking-wider text-slate-950 border-b-2 border-[#34E06E] pb-0.5 inline-block">
+                <h3 className="mt-5 min-h-[3.25rem] text-xl font-bold text-slate-950 tracking-tight leading-snug">
+                  <CmsText path={`${card._path}.title`} value={card.title} />
+                </h3>
+                <p className="text-xs text-slate-500">
+                  <CmsText path={`${card._path}.region`} value={card.region} />
+                </p>
+
+                <p className="mt-3 text-sm text-slate-600 leading-relaxed">
+                  <CmsText path={`${card._path}.desc`} value={card.desc} />
+                </p>
+
+                <div className="mt-auto pt-6">
+                  <p className="pt-4 border-t border-slate-100 text-xs text-slate-500">
                     <CmsText path={`${card._path}.badge1`} value={card.badge1} />
-                  </span>
+                    <span className="mx-1.5 text-slate-300">·</span>
+                    <span className="font-semibold text-slate-900">
+                      <CmsText path={`${card._path}.badge2`} value={card.badge2} />
+                    </span>
+                  </p>
                   <button
-                    onClick={() => navigate('/contact')}
-                    className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-slate-950 hover:text-[#34E06E] transition-colors cursor-pointer group/btn"
+                    onClick={() => navigate(card.courseSlug ? enrollPath({ slug: card.courseSlug }) : '/contact')}
+                    className="mt-3 inline-flex items-center gap-1.5 text-sm font-bold text-slate-950 hover:text-[#16a952] transition-colors cursor-pointer group/btn"
                   >
                     <span>
                       <CmsText path={`${card._path}.action`} value={card.action} />
                     </span>
-                    <HiArrowRight className="w-3.5 h-3.5 text-slate-950 group-hover/btn:translate-x-1 transition-transform" />
+                    <HiArrowRight className="w-4 h-4 group-hover/btn:translate-x-0.5 transition-transform" />
                   </button>
                 </div>
               </div>

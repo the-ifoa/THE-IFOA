@@ -294,7 +294,10 @@ const courseSchema = new mongoose.Schema(
           {
             label: { type: String, required: true, trim: true },
             startDate: { type: Date, default: null },
-            isActive: { type: Boolean, default: true }
+            isActive: { type: Boolean, default: true },
+            // Offered only when the applicant picks one of these training locations
+            // (matched by name, e.g. "India"). Empty = offered everywhere.
+            locations: { type: [String], default: [] }
           },
           { _id: false }
         )

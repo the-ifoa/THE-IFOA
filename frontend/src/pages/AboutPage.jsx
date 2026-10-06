@@ -27,8 +27,8 @@ const FALLBACK = {
     title: 'The Global Flight Dispatch Standard',
     subtitle:
       'Five years in, we became the standard other schools get measured against.',
-    primaryLabel: 'Book a Consultation',
-    secondaryLabel: 'Explore Programs',
+    primaryLabel: 'Request a proposal',
+    secondaryLabel: 'Explore Courses',
     image: null
   },
   executive: {
@@ -40,7 +40,7 @@ const FALLBACK = {
     eyebrow: 'OUR MISSION',
     title: 'Prepared, not just certified',
     intro:
-      'Our mission is simple: your team operates at the highest level of safety and efficiency, trained through programs that are effective and affordable, with never a trade-off between the two.',
+      'Our mission is simple: your team operates at the highest level of safety and efficiency, trained through courses that are effective and affordable, with never a trade-off between the two.',
     values: [
       {
         idx: '01',
@@ -63,13 +63,13 @@ const FALLBACK = {
     eyebrow: 'GLOBAL FOOTPRINT',
     title: 'Operational wherever airlines fly',
     intro:
-      'Three regional operational hubs supporting carriers, students, and dispatch teams across 3 continents.',
+      'Three regional hubs, plus our European training site in Sønderborg, Denmark, supporting carriers, students and dispatch teams across 3 continents.',
     regions: [
       {
         name: 'Europe HQ',
         location: 'Zeiningen, Switzerland',
         facility: 'IFOA',
-        desc: 'European headquarters leading EASA Part-ORO GEN 110 compliant Flight Dispatcher certification and OCC scenario labs.'
+        desc: 'European headquarters. European courses are taught in Sønderborg, Denmark, at Air Alsie, to ORO.GEN.110 (Regulation (EU) 965/2012).'
       },
       {
         name: 'North America',
@@ -81,15 +81,15 @@ const FALLBACK = {
         name: 'India & Asia-Pacific',
         location: 'New Delhi, India',
         facility: 'IFOA INDIA',
-        desc: 'South Asian School delivering FAA Part 65 certified and EASA Part ORO GEN 110 compliant Flight Dispatcher programs.'
+        desc: 'South Asian school delivering the FAA Part 65 approved course and Flight Dispatcher Initial, built on ICAO Doc 10106, on-site in New Delhi.'
       }
     ]
   },
   finalCta: {
     title: 'Want to see how this plays out for your team?',
     desc: 'Talk to us about your fleet, your ops manual, and where your OCC needs to be stronger.',
-    primaryLabel: 'Book a Consultation',
-    secondaryLabel: 'Browse Training Programs'
+    primaryLabel: 'Request a proposal',
+    secondaryLabel: 'Browse Training Courses'
   }
 }
 

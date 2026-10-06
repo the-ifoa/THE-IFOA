@@ -37,6 +37,7 @@ const STATIC_ROUTES = [
   { path: '/events' },
   { path: '/about' },
   { path: '/contact' },
+  { path: '/faq' },
   { path: '/foxtrot-delta' },
   { path: '/upcoming-courses' },
   { path: '/impressum' },

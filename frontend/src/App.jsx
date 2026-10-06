@@ -54,6 +54,11 @@ function ScrollToTop() {
     window.scrollTo(0, 0)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname])
+
+  // Tell the background image loader which page the visitor is on now.
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent('ifoa:route', { detail: pathname }))
+  }, [pathname])
   return null
 }
 
@@ -97,6 +102,7 @@ function PublicSite({ pages }) {
     UpcomingCoursesPage: UpcomingCourses,
     AboutPage: About,
     ContactPage: Contact,
+    FaqPage: Faq,
     CourseDetailPage: CourseDetail,
     CourseEnrollmentPage: CourseEnrollment,
     NotFoundPage: NotFound,
@@ -121,6 +127,8 @@ function PublicSite({ pages }) {
             <Route path="/magazine" element={<Navigate to="/foxtrot-delta" replace />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/faq" element={<Faq />} />
+            <Route path="/faqs" element={<Navigate to="/faq" replace />} />
             <Route path="/courses/:slug" element={<CourseDetail />} />
             <Route path="/courses/:slug/enroll" element={<CourseEnrollment />} />
             <Route path="/enroll/:slug" element={<CourseEnrollment />} />

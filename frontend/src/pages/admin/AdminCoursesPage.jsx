@@ -71,6 +71,7 @@ export function AdminCoursesPage() {
   }
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- loading/reset state at the start of an effect that syncs with an external source
     load()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status])
@@ -309,7 +310,7 @@ export function AdminCoursesPage() {
               const meta = getCategoryMeta(course.category)
               const CategoryIcon = meta.icon
               const formattedDate = course.schedule?.startDate
-                ? new Date(course.schedule.startDate).toLocaleDateString('en-GB', {
+                ? new Date(course.schedule.startDate).toLocaleDateString('en-US', {
                     day: '2-digit',
                     month: 'short',
                     year: 'numeric'
@@ -415,7 +416,7 @@ export function AdminCoursesPage() {
                           className="inline-flex items-center gap-1.5 text-[11px] font-bold px-2.5 py-1 rounded-full border bg-slate-100 text-slate-600 border-slate-200/80"
                         >
                           <Mail className="w-3 h-3" />
-                          <span>Enquiries via Contact</span>
+                          <span>Inquiries via Contact</span>
                         </span>
                       )}
 

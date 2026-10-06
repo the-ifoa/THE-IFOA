@@ -54,4 +54,5 @@ function Button({
   );
 }
 
+// eslint-disable-next-line react-refresh/only-export-components -- helper co-located with its component on purpose; only affects dev hot reload
 export { Button, buttonVariants }

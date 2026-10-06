@@ -107,6 +107,7 @@ export function AdminContactMessagesPage() {
   }
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- loading/reset state at the start of an effect that syncs with an external source
     load()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status])
@@ -289,7 +290,7 @@ export function AdminContactMessagesPage() {
             <p className="text-xs text-slate-500">
               {q || status !== 'all'
                 ? 'Try adjusting your search criteria or filter to see messages.'
-                : 'Enquiries submitted through the public contact form appear here.'}
+                : 'Inquiries submitted through the public contact form appear here.'}
             </p>
           </div>
           {(q || status !== 'all') && (
@@ -400,7 +401,7 @@ export function AdminContactMessagesPage() {
                       {/* Received Date */}
                       <td className="px-5 py-4">
                         <div className="text-xs font-semibold text-slate-700">
-                          {new Date(m.createdAt).toLocaleDateString('en-GB', {
+                          {new Date(m.createdAt).toLocaleDateString('en-US', {
                             day: '2-digit',
                             month: 'short',
                             year: 'numeric'

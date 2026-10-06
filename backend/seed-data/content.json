@@ -1,18 +1,26 @@
 {
-  "exportedAt": "2026-09-29T06:42:50.676Z",
+  "exportedAt": "2026-10-06T07:01:40.674Z",
   "courses": [
     {
       "slug": "flight-dispatcher-double-programme",
       "additionalCosts": {
-        "intro": "FAA fees not included",
+        "intro": "Full cost to certificate",
         "items": [
           {
+            "label": "Tuition",
+            "amount": "$5,500 USD"
+          },
+          {
             "label": "ADX knowledge test",
-            "amount": "$175"
+            "amount": "$175 USD"
           },
           {
             "label": "Practical test, paid to the examiner",
-            "amount": "$600"
+            "amount": "$600 USD"
+          },
+          {
+            "label": "Total to FAA certificate",
+            "amount": "$6,275 USD"
           }
         ],
         "note": ""
@@ -25,7 +33,7 @@
       ],
       "bottomBanner": {
         "title": "Ready to start your dispatcher certification?",
-        "desc": "280 hours · FAA Part 65, ICAO and EASA · €5,500",
+        "desc": "280 hours · FAA Part 65, ICAO and EASA · $5,500 USD",
         "eyebrow": "",
         "ctaLabel": ""
       },
@@ -41,14 +49,14 @@
       "careerPath": "Flight Dispatcher for US and European operators",
       "category": "dispatch",
       "certification": {
-        "text": "From the FAA: the Aircraft Dispatcher certificate under 14 CFR Part 65. Only the FAA issues it, once you pass the ADX knowledge test and the practical test with an FAA examiner. From IFOA: a course completion certificate, which you present at your practical test as proof you completed the approved course. It is not an FAA certificate. There is no EASA flight dispatcher licence: in Europe, operators decide who may dispatch their flights.",
+        "text": "From the FAA: the Aircraft Dispatcher certificate under 14 CFR Part 65. Only the FAA issues it, once you pass the ADX knowledge test and the practical test with an FAA examiner. From IFOA: a course completion certificate, which you present at your practical test as proof you completed the approved course. It is not an FAA certificate. There is no EASA flight dispatcher license: in Europe, operators decide who may dispatch their flights.",
         "points": [
           "ADX Knowledge Test",
           "Practical Test with FAA Examiner"
         ]
       },
       "courseContent": {
-        "intro": "Two parts, taught as one programme:",
+        "intro": "Two parts, taught as one program:",
         "modules": [
           "FAA Part 65 approved course (200 hours): all eight knowledge areas in Appendix A to 14 CFR Part 65",
           "ICAO and EASA operations (80 hours): built on ICAO Doc 10106"
@@ -57,8 +65,8 @@
       },
       "ctaLabel": "",
       "curriculum": {
-        "eyebrow": "The Programme",
-        "title": "Two parts, taught as one programme",
+        "eyebrow": "The Program",
+        "title": "Two parts, taught as one program",
         "subtitle": "FAA Part 65 approved course: 200 hours, all eight knowledge areas in Appendix A to 14 CFR Part 65. ICAO and EASA operations: 80 hours, built on ICAO Doc 10106.",
         "layout": "accordion",
         "phases": [
@@ -224,7 +232,7 @@
         ]
       },
       "delivery": {
-        "intro": "Two parts, taught as one hybrid programme in Europe.",
+        "intro": "Two parts, taught as one hybrid program in Europe.",
         "items": [
           {
             "label": "School",
@@ -256,27 +264,28 @@
       },
       "eyebrow": "",
       "featured": true,
-      "format": "Hybrid, Europe",
+      "format": "Hybrid, Denmark, USA or India",
       "heroImage": null,
       "heroNote": "We train dispatchers, not test takers. 200 hours FAA Part 65 approved course plus 80 hours ICAO and EASA operations. ADX preparation is extra and done in your own time; it is not part of the 280 hours.",
       "intakeLabel": "Start date to be confirmed",
       "intakes": [
         {
-          "label": "Next intake: to be confirmed",
+          "label": "To be confirmed",
           "startDate": null,
-          "isActive": true
+          "isActive": true,
+          "locations": []
         }
       ],
       "isCorporate": false,
-      "location": "Europe",
+      "location": "Denmark · USA · India",
       "locationPrices": [],
       "order": 5,
       "overview": {
         "sidebarNote": "Payment, cancellation and refunds: see our Terms and Conditions.",
         "hero": {
-          "title": "Flight Dispatcher Double Programme",
+          "title": "Double Program: FAA & EASA",
           "slogan": "We train dispatchers, not test takers.",
-          "lead": "One 280-hour programme over 7 weeks: the FAA Part 65 approved course, plus ICAO and EASA operations. It prepares you to earn the FAA Aircraft Dispatcher certificate, issued by the FAA, and to dispatch under European rules too.",
+          "lead": "One 280-hour program over 7 weeks: the FAA Part 65 approved course, plus ICAO and EASA operations. It prepares you to earn the FAA Aircraft Dispatcher certificate, issued by the FAA, and to dispatch under European rules too.",
           "blocks": [
             {
               "type": "split",
@@ -293,7 +302,7 @@
                   "tone": "amber"
                 }
               ],
-              "note": "ADX preparation is extra and done in your own time. It's not part of the 280 hours."
+              "note": "The 7 weeks include one week for the FAA exams. ADX preparation is extra and done in your own time. It's not part of the 280 hours."
             }
           ]
         },
@@ -304,15 +313,15 @@
             "title": "What you receive",
             "paragraphs": [
               "**From the FAA:** the Aircraft Dispatcher certificate under 14 CFR Part 65. Only the FAA issues it, once you pass the ADX knowledge test and the practical test with an FAA examiner.",
-              "**From IFOA:** a course completion certificate for the programme. You present it at your practical test as proof you completed the approved course. It is not an FAA certificate.",
-              "There is no EASA flight dispatcher licence. In Europe, operators decide who may dispatch their flights. The ICAO and EASA part shows them you can work under European rules as well as FAA rules."
+              "**From IFOA:** an IFOA Certificate of Completion for the program. You present it at your practical test as proof you completed the approved course. It is not an FAA certificate.",
+              "There is no EASA flight dispatcher license. In Europe, operators decide who may dispatch their flights. The ICAO and EASA part shows them you can work under European rules as well as FAA rules."
             ]
           },
           {
             "type": "accordion",
             "anchor": "modules",
-            "title": "The programme",
-            "intro": "Two parts, taught as one programme. Select a topic to see what it covers.",
+            "title": "The program",
+            "intro": "Two parts, taught as one program. Select a topic to see what it covers.",
             "layout": "vertical",
             "groups": [
               {
@@ -333,15 +342,17 @@
                     "num": "II",
                     "title": "Meteorology",
                     "bullets": [
+                      "Basic weather theory",
                       "Weather reports, forecasts and charts",
-                      "Hazardous weather"
+                      "Hazardous weather: icing, turbulence, thunderstorms, windshear"
                     ]
                   },
                   {
                     "num": "III",
                     "title": "Navigation",
                     "bullets": [
-                      "Navigation principles, aids and charts",
+                      "Navigation principles and charts",
+                      "Navigation aids and procedures",
                       "Airspace"
                     ]
                   },
@@ -349,8 +360,8 @@
                     "num": "IV",
                     "title": "Aircraft",
                     "bullets": [
-                      "Systems and the flight manual",
-                      "Performance, mass and balance",
+                      "Aircraft systems and the flight manual",
+                      "Performance and mass and balance",
                       "MEL and CDL"
                     ]
                   },
@@ -358,6 +369,7 @@
                     "num": "V",
                     "title": "Communications",
                     "bullets": [
+                      "Regulatory requirements",
                       "Communication procedures",
                       "NOTAMs and aeronautical publications"
                     ]
@@ -367,14 +379,16 @@
                     "title": "Air Traffic Control",
                     "bullets": [
                       "ATC responsibilities and facilities",
-                      "Flight plans and traffic management"
+                      "Flight plans",
+                      "Traffic management"
                     ]
                   },
                   {
                     "num": "VII",
                     "title": "Emergency and Abnormal Procedures",
                     "bullets": [
-                      "Emergency assistance and security",
+                      "Emergency assistance and security measures",
+                      "Abnormal situations",
                       "Reporting requirements"
                     ]
                   },
@@ -383,7 +397,8 @@
                     "title": "Practical Dispatch Applications",
                     "bullets": [
                       "Human factors and decision-making",
-                      "The dispatch release and flight monitoring"
+                      "Flight planning and the dispatch release",
+                      "Flight monitoring and operational control"
                     ]
                   }
                 ]
@@ -490,12 +505,12 @@
           {
             "type": "table",
             "anchor": "compare",
-            "title": "Which programme is right for you?",
+            "title": "Which program is right for you?",
             "intro": "All three teach you to dispatch. They lead to different documents.",
             "highlight": 1,
             "head": [
               "",
-              "Double Programme",
+              "Double Program",
               "FAA Aircraft Dispatcher",
               "Flight Dispatcher Initial"
             ],
@@ -504,7 +519,7 @@
                 "You receive",
                 "Eligibility for the FAA certificate, issued by the FAA, plus ICAO and EASA training from IFOA",
                 "Eligibility for the FAA certificate, issued by the FAA",
-                "IFOA course completion certificate"
+                "IFOA Certificate of Completion"
               ],
               [
                 "Regulatory focus",
@@ -515,19 +530,19 @@
               [
                 "Duration",
                 "280 hours, 7 weeks",
-                "200 hours",
-                "5 weeks"
+                "200 hours, 6 weeks",
+                "200 hours, 5 weeks"
               ],
               [
                 "Format",
                 "Hybrid",
-                "Online preparation, then Florida",
+                "Online preparation, then Denmark, USA or India",
                 "2 weeks online, 3 weeks in Denmark"
               ],
               [
                 "Fee",
-                "€5,500, plus FAA test and examiner fees",
-                "$4,500, plus FAA test and examiner fees",
+                "$5,500 USD, plus FAA test and examiner fees",
+                "$4,500 USD, plus FAA test and examiner fees",
                 "€3,500"
               ],
               [
@@ -564,8 +579,8 @@
       },
       "price": {
         "amount": 5500,
-        "currency": "EUR",
-        "note": "Includes training materials, ADX learning portal and weekly masterclasses. Travel, accommodation, meals and visa are not included."
+        "currency": "USD",
+        "note": "Includes training materials, ADX learning portal and weekly masterclasses. The same fee applies in Denmark, the USA and India. Travel, accommodation, meals and visa are not included."
       },
       "processSteps": [],
       "rateCard": {
@@ -579,20 +594,24 @@
       "registrationOpen": true,
       "schedule": {
         "mode": "Hybrid",
-        "timeText": "Hybrid, Europe",
+        "timeText": "Hybrid, Denmark, USA or India",
         "startDate": null,
         "endDate": null,
         "timezone": ""
       },
       "seats": null,
       "seo": {
-        "metaTitle": "Flight Dispatcher Double Programme: FAA, ICAO & EASA, 280 Hours | IFOA",
-        "metaDescription": "A 280-hour, 7-week hybrid programme in Europe, €5,500: the FAA Part 65 approved dispatcher course plus ICAO and EASA operations. Prepares you for the FAA Aircraft Dispatcher certificate."
+        "metaTitle": "Flight Dispatcher Double Program: FAA, ICAO & EASA, 280 Hours | IFOA",
+        "metaDescription": "A 280-hour, 7-week hybrid program in Europe, $5,500 USD: the FAA Part 65 approved dispatcher course plus ICAO and EASA operations. Prepares you for the FAA Aircraft Dispatcher certificate."
       },
       "sidebarSpecs": [
         {
           "label": "Duration",
-          "value": "280 hours over 7 weeks, plus ADX self-study"
+          "value": "280 h, 7 weeks + ADX self-study"
+        },
+        {
+          "label": "Exam week",
+          "value": "1 week, within the 7 weeks"
         },
         {
           "label": "Format",
@@ -600,7 +619,7 @@
         },
         {
           "label": "Location",
-          "value": "Europe"
+          "value": "Denmark · USA · India"
         },
         {
           "label": "Start",
@@ -608,12 +627,12 @@
         },
         {
           "label": "Leads to",
-          "value": "FAA Part 65 certificate, issued by the FAA"
+          "value": "FAA dispatcher certificate"
         }
       ],
       "status": "published",
-      "summary": "One 280-hour programme over 7 weeks: the FAA Part 65 approved course, plus ICAO and EASA operations. It prepares you to earn the FAA Aircraft Dispatcher certificate, issued by the FAA, and to dispatch under European rules too.",
-      "title": "Flight Dispatcher Double Programme",
+      "summary": "One 280-hour program over 7 weeks: the FAA Part 65 approved course, plus ICAO and EASA operations. It prepares you to earn the FAA Aircraft Dispatcher certificate, issued by the FAA, and to dispatch under European rules too.",
+      "title": "Double Program: FAA & EASA",
       "trainingPhilosophy": {
         "eyebrow": "ADX Preparation",
         "title": "ADX preparation, outside the 280 hours",
@@ -668,7 +687,7 @@
       }
     },
     {
-      "title": "Flight Dispatcher Initial Training",
+      "title": "Flight Dispatcher Initial",
       "slug": "flight-dispatcher-initial-certification",
       "refCode": "FD-INITIAL",
       "branch": "IFOA",
@@ -679,7 +698,7 @@
       "summary": "Five weeks to learn how to plan, release and follow a flight, and make the calls when it doesn't go to plan. Built on ICAO Doc 10106 and taught by working dispatchers.",
       "heroImage": null,
       "trustStat": "",
-      "heroNote": "There is no EASA flight dispatcher licence. In Europe, each operator decides who is qualified to dispatch its flights. This course gives you an IFOA Flight Dispatch Completion Certificate, built on ICAO Doc 10106. If you need a government-issued dispatcher licence, see our FAA Aircraft Dispatcher course.",
+      "heroNote": "There is no EASA flight dispatcher license. In Europe, each operator decides who is qualified to dispatch its flights. This course gives you an IFOA Certificate of Completion, built on ICAO Doc 10106. If you need a government-issued dispatcher license, see our FAA Aircraft Dispatcher course.",
       "isCorporate": false,
       "eyebrow": "",
       "badges": [],
@@ -694,7 +713,7 @@
       "authority": "EASA / FAA Part 65 Standards",
       "format": "Hybrid: 2 Weeks Online, 3 Weeks Onsite Sønderborg (Denmark)",
       "careerPath": "Commercial Airline Dispatcher, Cargo Flight Follower, Corporate OCC Specialist",
-      "intakeLabel": "Next Intake: 4th Jan 2027",
+      "intakeLabel": "Intake: 4 January 2027",
       "card": {
         "badge": "",
         "blurb": "",
@@ -773,7 +792,7 @@
         "title": ""
       },
       "curriculum": {
-        "eyebrow": "The Programme",
+        "eyebrow": "The Program",
         "title": "Five phases",
         "subtitle": "From the rules that govern the operation to the decisions you make on shift.",
         "phases": [
@@ -882,10 +901,10 @@
           "Mass & Balance Calculation, Fuel Policies & ETOPS / EDTO Requirements",
           "Real-Time OCC Simulator Practicum: High-Stress In-Flight Emergency Scenarios"
         ],
-        "note": "Curriculum draws on both FAA Part 65 and EASA-aligned flight dispatch training content."
+        "note": "Curriculum draws on both FAA Part 65 and ICAO Doc 10106 and EASA flight dispatch training content."
       },
       "certification": {
-        "text": "You receive an IFOA Flight Dispatch Completion Certificate when you pass. It does not expire. It shows an operator you have completed structured training built on ICAO Doc 10106.",
+        "text": "You receive an IFOA Certificate of Completion when you pass. It does not expire. It shows an operator you have completed structured training built on ICAO Doc 10106.",
         "points": [
           "Practical and multiple-choice exam",
           "Pass mark of 80%"
@@ -911,17 +930,17 @@
       "registrationOpen": true,
       "seats": null,
       "seo": {
-        "metaTitle": "Flight Dispatcher Initial Training: 5 Weeks, Hybrid | IFOA",
-        "metaDescription": "A 5-week flight dispatcher course built on ICAO Doc 10106: 2 weeks online, 3 weeks on-site in Sønderborg, Denmark. €3,500. Next intake 4 January 2027."
+        "metaTitle": "Flight Dispatcher Initial: 200 Hours, 5 Weeks, Hybrid | IFOA",
+        "metaDescription": "A 5-week flight dispatcher course built on ICAO Doc 10106: 2 weeks online, 3 weeks on-site in Sønderborg, Denmark. €3,500. Intake 4 January 2027."
       },
       "sidebarSpecs": [
         {
-          "label": "Next intake",
+          "label": "Intake",
           "value": "4 January 2027"
         },
         {
           "label": "Duration",
-          "value": "5 weeks"
+          "value": "200 hours, 5 weeks"
         },
         {
           "label": "Format",
@@ -933,32 +952,45 @@
         },
         {
           "label": "Assessment",
-          "value": "Practical and multiple-choice exam"
+          "value": "Practical + multiple-choice"
         },
         {
           "label": "Certificate",
-          "value": "IFOA Flight Dispatch Completion Certificate"
+          "value": "IFOA Certificate of Completion"
         }
       ],
       "intakes": [
         {
           "label": "4 January 2027",
           "startDate": "2027-01-04T09:00:00.000Z",
-          "isActive": true
+          "isActive": true,
+          "locations": [
+            "Denmark",
+            "United States"
+          ]
+        },
+        {
+          "label": "Rolling admissions: min. 10 registrations",
+          "startDate": null,
+          "isActive": true,
+          "locations": [
+            "India"
+          ]
         }
       ],
       "locationPrices": [
         {
           "location": "India (New Delhi)",
-          "amount": 99999,
-          "currency": "INR",
+          "amount": 1000,
+          "currency": "EUR",
+          "duration": "4 Weeks",
           "note": ""
         }
       ],
       "overview": {
         "sidebarNote": "Payment, cancellation and refunds: see our Terms and Conditions.",
         "hero": {
-          "title": "Flight Dispatcher Initial Training",
+          "title": "Flight Dispatcher Initial",
           "lead": "Five weeks to learn how to plan, release and follow a flight, and make the calls when it doesn't go to plan. Built on ICAO Doc 10106 and taught by working dispatchers.",
           "blocks": [
             {
@@ -1006,15 +1038,15 @@
             "anchor": "qualification",
             "title": "What this course qualifies you for",
             "paragraphs": [
-              "There is no EASA flight dispatcher licence. In Europe, each operator decides who is qualified to dispatch its flights, and sets its own training and experience requirements.",
-              "This course gives you an IFOA Flight Dispatch Completion Certificate. It shows an operator you have completed structured training built on ICAO Doc 10106, the international standard for flight operations officer and dispatcher training. Your employer will still train you on its own procedures before you dispatch.",
-              "If you need a government-issued dispatcher licence, see our [FAA Aircraft Dispatcher course](/courses/aircraft-dispatcher-training-faa-part-65)."
+              "There is no EASA flight dispatcher license. In Europe, each operator decides who is qualified to dispatch its flights, and sets its own training and experience requirements.",
+              "This course gives you an IFOA Certificate of Completion. It shows an operator you have completed structured training built on ICAO Doc 10106, the international standard for flight operations officer and dispatcher training. Your employer will still train you on its own procedures before you dispatch.",
+              "If you need a government-issued dispatcher license, see our [FAA Aircraft Dispatcher course](/courses/aircraft-dispatcher-training-faa-part-65)."
             ]
           },
           {
             "type": "accordion",
             "anchor": "modules",
-            "title": "The programme",
+            "title": "The program",
             "intro": "Five phases, from the rules that govern the operation to the decisions you make on shift. Select a phase to see what it covers.",
             "items": [
               {
@@ -1092,7 +1124,7 @@
                       "text": "A pass mark of 80% is required."
                     },
                     {
-                      "title": "IFOA Flight Dispatch Completion Certificate",
+                      "title": "IFOA Certificate of Completion",
                       "text": "Issued when you pass. It does not expire."
                     }
                   ],
@@ -1107,7 +1139,7 @@
                     },
                     {
                       "title": "EASA Air Ops",
-                      "text": "Regulation (EU) 965/2012, taught as course content"
+                      "text": "Regulation (EU) 965/2012, including ORO.GEN.110, taught as course content"
                     }
                   ]
                 }
@@ -1128,7 +1160,7 @@
             "rows": [
               [
                 "You receive",
-                "IFOA Flight Dispatch Completion Certificate",
+                "IFOA Certificate of Completion",
                 "Eligibility for the FAA Aircraft Dispatcher certificate, after passing the FAA knowledge and practical tests"
               ],
               [
@@ -1143,18 +1175,18 @@
               ],
               [
                 "Duration",
-                "5 weeks",
-                "200 hours"
+                "200 hours, 5 weeks",
+                "200 hours, 6 weeks"
               ],
               [
                 "Location",
                 "2 weeks online, 3 weeks in Denmark",
-                "Florida, USA, with online preparation"
+                "Sønderborg, Denmark · Daytona Beach, USA · New Delhi, India, with online preparation"
               ],
               [
                 "Fee",
                 "€3,500",
-                "$4,500, plus FAA test and examiner fees"
+                "$4,500 USD, plus FAA test and examiner fees"
               ]
             ],
             "links": [
@@ -1207,7 +1239,1056 @@
       }
     },
     {
-      "title": "Aircraft Dispatcher Initial Certification",
+      "title": "Flight Dispatcher Initial (India)",
+      "slug": "flight-dispatcher-initial-training-india",
+      "refCode": "FD-INITIAL-IN",
+      "branch": "IFOA",
+      "category": "dispatch",
+      "status": "published",
+      "featured": false,
+      "order": 11,
+      "summary": "Four weeks in New Delhi, after online preparation, to learn how to plan, release and follow a flight, and make the calls when it doesn't go to plan. Built on ICAO Doc 10106 and taught by working dispatchers.",
+      "heroImage": null,
+      "trustStat": "",
+      "heroNote": "This course gives you an IFOA Certificate of Completion, built on ICAO Doc 10106. If you need a government-issued dispatcher license, see our FAA Aircraft Dispatcher course.",
+      "isCorporate": false,
+      "eyebrow": "",
+      "badges": [],
+      "ctaLabel": "",
+      "rateCard": {
+        "eyebrow": "",
+        "value": "",
+        "note": "",
+        "secondaryCtaLabel": "",
+        "trustBadge": ""
+      },
+      "authority": "ICAO Doc 10106",
+      "format": "4 Weeks, online preparation then on-site, New Delhi (India)",
+      "careerPath": "Commercial Airline Dispatcher, Cargo Flight Follower, Corporate OCC Specialist",
+      "intakeLabel": "Intake: contact us",
+      "card": {
+        "image": null,
+        "badge": "",
+        "rating": null,
+        "reviewsLabel": "",
+        "durationLabel": "",
+        "blurb": ""
+      },
+      "schedule": {
+        "mode": "Onsite",
+        "startDate": null,
+        "endDate": null,
+        "timeText": "4 Weeks, online preparation then on-site, New Delhi (India)",
+        "timezone": ""
+      },
+      "locationPrices": [],
+      "duration": "4 Weeks",
+      "location": "New Delhi, India",
+      "price": {
+        "amount": 1000,
+        "currency": "EUR",
+        "note": "Includes training materials, examination and certificate. Travel, accommodation and meals are not included."
+      },
+      "whatYouWillLearn": {
+        "intro": "What you'll be able to do:",
+        "points": [
+          "Plan and prepare a flight",
+          "Apply weather, fuel, routing and alternate requirements",
+          "Assess operational risks and constraints",
+          "Monitor flights and anticipate disruptions",
+          "Make operational decisions as conditions change",
+          "Apply ICAO, EASA and operator procedures"
+        ],
+        "eyebrow": "",
+        "title": ""
+      },
+      "processSteps": [
+        "Week 1: New Delhi",
+        "Week 2: New Delhi",
+        "Week 3: New Delhi",
+        "Week 4: New Delhi"
+      ],
+      "delivery": {
+        "intro": "Online preparation first, then four weeks in New Delhi, in the classroom with your instructors.",
+        "items": [
+          {
+            "label": "School",
+            "title": "IFOA India",
+            "description": "Taught by working dispatchers",
+            "image": null
+          },
+          {
+            "label": "Format",
+            "title": "Online preparation, then 4 weeks on-site",
+            "description": "New Delhi, India",
+            "image": null
+          }
+        ]
+      },
+      "trainingStandards": {
+        "intro": "Built on ICAO Doc 10106, the international standard for flight operations officer and dispatcher training, with EASA Air Operations taught as course content.",
+        "logos": [],
+        "cards": [
+          {
+            "code": "ICAO Doc 10106",
+            "title": "Competency-based training for flight operations officers and dispatchers"
+          },
+          {
+            "code": "ICAO Annex 1 and Annex 6",
+            "title": "Flight operations officer requirements"
+          },
+          {
+            "code": "EASA Air Ops",
+            "title": "Regulation (EU) 965/2012, taught as course content"
+          }
+        ],
+        "eyebrow": "",
+        "title": ""
+      },
+      "curriculum": {
+        "eyebrow": "The Program",
+        "title": "Five phases",
+        "subtitle": "From the rules that govern the operation to the decisions you make on shift.",
+        "phases": [
+          {
+            "num": "01",
+            "label": "PHASE 01",
+            "title": "The Operating Environment",
+            "focus": "",
+            "description": "",
+            "topics": [
+              "Air law and civil aviation regulations",
+              "ICAO and EASA framework",
+              "Air traffic management",
+              "Aeronautical communications"
+            ],
+            "adaptive": ""
+          },
+          {
+            "num": "02",
+            "label": "PHASE 02",
+            "title": "Know the Aircraft",
+            "focus": "",
+            "description": "",
+            "topics": [
+              "Aircraft systems for dispatchers",
+              "Mass and balance",
+              "Aircraft performance",
+              "MEL and CDL"
+            ],
+            "adaptive": ""
+          },
+          {
+            "num": "03",
+            "label": "PHASE 03",
+            "title": "Plan the Flight",
+            "focus": "",
+            "description": "",
+            "topics": [
+              "Aviation meteorology",
+              "Navigation and route planning",
+              "Fuel planning and alternates",
+              "NOTAMs and flight plan filing"
+            ],
+            "adaptive": ""
+          },
+          {
+            "num": "04",
+            "label": "PHASE 04",
+            "title": "Control the Operation",
+            "focus": "",
+            "description": "",
+            "topics": [
+              "Flight following and monitoring",
+              "Operational control",
+              "Communicating with crew and stakeholders",
+              "Managing disruptions"
+            ],
+            "adaptive": ""
+          },
+          {
+            "num": "05",
+            "label": "PHASE 05",
+            "title": "Make the Decision",
+            "focus": "",
+            "description": "",
+            "topics": [
+              "Decision-making under uncertainty",
+              "Threat and error management",
+              "Human factors in dispatch",
+              "Scenario exercises"
+            ],
+            "adaptive": ""
+          }
+        ],
+        "layout": "carousel"
+      },
+      "dgrExplorer": {
+        "roles": [],
+        "segments": []
+      },
+      "whoShouldAttend": {
+        "intro": "No previous dispatch experience needed.",
+        "points": [
+          "Aspiring Flight Dispatchers: people starting a career in flight dispatch.",
+          "OCC & Operations Personnel: airline and OCC staff moving into dispatch.",
+          "Aviation Professionals: aviation professionals who want formal dispatch training."
+        ],
+        "outro": "Your employer will still train you on its own procedures before you dispatch.",
+        "eyebrow": "",
+        "title": ""
+      },
+      "entryRequirements": {
+        "intro": "Entry requirements:",
+        "points": [
+          "English good enough to follow professional aviation training",
+          "No previous dispatch experience required"
+        ]
+      },
+      "courseContent": {
+        "intro": "The curriculum covers the full prerequisite learning objectives for international flight dispatch:",
+        "modules": [
+          "Civil Aviation Air Law & Airspace Regulations (ICAO / EASA / FAA)",
+          "Advanced Aeronautical Meteorology & Severe Weather Mitigation",
+          "Aircraft Navigation, Jeppesen / Lido Route Optimization & NOTAMs",
+          "Aircraft Systems, Powerplants, MEL / CDL & Performance Limitations",
+          "Mass & Balance Calculation, Fuel Policies & ETOPS / EDTO Requirements",
+          "Real-Time OCC Simulator Practicum: High-Stress In-Flight Emergency Scenarios"
+        ],
+        "note": "Curriculum draws on both FAA Part 65 and ICAO Doc 10106 and EASA flight dispatch training content."
+      },
+      "certification": {
+        "text": "You receive an IFOA Certificate of Completion when you pass. It does not expire. It shows an operator you have completed structured training built on ICAO Doc 10106.",
+        "points": [
+          "Practical and multiple-choice exam",
+          "Pass mark of 80%"
+        ]
+      },
+      "additionalCosts": {
+        "intro": "",
+        "note": "",
+        "items": []
+      },
+      "trainingPhilosophy": {
+        "eyebrow": "",
+        "title": "",
+        "intro": "",
+        "cards": []
+      },
+      "sidebarSpecs": [
+        {
+          "label": "Intake",
+          "value": "Rolling, min. 10 registrations"
+        },
+        {
+          "label": "Duration",
+          "value": "4 weeks"
+        },
+        {
+          "label": "Minimum",
+          "value": "10 registrations"
+        },
+        {
+          "label": "Format",
+          "value": "Online prep, then on-site"
+        },
+        {
+          "label": "Location",
+          "value": "New Delhi, India"
+        },
+        {
+          "label": "Assessment",
+          "value": "Practical + multiple-choice"
+        },
+        {
+          "label": "Certificate",
+          "value": "IFOA Certificate of Completion"
+        }
+      ],
+      "bottomBanner": {
+        "eyebrow": "",
+        "title": "",
+        "desc": "",
+        "ctaLabel": ""
+      },
+      "registrationOpen": true,
+      "seats": null,
+      "intakes": [],
+      "seo": {
+        "metaTitle": "Flight Dispatcher Initial, India: 4 Weeks, New Delhi | IFOA",
+        "metaDescription": "A 4-week flight dispatcher course in New Delhi, with online preparation first, built on ICAO Doc 10106. €1,000 + GST, including training materials, examination and certificate."
+      },
+      "overview": {
+        "sidebarNote": "Payment, cancellation and refunds: see our Terms and Conditions.",
+        "hero": {
+          "title": "Flight Dispatcher Initial, India",
+          "lead": "Four weeks in New Delhi, after online preparation, to learn how to plan, release and follow a flight, and make the calls when it doesn't go to plan. Built on ICAO Doc 10106 and taught by working dispatchers.",
+          "blocks": [
+            {
+              "type": "track",
+              "items": [
+                {
+                  "label": "Week 1",
+                  "title": "New Delhi",
+                  "tone": "on"
+                },
+                {
+                  "label": "Week 2",
+                  "title": "New Delhi",
+                  "tone": "on"
+                },
+                {
+                  "label": "Week 3",
+                  "title": "New Delhi",
+                  "tone": "on"
+                },
+                {
+                  "label": "Week 4",
+                  "title": "New Delhi",
+                  "tone": "on"
+                }
+              ],
+              "key": [
+                {
+                  "label": "On-site in New Delhi, after online preparation",
+                  "tone": "on"
+                }
+              ]
+            }
+          ]
+        },
+        "blocks": [
+          {
+            "type": "notice",
+            "anchor": "qualification",
+            "title": "What this course qualifies you for",
+            "paragraphs": [
+              "This course gives you an IFOA Certificate of Completion. It shows an operator you have completed structured training built on ICAO Doc 10106, the international standard for flight operations officer and dispatcher training.",
+              "Each operator decides who is qualified to dispatch its flights, and your employer will still train you on its own procedures before you dispatch.",
+              "If you need a government-issued dispatcher license, see our [FAA Aircraft Dispatcher course](/courses/aircraft-dispatcher-training-faa-part-65)."
+            ]
+          },
+          {
+            "type": "accordion",
+            "anchor": "modules",
+            "title": "The program",
+            "intro": "Five phases over four weeks, from the rules that govern the operation to the decisions you make on shift. Select a phase to see what it covers.",
+            "items": [
+              {
+                "title": "The Operating Environment",
+                "bullets": [
+                  "Air law and civil aviation regulations",
+                  "ICAO framework",
+                  "Air traffic management",
+                  "Aeronautical communications"
+                ]
+              },
+              {
+                "title": "Know the Aircraft",
+                "bullets": [
+                  "Aircraft systems for dispatchers",
+                  "Mass and balance",
+                  "Aircraft performance",
+                  "MEL and CDL"
+                ]
+              },
+              {
+                "title": "Plan the Flight",
+                "bullets": [
+                  "Aviation meteorology",
+                  "Navigation and route planning",
+                  "Fuel planning and alternates",
+                  "NOTAMs and flight plan filing"
+                ]
+              },
+              {
+                "title": "Control the Operation",
+                "bullets": [
+                  "Flight following and monitoring",
+                  "Operational control",
+                  "Communicating with crew and stakeholders",
+                  "Managing disruptions"
+                ]
+              },
+              {
+                "title": "Make the Decision",
+                "bullets": [
+                  "Decision-making under uncertainty",
+                  "Threat and error management",
+                  "Human factors in dispatch",
+                  "Scenario exercises"
+                ]
+              }
+            ]
+          },
+          {
+            "type": "cols",
+            "anchor": "assessment",
+            "columns": [
+              [
+                {
+                  "type": "checks",
+                  "title": "What you'll be able to do",
+                  "items": [
+                    "Plan and prepare a flight",
+                    "Apply weather, fuel, routing and alternate requirements",
+                    "Assess operational risks and constraints",
+                    "Monitor flights and anticipate disruptions",
+                    "Make operational decisions as conditions change",
+                    "Apply ICAO and operator procedures"
+                  ]
+                }
+              ],
+              [
+                {
+                  "type": "facts",
+                  "title": "How you're assessed",
+                  "items": [
+                    {
+                      "title": "Practical and multiple-choice exam",
+                      "text": "A pass mark of 80% is required."
+                    },
+                    {
+                      "title": "IFOA Certificate of Completion",
+                      "text": "Issued when you pass. It does not expire."
+                    }
+                  ],
+                  "standards": [
+                    {
+                      "title": "ICAO Doc 10106",
+                      "text": "Competency-based training for flight operations officers and dispatchers"
+                    },
+                    {
+                      "title": "ICAO Annex 1 and Annex 6",
+                      "text": "Flight operations officer requirements"
+                    }
+                  ]
+                }
+              ]
+            ]
+          },
+          {
+            "type": "table",
+            "anchor": "compare",
+            "title": "EASA or FAA: which course?",
+            "intro": "Both teach you to dispatch. They lead to different documents.",
+            "highlight": 1,
+            "head": [
+              "",
+              "Flight Dispatcher Initial (this course)",
+              "FAA Aircraft Dispatcher"
+            ],
+            "rows": [
+              [
+                "You receive",
+                "IFOA Certificate of Completion",
+                "Eligibility for the FAA Aircraft Dispatcher certificate, after passing the FAA knowledge and practical tests"
+              ],
+              [
+                "Issued by",
+                "IFOA",
+                "The FAA, a government authority"
+              ],
+              [
+                "Regulatory focus",
+                "ICAO",
+                "FAA, 14 CFR Part 65"
+              ],
+              [
+                "Duration",
+                "4 weeks",
+                "200 hours, 5 weeks plus exam week"
+              ],
+              [
+                "Location",
+                "Online preparation, then New Delhi, India",
+                "Online preparation, then Sønderborg, Daytona Beach or New Delhi"
+              ],
+              [
+                "Fee",
+                "€1,000 + GST",
+                "$4,500 USD, plus FAA test and examiner fees"
+              ]
+            ],
+            "links": [
+              {
+                "label": "See the FAA course",
+                "href": "/courses/aircraft-dispatcher-training-faa-part-65?location=india"
+              },
+              {
+                "label": "Not sure? Ask us",
+                "href": "/contact"
+              }
+            ]
+          },
+          {
+            "type": "cols",
+            "columns": [
+              [
+                {
+                  "type": "pills",
+                  "title": "Who it's for",
+                  "intro": "No previous dispatch experience needed.",
+                  "items": [
+                    "People starting a career in flight dispatch",
+                    "Airline and OCC staff moving into dispatch",
+                    "Aviation professionals who want formal dispatch training"
+                  ]
+                }
+              ],
+              [
+                {
+                  "type": "checks",
+                  "title": "Entry requirements",
+                  "items": [
+                    "English good enough to follow professional aviation training",
+                    "No previous dispatch experience required"
+                  ]
+                }
+              ]
+            ]
+          }
+        ]
+      },
+      "pageContent": {
+        "courseDetail": {
+          "labels": {
+            "sidebarEnrollLabel": "Apply online",
+            "applyOnlineLabel": "Apply online"
+          }
+        }
+      }
+    },
+    {
+      "title": "Flight Dispatcher Initial (USA)",
+      "slug": "flight-dispatcher-initial-training-usa",
+      "refCode": "FD-INITIAL-US",
+      "branch": "IFOA",
+      "category": "dispatch",
+      "status": "published",
+      "featured": false,
+      "order": 12,
+      "summary": "Five weeks to learn how to plan, release and follow a flight, and make the calls when it doesn't go to plan. Built on ICAO Doc 10106 and taught by working dispatchers.",
+      "heroImage": null,
+      "trustStat": "",
+      "heroNote": "There is no EASA flight dispatcher license. In Europe, each operator decides who is qualified to dispatch its flights. This course gives you an IFOA Certificate of Completion, built on ICAO Doc 10106. If you need a government-issued dispatcher license, see our FAA Aircraft Dispatcher course.",
+      "isCorporate": false,
+      "eyebrow": "",
+      "badges": [],
+      "ctaLabel": "",
+      "rateCard": {
+        "eyebrow": "",
+        "value": "",
+        "note": "",
+        "secondaryCtaLabel": "",
+        "trustBadge": ""
+      },
+      "authority": "EASA / FAA Part 65 Standards",
+      "format": "Hybrid: 2 Weeks Online, 3 Weeks Onsite Daytona Beach (Florida)",
+      "careerPath": "Commercial Airline Dispatcher, Cargo Flight Follower, Corporate OCC Specialist",
+      "intakeLabel": "Intake: contact us",
+      "card": {
+        "image": null,
+        "badge": "",
+        "rating": null,
+        "reviewsLabel": "",
+        "durationLabel": "",
+        "blurb": ""
+      },
+      "schedule": {
+        "mode": "Hybrid",
+        "startDate": null,
+        "endDate": null,
+        "timeText": "2 Weeks Online, 3 Weeks On-site Daytona Beach (Florida)",
+        "timezone": ""
+      },
+      "locationPrices": [],
+      "duration": "5 Weeks",
+      "location": "Daytona Beach, Florida",
+      "price": {
+        "amount": 3500,
+        "currency": "EUR",
+        "note": "Includes training materials, examination and certificate. Travel, accommodation, meals and visa are not included."
+      },
+      "whatYouWillLearn": {
+        "intro": "What you'll be able to do:",
+        "points": [
+          "Plan and prepare a flight",
+          "Apply weather, fuel, routing and alternate requirements",
+          "Assess operational risks and constraints",
+          "Monitor flights and anticipate disruptions",
+          "Make operational decisions as conditions change",
+          "Apply ICAO, EASA and operator procedures"
+        ],
+        "eyebrow": "",
+        "title": ""
+      },
+      "processSteps": [
+        "Week 1: Online",
+        "Week 2: Online",
+        "Week 3: Daytona Beach",
+        "Week 4: Daytona Beach",
+        "Week 5: Daytona Beach"
+      ],
+      "delivery": {
+        "intro": "2 weeks online, from home, then 3 weeks on-site in Daytona Beach, Florida. The online weeks are live and self-paced study, so the on-site weeks can focus on practical work with instructors.",
+        "items": [
+          {
+            "label": "School",
+            "title": "IFOA",
+            "description": "Taught by working dispatchers",
+            "image": null
+          },
+          {
+            "label": "Format",
+            "title": "2 weeks online, 3 weeks on-site",
+            "description": "Daytona Beach, Florida",
+            "image": null
+          }
+        ]
+      },
+      "trainingStandards": {
+        "intro": "Built on ICAO Doc 10106, the international standard for flight operations officer and dispatcher training, with EASA Air Operations taught as course content.",
+        "logos": [],
+        "cards": [
+          {
+            "code": "ICAO Doc 10106",
+            "title": "Competency-based training for flight operations officers and dispatchers"
+          },
+          {
+            "code": "ICAO Annex 1 and Annex 6",
+            "title": "Flight operations officer requirements"
+          },
+          {
+            "code": "EASA Air Ops",
+            "title": "Regulation (EU) 965/2012, taught as course content"
+          }
+        ],
+        "eyebrow": "",
+        "title": ""
+      },
+      "curriculum": {
+        "eyebrow": "The Program",
+        "title": "Five phases",
+        "subtitle": "From the rules that govern the operation to the decisions you make on shift.",
+        "phases": [
+          {
+            "num": "01",
+            "label": "PHASE 01",
+            "title": "The Operating Environment",
+            "focus": "",
+            "description": "",
+            "topics": [
+              "Air law and civil aviation regulations",
+              "ICAO and EASA framework",
+              "Air traffic management",
+              "Aeronautical communications"
+            ],
+            "adaptive": ""
+          },
+          {
+            "num": "02",
+            "label": "PHASE 02",
+            "title": "Know the Aircraft",
+            "focus": "",
+            "description": "",
+            "topics": [
+              "Aircraft systems for dispatchers",
+              "Mass and balance",
+              "Aircraft performance",
+              "MEL and CDL"
+            ],
+            "adaptive": ""
+          },
+          {
+            "num": "03",
+            "label": "PHASE 03",
+            "title": "Plan the Flight",
+            "focus": "",
+            "description": "",
+            "topics": [
+              "Aviation meteorology",
+              "Navigation and route planning",
+              "Fuel planning and alternates",
+              "NOTAMs and flight plan filing"
+            ],
+            "adaptive": ""
+          },
+          {
+            "num": "04",
+            "label": "PHASE 04",
+            "title": "Control the Operation",
+            "focus": "",
+            "description": "",
+            "topics": [
+              "Flight following and monitoring",
+              "Operational control",
+              "Communicating with crew and stakeholders",
+              "Managing disruptions"
+            ],
+            "adaptive": ""
+          },
+          {
+            "num": "05",
+            "label": "PHASE 05",
+            "title": "Make the Decision",
+            "focus": "",
+            "description": "",
+            "topics": [
+              "Decision-making under uncertainty",
+              "Threat and error management",
+              "Human factors in dispatch",
+              "Scenario exercises"
+            ],
+            "adaptive": ""
+          }
+        ],
+        "layout": "carousel"
+      },
+      "dgrExplorer": {
+        "roles": [],
+        "segments": []
+      },
+      "whoShouldAttend": {
+        "intro": "No previous dispatch experience needed.",
+        "points": [
+          "Aspiring Flight Dispatchers: people starting a career in flight dispatch.",
+          "OCC & Operations Personnel: airline and OCC staff moving into dispatch.",
+          "Aviation Professionals: aviation professionals who want formal dispatch training."
+        ],
+        "outro": "Your employer will still train you on its own procedures before you dispatch.",
+        "eyebrow": "",
+        "title": ""
+      },
+      "entryRequirements": {
+        "intro": "Entry requirements:",
+        "points": [
+          "English good enough to follow professional aviation training",
+          "No previous dispatch experience required"
+        ]
+      },
+      "courseContent": {
+        "intro": "The curriculum covers the full prerequisite learning objectives for international flight dispatch:",
+        "modules": [
+          "Civil Aviation Air Law & Airspace Regulations (ICAO / EASA / FAA)",
+          "Advanced Aeronautical Meteorology & Severe Weather Mitigation",
+          "Aircraft Navigation, Jeppesen / Lido Route Optimization & NOTAMs",
+          "Aircraft Systems, Powerplants, MEL / CDL & Performance Limitations",
+          "Mass & Balance Calculation, Fuel Policies & ETOPS / EDTO Requirements",
+          "Real-Time OCC Simulator Practicum: High-Stress In-Flight Emergency Scenarios"
+        ],
+        "note": "Curriculum draws on both FAA Part 65 and ICAO Doc 10106 and EASA flight dispatch training content."
+      },
+      "certification": {
+        "text": "You receive an IFOA Certificate of Completion when you pass. It does not expire. It shows an operator you have completed structured training built on ICAO Doc 10106.",
+        "points": [
+          "Practical and multiple-choice exam",
+          "Pass mark of 80%"
+        ]
+      },
+      "additionalCosts": {
+        "intro": "",
+        "note": "",
+        "items": []
+      },
+      "trainingPhilosophy": {
+        "eyebrow": "",
+        "title": "",
+        "intro": "",
+        "cards": []
+      },
+      "sidebarSpecs": [
+        {
+          "label": "Intake",
+          "value": "Contact us for dates"
+        },
+        {
+          "label": "Duration",
+          "value": "200 hours, 5 weeks"
+        },
+        {
+          "label": "Format",
+          "value": "2 weeks online, 3 weeks on-site"
+        },
+        {
+          "label": "Location",
+          "value": "Daytona Beach, Florida"
+        },
+        {
+          "label": "Assessment",
+          "value": "Practical + multiple-choice"
+        },
+        {
+          "label": "Certificate",
+          "value": "IFOA Certificate of Completion"
+        }
+      ],
+      "bottomBanner": {
+        "eyebrow": "",
+        "title": "",
+        "desc": "",
+        "ctaLabel": ""
+      },
+      "registrationOpen": true,
+      "seats": null,
+      "intakes": [],
+      "seo": {
+        "metaTitle": "Flight Dispatcher Initial, USA: 200 Hours, 5 Weeks, Florida | IFOA",
+        "metaDescription": "A 5-week flight dispatcher course built on ICAO Doc 10106: 2 weeks online, 3 weeks on-site in Daytona Beach, Florida. €3,500."
+      },
+      "overview": {
+        "sidebarNote": "Payment, cancellation and refunds: see our Terms and Conditions.",
+        "hero": {
+          "title": "Flight Dispatcher Initial, USA",
+          "lead": "Five weeks to learn how to plan, release and follow a flight, and make the calls when it doesn't go to plan. Built on ICAO Doc 10106 and taught by working dispatchers.",
+          "blocks": [
+            {
+              "type": "track",
+              "items": [
+                {
+                  "label": "Week 1",
+                  "title": "Online"
+                },
+                {
+                  "label": "Week 2",
+                  "title": "Online"
+                },
+                {
+                  "label": "Week 3",
+                  "title": "Daytona Beach",
+                  "tone": "on"
+                },
+                {
+                  "label": "Week 4",
+                  "title": "Daytona Beach",
+                  "tone": "on"
+                },
+                {
+                  "label": "Week 5",
+                  "title": "Daytona Beach",
+                  "tone": "on"
+                }
+              ],
+              "key": [
+                {
+                  "label": "Online, from home"
+                },
+                {
+                  "label": "On-site in Daytona Beach, Florida",
+                  "tone": "on"
+                }
+              ]
+            }
+          ]
+        },
+        "blocks": [
+          {
+            "type": "notice",
+            "anchor": "qualification",
+            "title": "What this course qualifies you for",
+            "paragraphs": [
+              "There is no EASA flight dispatcher license. In Europe, each operator decides who is qualified to dispatch its flights, and sets its own training and experience requirements.",
+              "This course gives you an IFOA Certificate of Completion. It shows an operator you have completed structured training built on ICAO Doc 10106, the international standard for flight operations officer and dispatcher training. Your employer will still train you on its own procedures before you dispatch.",
+              "If you need a government-issued dispatcher license, see our [FAA Aircraft Dispatcher course](/courses/aircraft-dispatcher-training-faa-part-65)."
+            ]
+          },
+          {
+            "type": "accordion",
+            "anchor": "modules",
+            "title": "The program",
+            "intro": "Five phases, from the rules that govern the operation to the decisions you make on shift. Select a phase to see what it covers.",
+            "items": [
+              {
+                "title": "The Operating Environment",
+                "bullets": [
+                  "Air law and civil aviation regulations",
+                  "ICAO and EASA framework",
+                  "Air traffic management",
+                  "Aeronautical communications"
+                ]
+              },
+              {
+                "title": "Know the Aircraft",
+                "bullets": [
+                  "Aircraft systems for dispatchers",
+                  "Mass and balance",
+                  "Aircraft performance",
+                  "MEL and CDL"
+                ]
+              },
+              {
+                "title": "Plan the Flight",
+                "bullets": [
+                  "Aviation meteorology",
+                  "Navigation and route planning",
+                  "Fuel planning and alternates",
+                  "NOTAMs and flight plan filing"
+                ]
+              },
+              {
+                "title": "Control the Operation",
+                "bullets": [
+                  "Flight following and monitoring",
+                  "Operational control",
+                  "Communicating with crew and stakeholders",
+                  "Managing disruptions"
+                ]
+              },
+              {
+                "title": "Make the Decision",
+                "bullets": [
+                  "Decision-making under uncertainty",
+                  "Threat and error management",
+                  "Human factors in dispatch",
+                  "Scenario exercises"
+                ]
+              }
+            ]
+          },
+          {
+            "type": "cols",
+            "anchor": "assessment",
+            "columns": [
+              [
+                {
+                  "type": "checks",
+                  "title": "What you'll be able to do",
+                  "items": [
+                    "Plan and prepare a flight",
+                    "Apply weather, fuel, routing and alternate requirements",
+                    "Assess operational risks and constraints",
+                    "Monitor flights and anticipate disruptions",
+                    "Make operational decisions as conditions change",
+                    "Apply ICAO, EASA and operator procedures"
+                  ]
+                }
+              ],
+              [
+                {
+                  "type": "facts",
+                  "title": "How you're assessed",
+                  "items": [
+                    {
+                      "title": "Practical and multiple-choice exam",
+                      "text": "A pass mark of 80% is required."
+                    },
+                    {
+                      "title": "IFOA Certificate of Completion",
+                      "text": "Issued when you pass. It does not expire."
+                    }
+                  ],
+                  "standards": [
+                    {
+                      "title": "ICAO Doc 10106",
+                      "text": "Competency-based training for flight operations officers and dispatchers"
+                    },
+                    {
+                      "title": "ICAO Annex 1 and Annex 6",
+                      "text": "Flight operations officer requirements"
+                    },
+                    {
+                      "title": "EASA Air Ops",
+                      "text": "Regulation (EU) 965/2012, including ORO.GEN.110, taught as course content"
+                    }
+                  ]
+                }
+              ]
+            ]
+          },
+          {
+            "type": "table",
+            "anchor": "compare",
+            "title": "EASA or FAA: which course?",
+            "intro": "Both teach you to dispatch. They lead to different documents.",
+            "highlight": 1,
+            "head": [
+              "",
+              "Flight Dispatcher Initial (this course)",
+              "FAA Aircraft Dispatcher"
+            ],
+            "rows": [
+              [
+                "You receive",
+                "IFOA Certificate of Completion",
+                "Eligibility for the FAA Aircraft Dispatcher certificate, after passing the FAA knowledge and practical tests"
+              ],
+              [
+                "Issued by",
+                "IFOA",
+                "The FAA, a government authority"
+              ],
+              [
+                "Regulatory focus",
+                "ICAO and EASA",
+                "FAA, 14 CFR Part 65"
+              ],
+              [
+                "Duration",
+                "200 hours, 5 weeks",
+                "200 hours, 6 weeks"
+              ],
+              [
+                "Location",
+                "2 weeks online, 3 weeks in Florida",
+                "Sønderborg, Denmark · Daytona Beach, USA · New Delhi, India, with online preparation"
+              ],
+              [
+                "Fee",
+                "€3,500",
+                "$4,500 USD, plus FAA test and examiner fees"
+              ]
+            ],
+            "links": [
+              {
+                "label": "See the FAA course",
+                "href": "/courses/aircraft-dispatcher-training-faa-part-65"
+              },
+              {
+                "label": "Not sure? Ask us",
+                "href": "/contact"
+              }
+            ]
+          },
+          {
+            "type": "cols",
+            "columns": [
+              [
+                {
+                  "type": "pills",
+                  "title": "Who it's for",
+                  "intro": "No previous dispatch experience needed.",
+                  "items": [
+                    "People starting a career in flight dispatch",
+                    "Airline and OCC staff moving into dispatch",
+                    "Aviation professionals who want formal dispatch training"
+                  ]
+                }
+              ],
+              [
+                {
+                  "type": "checks",
+                  "title": "Entry requirements",
+                  "items": [
+                    "English good enough to follow professional aviation training",
+                    "No previous dispatch experience required"
+                  ]
+                }
+              ]
+            ]
+          }
+        ]
+      },
+      "pageContent": {
+        "courseDetail": {
+          "labels": {
+            "sidebarEnrollLabel": "Apply online",
+            "applyOnlineLabel": "Apply online"
+          }
+        }
+      }
+    },
+    {
+      "title": "FAA Aircraft Dispatcher",
       "slug": "aircraft-dispatcher-training-faa-part-65",
       "refCode": "AD-FAA65",
       "branch": "IFOA",
@@ -1217,7 +2298,7 @@
       "order": 15,
       "summary": "A 200-hour FAA Part 65 approved course. It covers every knowledge area the FAA requires and prepares you to earn the FAA Aircraft Dispatcher certificate.",
       "heroImage": null,
-      "trustStat": "500+ dispatchers trained across 70+ operators",
+      "trustStat": "500+ professionals trained a year, across 70+ operators",
       "heroNote": "We train dispatchers, not test takers. The 200 hours cover the FAA knowledge areas. ADX preparation is extra and done alongside, in your own time. The certificate itself is issued by the FAA.",
       "isCorporate": false,
       "eyebrow": "",
@@ -1231,7 +2312,7 @@
         "value": ""
       },
       "authority": "FAA Part 65 Standards",
-      "format": "Online preparation, then on-site (Daytona Beach, FL)",
+      "format": "Online preparation, then on-site in Denmark, the USA or India",
       "careerPath": "Commercial Airline Dispatcher, Cargo Flight Follower, Corporate OCC Specialist",
       "intakeLabel": "Rolling Admissions",
       "card": {
@@ -1244,13 +2325,13 @@
       },
       "schedule": {
         "mode": "Hybrid",
-        "timeText": "Online preparation, then on-site, Daytona Beach (FL)",
+        "timeText": "Online preparation, then on-site in Sønderborg, Daytona Beach or New Delhi",
         "startDate": null,
         "endDate": null,
         "timezone": ""
       },
       "duration": "200 Hours",
-      "location": "Daytona Beach, FL",
+      "location": "Sønderborg, Denmark · Daytona Beach, USA · New Delhi, India",
       "price": {
         "amount": 4500,
         "currency": "USD",
@@ -1358,7 +2439,7 @@
         "note": "We train Aircraft Dispatchers, not test takers: the ADX knowledge test is one step in the certification process."
       },
       "certification": {
-        "text": "IFOA graduation certificate: issued when you complete the approved course, and presented at your practical test. It is not the FAA certificate. ADX knowledge test: FAA multiple-choice test at an approved testing centre; your result stays valid for 24 months. Practical test: with an FAA examiner. Pass it and the FAA issues your Aircraft Dispatcher certificate.",
+        "text": "IFOA Certificate of Completion: issued when you complete the approved course, and presented at your practical test. It is not the FAA certificate. ADX knowledge test: FAA multiple-choice test at an approved testing center; your result stays valid for 24 months. Practical test: with an FAA examiner. Pass it and the FAA issues your Aircraft Dispatcher certificate.",
         "points": [
           "ADX Knowledge Test",
           "Practical Test with FAA Examiner"
@@ -1369,19 +2450,19 @@
         "items": [
           {
             "label": "Tuition",
-            "amount": "$4,500"
+            "amount": "$4,500 USD"
           },
           {
             "label": "ADX knowledge test",
-            "amount": "$175"
+            "amount": "$175 USD"
           },
           {
             "label": "Practical test, paid to the examiner",
-            "amount": "$600"
+            "amount": "$600 USD"
           },
           {
             "label": "Total to FAA certificate",
-            "amount": "$5,275"
+            "amount": "$5,275 USD"
           }
         ],
         "note": ""
@@ -1414,8 +2495,8 @@
       "registrationOpen": true,
       "seats": null,
       "seo": {
-        "metaTitle": "FAA Aircraft Dispatcher Course: Part 65 Approved, 200 Hours | IFOA",
-        "metaDescription": "FAA Part 65 approved 200-hour Aircraft Dispatcher course in Florida. Covers all eight Appendix A knowledge areas and prepares you for the ADX and practical test. $4,500."
+        "metaTitle": "FAA Aircraft Dispatcher: Part 65 Approved, 200 Hours, 6 Weeks | IFOA",
+        "metaDescription": "FAA Part 65 approved 200-hour Aircraft Dispatcher course in Denmark, the USA and India. Covers all eight Appendix A knowledge areas and prepares you for the ADX and practical test. $4,500 USD."
       },
       "pageContent": {
         "courseDetail": {
@@ -1423,13 +2504,13 @@
             "eyebrowSecondary": "Aircraft Dispatcher Training",
             "applyOnlineLabel": "Apply online",
             "admissionsTitle": "Ready to start your dispatcher certification?",
-            "admissionsDesc": "200 hours · FAA Part 65 approved · $4,500",
+            "admissionsDesc": "200 hours · FAA Part 65 approved · $4,500 USD",
             "admissionsApplyLabel": "Apply Online",
             "sidebarEnrollLabel": "Apply online"
           },
           "curriculum": {
             "eyebrow": "Curriculum Framework",
-            "title": "What the Aircraft Dispatcher Programme Covers",
+            "title": "What the Aircraft Dispatcher Program Covers",
             "subtitle": "All eight knowledge areas required by Appendix A to 14 CFR Part 65, in the same order. Select an area to see what it covers.",
             "phases": [
               {
@@ -1524,15 +2605,19 @@
         },
         {
           "label": "Duration",
-          "value": "200 hours, plus ADX self-study"
+          "value": "200 h, 6 weeks + ADX self-study"
+        },
+        {
+          "label": "Exam week",
+          "value": "1 week, within the 6 weeks"
         },
         {
           "label": "Format",
-          "value": "Online preparation, then on-site"
+          "value": "Online prep, then on-site"
         },
         {
           "label": "Location",
-          "value": "Daytona Beach, Florida"
+          "value": "Denmark · USA · India"
         },
         {
           "label": "Start",
@@ -1543,13 +2628,49 @@
         {
           "label": "Rolling admissions: start when you're ready",
           "startDate": null,
-          "isActive": true
+          "isActive": true,
+          "locations": [
+            "Denmark",
+            "United States"
+          ]
+        },
+        {
+          "label": "Batch 1: 8 Feb - 12 Mar 2027",
+          "startDate": "2027-02-08T00:00:00.000Z",
+          "isActive": true,
+          "locations": [
+            "India"
+          ]
+        },
+        {
+          "label": "Batch 2: 3 May - 4 Jun 2027",
+          "startDate": "2027-05-03T00:00:00.000Z",
+          "isActive": true,
+          "locations": [
+            "India"
+          ]
+        },
+        {
+          "label": "Batch 3: 30 Aug - 1 Oct 2027",
+          "startDate": "2027-08-30T00:00:00.000Z",
+          "isActive": true,
+          "locations": [
+            "India"
+          ]
+        },
+        {
+          "label": "Batch 4: 15 Nov - 17 Dec 2027",
+          "startDate": "2027-11-15T00:00:00.000Z",
+          "isActive": true,
+          "locations": [
+            "India"
+          ]
         }
       ],
       "overview": {
         "sidebarNote": "Payment, cancellation and refunds: see our Terms and Conditions.",
         "hero": {
-          "title": "FAA Aircraft Dispatcher Course",
+          "title": "FAA Aircraft Dispatcher",
           "slogan": "We train dispatchers, not test takers.",
           "lead": "A 200-hour FAA Part 65 approved course. It covers every knowledge area the FAA requires and prepares you to earn the FAA Aircraft Dispatcher certificate.",
           "blocks": [
@@ -1559,7 +2680,7 @@
                 {
                   "label": "Step 1",
                   "title": "Complete the 200-hour course",
-                  "sub": "IFOA graduation certificate"
+                  "sub": "IFOA Certificate of Completion"
                 },
                 {
                   "label": "Step 2",
@@ -1578,7 +2699,7 @@
                   "tone": "on"
                 }
               ],
-              "note": "The 200 hours cover the FAA knowledge areas. ADX preparation is extra and done alongside, in your own time. The certificate itself is issued by the FAA."
+              "note": "The 200 hours cover the FAA knowledge areas. The 6 weeks include one week for the FAA exams (in India: 5 weeks, with the exam week taken within 6 months). ADX preparation is extra and done alongside, in your own time. The certificate itself is issued by the FAA."
             }
           ]
         },
@@ -1586,7 +2707,7 @@
           {
             "type": "accordion",
             "anchor": "modules",
-            "title": "The programme",
+            "title": "The program",
             "intro": "All eight knowledge areas required by Appendix A to 14 CFR Part 65, in the same order. Select an area to see what it covers.",
             "columns": 2,
             "groups": [
@@ -1716,12 +2837,12 @@
                   "title": "How you qualify",
                   "items": [
                     {
-                      "title": "IFOA graduation certificate",
+                      "title": "IFOA Certificate of Completion",
                       "text": "Issued when you complete the approved course. You present it at your practical test."
                     },
                     {
                       "title": "ADX knowledge test",
-                      "text": "FAA multiple-choice test, taken at an approved testing centre. Preparation is not part of the 200 hours."
+                      "text": "FAA multiple-choice test, taken at an approved testing center. Preparation is not part of the 200 hours."
                     },
                     {
                       "title": "Practical test",
@@ -1761,7 +2882,7 @@
               [
                 "You receive",
                 "Eligibility for the FAA Aircraft Dispatcher certificate, after passing the FAA knowledge and practical tests",
-                "IFOA Flight Dispatch Completion Certificate"
+                "IFOA Certificate of Completion"
               ],
               [
                 "Issued by",
@@ -1775,23 +2896,23 @@
               ],
               [
                 "Duration",
-                "200 hours",
-                "5 weeks"
+                "200 hours, 6 weeks",
+                "200 hours, 5 weeks"
               ],
               [
                 "Location",
-                "Florida, USA, with online preparation",
+                "Sønderborg, Denmark · Daytona Beach, USA · New Delhi, India, with online preparation",
                 "2 weeks online, 3 weeks in Denmark"
               ],
               [
                 "Fee",
-                "$4,500, plus FAA test and examiner fees",
+                "$4,500 USD, plus FAA test and examiner fees",
                 "€3,500"
               ]
             ],
             "links": [
               {
-                "label": "See the EASA-focused course",
+                "label": "See Flight Dispatcher Initial",
                 "href": "/courses/flight-dispatcher-initial-certification"
               },
               {
@@ -1830,7 +2951,8 @@
             ]
           }
         ]
-      }
+      },
+      "locationPrices": []
     },
     {
       "title": "Dangerous Goods Training",
@@ -1847,7 +2969,7 @@
         "key": "",
         "alt": "Dangerous Goods Regulations Training"
       },
-      "trustStat": "4.7/5 from 458 post-training surveys · 70+ operators trained",
+      "trustStat": "4.7/5 from 458 post-training surveys · IFOA has trained staff from 70+ operators",
       "heroNote": "Dangerous goods training for what your job actually involves. Choose your role and your operation below: the modules, outcomes and assessment change to match.",
       "isCorporate": true,
       "eyebrow": "By role and operation",
@@ -1896,7 +3018,7 @@
         "title": "What you'll be able to do",
         "intro": "Outcomes depend on your role and operation. Every course includes:",
         "points": [
-          "Recognise hidden DG in cargo, baggage, bookings and the cabin",
+          "Recognize hidden DG in cargo, baggage, bookings and the cabin",
           "Apply the rules for items passengers and crew may carry",
           "Handle a DG emergency, including a lithium battery or device fire",
           "Report DG incidents and undeclared DG",
@@ -2037,7 +3159,7 @@
             "code": "",
             "title": "Pilots",
             "scenarios": [
-              "Recognise hidden DG in cargo, baggage and the cabin",
+              "Recognize hidden DG in cargo, baggage and the cabin",
               "Apply the rules for items passengers and crew may carry",
               "Handle a DG emergency in flight, including a device fire",
               "Report DG incidents and undeclared DG",
@@ -2063,7 +3185,7 @@
             "code": "",
             "title": "Cabin Crew",
             "scenarios": [
-              "Recognise hidden DG and suspicious items at boarding and in flight",
+              "Recognize hidden DG and suspicious items at boarding and in flight",
               "Brief passengers on restricted items",
               "Handle a lithium battery or device fire in the cabin",
               "Report DG incidents and undeclared DG",
@@ -2076,7 +3198,7 @@
           {
             "id": "nocarry-ba",
             "title": "No-Carry Business Aviation",
-            "descriptor": "Recognising DG, refusing it and reporting it. No acceptance procedures you’ll never use.",
+            "descriptor": "Recognizing DG, refusing it and reporting it. No acceptance procedures you’ll never use.",
             "acceptance": "Spotting DG in cargo, mail and company material paperwork.",
             "loading": "What to refuse, how to refuse it, and how to back the decision."
           },
@@ -2119,7 +3241,7 @@
         "points": []
       },
       "courseContent": {
-        "intro": "For operators: one programme for pilots, dispatchers and cabin crew, adapted to your manuals and ready for audit.",
+        "intro": "For operators: one program for pilots, dispatchers and cabin crew, adapted to your manuals and ready for audit.",
         "modules": [
           "Content matched to your operations manual, DG policy and fleet",
           "One price per group, whatever the mix of roles",
@@ -2158,7 +3280,7 @@
       },
       "bottomBanner": {
         "eyebrow": "For Operators",
-        "title": "One DG programme for your whole operation",
+        "title": "One DG program for your whole operation",
         "desc": "Pilots, dispatchers and cabin crew · Adapted to your manuals · Ready for audit",
         "ctaLabel": "Request a proposal"
       },
@@ -2287,7 +3409,7 @@
             "outcomes": {
               "pilot": {
                 "all": [
-                  "Recognise hidden DG in cargo, baggage and the cabin",
+                  "Recognize hidden DG in cargo, baggage and the cabin",
                   "Apply the rules for items passengers and crew may carry",
                   "Handle a DG emergency in flight, including a device fire",
                   "Report DG incidents and undeclared DG"
@@ -2320,7 +3442,7 @@
               },
               "cabin": {
                 "all": [
-                  "Recognise hidden DG and suspicious items at boarding and in flight",
+                  "Recognize hidden DG and suspicious items at boarding and in flight",
                   "Brief passengers on restricted items",
                   "Handle a lithium battery or device fire in the cabin",
                   "Report DG incidents and undeclared DG"
@@ -2337,6 +3459,34 @@
               "cabin": "Cabin scenarios"
             },
             "duration": "4 hours",
+            "sidebar": {
+              "priceTitle": "Price per group",
+              "priceNote": "on request",
+              "rows": [
+                {
+                  "label": "Duration",
+                  "value": "4 hours"
+                },
+                {
+                  "label": "Format",
+                  "value": "Self-paced online"
+                },
+                {
+                  "label": "Assessment",
+                  "value": ""
+                },
+                {
+                  "label": "Certificate",
+                  "value": "Valid 24 months"
+                },
+                {
+                  "label": "Start",
+                  "value": "Scheduled with your group"
+                }
+              ],
+              "ctaLabel": "Request a proposal",
+              "secondaryLabel": "What operators get"
+            },
             "assess": {
               "pilot": "Scenarios: a DG found in flight, a NOTOC that doesn't match the load, and a decision to accept or refuse.",
               "dispatcher": "Scenarios: DG in a booking or load document, preparing the information for the commander, and an emergency call.",
@@ -2378,7 +3528,7 @@
             "type": "band",
             "anchor": "operators",
             "title": "For operators",
-            "intro": "One programme for pilots, dispatchers and cabin crew, adapted to your manuals and ready for audit.",
+            "intro": "One program for pilots, dispatchers and cabin crew, adapted to your manuals and ready for audit.",
             "ctaLabel": "Request a proposal",
             "href": "/contact",
             "items": [
@@ -2438,7 +3588,8 @@
             ]
           }
         ]
-      }
+      },
+      "locationPrices": []
     },
     {
       "title": "Train the Trainer",
@@ -2469,7 +3620,7 @@
         "secondaryCtaLabel": "Train your own instructors in-house",
         "trustBadge": ""
       },
-      "authority": "Instructor Development Programme",
+      "authority": "Instructor Development Program",
       "format": "Instructor-led",
       "careerPath": "Aviation Instructor, OCC Training Captain, Airline CBTA Assessor",
       "intakeLabel": "",
@@ -2500,7 +3651,7 @@
         "title": "What you'll be able to do",
         "intro": "",
         "points": [
-          "Build a learner-centred strategy using adult learning principles",
+          "Build a learner-centered strategy using adult learning principles",
           "Adapt your delivery to multinational and multicultural groups",
           "Prepare the training room, equipment and materials before a session",
           "Design a course with clear objectives, and evaluate it",
@@ -2539,7 +3690,7 @@
         "logos": [],
         "cards": [
           {
-            "code": "Practised before assessed",
+            "code": "Practiced before assessed",
             "title": "The 5-minute session on Day 2 is a practice run with feedback, so the final session is never your first attempt."
           },
           {
@@ -2549,7 +3700,7 @@
         ]
       },
       "curriculum": {
-        "eyebrow": "The Programme",
+        "eyebrow": "The Program",
         "title": "Ten modules over four days",
         "subtitle": "Select a module to see what it covers. Both teaching practices get structured feedback; the 20-minute session is your final assessment.",
         "layout": "accordion",
@@ -2576,7 +3727,7 @@
             "topics": [
               "Key differences between adult and child learning",
               "Knowles' six principles of adult learning",
-              "Building a learner-centred strategy"
+              "Building a learner-centered strategy"
             ],
             "adaptive": ""
           },
@@ -2667,7 +3818,7 @@
             "description": "",
             "topics": [
               "Structured feedback models",
-              "Giving feedback that changes behaviour",
+              "Giving feedback that changes behavior",
               "Receiving feedback",
               "Preparation: 1 to 2 hours to prepare your final 20-minute presentation."
             ],
@@ -2799,7 +3950,7 @@
           {
             "type": "accordion",
             "anchor": "modules",
-            "title": "The programme",
+            "title": "The program",
             "intro": "Ten modules over four days. Select a module to see what it covers.",
             "layout": "vertical",
             "groups": [
@@ -2822,7 +3973,7 @@
                     "bullets": [
                       "Key differences between adult and child learning",
                       "Knowles' six principles of adult learning",
-                      "Building a learner-centred strategy"
+                      "Building a learner-centered strategy"
                     ]
                   },
                   {
@@ -2900,7 +4051,7 @@
                     "title": "Feedback",
                     "bullets": [
                       "Structured feedback models",
-                      "Giving feedback that changes behaviour",
+                      "Giving feedback that changes behavior",
                       "Receiving feedback"
                     ]
                   }
@@ -2936,7 +4087,7 @@
                   "type": "checks",
                   "title": "What you'll be able to do",
                   "items": [
-                    "Build a learner-centred strategy using adult learning principles",
+                    "Build a learner-centered strategy using adult learning principles",
                     "Adapt your delivery to multinational and multicultural groups",
                     "Prepare the training room, equipment and materials before a session",
                     "Design a course with clear objectives, and evaluate it",
@@ -2953,7 +4104,7 @@
                   "text": "On Day 4 you deliver a 20-minute training session on a topic from your own field. The instructor assesses your preparation, structure, delivery and how you engage the group, then debriefs you.",
                   "items": [
                     {
-                      "title": "Practised before assessed",
+                      "title": "Practiced before assessed",
                       "text": "The 5-minute session on Day 2 is a practice run with feedback, so the final session is never your first attempt."
                     },
                     {
@@ -2993,7 +4144,8 @@
             ]
           }
         ]
-      }
+      },
+      "locationPrices": []
     },
     {
       "title": "Crew Control Training",
@@ -3004,7 +4156,7 @@
       "status": "published",
       "featured": false,
       "order": 45,
-      "summary": "Two days for the people who keep crews legal, rested and in position, from short-haul rotations to long-haul acclimatisation. Taught on EASA Part FTL, or built entirely around your own OM-A Chapter 7.",
+      "summary": "Two days for the people who keep crews legal, rested and in position, from short-haul rotations to long-haul acclimatization. Taught on EASA Part FTL, or built entirely around your own OM-A Chapter 7.",
       "heroImage": {
         "url": "/course-images/05_crew_control.webp",
         "key": "",
@@ -3026,7 +4178,7 @@
         "eyebrow": "Course summary",
         "value": "Price on request",
         "note": "",
-        "secondaryCtaLabel": "See the programme",
+        "secondaryCtaLabel": "See the program",
         "trustBadge": ""
       },
       "authority": "EASA FTL & Fatigue Risk Management",
@@ -3063,8 +4215,8 @@
           "Interpret EASA FTL requirements",
           "Assess crew legality against duty and rest history",
           "Apply the correct rules to air taxi operations",
-          "Recognise fatigue hazards and apply FRM principles to crewing decisions",
-          "Calculate FDP, duty and rest limitations accurately, including acclimatisation on long-haul rotations",
+          "Recognize fatigue hazards and apply FRM principles to crewing decisions",
+          "Calculate FDP, duty and rest limitations accurately, including acclimatization on long-haul rotations",
           "Restore a disrupted crewing plan legally and safely"
         ]
       },
@@ -3115,7 +4267,7 @@
           },
           {
             "code": "CS FTL.1",
-            "title": "Commercial air transport by aeroplane"
+            "title": "Commercial air transport by airplane"
           },
           {
             "code": "Air taxi",
@@ -3132,7 +4284,7 @@
         ]
       },
       "curriculum": {
-        "eyebrow": "The Programme",
+        "eyebrow": "The Program",
         "title": "Six modules over two days",
         "subtitle": "In the tailored version, every module and exercise follows your OM-A Chapter 7. Select a module to see what it covers.",
         "layout": "accordion",
@@ -3197,7 +4349,7 @@
             "description": "",
             "topics": [
               "Worked FDP, duty and rest calculations",
-              "Acclimatisation: determining a crew member's state across time zones",
+              "Acclimatization: determining a crew member's state across time zones",
               "Long-haul exercises, from reporting time to rest on return",
               "Extensions, unforeseen circumstances and disruption cases"
             ],
@@ -3265,7 +4417,7 @@
         "cards": [
           {
             "title": "FDP calculation exercises",
-            "desc": "Calculating maximum FDP, duty and rest for real rosters, including acclimatisation, long-haul rotations, extensions and disruptions."
+            "desc": "Calculating maximum FDP, duty and rest for real rosters, including acclimatization, long-haul rotations, extensions and disruptions."
           },
           {
             "title": "Operational scenarios",
@@ -3284,7 +4436,7 @@
         },
         {
           "label": "Basis",
-          "value": "EASA Part FTL or your OM-A Chapter 7"
+          "value": "EASA FTL or your OM-A Chapter 7"
         },
         {
           "label": "Format",
@@ -3300,11 +4452,11 @@
         },
         {
           "label": "Assessment",
-          "value": "FDP and long-haul exercises, scenarios, test"
+          "value": "FDP exercises, scenarios, test"
         },
         {
           "label": "Certificate",
-          "value": "IFOA Certificate"
+          "value": "IFOA Certificate of Completion"
         }
       ],
       "bottomBanner": {
@@ -3317,13 +4469,13 @@
       "seats": null,
       "seo": {
         "metaTitle": "Crew Control Training: FTL, Fatigue and Operations | IFOA",
-        "metaDescription": "A 2-day crew control course: EASA FTL, acclimatisation and long-haul exercises, crew legality, fatigue risk management and day-to-day crew control operations. Online or at your base."
+        "metaDescription": "A 2-day crew control course: EASA FTL, acclimatization and long-haul exercises, crew legality, fatigue risk management and day-to-day crew control operations. Online or at your base."
       },
       "intakes": [],
       "overview": {
         "hero": {
           "title": "Crew Control Training",
-          "lead": "Two days for the people who keep crews legal, rested and in position, from short-haul rotations to long-haul acclimatisation. Taught on EASA Part FTL, or built entirely around your own OM-A Chapter 7.",
+          "lead": "Two days for the people who keep crews legal, rested and in position, from short-haul rotations to long-haul acclimatization. Taught on EASA Part FTL, or built entirely around your own OM-A Chapter 7.",
           "blocks": [
             {
               "type": "track",
@@ -3371,7 +4523,7 @@
           {
             "type": "accordion",
             "anchor": "modules",
-            "title": "The programme",
+            "title": "The program",
             "intro": "Six modules over two days. In the tailored version, every module and exercise follows your OM-A Chapter 7. Select a module to see what it covers.",
             "layout": "vertical",
             "groups": [
@@ -3421,7 +4573,7 @@
                     "title": "FTL Application",
                     "bullets": [
                       "Worked FDP, duty and rest calculations",
-                      "Acclimatisation: determining a crew member's state across time zones",
+                      "Acclimatization: determining a crew member's state across time zones",
                       "Long-haul exercises, from reporting time to rest on return",
                       "Extensions, unforeseen circumstances and disruption cases"
                     ]
@@ -3450,8 +4602,8 @@
                     "Interpret EASA FTL requirements",
                     "Assess crew legality against duty and rest history",
                     "Apply the correct rules to air taxi operations",
-                    "Recognise fatigue hazards and apply FRM principles to crewing decisions",
-                    "Calculate FDP, duty and rest limitations accurately, including acclimatisation on long-haul rotations",
+                    "Recognize fatigue hazards and apply FRM principles to crewing decisions",
+                    "Calculate FDP, duty and rest limitations accurately, including acclimatization on long-haul rotations",
                     "Restore a disrupted crewing plan legally and safely"
                   ]
                 }
@@ -3463,7 +4615,7 @@
                   "items": [
                     {
                       "title": "FDP calculation exercises",
-                      "text": "Calculating maximum FDP, duty and rest for real rosters, including acclimatisation, long-haul rotations, extensions and disruptions."
+                      "text": "Calculating maximum FDP, duty and rest for real rosters, including acclimatization, long-haul rotations, extensions and disruptions."
                     },
                     {
                       "title": "Operational scenarios",
@@ -3481,7 +4633,7 @@
                     },
                     {
                       "title": "CS FTL.1",
-                      "text": "Commercial air transport by aeroplane"
+                      "text": "Commercial air transport by airplane"
                     },
                     {
                       "title": "Air taxi",
@@ -3527,7 +4679,8 @@
             ]
           }
         ]
-      }
+      },
+      "locationPrices": []
     },
     {
       "title": "Human Factors for the OCC",
@@ -3556,10 +4709,10 @@
         "eyebrow": "Course summary",
         "value": "Price on request",
         "note": "",
-        "secondaryCtaLabel": "See the programme",
+        "secondaryCtaLabel": "See the program",
         "trustBadge": ""
       },
-      "authority": "TEM-Based Human Factors Programme",
+      "authority": "TEM-Based Human Factors Program",
       "format": "Classroom / Blended",
       "careerPath": "Flight Dispatcher, Operations Controller, Crew Control / Scheduling, MCC",
       "intakeLabel": "Dates on request",
@@ -3590,10 +4743,10 @@
         "title": "What your team will be able to do",
         "intro": "",
         "points": [
-          "Recognise why soft skills, not just technical competency, define a strong OCC operator",
+          "Recognize why soft skills, not just technical competency, define a strong OCC operator",
           "Describe the human-performance pressures specific to a 24/7 OCC",
           "Read your own position on the stress-performance curve during IROPS",
-          "Distinguish acute tiredness from cumulative fatigue and recognise high-risk rosters",
+          "Distinguish acute tiredness from cumulative fatigue and recognize high-risk rosters",
           "Build individual and team resilience for disruption and recovery",
           "Apply structured decision-making under uncertainty",
           "Close communication gaps across dispatch, crew control, ground handling and management",
@@ -3644,7 +4797,7 @@
         ]
       },
       "curriculum": {
-        "eyebrow": "The Programme",
+        "eyebrow": "The Program",
         "title": "Eleven modules over two days",
         "subtitle": "Each module is mapped to an ICAO Doc 10106 competency. Select a module to see what it covers.",
         "layout": "accordion",
@@ -3654,7 +4807,7 @@
             "label": "DAY 1",
             "title": "Hard Skills vs. Soft Skills",
             "focus": "All non-technical competencies",
-            "description": "Why technical competency alone doesn't make a strong OCC operator, and why judgement, communication and self-management usually decide how a shift goes.",
+            "description": "Why technical competency alone doesn't make a strong OCC operator, and why judgment, communication and self-management usually decide how a shift goes.",
             "topics": [],
             "adaptive": ""
           },
@@ -3762,7 +4915,7 @@
           "Flight dispatchers",
           "Operations controllers",
           "Crew control and scheduling",
-          "Maintenance Control Centre (MCC)",
+          "Maintenance Control Center (MCC)",
           "OCC duty managers"
         ],
         "outro": ""
@@ -3815,7 +4968,7 @@
         },
         {
           "label": "Delivery",
-          "value": "At your OCC or an IFOA facility"
+          "value": "Your OCC or an IFOA facility"
         },
         {
           "label": "Modules",
@@ -3827,7 +4980,7 @@
         },
         {
           "label": "Certificate",
-          "value": "IFOA Certificate"
+          "value": "IFOA Certificate of Completion"
         }
       ],
       "bottomBanner": {
@@ -3862,7 +5015,7 @@
           {
             "type": "accordion",
             "anchor": "modules",
-            "title": "The programme",
+            "title": "The program",
             "intro": "Eleven modules over two days, each mapped to an ICAO Doc 10106 competency. Select a module to see what it covers.",
             "layout": "vertical",
             "groups": [
@@ -3871,7 +5024,7 @@
                 "items": [
                   {
                     "title": "Hard Skills vs. Soft Skills",
-                    "text": "Why technical competency alone doesn't make a strong OCC operator, and why judgement, communication and self-management usually decide how a shift goes.",
+                    "text": "Why technical competency alone doesn't make a strong OCC operator, and why judgment, communication and self-management usually decide how a shift goes.",
                     "competency": "All non-technical competencies"
                   },
                   {
@@ -3941,10 +5094,10 @@
                   "type": "checks",
                   "title": "What your team will be able to do",
                   "items": [
-                    "Recognise why soft skills, not just technical competency, define a strong OCC operator",
+                    "Recognize why soft skills, not just technical competency, define a strong OCC operator",
                     "Describe the human-performance pressures specific to a 24/7 OCC",
                     "Read your own position on the stress-performance curve during IROPS",
-                    "Distinguish acute tiredness from cumulative fatigue and recognise high-risk rosters",
+                    "Distinguish acute tiredness from cumulative fatigue and recognize high-risk rosters",
                     "Build individual and team resilience for disruption and recovery",
                     "Apply structured decision-making under uncertainty",
                     "Close communication gaps across dispatch, crew control, ground handling and management",
@@ -4005,7 +5158,7 @@
               "Flight dispatchers",
               "Operations controllers",
               "Crew control and scheduling",
-              "Maintenance Control Centre (MCC)",
+              "Maintenance Control Center (MCC)",
               "OCC duty managers"
             ]
           },
@@ -4028,7 +5181,8 @@
             ]
           }
         ]
-      }
+      },
+      "locationPrices": []
     },
     {
       "title": "OCC Consulting",
@@ -4055,8 +5209,8 @@
       "ctaLabel": "Request a proposal",
       "rateCard": {
         "eyebrow": "Consulting summary",
-        "value": "Price on request",
-        "note": "",
+        "value": "Consulting fee",
+        "note": "Scoped per engagement, agreed after a call to scope the work.",
         "secondaryCtaLabel": "See our services",
         "trustBadge": ""
       },
@@ -4161,7 +5315,7 @@
             "label": "01",
             "title": "OCC assessment",
             "focus": "Independent review and action plan",
-            "description": "An independent review of how your operational control works in practice, with a prioritised action plan.",
+            "description": "An independent review of how your operational control works in practice, with a prioritized action plan.",
             "topics": [
               "Structure, roles and staffing",
               "Procedures and handovers",
@@ -4198,9 +5352,9 @@
           {
             "num": "04",
             "label": "04",
-            "title": "CBTA training programmes",
+            "title": "CBTA training programs",
             "focus": "Based on ICAO Doc 10106",
-            "description": "Building a competency-based training programme for your OCC staff, based on ICAO Doc 10106.",
+            "description": "Building a competency-based training program for your OCC staff, based on ICAO Doc 10106.",
             "topics": [
               "Competency frameworks",
               "Instructor and assessor standards",
@@ -4243,7 +5397,7 @@
       "whoShouldAttend": {
         "eyebrow": "Clients",
         "title": "Who we work with",
-        "intro": "We size the work to the operation: a small operator usually needs a focused review or one manual section, not a full programme.",
+        "intro": "We size the work to the operation: a small operator usually needs a focused review or one manual section, not a full program.",
         "points": [
           "Airlines",
           "Cargo operators",
@@ -4301,7 +5455,7 @@
       "seats": null,
       "seo": {
         "metaTitle": "OCC and Flight Operations Consulting | IFOA",
-        "metaDescription": "Consulting for operations control: OCC assessments, operational control setup, manuals, CBTA training programmes, authority approvals and AI readiness. EASA, FAA and ICAO."
+        "metaDescription": "Consulting for operations control: OCC assessments, operational control setup, manuals, CBTA training programs, authority approvals and AI readiness. EASA, FAA and ICAO."
       },
       "sidebarSpecs": [
         {
@@ -4370,7 +5524,7 @@
             "items": [
               {
                 "title": "OCC assessment",
-                "text": "An independent review of how your operational control works in practice, with a prioritised action plan.",
+                "text": "An independent review of how your operational control works in practice, with a prioritized action plan.",
                 "bullets": [
                   "Structure, roles and staffing",
                   "Procedures and handovers",
@@ -4396,8 +5550,8 @@
                 ]
               },
               {
-                "title": "CBTA training programmes",
-                "text": "Building a competency-based training programme for your OCC staff, based on ICAO Doc 10106.",
+                "title": "CBTA training programs",
+                "text": "Building a competency-based training program for your OCC staff, based on ICAO Doc 10106.",
                 "bullets": [
                   "Competency frameworks",
                   "Instructor and assessor standards",
@@ -4502,7 +5656,8 @@
             "href": "https://agent.theifoa.com/"
           }
         ]
-      }
+      },
+      "locationPrices": []
     }
   ],
   "forms": [
@@ -4877,7 +6032,7 @@
               "type": "staticText",
               "required": false,
               "placeholder": "",
-              "content": "FULL - 5 Initial Training Course Program, 3500 EUR",
+              "content": "Flight Dispatcher Initial, 3500 EUR",
               "order": 0
             },
             {
@@ -5007,7 +6162,7 @@
               "type": "staticText",
               "required": false,
               "placeholder": "",
-              "content": "1. The enrollment form duly filled out and signed shall be emailed to info@theIFOA.com\n2. Students must provide accurate information on the enrolment form. Students discovered to have falsified or misrepresented information may be liable to expulsion from the program.\n3. A registration fee of 1000 EUR is required to guarantee a place at the course session.\n4. The total tuition fee is due at least one month before the start of the training.\n5. Cancellation Policy: a) Cancellation 30 days or less before the training start date: IFOA is entitled to charge 50% of the tuition fee. b) Cancellation 14 days or less before the training start date: IFOA is entitled to charge the full tuition fee. c) IFOA reserves the right to cancel or re-schedule courses within three (3) days’ notice for Force Majeure or if the minimum number of students required to ensure efficient training is not reached. All pre-paid fees will automatically be refunded or move toward the next available course in case of cancellation. All other costs, fees, and disbursements will be the student’s responsibility.\n6. Absence/Non-appearance during the confirmed training course automatically forfeits the registration fee.\n7. IFOA cannot be held responsible if the EU immigration officer denies the EU entry at the port of entry.\n8. Changing the date is allowed only once for the same paid course. Notify and email info@theIFOA.com. Our team will re-schedule contingent on the next available training date.\n9. Participants can only be transferred or changed once for the same paid course. To do so, notify and email info@theIFOA.com.\n10. Bring a copy of the confirmation message on the first day of the training course.\n11. Total attendance at the training is required to release the training certificate.\n12. IFOA instructor teams will fulfill their obligations to deliver the highest education standards and support the students in exam preparation; however, students must take responsibility for their studies, including attending all scheduled classes, intermediate evaluations, and successful final exams. IFOA cannot be held responsible for exam failure. Furthermore, IFOA has no obligation to refund the students in case of program failure.\n13. Students agree to behave respectfully and ethically to all other fellow students, instructors, examiners, and other members of IFOA. Any transgression or misconduct, including cheating, will directly lead to expulsion from the program.\n\nPrivacy notice: IFOA controls how your personal data is used following this notice. We use your personal data only for contacting purposes based on your consent. We may share your personal data with IFOA and non-IFOA trainers inside and outside the EU and USA. We will keep your personal data for one year and securely delete it afterward.",
+              "content": "1. The enrollment form duly filled out and signed shall be emailed to info@theIFOA.com\n2. Students must provide accurate information on the enrollment form. Students discovered to have falsified or misrepresented information may be liable to expulsion from the program.\n3. A registration fee of 1000 EUR is required to guarantee a place at the course session.\n4. The total tuition fee is due at least one month before the start of the training.\n5. Cancellation Policy: a) Cancellation 30 days or less before the training start date: IFOA is entitled to charge 50% of the tuition fee. b) Cancellation 14 days or less before the training start date: IFOA is entitled to charge the full tuition fee. c) IFOA reserves the right to cancel or re-schedule courses within three (3) days’ notice for Force Majeure or if the minimum number of students required to ensure efficient training is not reached. All pre-paid fees will automatically be refunded or move toward the next available course in case of cancellation. All other costs, fees, and disbursements will be the student’s responsibility.\n6. Absence/Non-appearance during the confirmed training course automatically forfeits the registration fee.\n7. IFOA cannot be held responsible if the EU immigration officer denies the EU entry at the port of entry.\n8. Changing the date is allowed only once for the same paid course. Notify and email info@theIFOA.com. Our team will re-schedule contingent on the next available training date.\n9. Participants can only be transferred or changed once for the same paid course. To do so, notify and email info@theIFOA.com.\n10. Bring a copy of the confirmation message on the first day of the training course.\n11. Total attendance at the training is required to release the training certificate.\n12. IFOA instructor teams will fulfill their obligations to deliver the highest education standards and support the students in exam preparation; however, students must take responsibility for their studies, including attending all scheduled classes, intermediate evaluations, and successful final exams. IFOA cannot be held responsible for exam failure. Furthermore, IFOA has no obligation to refund the students in case of program failure.\n13. Students agree to behave respectfully and ethically to all other fellow students, instructors, examiners, and other members of IFOA. Any transgression or misconduct, including cheating, will directly lead to expulsion from the program.\n\nPrivacy notice: IFOA controls how your personal data is used following this notice. We use your personal data only for contacting purposes based on your consent. We may share your personal data with IFOA and non-IFOA trainers inside and outside the EU and USA. We will keep your personal data for one year and securely delete it afterward.",
               "order": 0
             },
             {
@@ -5048,7 +6203,8 @@
               "placeholder": "",
               "options": [
                 "Denmark (Sønderborg, Europe)",
-                "India (New Delhi)"
+                "India (New Delhi)",
+                "United States (Daytona Beach, Florida)"
               ],
               "order": 0
             },
@@ -5414,7 +6570,7 @@
               "type": "staticText",
               "required": false,
               "placeholder": "",
-              "content": "FULL - 5 Initial Training Course Program, 3500 EUR",
+              "content": "Flight Dispatcher Initial, 3500 EUR",
               "order": 0
             },
             {
@@ -5544,7 +6700,7 @@
               "type": "staticText",
               "required": false,
               "placeholder": "",
-              "content": "1. The enrollment form duly filled out and signed shall be emailed to info@theIFOA.com\n2. Students must provide accurate information on the enrolment form. Students discovered to have falsified or misrepresented information may be liable to expulsion from the program.\n3. A registration fee of 1000 EUR is required to guarantee a place at the course session.\n4. The total tuition fee is due at least one month before the start of the training.\n5. Cancellation Policy: a) Cancellation 30 days or less before the training start date: IFOA is entitled to charge 50% of the tuition fee. b) Cancellation 14 days or less before the training start date: IFOA is entitled to charge the full tuition fee. c) IFOA reserves the right to cancel or re-schedule courses within three (3) days’ notice for Force Majeure or if the minimum number of students required to ensure efficient training is not reached. All pre-paid fees will automatically be refunded or move toward the next available course in case of cancellation. All other costs, fees, and disbursements will be the student’s responsibility.\n6. Absence/Non-appearance during the confirmed training course automatically forfeits the registration fee.\n7. IFOA cannot be held responsible if the EU immigration officer denies the EU entry at the port of entry.\n8. Changing the date is allowed only once for the same paid course. Notify and email info@theIFOA.com. Our team will re-schedule contingent on the next available training date.\n9. Participants can only be transferred or changed once for the same paid course. To do so, notify and email info@theIFOA.com.\n10. Bring a copy of the confirmation message on the first day of the training course.\n11. Total attendance at the training is required to release the training certificate.\n12. IFOA instructor teams will fulfill their obligations to deliver the highest education standards and support the students in exam preparation; however, students must take responsibility for their studies, including attending all scheduled classes, intermediate evaluations, and successful final exams. IFOA cannot be held responsible for exam failure. Furthermore, IFOA has no obligation to refund the students in case of program failure.\n13. Students agree to behave respectfully and ethically to all other fellow students, instructors, examiners, and other members of IFOA. Any transgression or misconduct, including cheating, will directly lead to expulsion from the program.\n\nPrivacy notice: IFOA controls how your personal data is used following this notice. We use your personal data only for contacting purposes based on your consent. We may share your personal data with IFOA and non-IFOA trainers inside and outside the EU and USA. We will keep your personal data for one year and securely delete it afterward.",
+              "content": "1. The enrollment form duly filled out and signed shall be emailed to info@theIFOA.com\n2. Students must provide accurate information on the enrollment form. Students discovered to have falsified or misrepresented information may be liable to expulsion from the program.\n3. A registration fee of 1000 EUR is required to guarantee a place at the course session.\n4. The total tuition fee is due at least one month before the start of the training.\n5. Cancellation Policy: a) Cancellation 30 days or less before the training start date: IFOA is entitled to charge 50% of the tuition fee. b) Cancellation 14 days or less before the training start date: IFOA is entitled to charge the full tuition fee. c) IFOA reserves the right to cancel or re-schedule courses within three (3) days’ notice for Force Majeure or if the minimum number of students required to ensure efficient training is not reached. All pre-paid fees will automatically be refunded or move toward the next available course in case of cancellation. All other costs, fees, and disbursements will be the student’s responsibility.\n6. Absence/Non-appearance during the confirmed training course automatically forfeits the registration fee.\n7. IFOA cannot be held responsible if the EU immigration officer denies the EU entry at the port of entry.\n8. Changing the date is allowed only once for the same paid course. Notify and email info@theIFOA.com. Our team will re-schedule contingent on the next available training date.\n9. Participants can only be transferred or changed once for the same paid course. To do so, notify and email info@theIFOA.com.\n10. Bring a copy of the confirmation message on the first day of the training course.\n11. Total attendance at the training is required to release the training certificate.\n12. IFOA instructor teams will fulfill their obligations to deliver the highest education standards and support the students in exam preparation; however, students must take responsibility for their studies, including attending all scheduled classes, intermediate evaluations, and successful final exams. IFOA cannot be held responsible for exam failure. Furthermore, IFOA has no obligation to refund the students in case of program failure.\n13. Students agree to behave respectfully and ethically to all other fellow students, instructors, examiners, and other members of IFOA. Any transgression or misconduct, including cheating, will directly lead to expulsion from the program.\n\nPrivacy notice: IFOA controls how your personal data is used following this notice. We use your personal data only for contacting purposes based on your consent. We may share your personal data with IFOA and non-IFOA trainers inside and outside the EU and USA. We will keep your personal data for one year and securely delete it afterward.",
               "order": 0
             },
             {
@@ -5943,7 +7099,7 @@
         {
           "id": "course-request",
           "title": "Course Request",
-          "description": "Review the programme and what you receive",
+          "description": "Review the program and what you receive",
           "order": 3,
           "fields": [
             {
@@ -5952,7 +7108,7 @@
               "type": "staticText",
               "required": false,
               "placeholder": "",
-              "content": "FAA Aircraft Dispatcher Course, 4500 USD\n200 hours, FAA Part 65 approved:\n- Online preparation, then on-site in Daytona Beach, Florida\n- All eight knowledge areas in Appendix A to 14 CFR Part 65\n\nIncludes the ADX learning portal and weekly masterclasses. ADX preparation is done in your own time, outside the 200 hours.\n\nFAA fees not included: ADX knowledge test $175; practical test $600, paid to the examiner. Travel, accommodation, meals and visa are not included.",
+              "content": "FAA Aircraft Dispatcher, 4,500 USD\n200 hours, FAA Part 65 approved:\n- Online preparation, then on-site in Sønderborg, Daytona Beach or New Delhi\n- All eight knowledge areas in Appendix A to 14 CFR Part 65\n\nIncludes the ADX learning portal and weekly masterclasses. ADX preparation is done in your own time, outside the 200 hours.\n\nFAA fees not included: ADX knowledge test $175 USD; practical test $600 USD, paid to the examiner. Travel, accommodation, meals and visa are not included.",
               "order": 0
             },
             {
@@ -6082,7 +7238,7 @@
               "type": "staticText",
               "required": false,
               "placeholder": "",
-              "content": "1. The enrollment form duly filled out and signed shall be emailed to info@theIFOA.com\n2. Students must provide accurate information on the enrolment form. Students discovered to have falsified or misrepresented information may be liable to expulsion from the program.\n3. A registration fee of 1000 EUR is required to guarantee a place at the course session.\n4. The total tuition fee is due at least one month before the start of the training.\n5. Cancellation Policy: a) Cancellation 30 days or less before the training start date: IFOA is entitled to charge 50% of the tuition fee. b) Cancellation 14 days or less before the training start date: IFOA is entitled to charge the full tuition fee. c) IFOA reserves the right to cancel or re-schedule courses within three (3) days’ notice for Force Majeure or if the minimum number of students required to ensure efficient training is not reached. All pre-paid fees will automatically be refunded or move toward the next available course in case of cancellation. All other costs, fees, and disbursements will be the student’s responsibility.\n6. Absence/Non-appearance during the confirmed training course automatically forfeits the registration fee.\n7. IFOA cannot be held responsible if the EU immigration officer denies the EU entry at the port of entry.\n8. Changing the date is allowed only once for the same paid course. Notify and email info@theIFOA.com. Our team will re-schedule contingent on the next available training date.\n9. Participants can only be transferred or changed once for the same paid course. To do so, notify and email info@theIFOA.com.\n10. Bring a copy of the confirmation message on the first day of the training course.\n11. Total attendance at the training is required to release the training certificate.\n12. IFOA instructor teams will fulfill their obligations to deliver the highest education standards and support the students in exam preparation; however, students must take responsibility for their studies, including attending all scheduled classes, intermediate evaluations, and successful final exams. IFOA cannot be held responsible for exam failure. Furthermore, IFOA has no obligation to refund the students in case of program failure.\n13. Students agree to behave respectfully and ethically to all other fellow students, instructors, examiners, and other members of IFOA. Any transgression or misconduct, including cheating, will directly lead to expulsion from the program.\n\nPrivacy notice: IFOA controls how your personal data is used following this notice. We use your personal data only for contacting purposes based on your consent. We may share your personal data with IFOA and non-IFOA trainers inside and outside the EU and USA. We will keep your personal data for one year and securely delete it afterward.",
+              "content": "1. The enrollment form duly filled out and signed shall be emailed to info@theIFOA.com\n2. Students must provide accurate information on the enrollment form. Students discovered to have falsified or misrepresented information may be liable to expulsion from the program.\n3. A registration fee of 1000 EUR is required to guarantee a place at the course session.\n4. The total tuition fee is due at least one month before the start of the training.\n5. Cancellation Policy: a) Cancellation 30 days or less before the training start date: IFOA is entitled to charge 50% of the tuition fee. b) Cancellation 14 days or less before the training start date: IFOA is entitled to charge the full tuition fee. c) IFOA reserves the right to cancel or re-schedule courses within three (3) days’ notice for Force Majeure or if the minimum number of students required to ensure efficient training is not reached. All pre-paid fees will automatically be refunded or move toward the next available course in case of cancellation. All other costs, fees, and disbursements will be the student’s responsibility.\n6. Absence/Non-appearance during the confirmed training course automatically forfeits the registration fee.\n7. IFOA cannot be held responsible if the EU immigration officer denies the EU entry at the port of entry.\n8. Changing the date is allowed only once for the same paid course. Notify and email info@theIFOA.com. Our team will re-schedule contingent on the next available training date.\n9. Participants can only be transferred or changed once for the same paid course. To do so, notify and email info@theIFOA.com.\n10. Bring a copy of the confirmation message on the first day of the training course.\n11. Total attendance at the training is required to release the training certificate.\n12. IFOA instructor teams will fulfill their obligations to deliver the highest education standards and support the students in exam preparation; however, students must take responsibility for their studies, including attending all scheduled classes, intermediate evaluations, and successful final exams. IFOA cannot be held responsible for exam failure. Furthermore, IFOA has no obligation to refund the students in case of program failure.\n13. Students agree to behave respectfully and ethically to all other fellow students, instructors, examiners, and other members of IFOA. Any transgression or misconduct, including cheating, will directly lead to expulsion from the program.\n\nPrivacy notice: IFOA controls how your personal data is used following this notice. We use your personal data only for contacting purposes based on your consent. We may share your personal data with IFOA and non-IFOA trainers inside and outside the EU and USA. We will keep your personal data for one year and securely delete it afterward.",
               "order": 0
             },
             {
@@ -6477,7 +7633,7 @@
               "type": "staticText",
               "required": false,
               "placeholder": "",
-              "content": "FULL - 5 Initial Training Course Program, 3500 EUR",
+              "content": "Dangerous Goods Training, price on request",
               "order": 0
             },
             {
@@ -6607,7 +7763,7 @@
               "type": "staticText",
               "required": false,
               "placeholder": "",
-              "content": "1. The enrollment form duly filled out and signed shall be emailed to info@theIFOA.com\n2. Students must provide accurate information on the enrolment form. Students discovered to have falsified or misrepresented information may be liable to expulsion from the program.\n3. A registration fee of 1000 EUR is required to guarantee a place at the course session.\n4. The total tuition fee is due at least one month before the start of the training.\n5. Cancellation Policy: a) Cancellation 30 days or less before the training start date: IFOA is entitled to charge 50% of the tuition fee. b) Cancellation 14 days or less before the training start date: IFOA is entitled to charge the full tuition fee. c) IFOA reserves the right to cancel or re-schedule courses within three (3) days’ notice for Force Majeure or if the minimum number of students required to ensure efficient training is not reached. All pre-paid fees will automatically be refunded or move toward the next available course in case of cancellation. All other costs, fees, and disbursements will be the student’s responsibility.\n6. Absence/Non-appearance during the confirmed training course automatically forfeits the registration fee.\n7. IFOA cannot be held responsible if the EU immigration officer denies the EU entry at the port of entry.\n8. Changing the date is allowed only once for the same paid course. Notify and email info@theIFOA.com. Our team will re-schedule contingent on the next available training date.\n9. Participants can only be transferred or changed once for the same paid course. To do so, notify and email info@theIFOA.com.\n10. Bring a copy of the confirmation message on the first day of the training course.\n11. Total attendance at the training is required to release the training certificate.\n12. IFOA instructor teams will fulfill their obligations to deliver the highest education standards and support the students in exam preparation; however, students must take responsibility for their studies, including attending all scheduled classes, intermediate evaluations, and successful final exams. IFOA cannot be held responsible for exam failure. Furthermore, IFOA has no obligation to refund the students in case of program failure.\n13. Students agree to behave respectfully and ethically to all other fellow students, instructors, examiners, and other members of IFOA. Any transgression or misconduct, including cheating, will directly lead to expulsion from the program.\n\nPrivacy notice: IFOA controls how your personal data is used following this notice. We use your personal data only for contacting purposes based on your consent. We may share your personal data with IFOA and non-IFOA trainers inside and outside the EU and USA. We will keep your personal data for one year and securely delete it afterward.",
+              "content": "1. The enrollment form duly filled out and signed shall be emailed to info@theIFOA.com\n2. Students must provide accurate information on the enrollment form. Students discovered to have falsified or misrepresented information may be liable to expulsion from the program.\n3. A registration fee of 1000 EUR is required to guarantee a place at the course session.\n4. The total tuition fee is due at least one month before the start of the training.\n5. Cancellation Policy: a) Cancellation 30 days or less before the training start date: IFOA is entitled to charge 50% of the tuition fee. b) Cancellation 14 days or less before the training start date: IFOA is entitled to charge the full tuition fee. c) IFOA reserves the right to cancel or re-schedule courses within three (3) days’ notice for Force Majeure or if the minimum number of students required to ensure efficient training is not reached. All pre-paid fees will automatically be refunded or move toward the next available course in case of cancellation. All other costs, fees, and disbursements will be the student’s responsibility.\n6. Absence/Non-appearance during the confirmed training course automatically forfeits the registration fee.\n7. IFOA cannot be held responsible if the EU immigration officer denies the EU entry at the port of entry.\n8. Changing the date is allowed only once for the same paid course. Notify and email info@theIFOA.com. Our team will re-schedule contingent on the next available training date.\n9. Participants can only be transferred or changed once for the same paid course. To do so, notify and email info@theIFOA.com.\n10. Bring a copy of the confirmation message on the first day of the training course.\n11. Total attendance at the training is required to release the training certificate.\n12. IFOA instructor teams will fulfill their obligations to deliver the highest education standards and support the students in exam preparation; however, students must take responsibility for their studies, including attending all scheduled classes, intermediate evaluations, and successful final exams. IFOA cannot be held responsible for exam failure. Furthermore, IFOA has no obligation to refund the students in case of program failure.\n13. Students agree to behave respectfully and ethically to all other fellow students, instructors, examiners, and other members of IFOA. Any transgression or misconduct, including cheating, will directly lead to expulsion from the program.\n\nPrivacy notice: IFOA controls how your personal data is used following this notice. We use your personal data only for contacting purposes based on your consent. We may share your personal data with IFOA and non-IFOA trainers inside and outside the EU and USA. We will keep your personal data for one year and securely delete it afterward.",
               "order": 0
             },
             {
@@ -7002,7 +8158,7 @@
               "type": "staticText",
               "required": false,
               "placeholder": "",
-              "content": "FULL - 5 Initial Training Course Program, 3500 EUR",
+              "content": "Crew Control Training, price on request",
               "order": 0
             },
             {
@@ -7132,7 +8288,7 @@
               "type": "staticText",
               "required": false,
               "placeholder": "",
-              "content": "1. The enrollment form duly filled out and signed shall be emailed to info@theIFOA.com\n2. Students must provide accurate information on the enrolment form. Students discovered to have falsified or misrepresented information may be liable to expulsion from the program.\n3. A registration fee of 1000 EUR is required to guarantee a place at the course session.\n4. The total tuition fee is due at least one month before the start of the training.\n5. Cancellation Policy: a) Cancellation 30 days or less before the training start date: IFOA is entitled to charge 50% of the tuition fee. b) Cancellation 14 days or less before the training start date: IFOA is entitled to charge the full tuition fee. c) IFOA reserves the right to cancel or re-schedule courses within three (3) days’ notice for Force Majeure or if the minimum number of students required to ensure efficient training is not reached. All pre-paid fees will automatically be refunded or move toward the next available course in case of cancellation. All other costs, fees, and disbursements will be the student’s responsibility.\n6. Absence/Non-appearance during the confirmed training course automatically forfeits the registration fee.\n7. IFOA cannot be held responsible if the EU immigration officer denies the EU entry at the port of entry.\n8. Changing the date is allowed only once for the same paid course. Notify and email info@theIFOA.com. Our team will re-schedule contingent on the next available training date.\n9. Participants can only be transferred or changed once for the same paid course. To do so, notify and email info@theIFOA.com.\n10. Bring a copy of the confirmation message on the first day of the training course.\n11. Total attendance at the training is required to release the training certificate.\n12. IFOA instructor teams will fulfill their obligations to deliver the highest education standards and support the students in exam preparation; however, students must take responsibility for their studies, including attending all scheduled classes, intermediate evaluations, and successful final exams. IFOA cannot be held responsible for exam failure. Furthermore, IFOA has no obligation to refund the students in case of program failure.\n13. Students agree to behave respectfully and ethically to all other fellow students, instructors, examiners, and other members of IFOA. Any transgression or misconduct, including cheating, will directly lead to expulsion from the program.\n\nPrivacy notice: IFOA controls how your personal data is used following this notice. We use your personal data only for contacting purposes based on your consent. We may share your personal data with IFOA and non-IFOA trainers inside and outside the EU and USA. We will keep your personal data for one year and securely delete it afterward.",
+              "content": "1. The enrollment form duly filled out and signed shall be emailed to info@theIFOA.com\n2. Students must provide accurate information on the enrollment form. Students discovered to have falsified or misrepresented information may be liable to expulsion from the program.\n3. A registration fee of 1000 EUR is required to guarantee a place at the course session.\n4. The total tuition fee is due at least one month before the start of the training.\n5. Cancellation Policy: a) Cancellation 30 days or less before the training start date: IFOA is entitled to charge 50% of the tuition fee. b) Cancellation 14 days or less before the training start date: IFOA is entitled to charge the full tuition fee. c) IFOA reserves the right to cancel or re-schedule courses within three (3) days’ notice for Force Majeure or if the minimum number of students required to ensure efficient training is not reached. All pre-paid fees will automatically be refunded or move toward the next available course in case of cancellation. All other costs, fees, and disbursements will be the student’s responsibility.\n6. Absence/Non-appearance during the confirmed training course automatically forfeits the registration fee.\n7. IFOA cannot be held responsible if the EU immigration officer denies the EU entry at the port of entry.\n8. Changing the date is allowed only once for the same paid course. Notify and email info@theIFOA.com. Our team will re-schedule contingent on the next available training date.\n9. Participants can only be transferred or changed once for the same paid course. To do so, notify and email info@theIFOA.com.\n10. Bring a copy of the confirmation message on the first day of the training course.\n11. Total attendance at the training is required to release the training certificate.\n12. IFOA instructor teams will fulfill their obligations to deliver the highest education standards and support the students in exam preparation; however, students must take responsibility for their studies, including attending all scheduled classes, intermediate evaluations, and successful final exams. IFOA cannot be held responsible for exam failure. Furthermore, IFOA has no obligation to refund the students in case of program failure.\n13. Students agree to behave respectfully and ethically to all other fellow students, instructors, examiners, and other members of IFOA. Any transgression or misconduct, including cheating, will directly lead to expulsion from the program.\n\nPrivacy notice: IFOA controls how your personal data is used following this notice. We use your personal data only for contacting purposes based on your consent. We may share your personal data with IFOA and non-IFOA trainers inside and outside the EU and USA. We will keep your personal data for one year and securely delete it afterward.",
               "order": 0
             },
             {
@@ -7527,7 +8683,7 @@
               "type": "staticText",
               "required": false,
               "placeholder": "",
-              "content": "FULL - 5 Initial Training Course Program, 3500 EUR",
+              "content": "Train the Trainer, price on request",
               "order": 0
             },
             {
@@ -7657,7 +8813,7 @@
               "type": "staticText",
               "required": false,
               "placeholder": "",
-              "content": "1. The enrollment form duly filled out and signed shall be emailed to info@theIFOA.com\n2. Students must provide accurate information on the enrolment form. Students discovered to have falsified or misrepresented information may be liable to expulsion from the program.\n3. A registration fee of 1000 EUR is required to guarantee a place at the course session.\n4. The total tuition fee is due at least one month before the start of the training.\n5. Cancellation Policy: a) Cancellation 30 days or less before the training start date: IFOA is entitled to charge 50% of the tuition fee. b) Cancellation 14 days or less before the training start date: IFOA is entitled to charge the full tuition fee. c) IFOA reserves the right to cancel or re-schedule courses within three (3) days’ notice for Force Majeure or if the minimum number of students required to ensure efficient training is not reached. All pre-paid fees will automatically be refunded or move toward the next available course in case of cancellation. All other costs, fees, and disbursements will be the student’s responsibility.\n6. Absence/Non-appearance during the confirmed training course automatically forfeits the registration fee.\n7. IFOA cannot be held responsible if the EU immigration officer denies the EU entry at the port of entry.\n8. Changing the date is allowed only once for the same paid course. Notify and email info@theIFOA.com. Our team will re-schedule contingent on the next available training date.\n9. Participants can only be transferred or changed once for the same paid course. To do so, notify and email info@theIFOA.com.\n10. Bring a copy of the confirmation message on the first day of the training course.\n11. Total attendance at the training is required to release the training certificate.\n12. IFOA instructor teams will fulfill their obligations to deliver the highest education standards and support the students in exam preparation; however, students must take responsibility for their studies, including attending all scheduled classes, intermediate evaluations, and successful final exams. IFOA cannot be held responsible for exam failure. Furthermore, IFOA has no obligation to refund the students in case of program failure.\n13. Students agree to behave respectfully and ethically to all other fellow students, instructors, examiners, and other members of IFOA. Any transgression or misconduct, including cheating, will directly lead to expulsion from the program.\n\nPrivacy notice: IFOA controls how your personal data is used following this notice. We use your personal data only for contacting purposes based on your consent. We may share your personal data with IFOA and non-IFOA trainers inside and outside the EU and USA. We will keep your personal data for one year and securely delete it afterward.",
+              "content": "1. The enrollment form duly filled out and signed shall be emailed to info@theIFOA.com\n2. Students must provide accurate information on the enrollment form. Students discovered to have falsified or misrepresented information may be liable to expulsion from the program.\n3. A registration fee of 1000 EUR is required to guarantee a place at the course session.\n4. The total tuition fee is due at least one month before the start of the training.\n5. Cancellation Policy: a) Cancellation 30 days or less before the training start date: IFOA is entitled to charge 50% of the tuition fee. b) Cancellation 14 days or less before the training start date: IFOA is entitled to charge the full tuition fee. c) IFOA reserves the right to cancel or re-schedule courses within three (3) days’ notice for Force Majeure or if the minimum number of students required to ensure efficient training is not reached. All pre-paid fees will automatically be refunded or move toward the next available course in case of cancellation. All other costs, fees, and disbursements will be the student’s responsibility.\n6. Absence/Non-appearance during the confirmed training course automatically forfeits the registration fee.\n7. IFOA cannot be held responsible if the EU immigration officer denies the EU entry at the port of entry.\n8. Changing the date is allowed only once for the same paid course. Notify and email info@theIFOA.com. Our team will re-schedule contingent on the next available training date.\n9. Participants can only be transferred or changed once for the same paid course. To do so, notify and email info@theIFOA.com.\n10. Bring a copy of the confirmation message on the first day of the training course.\n11. Total attendance at the training is required to release the training certificate.\n12. IFOA instructor teams will fulfill their obligations to deliver the highest education standards and support the students in exam preparation; however, students must take responsibility for their studies, including attending all scheduled classes, intermediate evaluations, and successful final exams. IFOA cannot be held responsible for exam failure. Furthermore, IFOA has no obligation to refund the students in case of program failure.\n13. Students agree to behave respectfully and ethically to all other fellow students, instructors, examiners, and other members of IFOA. Any transgression or misconduct, including cheating, will directly lead to expulsion from the program.\n\nPrivacy notice: IFOA controls how your personal data is used following this notice. We use your personal data only for contacting purposes based on your consent. We may share your personal data with IFOA and non-IFOA trainers inside and outside the EU and USA. We will keep your personal data for one year and securely delete it afterward.",
               "order": 0
             },
             {
@@ -8052,7 +9208,7 @@
               "type": "staticText",
               "required": false,
               "placeholder": "",
-              "content": "FULL - 5 Initial Training Course Program, 3500 EUR",
+              "content": "Human Factors for the OCC, price on request",
               "order": 0
             },
             {
@@ -8182,7 +9338,7 @@
               "type": "staticText",
               "required": false,
               "placeholder": "",
-              "content": "1. The enrollment form duly filled out and signed shall be emailed to info@theIFOA.com\n2. Students must provide accurate information on the enrolment form. Students discovered to have falsified or misrepresented information may be liable to expulsion from the program.\n3. A registration fee of 1000 EUR is required to guarantee a place at the course session.\n4. The total tuition fee is due at least one month before the start of the training.\n5. Cancellation Policy: a) Cancellation 30 days or less before the training start date: IFOA is entitled to charge 50% of the tuition fee. b) Cancellation 14 days or less before the training start date: IFOA is entitled to charge the full tuition fee. c) IFOA reserves the right to cancel or re-schedule courses within three (3) days’ notice for Force Majeure or if the minimum number of students required to ensure efficient training is not reached. All pre-paid fees will automatically be refunded or move toward the next available course in case of cancellation. All other costs, fees, and disbursements will be the student’s responsibility.\n6. Absence/Non-appearance during the confirmed training course automatically forfeits the registration fee.\n7. IFOA cannot be held responsible if the EU immigration officer denies the EU entry at the port of entry.\n8. Changing the date is allowed only once for the same paid course. Notify and email info@theIFOA.com. Our team will re-schedule contingent on the next available training date.\n9. Participants can only be transferred or changed once for the same paid course. To do so, notify and email info@theIFOA.com.\n10. Bring a copy of the confirmation message on the first day of the training course.\n11. Total attendance at the training is required to release the training certificate.\n12. IFOA instructor teams will fulfill their obligations to deliver the highest education standards and support the students in exam preparation; however, students must take responsibility for their studies, including attending all scheduled classes, intermediate evaluations, and successful final exams. IFOA cannot be held responsible for exam failure. Furthermore, IFOA has no obligation to refund the students in case of program failure.\n13. Students agree to behave respectfully and ethically to all other fellow students, instructors, examiners, and other members of IFOA. Any transgression or misconduct, including cheating, will directly lead to expulsion from the program.\n\nPrivacy notice: IFOA controls how your personal data is used following this notice. We use your personal data only for contacting purposes based on your consent. We may share your personal data with IFOA and non-IFOA trainers inside and outside the EU and USA. We will keep your personal data for one year and securely delete it afterward.",
+              "content": "1. The enrollment form duly filled out and signed shall be emailed to info@theIFOA.com\n2. Students must provide accurate information on the enrollment form. Students discovered to have falsified or misrepresented information may be liable to expulsion from the program.\n3. A registration fee of 1000 EUR is required to guarantee a place at the course session.\n4. The total tuition fee is due at least one month before the start of the training.\n5. Cancellation Policy: a) Cancellation 30 days or less before the training start date: IFOA is entitled to charge 50% of the tuition fee. b) Cancellation 14 days or less before the training start date: IFOA is entitled to charge the full tuition fee. c) IFOA reserves the right to cancel or re-schedule courses within three (3) days’ notice for Force Majeure or if the minimum number of students required to ensure efficient training is not reached. All pre-paid fees will automatically be refunded or move toward the next available course in case of cancellation. All other costs, fees, and disbursements will be the student’s responsibility.\n6. Absence/Non-appearance during the confirmed training course automatically forfeits the registration fee.\n7. IFOA cannot be held responsible if the EU immigration officer denies the EU entry at the port of entry.\n8. Changing the date is allowed only once for the same paid course. Notify and email info@theIFOA.com. Our team will re-schedule contingent on the next available training date.\n9. Participants can only be transferred or changed once for the same paid course. To do so, notify and email info@theIFOA.com.\n10. Bring a copy of the confirmation message on the first day of the training course.\n11. Total attendance at the training is required to release the training certificate.\n12. IFOA instructor teams will fulfill their obligations to deliver the highest education standards and support the students in exam preparation; however, students must take responsibility for their studies, including attending all scheduled classes, intermediate evaluations, and successful final exams. IFOA cannot be held responsible for exam failure. Furthermore, IFOA has no obligation to refund the students in case of program failure.\n13. Students agree to behave respectfully and ethically to all other fellow students, instructors, examiners, and other members of IFOA. Any transgression or misconduct, including cheating, will directly lead to expulsion from the program.\n\nPrivacy notice: IFOA controls how your personal data is used following this notice. We use your personal data only for contacting purposes based on your consent. We may share your personal data with IFOA and non-IFOA trainers inside and outside the EU and USA. We will keep your personal data for one year and securely delete it afterward.",
               "order": 0
             },
             {
@@ -8577,7 +9733,7 @@
               "type": "staticText",
               "required": false,
               "placeholder": "",
-              "content": "FULL - 5 Initial Training Course Program, 3500 EUR",
+              "content": "OCC Consulting, consulting fee scoped per engagement",
               "order": 0
             },
             {
@@ -8707,7 +9863,7 @@
               "type": "staticText",
               "required": false,
               "placeholder": "",
-              "content": "1. The enrollment form duly filled out and signed shall be emailed to info@theIFOA.com\n2. Students must provide accurate information on the enrolment form. Students discovered to have falsified or misrepresented information may be liable to expulsion from the program.\n3. A registration fee of 1000 EUR is required to guarantee a place at the course session.\n4. The total tuition fee is due at least one month before the start of the training.\n5. Cancellation Policy: a) Cancellation 30 days or less before the training start date: IFOA is entitled to charge 50% of the tuition fee. b) Cancellation 14 days or less before the training start date: IFOA is entitled to charge the full tuition fee. c) IFOA reserves the right to cancel or re-schedule courses within three (3) days’ notice for Force Majeure or if the minimum number of students required to ensure efficient training is not reached. All pre-paid fees will automatically be refunded or move toward the next available course in case of cancellation. All other costs, fees, and disbursements will be the student’s responsibility.\n6. Absence/Non-appearance during the confirmed training course automatically forfeits the registration fee.\n7. IFOA cannot be held responsible if the EU immigration officer denies the EU entry at the port of entry.\n8. Changing the date is allowed only once for the same paid course. Notify and email info@theIFOA.com. Our team will re-schedule contingent on the next available training date.\n9. Participants can only be transferred or changed once for the same paid course. To do so, notify and email info@theIFOA.com.\n10. Bring a copy of the confirmation message on the first day of the training course.\n11. Total attendance at the training is required to release the training certificate.\n12. IFOA instructor teams will fulfill their obligations to deliver the highest education standards and support the students in exam preparation; however, students must take responsibility for their studies, including attending all scheduled classes, intermediate evaluations, and successful final exams. IFOA cannot be held responsible for exam failure. Furthermore, IFOA has no obligation to refund the students in case of program failure.\n13. Students agree to behave respectfully and ethically to all other fellow students, instructors, examiners, and other members of IFOA. Any transgression or misconduct, including cheating, will directly lead to expulsion from the program.\n\nPrivacy notice: IFOA controls how your personal data is used following this notice. We use your personal data only for contacting purposes based on your consent. We may share your personal data with IFOA and non-IFOA trainers inside and outside the EU and USA. We will keep your personal data for one year and securely delete it afterward.",
+              "content": "1. The enrollment form duly filled out and signed shall be emailed to info@theIFOA.com\n2. Students must provide accurate information on the enrollment form. Students discovered to have falsified or misrepresented information may be liable to expulsion from the program.\n3. A registration fee of 1000 EUR is required to guarantee a place at the course session.\n4. The total tuition fee is due at least one month before the start of the training.\n5. Cancellation Policy: a) Cancellation 30 days or less before the training start date: IFOA is entitled to charge 50% of the tuition fee. b) Cancellation 14 days or less before the training start date: IFOA is entitled to charge the full tuition fee. c) IFOA reserves the right to cancel or re-schedule courses within three (3) days’ notice for Force Majeure or if the minimum number of students required to ensure efficient training is not reached. All pre-paid fees will automatically be refunded or move toward the next available course in case of cancellation. All other costs, fees, and disbursements will be the student’s responsibility.\n6. Absence/Non-appearance during the confirmed training course automatically forfeits the registration fee.\n7. IFOA cannot be held responsible if the EU immigration officer denies the EU entry at the port of entry.\n8. Changing the date is allowed only once for the same paid course. Notify and email info@theIFOA.com. Our team will re-schedule contingent on the next available training date.\n9. Participants can only be transferred or changed once for the same paid course. To do so, notify and email info@theIFOA.com.\n10. Bring a copy of the confirmation message on the first day of the training course.\n11. Total attendance at the training is required to release the training certificate.\n12. IFOA instructor teams will fulfill their obligations to deliver the highest education standards and support the students in exam preparation; however, students must take responsibility for their studies, including attending all scheduled classes, intermediate evaluations, and successful final exams. IFOA cannot be held responsible for exam failure. Furthermore, IFOA has no obligation to refund the students in case of program failure.\n13. Students agree to behave respectfully and ethically to all other fellow students, instructors, examiners, and other members of IFOA. Any transgression or misconduct, including cheating, will directly lead to expulsion from the program.\n\nPrivacy notice: IFOA controls how your personal data is used following this notice. We use your personal data only for contacting purposes based on your consent. We may share your personal data with IFOA and non-IFOA trainers inside and outside the EU and USA. We will keep your personal data for one year and securely delete it afterward.",
               "order": 0
             },
             {
@@ -8747,8 +9903,9 @@
               "required": true,
               "placeholder": "",
               "options": [
-                "Europe (city to be confirmed)",
-                "India (New Delhi)"
+                "Denmark (Sønderborg, Europe)",
+                "India (New Delhi)",
+                "United States (Daytona Beach, Florida)"
               ],
               "order": 0
             },
@@ -9105,7 +10262,7 @@
         {
           "id": "course-request",
           "title": "Course Request",
-          "description": "Review the programme and what you receive",
+          "description": "Review the program and what you receive",
           "order": 3,
           "fields": [
             {
@@ -9114,12 +10271,12 @@
               "type": "staticText",
               "required": false,
               "placeholder": "",
-              "content": "Flight Dispatcher Double Programme, 5500 EUR\n280 hours over 7 weeks, hybrid, Europe:\n- FAA Part 65 approved course: 200 hours\n- ICAO and EASA operations: 80 hours\n\nIncludes training materials, ADX learning portal and weekly masterclasses. ADX preparation is done in your own time, outside the 280 hours.\n\nFAA fees not included: ADX knowledge test $175; practical test $600, paid to the examiner. Travel, accommodation, meals and visa are not included.",
+              "content": "Double Program: FAA & EASA, 5,500 USD\n280 hours over 7 weeks, hybrid, Denmark, USA or India:\n- FAA Part 65 approved course: 200 hours\n- ICAO and EASA operations: 80 hours\n\nIncludes training materials, ADX learning portal and weekly masterclasses. ADX preparation is done in your own time, outside the 280 hours.\n\nFAA fees not included: ADX knowledge test $175 USD; practical test $600 USD, paid to the examiner. Travel, accommodation, meals and visa are not included.",
               "order": 0
             },
             {
               "id": "acknowledgementAccepted",
-              "label": "I understand that the FAA Aircraft Dispatcher certificate (14 CFR Part 65) is issued only by the FAA, once I pass the ADX knowledge test and the practical test with an FAA examiner, and that I must be at least 21 to take the ADX and at least 23 to be issued the certificate. IFOA will deliver a course completion certificate, which is not an FAA certificate. There is no EASA flight dispatcher licence: in Europe, operators decide who may dispatch their flights.",
+              "label": "I understand that the FAA Aircraft Dispatcher certificate (14 CFR Part 65) is issued only by the FAA, once I pass the ADX knowledge test and the practical test with an FAA examiner, and that I must be at least 21 to take the ADX and at least 23 to be issued the certificate. IFOA will deliver a course completion certificate, which is not an FAA certificate. There is no EASA flight dispatcher license: in Europe, operators decide who may dispatch their flights.",
               "type": "checkbox",
               "required": true,
               "placeholder": "",
@@ -9244,7 +10401,7 @@
               "type": "staticText",
               "required": false,
               "placeholder": "",
-              "content": "1. The enrollment form duly filled out and signed shall be emailed to info@theIFOA.com\n2. Students must provide accurate information on the enrolment form. Students discovered to have falsified or misrepresented information may be liable to expulsion from the program.\n3. A registration fee of 1000 EUR is required to guarantee a place at the course session.\n4. The total tuition fee is due at least one month before the start of the training.\n5. Cancellation Policy: a) Cancellation 30 days or less before the training start date: IFOA is entitled to charge 50% of the tuition fee. b) Cancellation 14 days or less before the training start date: IFOA is entitled to charge the full tuition fee. c) IFOA reserves the right to cancel or re-schedule courses within three (3) days’ notice for Force Majeure or if the minimum number of students required to ensure efficient training is not reached. All pre-paid fees will automatically be refunded or move toward the next available course in case of cancellation. All other costs, fees, and disbursements will be the student’s responsibility.\n6. Absence/Non-appearance during the confirmed training course automatically forfeits the registration fee.\n7. IFOA cannot be held responsible if the EU immigration officer denies the EU entry at the port of entry.\n8. Changing the date is allowed only once for the same paid course. Notify and email info@theIFOA.com. Our team will re-schedule contingent on the next available training date.\n9. Participants can only be transferred or changed once for the same paid course. To do so, notify and email info@theIFOA.com.\n10. Bring a copy of the confirmation message on the first day of the training course.\n11. Total attendance at the training is required to release the training certificate.\n12. IFOA instructor teams will fulfill their obligations to deliver the highest education standards and support the students in exam preparation; however, students must take responsibility for their studies, including attending all scheduled classes, intermediate evaluations, and successful final exams. IFOA cannot be held responsible for exam failure. Furthermore, IFOA has no obligation to refund the students in case of program failure.\n13. Students agree to behave respectfully and ethically to all other fellow students, instructors, examiners, and other members of IFOA. Any transgression or misconduct, including cheating, will directly lead to expulsion from the program.\n\nPrivacy notice: IFOA controls how your personal data is used following this notice. We use your personal data only for contacting purposes based on your consent. We may share your personal data with IFOA and non-IFOA trainers inside and outside the EU and USA. We will keep your personal data for one year and securely delete it afterward.",
+              "content": "1. The enrollment form duly filled out and signed shall be emailed to info@theIFOA.com\n2. Students must provide accurate information on the enrollment form. Students discovered to have falsified or misrepresented information may be liable to expulsion from the program.\n3. A registration fee of 1000 EUR is required to guarantee a place at the course session.\n4. The total tuition fee is due at least one month before the start of the training.\n5. Cancellation Policy: a) Cancellation 30 days or less before the training start date: IFOA is entitled to charge 50% of the tuition fee. b) Cancellation 14 days or less before the training start date: IFOA is entitled to charge the full tuition fee. c) IFOA reserves the right to cancel or re-schedule courses within three (3) days’ notice for Force Majeure or if the minimum number of students required to ensure efficient training is not reached. All pre-paid fees will automatically be refunded or move toward the next available course in case of cancellation. All other costs, fees, and disbursements will be the student’s responsibility.\n6. Absence/Non-appearance during the confirmed training course automatically forfeits the registration fee.\n7. IFOA cannot be held responsible if the EU immigration officer denies the EU entry at the port of entry.\n8. Changing the date is allowed only once for the same paid course. Notify and email info@theIFOA.com. Our team will re-schedule contingent on the next available training date.\n9. Participants can only be transferred or changed once for the same paid course. To do so, notify and email info@theIFOA.com.\n10. Bring a copy of the confirmation message on the first day of the training course.\n11. Total attendance at the training is required to release the training certificate.\n12. IFOA instructor teams will fulfill their obligations to deliver the highest education standards and support the students in exam preparation; however, students must take responsibility for their studies, including attending all scheduled classes, intermediate evaluations, and successful final exams. IFOA cannot be held responsible for exam failure. Furthermore, IFOA has no obligation to refund the students in case of program failure.\n13. Students agree to behave respectfully and ethically to all other fellow students, instructors, examiners, and other members of IFOA. Any transgression or misconduct, including cheating, will directly lead to expulsion from the program.\n\nPrivacy notice: IFOA controls how your personal data is used following this notice. We use your personal data only for contacting purposes based on your consent. We may share your personal data with IFOA and non-IFOA trainers inside and outside the EU and USA. We will keep your personal data for one year and securely delete it afterward.",
               "order": 0
             },
             {

@@ -25,12 +25,12 @@ import { api } from '@/lib/api'
 import ifoaLogo from '@/assets/shared/brand/ifoa-logo.webp'
 
 const SUGGESTIONS = [
-  'What flight dispatch programs do you offer?',
-  'How long is the Flight Dispatch Initial program?',
-  'Are your courses FAA and EASA compliant?',
-  'What are the eligibility requirements?',
-  'How do I register for the next cohort intake?',
-  'Do you offer virtual or on-site OCC training?',
+  'Which dispatcher course is right for me?',
+  'How long is Flight Dispatcher Initial, and what does it cost?',
+  'Is there an EASA flight dispatcher license?',
+  'What are the FAA Aircraft Dispatcher requirements?',
+  'How do I apply, and when do courses start?',
+  'Do you train OCC teams online or at our base?',
 ]
 
 // ── Home view (Matches reference layout) ─────────────────────────────────────
@@ -129,12 +129,12 @@ function HelpView({ onAsk }) {
             </div>
           </div>
           <a
-            href={`mailto:${ADMISSIONS_EMAIL}?subject=IFOA%20Course%20Enquiry`}
+            href={`mailto:${ADMISSIONS_EMAIL}?subject=IFOA%20Course%20Inquiry`}
             className="block w-full text-center rounded-xl bg-slate-900 hover:bg-black text-white text-sm font-bold py-2.5 transition-colors"
           >
             {ADMISSIONS_EMAIL}
           </a>
-          <p className="text-[11px] text-gray-400 text-center mt-2">We typically reply within 1 business day.</p>
+          <p className="text-[11px] text-gray-400 text-center mt-2">We reply to every inquiry within two working days.</p>
         </div>
 
         {/* WhatsApp Card */}
@@ -549,11 +549,13 @@ export function ChatWidget() {
   }, [])
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- loading/reset state at the start of an effect that syncs with an external source
     if (open) setUnread(0)
   }, [open])
 
   useEffect(() => {
     if (!open && messages.length > 1 && messages[messages.length - 1].role === 'assistant') {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- loading/reset state at the start of an effect that syncs with an external source
       setUnread((n) => n + 1)
     }
   }, [messages, open])
