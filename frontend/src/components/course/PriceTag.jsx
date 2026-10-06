@@ -19,6 +19,16 @@ export function PriceTag({ price, codeClassName = 'ml-1.5 text-[0.45em] font-bol
   )
 }
 
+// A course price as plain text, e.g. "$4,500 USD", "€3,500", "€1,000 + GST".
+// eslint-disable-next-line react-refresh/only-export-components -- helper co-located with its component on purpose; only affects dev hot reload
+export function priceText(price, india = false) {
+  if (!price || price.amount == null) return null
+  const symbol = SYMBOL[price.currency]
+  const amount = Number(price.amount).toLocaleString(price.currency === 'INR' ? 'en-IN' : 'en-US')
+  const base = symbol ? `${symbol}${amount}${price.currency === 'USD' ? ' USD' : ''}` : `${price.currency} ${amount}`
+  return india ? `${base} + GST` : base
+}
+
 // Tax note under a course fee: GST for courses taught in India, VAT elsewhere.
 // eslint-disable-next-line react-refresh/only-export-components -- helper co-located with its component on purpose; only affects dev hot reload
 export function taxNote(price, india = false) {

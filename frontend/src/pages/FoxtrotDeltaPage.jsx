@@ -152,8 +152,8 @@ const FALLBACK = {
   finalCta: {
     title: 'Ready to enhance your operational competencies?',
     desc:
-      'Book the most suitable training program to acquire essential decision-making skills, regulatory compliance, and peak operational performance.',
-    exploreLabel: 'Explore Training Programs',
+      'Book the most suitable training course to acquire essential decision-making skills, regulatory compliance, and peak operational performance.',
+    exploreLabel: 'Explore Training Courses',
     contactLabel: 'Contact Us'
   }
 }

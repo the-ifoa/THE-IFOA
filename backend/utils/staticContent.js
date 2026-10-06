@@ -16,14 +16,14 @@ const BANK_DETAILS = {
 }
 
 const COURSE_ACKNOWLEDGEMENT_TEXT =
-  'I understand that IFOA issues an IFOA Certificate of Completion when I complete the course. It is not a government-issued licence or certificate.'
+  'I understand that IFOA issues an IFOA Certificate of Completion when I complete the course. It is not a government-issued license or certificate.'
 
 const TERMS_AND_CONDITIONS = [
   'The enrollment form duly filled out and signed shall be emailed to info@theIFOA.com',
   'Students must provide accurate information on the enrollment form. Students discovered to have falsified or misrepresented information may be liable to expulsion from the program.',
   'The total tuition fee is due at least one month before the start of the training.',
   'Cancellation Policy: a) Cancellation 30 days or less before the training start date: IFOA is entitled to charge 50% of the tuition fee. b) Cancellation 14 days or less before the training start date: IFOA is entitled to charge the full tuition fee. c) IFOA reserves the right to cancel or re-schedule courses within three (3) days’ notice for Force Majeure or if the minimum number of students required to ensure efficient training is not reached. All pre-paid fees will automatically be refunded or move toward the next available course in case of cancellation. All other costs, fees, and disbursements will be the student’s responsibility.',
-  'IFOA cannot be held responsible if the EU immigration officer denies the EU entry at the port of entry.',
+  'IFOA is not responsible if a visa or entry to the training country is refused.',
   'Changing the date is allowed only once for the same paid course. Notify and email info@theIFOA.com. Our team will re-schedule contingent on the next available training date.',
   'Participants can only be transferred or changed once for the same paid course. To do so, notify and email info@theIFOA.com.',
   'Bring a copy of the confirmation message on the first day of the training course.',
@@ -33,7 +33,7 @@ const TERMS_AND_CONDITIONS = [
 ]
 
 const PRIVACY_NOTICE =
-  'IFOA controls how your personal data is used following this notice. We use your personal data only for contacting purposes based on your consent. We may share your personal data with IFOA and non-IFOA trainers inside and outside the EU and USA. We will keep your personal data for one year and securely delete it afterward.'
+  'IFOA uses your personal data to process your application, deliver the course and meet legal obligations, as set out in our Privacy Policy (https://theifoa.com/privacy-policy). We keep it only as long as needed for those purposes, including legal retention periods (for example ten years for accounting records). You can ask us to access, correct or delete your data at any time.'
 
 const CONSENT_TEXTS = {
   dataProcessing: 'I consent to my data being processed as described in the privacy notice above.',

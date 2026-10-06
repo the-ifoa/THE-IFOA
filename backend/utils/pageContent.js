@@ -787,7 +787,7 @@ const DEFAULTS = {
         {
           name: 'India',
           city: 'New Delhi, India',
-          desc: 'Three courses: Flight Dispatcher Initial (ICAO Doc 10106, 4 weeks, online preparation then on-site), FAA Aircraft Dispatcher (Part 65 approved course, 200 hours, 5 weeks plus exam week) and the Double Program: FAA & EASA (280 hours, 7 weeks).',
+          desc: 'Three courses: Flight Dispatcher Initial (ICAO Doc 10106, 4 weeks, online preparation then on-site), FAA Aircraft Dispatcher (Part 65 approved course, 200 hours, 5 weeks, plus an exam week taken within 6 months) and the Double Program: FAA & EASA (280 hours, 7 weeks).',
           link1Label: 'Flight Dispatcher Initial',
           link1Slug: 'flight-dispatcher-initial-training-india',
           link2Label: 'FAA Aircraft Dispatcher',
@@ -873,7 +873,7 @@ const DEFAULTS = {
           category: 'ICAO Doc 10106',
           title: 'Flight Dispatcher Initial',
           desc: 'ICAO Doc 10106, with EASA operations.',
-          hours: '200 Hours (5 Weeks) · Hybrid\nDenmark · €3,500 (India: 4 Weeks, €1,000)',
+          hours: '200 Hours (5 Weeks) · Hybrid\nDenmark · €3,500 (India: 4 Weeks, €1,000 + GST)',
           linkText: 'View course',
           courseSlug: 'flight-dispatcher-initial-certification'
         }
@@ -1568,6 +1568,7 @@ const DEFAULTS = {
           num: '01',
           label: 'PHASE 01',
           title: 'The Operating Environment',
+          description: 'Establish foundational regulatory frameworks, airspace structure, and air traffic communication systems.',
           topics: [
             'Air Law & Civil Regulations',
             'ICAO / EASA Alignment',
@@ -1579,6 +1580,7 @@ const DEFAULTS = {
           num: '02',
           label: 'PHASE 02',
           title: 'Know the Aircraft',
+          description: 'Understand modern commercial aircraft systems, performance envelopes, limitations, and flight mechanics.',
           topics: [
             'Aircraft Systems & Avionics',
             'Flight Instrumentation',
@@ -1590,6 +1592,7 @@ const DEFAULTS = {
           num: '03',
           label: 'PHASE 03',
           title: 'Plan the Flight',
+          description: 'Master meteorological analysis, route construction, fuel calculations, and operational flight dispatch releases.',
           topics: [
             'Aviation Navigation & Routes',
             'Synoptic Aeronautical Meteorology',
@@ -1601,6 +1604,7 @@ const DEFAULTS = {
           num: '04',
           label: 'PHASE 04',
           title: 'Control the Operation',
+          description: 'Execute live flight following, manage real-time deviations, and coordinate airline operational control.',
           topics: [
             'Live OCC Flight Monitoring',
             'Standard Operational Procedures',
@@ -1612,6 +1616,7 @@ const DEFAULTS = {
           num: '05',
           label: 'PHASE 05',
           title: 'Make the Decision',
+          description: 'Apply tactical problem-solving during in-flight emergencies, weather diversions, and high-tempo simulator scenarios.',
           topics: [
             'Tactical Situational Awareness',
             'Risk Assessment & Mitigation',

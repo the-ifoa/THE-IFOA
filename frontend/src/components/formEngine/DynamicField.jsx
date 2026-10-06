@@ -119,22 +119,24 @@ function splitSubList(text) {
 
 function renderWithEmailLinks(text) {
   if (typeof text !== 'string') return text;
-  const emailRegex = /([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g;
-  const parts = text.split(emailRegex);
+  // Email addresses and the site's own privacy-policy URL become links.
+  const linkRegex = /([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}|https:\/\/theifoa\.com\/privacy-policy)/g;
+  const parts = text.split(linkRegex);
   if (parts.length === 1) return text;
   return parts.map((part, i) => {
-    if (emailRegex.test(part)) {
-      return (
-        <a
-          key={i}
-          href={`mailto:${part}`}
-          className="font-bold text-ifoa-navy underline decoration-blue-400 hover:text-blue-700 transition-colors cursor-pointer"
-        >
-          {part}
-        </a>
-      );
-    }
-    return part;
+    if (i % 2 === 0) return part;
+    const isUrl = part.startsWith('https://');
+    return (
+      <a
+        key={i}
+        href={isUrl ? '/privacy-policy' : `mailto:${part}`}
+        target={isUrl ? '_blank' : undefined}
+        rel={isUrl ? 'noopener' : undefined}
+        className="font-bold text-ifoa-navy underline decoration-blue-400 hover:text-blue-700 transition-colors cursor-pointer"
+      >
+        {part}
+      </a>
+    );
   });
 }
 

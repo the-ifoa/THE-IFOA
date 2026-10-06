@@ -9,7 +9,7 @@ export const SITE_URL = import.meta.env.VITE_SITE_URL || 'https://theifoa.com'
 // so search engines aren't invited to index a pre-launch environment.
 export const SITE_NOINDEX = import.meta.env.VITE_NOINDEX === 'true'
 export const SITE_NAME = 'IFOA'
-export const SITE_LEGAL_NAME = 'IFOA International Flight Operations Academy'
+export const SITE_LEGAL_NAME = 'International Flight Operations Academy GmbH'
 // Names people type to find us ("theifoa" is the domain). Google uses these
 // for brand queries and the site name shown above search results.
 export const SITE_ALTERNATE_NAMES = ['theIFOA', 'The IFOA', 'International Flight Operations Academy']

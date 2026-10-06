@@ -4,7 +4,7 @@
 // of its own). Answers support **bold** and [label](href) like the overview
 // blocks do.
 
-const TERMS = "They're set out in our Terms and Conditions. Please read them before you apply."
+const TERMS = "They're part of the application form, and you accept them before you submit. [Contact us](/contact) if you want to see them before you apply."
 const VISA = "Contact us before you apply and we'll tell you what support is available for your situation."
 
 const dispatcherInitial = (onlineWeeks) => [
@@ -27,7 +27,7 @@ export const FAQ_SECTIONS = [
     title: 'Flight Dispatcher Initial',
     courseSlug: 'flight-dispatcher-initial-certification',
     items: dispatcherInitial(
-      'Live and self-paced study from home, so the on-site weeks (Sønderborg, Daytona Beach or New Delhi) can focus on practical work with instructors.'
+      'Live and self-paced study from home, so the on-site weeks (Sønderborg or New Delhi) can focus on practical work with instructors.'
     )
   },
   {
@@ -49,7 +49,7 @@ export const FAQ_SECTIONS = [
       },
       {
         q: 'Is the IFOA certificate the same as the FAA certificate?',
-        a: 'No. IFOA issues an IFOA Certificate of Completion, your graduation certificate, when you complete the course. The FAA issues the Aircraft Dispatcher certificate once you pass the knowledge and practical tests.'
+        a: 'No. IFOA issues an IFOA Certificate of Completion when you complete the course. The FAA issues the Aircraft Dispatcher certificate once you pass the knowledge and practical tests.'
       },
       { q: 'Do you help with visas and accommodation?', a: VISA },
       { q: 'What are the payment and refund terms?', a: TERMS }

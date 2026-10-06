@@ -49,7 +49,7 @@
       "careerPath": "Flight Dispatcher for US and European operators",
       "category": "dispatch",
       "certification": {
-        "text": "From the FAA: the Aircraft Dispatcher certificate under 14 CFR Part 65. Only the FAA issues it, once you pass the ADX knowledge test and the practical test with an FAA examiner. From IFOA: a course completion certificate, which you present at your practical test as proof you completed the approved course. It is not an FAA certificate. There is no EASA flight dispatcher license: in Europe, operators decide who may dispatch their flights.",
+        "text": "From the FAA: the Aircraft Dispatcher certificate under 14 CFR Part 65. Only the FAA issues it, once you pass the ADX knowledge test and the practical test with an FAA examiner. From IFOA: the IFOA Certificate of Completion, which you present at your practical test as proof you completed the approved course. It is not an FAA certificate. There is no EASA flight dispatcher license: in Europe, operators decide who may dispatch their flights.",
         "points": [
           "ADX Knowledge Test",
           "Practical Test with FAA Examiner"
@@ -232,7 +232,7 @@
         ]
       },
       "delivery": {
-        "intro": "Two parts, taught as one hybrid program in Europe.",
+        "intro": "Two parts, taught as one hybrid program in Denmark or India.",
         "items": [
           {
             "label": "School",
@@ -281,7 +281,7 @@
       "locationPrices": [],
       "order": 5,
       "overview": {
-        "sidebarNote": "Payment, cancellation and refunds: see our Terms and Conditions.",
+        "sidebarNote": "Payment, cancellation and refund terms are part of the application form.",
         "hero": {
           "title": "Double Program: FAA & EASA",
           "slogan": "We train dispatchers, not test takers.",
@@ -602,7 +602,7 @@
       "seats": null,
       "seo": {
         "metaTitle": "Flight Dispatcher Double Program: FAA, ICAO & EASA, 280 Hours | IFOA",
-        "metaDescription": "A 280-hour, 7-week hybrid program in Europe, $5,500 USD: the FAA Part 65 approved dispatcher course plus ICAO and EASA operations. Prepares you for the FAA Aircraft Dispatcher certificate."
+        "metaDescription": "A 280-hour, 7-week hybrid program in Denmark or India, $5,500 USD: the FAA Part 65 approved dispatcher course plus ICAO and EASA operations. Prepares you for the FAA Aircraft Dispatcher certificate."
       },
       "sidebarSpecs": [
         {
@@ -710,7 +710,7 @@
         "trustBadge": "",
         "value": ""
       },
-      "authority": "EASA / FAA Part 65 Standards",
+      "authority": "ICAO Doc 10106 / EASA Air Ops",
       "format": "Hybrid: 2 Weeks Online, 3 Weeks Onsite Sønderborg (Denmark)",
       "careerPath": "Commercial Airline Dispatcher, Cargo Flight Follower, Corporate OCC Specialist",
       "intakeLabel": "Intake: 4 January 2027",
@@ -965,8 +965,7 @@
           "startDate": "2027-01-04T09:00:00.000Z",
           "isActive": true,
           "locations": [
-            "Denmark",
-            "United States"
+            "Denmark"
           ]
         },
         {
@@ -988,7 +987,7 @@
         }
       ],
       "overview": {
-        "sidebarNote": "Payment, cancellation and refunds: see our Terms and Conditions.",
+        "sidebarNote": "Payment, cancellation and refund terms are part of the application form.",
         "hero": {
           "title": "Flight Dispatcher Initial",
           "lead": "Five weeks to learn how to plan, release and follow a flight, and make the calls when it doesn't go to plan. Built on ICAO Doc 10106 and taught by working dispatchers.",
@@ -1149,7 +1148,7 @@
           {
             "type": "table",
             "anchor": "compare",
-            "title": "EASA or FAA: which course?",
+            "title": "Which course is right for you?",
             "intro": "Both teach you to dispatch. They lead to different documents.",
             "highlight": 1,
             "head": [
@@ -1519,7 +1518,7 @@
         "metaDescription": "A 4-week flight dispatcher course in New Delhi, with online preparation first, built on ICAO Doc 10106. €1,000 + GST, including training materials, examination and certificate."
       },
       "overview": {
-        "sidebarNote": "Payment, cancellation and refunds: see our Terms and Conditions.",
+        "sidebarNote": "Payment, cancellation and refund terms are part of the application form.",
         "hero": {
           "title": "Flight Dispatcher Initial, India",
           "lead": "Four weeks in New Delhi, after online preparation, to learn how to plan, release and follow a flight, and make the calls when it doesn't go to plan. Built on ICAO Doc 10106 and taught by working dispatchers.",
@@ -1670,7 +1669,7 @@
           {
             "type": "table",
             "anchor": "compare",
-            "title": "EASA or FAA: which course?",
+            "title": "Which course is right for you?",
             "intro": "Both teach you to dispatch. They lead to different documents.",
             "highlight": 1,
             "head": [
@@ -1697,7 +1696,7 @@
               [
                 "Duration",
                 "4 weeks",
-                "200 hours, 5 weeks plus exam week"
+                "200 hours, 5 weeks, plus an exam week taken within 6 months"
               ],
               [
                 "Location",
@@ -1771,7 +1770,7 @@
       "summary": "Five weeks to learn how to plan, release and follow a flight, and make the calls when it doesn't go to plan. Built on ICAO Doc 10106 and taught by working dispatchers.",
       "heroImage": null,
       "trustStat": "",
-      "heroNote": "There is no EASA flight dispatcher license. In Europe, each operator decides who is qualified to dispatch its flights. This course gives you an IFOA Certificate of Completion, built on ICAO Doc 10106. If you need a government-issued dispatcher license, see our FAA Aircraft Dispatcher course.",
+      "heroNote": "This course gives you an IFOA Certificate of Completion, built on ICAO Doc 10106. It does not lead to an FAA certificate. US airlines require the FAA Aircraft Dispatcher certificate, so if that is your goal, take our FAA Aircraft Dispatcher course instead.",
       "isCorporate": false,
       "eyebrow": "",
       "badges": [],
@@ -1783,7 +1782,7 @@
         "secondaryCtaLabel": "",
         "trustBadge": ""
       },
-      "authority": "EASA / FAA Part 65 Standards",
+      "authority": "ICAO Doc 10106 / EASA Air Ops",
       "format": "Hybrid: 2 Weeks Online, 3 Weeks Onsite Daytona Beach (Florida)",
       "careerPath": "Commercial Airline Dispatcher, Cargo Flight Follower, Corporate OCC Specialist",
       "intakeLabel": "Intake: contact us",
@@ -2037,7 +2036,7 @@
         "metaDescription": "A 5-week flight dispatcher course built on ICAO Doc 10106: 2 weeks online, 3 weeks on-site in Daytona Beach, Florida. €3,500."
       },
       "overview": {
-        "sidebarNote": "Payment, cancellation and refunds: see our Terms and Conditions.",
+        "sidebarNote": "Payment, cancellation and refund terms are part of the application form.",
         "hero": {
           "title": "Flight Dispatcher Initial, USA",
           "lead": "Five weeks to learn how to plan, release and follow a flight, and make the calls when it doesn't go to plan. Built on ICAO Doc 10106 and taught by working dispatchers.",
@@ -2198,7 +2197,7 @@
           {
             "type": "table",
             "anchor": "compare",
-            "title": "EASA or FAA: which course?",
+            "title": "Which course is right for you?",
             "intro": "Both teach you to dispatch. They lead to different documents.",
             "highlight": 1,
             "head": [
@@ -2668,7 +2667,7 @@
         }
       ],
       "overview": {
-        "sidebarNote": "Payment, cancellation and refunds: see our Terms and Conditions.",
+        "sidebarNote": "Payment, cancellation and refund terms are part of the application form.",
         "hero": {
           "title": "FAA Aircraft Dispatcher",
           "slogan": "We train dispatchers, not test takers.",
@@ -2699,7 +2698,7 @@
                   "tone": "on"
                 }
               ],
-              "note": "The 200 hours cover the FAA knowledge areas. The 6 weeks include one week for the FAA exams (in India: 5 weeks, with the exam week taken within 6 months). ADX preparation is extra and done alongside, in your own time. The certificate itself is issued by the FAA."
+              "note": "The 200 hours cover the FAA knowledge areas. The 6 weeks include one week for the FAA exams (in India: 5 weeks, plus an exam week taken within 6 months). ADX preparation is extra and done alongside, in your own time. The certificate itself is issued by the FAA."
             }
           ]
         },
@@ -6023,7 +6022,7 @@
         {
           "id": "course-request",
           "title": "Course Request",
-          "description": "Review curriculum program and EASA statement",
+          "description": "Review the course details and certificate statement",
           "order": 3,
           "fields": [
             {
@@ -6037,7 +6036,7 @@
             },
             {
               "id": "acknowledgementAccepted",
-              "label": "I understand that with the absence of European regulatory requirements in the licensing of Flight Dispatchers in Europe, I will not receive a Flight Dispatcher certificate delivered by EASA. The International Flight Operations Academy GmbH will deliver a Flight Dispatcher certificate based on the EASA regulations specified in EASA Part ORO.GEN.110(c)&(e) and the prerequisite learning objectives set in the ICAO Doc 10106 Manuals.",
+              "label": "I understand that there is no EASA flight dispatcher license: in Europe, each operator decides who may dispatch its flights. IFOA will issue an IFOA Certificate of Completion, built on ICAO Doc 10106 and EASA ORO.GEN.110(c)&(e), when I complete the course. It is not a government-issued license or certificate.",
               "type": "checkbox",
               "required": true,
               "placeholder": "",
@@ -6162,7 +6161,7 @@
               "type": "staticText",
               "required": false,
               "placeholder": "",
-              "content": "1. The enrollment form duly filled out and signed shall be emailed to info@theIFOA.com\n2. Students must provide accurate information on the enrollment form. Students discovered to have falsified or misrepresented information may be liable to expulsion from the program.\n3. A registration fee of 1000 EUR is required to guarantee a place at the course session.\n4. The total tuition fee is due at least one month before the start of the training.\n5. Cancellation Policy: a) Cancellation 30 days or less before the training start date: IFOA is entitled to charge 50% of the tuition fee. b) Cancellation 14 days or less before the training start date: IFOA is entitled to charge the full tuition fee. c) IFOA reserves the right to cancel or re-schedule courses within three (3) days’ notice for Force Majeure or if the minimum number of students required to ensure efficient training is not reached. All pre-paid fees will automatically be refunded or move toward the next available course in case of cancellation. All other costs, fees, and disbursements will be the student’s responsibility.\n6. Absence/Non-appearance during the confirmed training course automatically forfeits the registration fee.\n7. IFOA cannot be held responsible if the EU immigration officer denies the EU entry at the port of entry.\n8. Changing the date is allowed only once for the same paid course. Notify and email info@theIFOA.com. Our team will re-schedule contingent on the next available training date.\n9. Participants can only be transferred or changed once for the same paid course. To do so, notify and email info@theIFOA.com.\n10. Bring a copy of the confirmation message on the first day of the training course.\n11. Total attendance at the training is required to release the training certificate.\n12. IFOA instructor teams will fulfill their obligations to deliver the highest education standards and support the students in exam preparation; however, students must take responsibility for their studies, including attending all scheduled classes, intermediate evaluations, and successful final exams. IFOA cannot be held responsible for exam failure. Furthermore, IFOA has no obligation to refund the students in case of program failure.\n13. Students agree to behave respectfully and ethically to all other fellow students, instructors, examiners, and other members of IFOA. Any transgression or misconduct, including cheating, will directly lead to expulsion from the program.\n\nPrivacy notice: IFOA controls how your personal data is used following this notice. We use your personal data only for contacting purposes based on your consent. We may share your personal data with IFOA and non-IFOA trainers inside and outside the EU and USA. We will keep your personal data for one year and securely delete it afterward.",
+              "content": "1. The enrollment form duly filled out and signed shall be emailed to info@theIFOA.com\n2. Students must provide accurate information on the enrollment form. Students discovered to have falsified or misrepresented information may be liable to expulsion from the program.\n3. A registration fee of 1000 EUR is required to guarantee a place at the course session.\n4. The total tuition fee is due at least one month before the start of the training.\n5. Cancellation Policy: a) Cancellation 30 days or less before the training start date: IFOA is entitled to charge 50% of the tuition fee. b) Cancellation 14 days or less before the training start date: IFOA is entitled to charge the full tuition fee. c) IFOA reserves the right to cancel or re-schedule courses within three (3) days’ notice for Force Majeure or if the minimum number of students required to ensure efficient training is not reached. All pre-paid fees will automatically be refunded or move toward the next available course in case of cancellation. All other costs, fees, and disbursements will be the student’s responsibility.\n6. Absence/Non-appearance during the confirmed training course automatically forfeits the registration fee.\n7. IFOA is not responsible if a visa or entry to the training country is refused.\n8. Changing the date is allowed only once for the same paid course. Notify and email info@theIFOA.com. Our team will re-schedule contingent on the next available training date.\n9. Participants can only be transferred or changed once for the same paid course. To do so, notify and email info@theIFOA.com.\n10. Bring a copy of the confirmation message on the first day of the training course.\n11. Total attendance at the training is required to release the training certificate.\n12. IFOA instructor teams will fulfill their obligations to deliver the highest education standards and support the students in exam preparation; however, students must take responsibility for their studies, including attending all scheduled classes, intermediate evaluations, and successful final exams. IFOA cannot be held responsible for exam failure. Furthermore, IFOA has no obligation to refund the students in case of program failure.\n13. Students agree to behave respectfully and ethically to all other fellow students, instructors, examiners, and other members of IFOA. Any transgression or misconduct, including cheating, will directly lead to expulsion from the program.\n\nPrivacy notice: IFOA uses your personal data to process your application, deliver the course and meet legal obligations, as set out in our Privacy Policy (https://theifoa.com/privacy-policy). We keep it only as long as needed for those purposes, including legal retention periods (for example ten years for accounting records). You can ask us to access, correct or delete your data at any time.",
               "order": 0
             },
             {
@@ -6561,7 +6560,7 @@
         {
           "id": "course-request",
           "title": "Course Request",
-          "description": "Review curriculum program and EASA statement",
+          "description": "Review the course details and certificate statement",
           "order": 3,
           "fields": [
             {
@@ -6575,7 +6574,7 @@
             },
             {
               "id": "acknowledgementAccepted",
-              "label": "I understand that with the absence of European regulatory requirements in the licensing of Flight Dispatchers in Europe, I will not receive a Flight Dispatcher certificate delivered by EASA. The International Flight Operations Academy GmbH will deliver a Flight Dispatcher certificate based on the EASA regulations specified in EASA Part ORO.GEN.110(c)&(e) and the prerequisite learning objectives set in the ICAO Doc 10106 Manuals.",
+              "label": "I understand that there is no EASA flight dispatcher license: in Europe, each operator decides who may dispatch its flights. IFOA will issue an IFOA Certificate of Completion, built on ICAO Doc 10106 and EASA ORO.GEN.110(c)&(e), when I complete the course. It is not a government-issued license or certificate.",
               "type": "checkbox",
               "required": true,
               "placeholder": "",
@@ -6700,7 +6699,7 @@
               "type": "staticText",
               "required": false,
               "placeholder": "",
-              "content": "1. The enrollment form duly filled out and signed shall be emailed to info@theIFOA.com\n2. Students must provide accurate information on the enrollment form. Students discovered to have falsified or misrepresented information may be liable to expulsion from the program.\n3. A registration fee of 1000 EUR is required to guarantee a place at the course session.\n4. The total tuition fee is due at least one month before the start of the training.\n5. Cancellation Policy: a) Cancellation 30 days or less before the training start date: IFOA is entitled to charge 50% of the tuition fee. b) Cancellation 14 days or less before the training start date: IFOA is entitled to charge the full tuition fee. c) IFOA reserves the right to cancel or re-schedule courses within three (3) days’ notice for Force Majeure or if the minimum number of students required to ensure efficient training is not reached. All pre-paid fees will automatically be refunded or move toward the next available course in case of cancellation. All other costs, fees, and disbursements will be the student’s responsibility.\n6. Absence/Non-appearance during the confirmed training course automatically forfeits the registration fee.\n7. IFOA cannot be held responsible if the EU immigration officer denies the EU entry at the port of entry.\n8. Changing the date is allowed only once for the same paid course. Notify and email info@theIFOA.com. Our team will re-schedule contingent on the next available training date.\n9. Participants can only be transferred or changed once for the same paid course. To do so, notify and email info@theIFOA.com.\n10. Bring a copy of the confirmation message on the first day of the training course.\n11. Total attendance at the training is required to release the training certificate.\n12. IFOA instructor teams will fulfill their obligations to deliver the highest education standards and support the students in exam preparation; however, students must take responsibility for their studies, including attending all scheduled classes, intermediate evaluations, and successful final exams. IFOA cannot be held responsible for exam failure. Furthermore, IFOA has no obligation to refund the students in case of program failure.\n13. Students agree to behave respectfully and ethically to all other fellow students, instructors, examiners, and other members of IFOA. Any transgression or misconduct, including cheating, will directly lead to expulsion from the program.\n\nPrivacy notice: IFOA controls how your personal data is used following this notice. We use your personal data only for contacting purposes based on your consent. We may share your personal data with IFOA and non-IFOA trainers inside and outside the EU and USA. We will keep your personal data for one year and securely delete it afterward.",
+              "content": "1. The enrollment form duly filled out and signed shall be emailed to info@theIFOA.com\n2. Students must provide accurate information on the enrollment form. Students discovered to have falsified or misrepresented information may be liable to expulsion from the program.\n3. A registration fee of 1000 EUR is required to guarantee a place at the course session.\n4. The total tuition fee is due at least one month before the start of the training.\n5. Cancellation Policy: a) Cancellation 30 days or less before the training start date: IFOA is entitled to charge 50% of the tuition fee. b) Cancellation 14 days or less before the training start date: IFOA is entitled to charge the full tuition fee. c) IFOA reserves the right to cancel or re-schedule courses within three (3) days’ notice for Force Majeure or if the minimum number of students required to ensure efficient training is not reached. All pre-paid fees will automatically be refunded or move toward the next available course in case of cancellation. All other costs, fees, and disbursements will be the student’s responsibility.\n6. Absence/Non-appearance during the confirmed training course automatically forfeits the registration fee.\n7. IFOA is not responsible if a visa or entry to the training country is refused.\n8. Changing the date is allowed only once for the same paid course. Notify and email info@theIFOA.com. Our team will re-schedule contingent on the next available training date.\n9. Participants can only be transferred or changed once for the same paid course. To do so, notify and email info@theIFOA.com.\n10. Bring a copy of the confirmation message on the first day of the training course.\n11. Total attendance at the training is required to release the training certificate.\n12. IFOA instructor teams will fulfill their obligations to deliver the highest education standards and support the students in exam preparation; however, students must take responsibility for their studies, including attending all scheduled classes, intermediate evaluations, and successful final exams. IFOA cannot be held responsible for exam failure. Furthermore, IFOA has no obligation to refund the students in case of program failure.\n13. Students agree to behave respectfully and ethically to all other fellow students, instructors, examiners, and other members of IFOA. Any transgression or misconduct, including cheating, will directly lead to expulsion from the program.\n\nPrivacy notice: IFOA uses your personal data to process your application, deliver the course and meet legal obligations, as set out in our Privacy Policy (https://theifoa.com/privacy-policy). We keep it only as long as needed for those purposes, including legal retention periods (for example ten years for accounting records). You can ask us to access, correct or delete your data at any time.",
               "order": 0
             },
             {
@@ -7113,7 +7112,7 @@
             },
             {
               "id": "acknowledgementAccepted",
-              "label": "I understand that the FAA Aircraft Dispatcher certificate (14 CFR Part 65) is issued only by the FAA, once I pass the ADX knowledge test and the practical test with an FAA examiner, and that I must be at least 21 to take the ADX and at least 23 to be issued the certificate. IFOA will deliver a graduation certificate for the approved course, which is not an FAA certificate.",
+              "label": "I understand that the FAA Aircraft Dispatcher certificate (14 CFR Part 65) is issued only by the FAA, once I pass the ADX knowledge test and the practical test with an FAA examiner, and that I must be at least 21 to take the ADX and at least 23 to be issued the certificate. IFOA will deliver an IFOA Certificate of Completion for the approved course, which is not an FAA certificate.",
               "type": "checkbox",
               "required": true,
               "placeholder": "",
@@ -7238,7 +7237,7 @@
               "type": "staticText",
               "required": false,
               "placeholder": "",
-              "content": "1. The enrollment form duly filled out and signed shall be emailed to info@theIFOA.com\n2. Students must provide accurate information on the enrollment form. Students discovered to have falsified or misrepresented information may be liable to expulsion from the program.\n3. A registration fee of 1000 EUR is required to guarantee a place at the course session.\n4. The total tuition fee is due at least one month before the start of the training.\n5. Cancellation Policy: a) Cancellation 30 days or less before the training start date: IFOA is entitled to charge 50% of the tuition fee. b) Cancellation 14 days or less before the training start date: IFOA is entitled to charge the full tuition fee. c) IFOA reserves the right to cancel or re-schedule courses within three (3) days’ notice for Force Majeure or if the minimum number of students required to ensure efficient training is not reached. All pre-paid fees will automatically be refunded or move toward the next available course in case of cancellation. All other costs, fees, and disbursements will be the student’s responsibility.\n6. Absence/Non-appearance during the confirmed training course automatically forfeits the registration fee.\n7. IFOA cannot be held responsible if the EU immigration officer denies the EU entry at the port of entry.\n8. Changing the date is allowed only once for the same paid course. Notify and email info@theIFOA.com. Our team will re-schedule contingent on the next available training date.\n9. Participants can only be transferred or changed once for the same paid course. To do so, notify and email info@theIFOA.com.\n10. Bring a copy of the confirmation message on the first day of the training course.\n11. Total attendance at the training is required to release the training certificate.\n12. IFOA instructor teams will fulfill their obligations to deliver the highest education standards and support the students in exam preparation; however, students must take responsibility for their studies, including attending all scheduled classes, intermediate evaluations, and successful final exams. IFOA cannot be held responsible for exam failure. Furthermore, IFOA has no obligation to refund the students in case of program failure.\n13. Students agree to behave respectfully and ethically to all other fellow students, instructors, examiners, and other members of IFOA. Any transgression or misconduct, including cheating, will directly lead to expulsion from the program.\n\nPrivacy notice: IFOA controls how your personal data is used following this notice. We use your personal data only for contacting purposes based on your consent. We may share your personal data with IFOA and non-IFOA trainers inside and outside the EU and USA. We will keep your personal data for one year and securely delete it afterward.",
+              "content": "1. The enrollment form duly filled out and signed shall be emailed to info@theIFOA.com\n2. Students must provide accurate information on the enrollment form. Students discovered to have falsified or misrepresented information may be liable to expulsion from the program.\n3. A registration fee of 1000 EUR is required to guarantee a place at the course session.\n4. The total tuition fee is due at least one month before the start of the training.\n5. Cancellation Policy: a) Cancellation 30 days or less before the training start date: IFOA is entitled to charge 50% of the tuition fee. b) Cancellation 14 days or less before the training start date: IFOA is entitled to charge the full tuition fee. c) IFOA reserves the right to cancel or re-schedule courses within three (3) days’ notice for Force Majeure or if the minimum number of students required to ensure efficient training is not reached. All pre-paid fees will automatically be refunded or move toward the next available course in case of cancellation. All other costs, fees, and disbursements will be the student’s responsibility.\n6. Absence/Non-appearance during the confirmed training course automatically forfeits the registration fee.\n7. IFOA is not responsible if a visa or entry to the training country is refused.\n8. Changing the date is allowed only once for the same paid course. Notify and email info@theIFOA.com. Our team will re-schedule contingent on the next available training date.\n9. Participants can only be transferred or changed once for the same paid course. To do so, notify and email info@theIFOA.com.\n10. Bring a copy of the confirmation message on the first day of the training course.\n11. Total attendance at the training is required to release the training certificate.\n12. IFOA instructor teams will fulfill their obligations to deliver the highest education standards and support the students in exam preparation; however, students must take responsibility for their studies, including attending all scheduled classes, intermediate evaluations, and successful final exams. IFOA cannot be held responsible for exam failure. Furthermore, IFOA has no obligation to refund the students in case of program failure.\n13. Students agree to behave respectfully and ethically to all other fellow students, instructors, examiners, and other members of IFOA. Any transgression or misconduct, including cheating, will directly lead to expulsion from the program.\n\nPrivacy notice: IFOA uses your personal data to process your application, deliver the course and meet legal obligations, as set out in our Privacy Policy (https://theifoa.com/privacy-policy). We keep it only as long as needed for those purposes, including legal retention periods (for example ten years for accounting records). You can ask us to access, correct or delete your data at any time.",
               "order": 0
             },
             {
@@ -7624,7 +7623,7 @@
         {
           "id": "course-request",
           "title": "Course Request",
-          "description": "Review curriculum program and EASA statement",
+          "description": "Review the course details and certificate statement",
           "order": 3,
           "fields": [
             {
@@ -7638,7 +7637,7 @@
             },
             {
               "id": "acknowledgementAccepted",
-              "label": "I understand that with the absence of European regulatory requirements in the licensing of Flight Dispatchers in Europe, I will not receive a Flight Dispatcher certificate delivered by EASA. The International Flight Operations Academy GmbH will deliver a Flight Dispatcher certificate based on the EASA regulations specified in EASA Part ORO.GEN.110(c)&(e) and the prerequisite learning objectives set in the ICAO Doc 10106 Manuals.",
+              "label": "I understand that IFOA issues an IFOA Certificate of Completion when I complete the course. It is not a government-issued license or certificate.",
               "type": "checkbox",
               "required": true,
               "placeholder": "",
@@ -7763,7 +7762,7 @@
               "type": "staticText",
               "required": false,
               "placeholder": "",
-              "content": "1. The enrollment form duly filled out and signed shall be emailed to info@theIFOA.com\n2. Students must provide accurate information on the enrollment form. Students discovered to have falsified or misrepresented information may be liable to expulsion from the program.\n3. A registration fee of 1000 EUR is required to guarantee a place at the course session.\n4. The total tuition fee is due at least one month before the start of the training.\n5. Cancellation Policy: a) Cancellation 30 days or less before the training start date: IFOA is entitled to charge 50% of the tuition fee. b) Cancellation 14 days or less before the training start date: IFOA is entitled to charge the full tuition fee. c) IFOA reserves the right to cancel or re-schedule courses within three (3) days’ notice for Force Majeure or if the minimum number of students required to ensure efficient training is not reached. All pre-paid fees will automatically be refunded or move toward the next available course in case of cancellation. All other costs, fees, and disbursements will be the student’s responsibility.\n6. Absence/Non-appearance during the confirmed training course automatically forfeits the registration fee.\n7. IFOA cannot be held responsible if the EU immigration officer denies the EU entry at the port of entry.\n8. Changing the date is allowed only once for the same paid course. Notify and email info@theIFOA.com. Our team will re-schedule contingent on the next available training date.\n9. Participants can only be transferred or changed once for the same paid course. To do so, notify and email info@theIFOA.com.\n10. Bring a copy of the confirmation message on the first day of the training course.\n11. Total attendance at the training is required to release the training certificate.\n12. IFOA instructor teams will fulfill their obligations to deliver the highest education standards and support the students in exam preparation; however, students must take responsibility for their studies, including attending all scheduled classes, intermediate evaluations, and successful final exams. IFOA cannot be held responsible for exam failure. Furthermore, IFOA has no obligation to refund the students in case of program failure.\n13. Students agree to behave respectfully and ethically to all other fellow students, instructors, examiners, and other members of IFOA. Any transgression or misconduct, including cheating, will directly lead to expulsion from the program.\n\nPrivacy notice: IFOA controls how your personal data is used following this notice. We use your personal data only for contacting purposes based on your consent. We may share your personal data with IFOA and non-IFOA trainers inside and outside the EU and USA. We will keep your personal data for one year and securely delete it afterward.",
+              "content": "1. The enrollment form duly filled out and signed shall be emailed to info@theIFOA.com\n2. Students must provide accurate information on the enrollment form. Students discovered to have falsified or misrepresented information may be liable to expulsion from the program.\n3. A registration fee of 1000 EUR is required to guarantee a place at the course session.\n4. The total tuition fee is due at least one month before the start of the training.\n5. Cancellation Policy: a) Cancellation 30 days or less before the training start date: IFOA is entitled to charge 50% of the tuition fee. b) Cancellation 14 days or less before the training start date: IFOA is entitled to charge the full tuition fee. c) IFOA reserves the right to cancel or re-schedule courses within three (3) days’ notice for Force Majeure or if the minimum number of students required to ensure efficient training is not reached. All pre-paid fees will automatically be refunded or move toward the next available course in case of cancellation. All other costs, fees, and disbursements will be the student’s responsibility.\n6. Absence/Non-appearance during the confirmed training course automatically forfeits the registration fee.\n7. IFOA is not responsible if a visa or entry to the training country is refused.\n8. Changing the date is allowed only once for the same paid course. Notify and email info@theIFOA.com. Our team will re-schedule contingent on the next available training date.\n9. Participants can only be transferred or changed once for the same paid course. To do so, notify and email info@theIFOA.com.\n10. Bring a copy of the confirmation message on the first day of the training course.\n11. Total attendance at the training is required to release the training certificate.\n12. IFOA instructor teams will fulfill their obligations to deliver the highest education standards and support the students in exam preparation; however, students must take responsibility for their studies, including attending all scheduled classes, intermediate evaluations, and successful final exams. IFOA cannot be held responsible for exam failure. Furthermore, IFOA has no obligation to refund the students in case of program failure.\n13. Students agree to behave respectfully and ethically to all other fellow students, instructors, examiners, and other members of IFOA. Any transgression or misconduct, including cheating, will directly lead to expulsion from the program.\n\nPrivacy notice: IFOA uses your personal data to process your application, deliver the course and meet legal obligations, as set out in our Privacy Policy (https://theifoa.com/privacy-policy). We keep it only as long as needed for those purposes, including legal retention periods (for example ten years for accounting records). You can ask us to access, correct or delete your data at any time.",
               "order": 0
             },
             {
@@ -8149,7 +8148,7 @@
         {
           "id": "course-request",
           "title": "Course Request",
-          "description": "Review curriculum program and EASA statement",
+          "description": "Review the course details and certificate statement",
           "order": 3,
           "fields": [
             {
@@ -8163,7 +8162,7 @@
             },
             {
               "id": "acknowledgementAccepted",
-              "label": "I understand that with the absence of European regulatory requirements in the licensing of Flight Dispatchers in Europe, I will not receive a Flight Dispatcher certificate delivered by EASA. The International Flight Operations Academy GmbH will deliver a Flight Dispatcher certificate based on the EASA regulations specified in EASA Part ORO.GEN.110(c)&(e) and the prerequisite learning objectives set in the ICAO Doc 10106 Manuals.",
+              "label": "I understand that IFOA issues an IFOA Certificate of Completion when I complete the course. It is not a government-issued license or certificate.",
               "type": "checkbox",
               "required": true,
               "placeholder": "",
@@ -8288,7 +8287,7 @@
               "type": "staticText",
               "required": false,
               "placeholder": "",
-              "content": "1. The enrollment form duly filled out and signed shall be emailed to info@theIFOA.com\n2. Students must provide accurate information on the enrollment form. Students discovered to have falsified or misrepresented information may be liable to expulsion from the program.\n3. A registration fee of 1000 EUR is required to guarantee a place at the course session.\n4. The total tuition fee is due at least one month before the start of the training.\n5. Cancellation Policy: a) Cancellation 30 days or less before the training start date: IFOA is entitled to charge 50% of the tuition fee. b) Cancellation 14 days or less before the training start date: IFOA is entitled to charge the full tuition fee. c) IFOA reserves the right to cancel or re-schedule courses within three (3) days’ notice for Force Majeure or if the minimum number of students required to ensure efficient training is not reached. All pre-paid fees will automatically be refunded or move toward the next available course in case of cancellation. All other costs, fees, and disbursements will be the student’s responsibility.\n6. Absence/Non-appearance during the confirmed training course automatically forfeits the registration fee.\n7. IFOA cannot be held responsible if the EU immigration officer denies the EU entry at the port of entry.\n8. Changing the date is allowed only once for the same paid course. Notify and email info@theIFOA.com. Our team will re-schedule contingent on the next available training date.\n9. Participants can only be transferred or changed once for the same paid course. To do so, notify and email info@theIFOA.com.\n10. Bring a copy of the confirmation message on the first day of the training course.\n11. Total attendance at the training is required to release the training certificate.\n12. IFOA instructor teams will fulfill their obligations to deliver the highest education standards and support the students in exam preparation; however, students must take responsibility for their studies, including attending all scheduled classes, intermediate evaluations, and successful final exams. IFOA cannot be held responsible for exam failure. Furthermore, IFOA has no obligation to refund the students in case of program failure.\n13. Students agree to behave respectfully and ethically to all other fellow students, instructors, examiners, and other members of IFOA. Any transgression or misconduct, including cheating, will directly lead to expulsion from the program.\n\nPrivacy notice: IFOA controls how your personal data is used following this notice. We use your personal data only for contacting purposes based on your consent. We may share your personal data with IFOA and non-IFOA trainers inside and outside the EU and USA. We will keep your personal data for one year and securely delete it afterward.",
+              "content": "1. The enrollment form duly filled out and signed shall be emailed to info@theIFOA.com\n2. Students must provide accurate information on the enrollment form. Students discovered to have falsified or misrepresented information may be liable to expulsion from the program.\n3. A registration fee of 1000 EUR is required to guarantee a place at the course session.\n4. The total tuition fee is due at least one month before the start of the training.\n5. Cancellation Policy: a) Cancellation 30 days or less before the training start date: IFOA is entitled to charge 50% of the tuition fee. b) Cancellation 14 days or less before the training start date: IFOA is entitled to charge the full tuition fee. c) IFOA reserves the right to cancel or re-schedule courses within three (3) days’ notice for Force Majeure or if the minimum number of students required to ensure efficient training is not reached. All pre-paid fees will automatically be refunded or move toward the next available course in case of cancellation. All other costs, fees, and disbursements will be the student’s responsibility.\n6. Absence/Non-appearance during the confirmed training course automatically forfeits the registration fee.\n7. IFOA is not responsible if a visa or entry to the training country is refused.\n8. Changing the date is allowed only once for the same paid course. Notify and email info@theIFOA.com. Our team will re-schedule contingent on the next available training date.\n9. Participants can only be transferred or changed once for the same paid course. To do so, notify and email info@theIFOA.com.\n10. Bring a copy of the confirmation message on the first day of the training course.\n11. Total attendance at the training is required to release the training certificate.\n12. IFOA instructor teams will fulfill their obligations to deliver the highest education standards and support the students in exam preparation; however, students must take responsibility for their studies, including attending all scheduled classes, intermediate evaluations, and successful final exams. IFOA cannot be held responsible for exam failure. Furthermore, IFOA has no obligation to refund the students in case of program failure.\n13. Students agree to behave respectfully and ethically to all other fellow students, instructors, examiners, and other members of IFOA. Any transgression or misconduct, including cheating, will directly lead to expulsion from the program.\n\nPrivacy notice: IFOA uses your personal data to process your application, deliver the course and meet legal obligations, as set out in our Privacy Policy (https://theifoa.com/privacy-policy). We keep it only as long as needed for those purposes, including legal retention periods (for example ten years for accounting records). You can ask us to access, correct or delete your data at any time.",
               "order": 0
             },
             {
@@ -8674,7 +8673,7 @@
         {
           "id": "course-request",
           "title": "Course Request",
-          "description": "Review curriculum program and EASA statement",
+          "description": "Review the course details and certificate statement",
           "order": 3,
           "fields": [
             {
@@ -8688,7 +8687,7 @@
             },
             {
               "id": "acknowledgementAccepted",
-              "label": "I understand that with the absence of European regulatory requirements in the licensing of Flight Dispatchers in Europe, I will not receive a Flight Dispatcher certificate delivered by EASA. The International Flight Operations Academy GmbH will deliver a Flight Dispatcher certificate based on the EASA regulations specified in EASA Part ORO.GEN.110(c)&(e) and the prerequisite learning objectives set in the ICAO Doc 10106 Manuals.",
+              "label": "I understand that IFOA issues an IFOA Certificate of Completion when I complete the course. It is not a government-issued license or certificate.",
               "type": "checkbox",
               "required": true,
               "placeholder": "",
@@ -8813,7 +8812,7 @@
               "type": "staticText",
               "required": false,
               "placeholder": "",
-              "content": "1. The enrollment form duly filled out and signed shall be emailed to info@theIFOA.com\n2. Students must provide accurate information on the enrollment form. Students discovered to have falsified or misrepresented information may be liable to expulsion from the program.\n3. A registration fee of 1000 EUR is required to guarantee a place at the course session.\n4. The total tuition fee is due at least one month before the start of the training.\n5. Cancellation Policy: a) Cancellation 30 days or less before the training start date: IFOA is entitled to charge 50% of the tuition fee. b) Cancellation 14 days or less before the training start date: IFOA is entitled to charge the full tuition fee. c) IFOA reserves the right to cancel or re-schedule courses within three (3) days’ notice for Force Majeure or if the minimum number of students required to ensure efficient training is not reached. All pre-paid fees will automatically be refunded or move toward the next available course in case of cancellation. All other costs, fees, and disbursements will be the student’s responsibility.\n6. Absence/Non-appearance during the confirmed training course automatically forfeits the registration fee.\n7. IFOA cannot be held responsible if the EU immigration officer denies the EU entry at the port of entry.\n8. Changing the date is allowed only once for the same paid course. Notify and email info@theIFOA.com. Our team will re-schedule contingent on the next available training date.\n9. Participants can only be transferred or changed once for the same paid course. To do so, notify and email info@theIFOA.com.\n10. Bring a copy of the confirmation message on the first day of the training course.\n11. Total attendance at the training is required to release the training certificate.\n12. IFOA instructor teams will fulfill their obligations to deliver the highest education standards and support the students in exam preparation; however, students must take responsibility for their studies, including attending all scheduled classes, intermediate evaluations, and successful final exams. IFOA cannot be held responsible for exam failure. Furthermore, IFOA has no obligation to refund the students in case of program failure.\n13. Students agree to behave respectfully and ethically to all other fellow students, instructors, examiners, and other members of IFOA. Any transgression or misconduct, including cheating, will directly lead to expulsion from the program.\n\nPrivacy notice: IFOA controls how your personal data is used following this notice. We use your personal data only for contacting purposes based on your consent. We may share your personal data with IFOA and non-IFOA trainers inside and outside the EU and USA. We will keep your personal data for one year and securely delete it afterward.",
+              "content": "1. The enrollment form duly filled out and signed shall be emailed to info@theIFOA.com\n2. Students must provide accurate information on the enrollment form. Students discovered to have falsified or misrepresented information may be liable to expulsion from the program.\n3. A registration fee of 1000 EUR is required to guarantee a place at the course session.\n4. The total tuition fee is due at least one month before the start of the training.\n5. Cancellation Policy: a) Cancellation 30 days or less before the training start date: IFOA is entitled to charge 50% of the tuition fee. b) Cancellation 14 days or less before the training start date: IFOA is entitled to charge the full tuition fee. c) IFOA reserves the right to cancel or re-schedule courses within three (3) days’ notice for Force Majeure or if the minimum number of students required to ensure efficient training is not reached. All pre-paid fees will automatically be refunded or move toward the next available course in case of cancellation. All other costs, fees, and disbursements will be the student’s responsibility.\n6. Absence/Non-appearance during the confirmed training course automatically forfeits the registration fee.\n7. IFOA is not responsible if a visa or entry to the training country is refused.\n8. Changing the date is allowed only once for the same paid course. Notify and email info@theIFOA.com. Our team will re-schedule contingent on the next available training date.\n9. Participants can only be transferred or changed once for the same paid course. To do so, notify and email info@theIFOA.com.\n10. Bring a copy of the confirmation message on the first day of the training course.\n11. Total attendance at the training is required to release the training certificate.\n12. IFOA instructor teams will fulfill their obligations to deliver the highest education standards and support the students in exam preparation; however, students must take responsibility for their studies, including attending all scheduled classes, intermediate evaluations, and successful final exams. IFOA cannot be held responsible for exam failure. Furthermore, IFOA has no obligation to refund the students in case of program failure.\n13. Students agree to behave respectfully and ethically to all other fellow students, instructors, examiners, and other members of IFOA. Any transgression or misconduct, including cheating, will directly lead to expulsion from the program.\n\nPrivacy notice: IFOA uses your personal data to process your application, deliver the course and meet legal obligations, as set out in our Privacy Policy (https://theifoa.com/privacy-policy). We keep it only as long as needed for those purposes, including legal retention periods (for example ten years for accounting records). You can ask us to access, correct or delete your data at any time.",
               "order": 0
             },
             {
@@ -9199,7 +9198,7 @@
         {
           "id": "course-request",
           "title": "Course Request",
-          "description": "Review curriculum program and EASA statement",
+          "description": "Review the course details and certificate statement",
           "order": 3,
           "fields": [
             {
@@ -9213,7 +9212,7 @@
             },
             {
               "id": "acknowledgementAccepted",
-              "label": "I understand that with the absence of European regulatory requirements in the licensing of Flight Dispatchers in Europe, I will not receive a Flight Dispatcher certificate delivered by EASA. The International Flight Operations Academy GmbH will deliver a Flight Dispatcher certificate based on the EASA regulations specified in EASA Part ORO.GEN.110(c)&(e) and the prerequisite learning objectives set in the ICAO Doc 10106 Manuals.",
+              "label": "I understand that IFOA issues an IFOA Certificate of Completion when I complete the course. It is not a government-issued license or certificate.",
               "type": "checkbox",
               "required": true,
               "placeholder": "",
@@ -9338,7 +9337,7 @@
               "type": "staticText",
               "required": false,
               "placeholder": "",
-              "content": "1. The enrollment form duly filled out and signed shall be emailed to info@theIFOA.com\n2. Students must provide accurate information on the enrollment form. Students discovered to have falsified or misrepresented information may be liable to expulsion from the program.\n3. A registration fee of 1000 EUR is required to guarantee a place at the course session.\n4. The total tuition fee is due at least one month before the start of the training.\n5. Cancellation Policy: a) Cancellation 30 days or less before the training start date: IFOA is entitled to charge 50% of the tuition fee. b) Cancellation 14 days or less before the training start date: IFOA is entitled to charge the full tuition fee. c) IFOA reserves the right to cancel or re-schedule courses within three (3) days’ notice for Force Majeure or if the minimum number of students required to ensure efficient training is not reached. All pre-paid fees will automatically be refunded or move toward the next available course in case of cancellation. All other costs, fees, and disbursements will be the student’s responsibility.\n6. Absence/Non-appearance during the confirmed training course automatically forfeits the registration fee.\n7. IFOA cannot be held responsible if the EU immigration officer denies the EU entry at the port of entry.\n8. Changing the date is allowed only once for the same paid course. Notify and email info@theIFOA.com. Our team will re-schedule contingent on the next available training date.\n9. Participants can only be transferred or changed once for the same paid course. To do so, notify and email info@theIFOA.com.\n10. Bring a copy of the confirmation message on the first day of the training course.\n11. Total attendance at the training is required to release the training certificate.\n12. IFOA instructor teams will fulfill their obligations to deliver the highest education standards and support the students in exam preparation; however, students must take responsibility for their studies, including attending all scheduled classes, intermediate evaluations, and successful final exams. IFOA cannot be held responsible for exam failure. Furthermore, IFOA has no obligation to refund the students in case of program failure.\n13. Students agree to behave respectfully and ethically to all other fellow students, instructors, examiners, and other members of IFOA. Any transgression or misconduct, including cheating, will directly lead to expulsion from the program.\n\nPrivacy notice: IFOA controls how your personal data is used following this notice. We use your personal data only for contacting purposes based on your consent. We may share your personal data with IFOA and non-IFOA trainers inside and outside the EU and USA. We will keep your personal data for one year and securely delete it afterward.",
+              "content": "1. The enrollment form duly filled out and signed shall be emailed to info@theIFOA.com\n2. Students must provide accurate information on the enrollment form. Students discovered to have falsified or misrepresented information may be liable to expulsion from the program.\n3. A registration fee of 1000 EUR is required to guarantee a place at the course session.\n4. The total tuition fee is due at least one month before the start of the training.\n5. Cancellation Policy: a) Cancellation 30 days or less before the training start date: IFOA is entitled to charge 50% of the tuition fee. b) Cancellation 14 days or less before the training start date: IFOA is entitled to charge the full tuition fee. c) IFOA reserves the right to cancel or re-schedule courses within three (3) days’ notice for Force Majeure or if the minimum number of students required to ensure efficient training is not reached. All pre-paid fees will automatically be refunded or move toward the next available course in case of cancellation. All other costs, fees, and disbursements will be the student’s responsibility.\n6. Absence/Non-appearance during the confirmed training course automatically forfeits the registration fee.\n7. IFOA is not responsible if a visa or entry to the training country is refused.\n8. Changing the date is allowed only once for the same paid course. Notify and email info@theIFOA.com. Our team will re-schedule contingent on the next available training date.\n9. Participants can only be transferred or changed once for the same paid course. To do so, notify and email info@theIFOA.com.\n10. Bring a copy of the confirmation message on the first day of the training course.\n11. Total attendance at the training is required to release the training certificate.\n12. IFOA instructor teams will fulfill their obligations to deliver the highest education standards and support the students in exam preparation; however, students must take responsibility for their studies, including attending all scheduled classes, intermediate evaluations, and successful final exams. IFOA cannot be held responsible for exam failure. Furthermore, IFOA has no obligation to refund the students in case of program failure.\n13. Students agree to behave respectfully and ethically to all other fellow students, instructors, examiners, and other members of IFOA. Any transgression or misconduct, including cheating, will directly lead to expulsion from the program.\n\nPrivacy notice: IFOA uses your personal data to process your application, deliver the course and meet legal obligations, as set out in our Privacy Policy (https://theifoa.com/privacy-policy). We keep it only as long as needed for those purposes, including legal retention periods (for example ten years for accounting records). You can ask us to access, correct or delete your data at any time.",
               "order": 0
             },
             {
@@ -9724,7 +9723,7 @@
         {
           "id": "course-request",
           "title": "Course Request",
-          "description": "Review curriculum program and EASA statement",
+          "description": "Review the course details and certificate statement",
           "order": 3,
           "fields": [
             {
@@ -9738,7 +9737,7 @@
             },
             {
               "id": "acknowledgementAccepted",
-              "label": "I understand that with the absence of European regulatory requirements in the licensing of Flight Dispatchers in Europe, I will not receive a Flight Dispatcher certificate delivered by EASA. The International Flight Operations Academy GmbH will deliver a Flight Dispatcher certificate based on the EASA regulations specified in EASA Part ORO.GEN.110(c)&(e) and the prerequisite learning objectives set in the ICAO Doc 10106 Manuals.",
+              "label": "I understand that IFOA issues an IFOA Certificate of Completion when I complete the course. It is not a government-issued license or certificate.",
               "type": "checkbox",
               "required": true,
               "placeholder": "",
@@ -9863,7 +9862,7 @@
               "type": "staticText",
               "required": false,
               "placeholder": "",
-              "content": "1. The enrollment form duly filled out and signed shall be emailed to info@theIFOA.com\n2. Students must provide accurate information on the enrollment form. Students discovered to have falsified or misrepresented information may be liable to expulsion from the program.\n3. A registration fee of 1000 EUR is required to guarantee a place at the course session.\n4. The total tuition fee is due at least one month before the start of the training.\n5. Cancellation Policy: a) Cancellation 30 days or less before the training start date: IFOA is entitled to charge 50% of the tuition fee. b) Cancellation 14 days or less before the training start date: IFOA is entitled to charge the full tuition fee. c) IFOA reserves the right to cancel or re-schedule courses within three (3) days’ notice for Force Majeure or if the minimum number of students required to ensure efficient training is not reached. All pre-paid fees will automatically be refunded or move toward the next available course in case of cancellation. All other costs, fees, and disbursements will be the student’s responsibility.\n6. Absence/Non-appearance during the confirmed training course automatically forfeits the registration fee.\n7. IFOA cannot be held responsible if the EU immigration officer denies the EU entry at the port of entry.\n8. Changing the date is allowed only once for the same paid course. Notify and email info@theIFOA.com. Our team will re-schedule contingent on the next available training date.\n9. Participants can only be transferred or changed once for the same paid course. To do so, notify and email info@theIFOA.com.\n10. Bring a copy of the confirmation message on the first day of the training course.\n11. Total attendance at the training is required to release the training certificate.\n12. IFOA instructor teams will fulfill their obligations to deliver the highest education standards and support the students in exam preparation; however, students must take responsibility for their studies, including attending all scheduled classes, intermediate evaluations, and successful final exams. IFOA cannot be held responsible for exam failure. Furthermore, IFOA has no obligation to refund the students in case of program failure.\n13. Students agree to behave respectfully and ethically to all other fellow students, instructors, examiners, and other members of IFOA. Any transgression or misconduct, including cheating, will directly lead to expulsion from the program.\n\nPrivacy notice: IFOA controls how your personal data is used following this notice. We use your personal data only for contacting purposes based on your consent. We may share your personal data with IFOA and non-IFOA trainers inside and outside the EU and USA. We will keep your personal data for one year and securely delete it afterward.",
+              "content": "1. The enrollment form duly filled out and signed shall be emailed to info@theIFOA.com\n2. Students must provide accurate information on the enrollment form. Students discovered to have falsified or misrepresented information may be liable to expulsion from the program.\n3. A registration fee of 1000 EUR is required to guarantee a place at the course session.\n4. The total tuition fee is due at least one month before the start of the training.\n5. Cancellation Policy: a) Cancellation 30 days or less before the training start date: IFOA is entitled to charge 50% of the tuition fee. b) Cancellation 14 days or less before the training start date: IFOA is entitled to charge the full tuition fee. c) IFOA reserves the right to cancel or re-schedule courses within three (3) days’ notice for Force Majeure or if the minimum number of students required to ensure efficient training is not reached. All pre-paid fees will automatically be refunded or move toward the next available course in case of cancellation. All other costs, fees, and disbursements will be the student’s responsibility.\n6. Absence/Non-appearance during the confirmed training course automatically forfeits the registration fee.\n7. IFOA is not responsible if a visa or entry to the training country is refused.\n8. Changing the date is allowed only once for the same paid course. Notify and email info@theIFOA.com. Our team will re-schedule contingent on the next available training date.\n9. Participants can only be transferred or changed once for the same paid course. To do so, notify and email info@theIFOA.com.\n10. Bring a copy of the confirmation message on the first day of the training course.\n11. Total attendance at the training is required to release the training certificate.\n12. IFOA instructor teams will fulfill their obligations to deliver the highest education standards and support the students in exam preparation; however, students must take responsibility for their studies, including attending all scheduled classes, intermediate evaluations, and successful final exams. IFOA cannot be held responsible for exam failure. Furthermore, IFOA has no obligation to refund the students in case of program failure.\n13. Students agree to behave respectfully and ethically to all other fellow students, instructors, examiners, and other members of IFOA. Any transgression or misconduct, including cheating, will directly lead to expulsion from the program.\n\nPrivacy notice: IFOA uses your personal data to process your application, deliver the course and meet legal obligations, as set out in our Privacy Policy (https://theifoa.com/privacy-policy). We keep it only as long as needed for those purposes, including legal retention periods (for example ten years for accounting records). You can ask us to access, correct or delete your data at any time.",
               "order": 0
             },
             {
@@ -10276,7 +10275,7 @@
             },
             {
               "id": "acknowledgementAccepted",
-              "label": "I understand that the FAA Aircraft Dispatcher certificate (14 CFR Part 65) is issued only by the FAA, once I pass the ADX knowledge test and the practical test with an FAA examiner, and that I must be at least 21 to take the ADX and at least 23 to be issued the certificate. IFOA will deliver a course completion certificate, which is not an FAA certificate. There is no EASA flight dispatcher license: in Europe, operators decide who may dispatch their flights.",
+              "label": "I understand that the FAA Aircraft Dispatcher certificate (14 CFR Part 65) is issued only by the FAA, once I pass the ADX knowledge test and the practical test with an FAA examiner, and that I must be at least 21 to take the ADX and at least 23 to be issued the certificate. IFOA will deliver an IFOA Certificate of Completion, which is not an FAA certificate. There is no EASA flight dispatcher license: in Europe, operators decide who may dispatch their flights.",
               "type": "checkbox",
               "required": true,
               "placeholder": "",
@@ -10401,7 +10400,7 @@
               "type": "staticText",
               "required": false,
               "placeholder": "",
-              "content": "1. The enrollment form duly filled out and signed shall be emailed to info@theIFOA.com\n2. Students must provide accurate information on the enrollment form. Students discovered to have falsified or misrepresented information may be liable to expulsion from the program.\n3. A registration fee of 1000 EUR is required to guarantee a place at the course session.\n4. The total tuition fee is due at least one month before the start of the training.\n5. Cancellation Policy: a) Cancellation 30 days or less before the training start date: IFOA is entitled to charge 50% of the tuition fee. b) Cancellation 14 days or less before the training start date: IFOA is entitled to charge the full tuition fee. c) IFOA reserves the right to cancel or re-schedule courses within three (3) days’ notice for Force Majeure or if the minimum number of students required to ensure efficient training is not reached. All pre-paid fees will automatically be refunded or move toward the next available course in case of cancellation. All other costs, fees, and disbursements will be the student’s responsibility.\n6. Absence/Non-appearance during the confirmed training course automatically forfeits the registration fee.\n7. IFOA cannot be held responsible if the EU immigration officer denies the EU entry at the port of entry.\n8. Changing the date is allowed only once for the same paid course. Notify and email info@theIFOA.com. Our team will re-schedule contingent on the next available training date.\n9. Participants can only be transferred or changed once for the same paid course. To do so, notify and email info@theIFOA.com.\n10. Bring a copy of the confirmation message on the first day of the training course.\n11. Total attendance at the training is required to release the training certificate.\n12. IFOA instructor teams will fulfill their obligations to deliver the highest education standards and support the students in exam preparation; however, students must take responsibility for their studies, including attending all scheduled classes, intermediate evaluations, and successful final exams. IFOA cannot be held responsible for exam failure. Furthermore, IFOA has no obligation to refund the students in case of program failure.\n13. Students agree to behave respectfully and ethically to all other fellow students, instructors, examiners, and other members of IFOA. Any transgression or misconduct, including cheating, will directly lead to expulsion from the program.\n\nPrivacy notice: IFOA controls how your personal data is used following this notice. We use your personal data only for contacting purposes based on your consent. We may share your personal data with IFOA and non-IFOA trainers inside and outside the EU and USA. We will keep your personal data for one year and securely delete it afterward.",
+              "content": "1. The enrollment form duly filled out and signed shall be emailed to info@theIFOA.com\n2. Students must provide accurate information on the enrollment form. Students discovered to have falsified or misrepresented information may be liable to expulsion from the program.\n3. A registration fee of 1000 EUR is required to guarantee a place at the course session.\n4. The total tuition fee is due at least one month before the start of the training.\n5. Cancellation Policy: a) Cancellation 30 days or less before the training start date: IFOA is entitled to charge 50% of the tuition fee. b) Cancellation 14 days or less before the training start date: IFOA is entitled to charge the full tuition fee. c) IFOA reserves the right to cancel or re-schedule courses within three (3) days’ notice for Force Majeure or if the minimum number of students required to ensure efficient training is not reached. All pre-paid fees will automatically be refunded or move toward the next available course in case of cancellation. All other costs, fees, and disbursements will be the student’s responsibility.\n6. Absence/Non-appearance during the confirmed training course automatically forfeits the registration fee.\n7. IFOA is not responsible if a visa or entry to the training country is refused.\n8. Changing the date is allowed only once for the same paid course. Notify and email info@theIFOA.com. Our team will re-schedule contingent on the next available training date.\n9. Participants can only be transferred or changed once for the same paid course. To do so, notify and email info@theIFOA.com.\n10. Bring a copy of the confirmation message on the first day of the training course.\n11. Total attendance at the training is required to release the training certificate.\n12. IFOA instructor teams will fulfill their obligations to deliver the highest education standards and support the students in exam preparation; however, students must take responsibility for their studies, including attending all scheduled classes, intermediate evaluations, and successful final exams. IFOA cannot be held responsible for exam failure. Furthermore, IFOA has no obligation to refund the students in case of program failure.\n13. Students agree to behave respectfully and ethically to all other fellow students, instructors, examiners, and other members of IFOA. Any transgression or misconduct, including cheating, will directly lead to expulsion from the program.\n\nPrivacy notice: IFOA uses your personal data to process your application, deliver the course and meet legal obligations, as set out in our Privacy Policy (https://theifoa.com/privacy-policy). We keep it only as long as needed for those purposes, including legal retention periods (for example ten years for accounting records). You can ask us to access, correct or delete your data at any time.",
               "order": 0
             },
             {

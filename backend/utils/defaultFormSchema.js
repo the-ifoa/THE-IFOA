@@ -209,7 +209,7 @@ const defaultFormSchema = {
     {
       id: 'course-request',
       title: 'Course Request',
-      description: 'Review curriculum program and EASA statement',
+      description: 'Review the course details and certificate statement',
       order: 3,
       fields: [
         {

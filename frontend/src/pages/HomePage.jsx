@@ -193,7 +193,7 @@ const FALLBACK = {
       {
         name: 'India',
         city: 'New Delhi, India',
-        desc: 'Three courses: Flight Dispatcher Initial (ICAO Doc 10106, 4 weeks, online preparation then on-site), FAA Aircraft Dispatcher (Part 65 approved course, 200 hours, 5 weeks plus exam week) and the Double Program: FAA & EASA (280 hours, 7 weeks).',
+        desc: 'Three courses: Flight Dispatcher Initial (ICAO Doc 10106, 4 weeks, online preparation then on-site), FAA Aircraft Dispatcher (Part 65 approved course, 200 hours, 5 weeks, plus an exam week taken within 6 months) and the Double Program: FAA & EASA (280 hours, 7 weeks).',
         link1Label: 'Flight Dispatcher Initial',
         link1Slug: 'flight-dispatcher-initial-training-india',
         link2Label: 'FAA Aircraft Dispatcher',
@@ -261,7 +261,7 @@ const FALLBACK = {
       {
         category: 'FAA & EASA',
         title: 'Double Program: FAA & EASA',
-        desc: 'The FAA Part 65 approved course plus ICAO and EASA operations in one program. The FAA issues the certificate.',
+        desc: 'The FAA Part 65 approved course plus ICAO and EASA operations in one program. The FAA certificate is issued by the FAA.',
         hours: '280 Hours (7 Weeks) · Hybrid\nDenmark, India · $5,500 USD',
         linkText: 'View course',
         courseSlug: 'flight-dispatcher-double-programme'
@@ -278,7 +278,7 @@ const FALLBACK = {
         category: 'ICAO Doc 10106',
         title: 'Flight Dispatcher Initial',
         desc: 'ICAO Doc 10106, with EASA operations.',
-        hours: '200 Hours (5 Weeks) · Hybrid\nDenmark · €3,500 (India: 4 Weeks, €1,000)',
+        hours: '200 Hours (5 Weeks) · Hybrid\nDenmark · €3,500 (India: 4 Weeks, €1,000 + GST)',
         linkText: 'View course',
         courseSlug: 'flight-dispatcher-initial-certification'
       }

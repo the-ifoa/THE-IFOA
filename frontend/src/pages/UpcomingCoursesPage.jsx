@@ -1,7 +1,11 @@
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { RiArrowRightLine } from 'react-icons/ri'
 import { Seo } from '@/components/common/Seo'
 import { Reveal } from '@/components/common/Reveal'
+import { api } from '@/lib/api'
+import { readPreload } from '@/lib/preload'
+import { priceText } from '@/components/course/PriceTag'
 import { graph, organizationSchema, breadcrumbSchema, courseListSchema } from '@/lib/seo'
 import bannerHero from '@/assets/shared/photos/IOFA-banner_10@1920x1280.jpg'
 
@@ -46,7 +50,7 @@ const COURSES = [
     slug: 'aircraft-dispatcher-training-faa-part-65',
     desc: 'FAA Part 65 approved. Prepares you for the FAA Aircraft Dispatcher certificate.',
     facts: [
-      ['Duration', '200 hours, 6 weeks (India: 5 weeks + exam week), plus ADX self-study'],
+      ['Duration', '200 hours, 6 weeks (India: 5 weeks, plus an exam week taken within 6 months), plus ADX self-study'],
       ['Where', 'Online preparation, then Sønderborg, Florida or New Delhi'],
       ['Fee', '$4,500 USD']
     ],
@@ -82,7 +86,21 @@ const COURSES = [
   }
 ]
 
+const bySlug = (courses) => Object.fromEntries((courses || []).map((c) => [c.slug, c]))
+
 export function UpcomingCoursesPage() {
+  // Fees come from the course data so they cannot drift from the course pages;
+  // the fee written in COURSES above is the fallback while it loads or if the API is down.
+  const [live, setLive] = useState(() => bySlug(readPreload('courses')))
+  useEffect(() => {
+    api
+      .listCourses()
+      .then((data) => setLive(bySlug(data.courses)))
+      .catch(() => {
+        // Keep the fees already on screen.
+      })
+  }, [])
+
   return (
     <div className="bg-[#f8fafc] text-rocket-dark selection:bg-[#34E06E] selection:text-slate-950" data-purpose="upcoming-courses-page">
       <Seo
@@ -133,6 +151,8 @@ export function UpcomingCoursesPage() {
 
             {COURSES.map((course, i) => {
               const fact = Object.fromEntries(course.facts)
+              const liveFee = priceText(live[course.slug]?.price, course.slug.includes('india'))
+              if (liveFee) fact.Fee = liveFee
               return (
                 <article
                   key={course.slug}
@@ -187,7 +207,7 @@ export function UpcomingCoursesPage() {
 
           <p className="text-xs sm:text-sm text-slate-500">
             Dates can change. Your place is confirmed once your application is accepted and payment is received, as set out in
-            our Terms and Conditions.
+            the application form.
           </p>
         </div>
       </Reveal>

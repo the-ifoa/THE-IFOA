@@ -20,7 +20,7 @@ const ICAO_INTRO =
 const courses = [
   {
     slug: 'flight-dispatcher-initial-certification',
-    authority: "EASA / FAA Part 65 Standards",
+    authority: "ICAO Doc 10106 / EASA Air Ops",
     format: "Hybrid: 2 Weeks Online, 3 Weeks Onsite Sønderborg (Denmark)",
     careerPath: "Commercial Airline Dispatcher, Cargo Flight Follower, Corporate OCC Specialist",
     intakeLabel: 'Intake: 4 January 2027',
@@ -223,7 +223,7 @@ const courses = [
         { label: 'Practical test, paid to the examiner', amount: '$600 USD' },
         { label: 'Total to FAA licence', amount: '$5,275 USD' }
       ],
-      note: 'Payment, cancellation and refunds: see our Terms and Conditions.'
+      note: 'Payment, cancellation and refund terms are part of the application form.'
     },
     trainingPhilosophy: {
       eyebrow: 'ADX Preparation',
@@ -353,7 +353,7 @@ const courses = [
   {
     // FAA Part 65 approved course (200 h) + ICAO/EASA operations (80 h),
     // taught as one program. Only the FAA issues the dispatcher
-    // certificate - IFOA issues a course completion certificate.
+    // certificate - IFOA issues an IFOA Certificate of Completion.
     slug: 'flight-dispatcher-double-programme',
     authority: 'FAA Part 65, ICAO & EASA',
     format: 'Hybrid, Denmark or India',
@@ -397,7 +397,7 @@ const courses = [
       ]
     },
     delivery: {
-      intro: 'Two parts, taught as one hybrid program in Europe.',
+      intro: 'Two parts, taught as one hybrid program in Denmark or India.',
       items: [
         { label: 'School', title: 'IFOA', description: 'Delivered by the International Flight Operations Academy' },
         { label: 'Format', title: 'Hybrid', description: '280 hours over 7 weeks, plus ADX self-study' }
@@ -458,7 +458,7 @@ const courses = [
     },
     certification: {
       text:
-        'From the FAA: the Aircraft Dispatcher certificate under 14 CFR Part 65. Only the FAA issues it, once you pass the ADX knowledge test and the practical test with an FAA examiner. From IFOA: a course completion certificate, which you present at your practical test as proof you completed the approved course. It is not an FAA certificate. There is no EASA flight dispatcher license: in Europe, operators decide who may dispatch their flights.',
+        'From the FAA: the Aircraft Dispatcher certificate under 14 CFR Part 65. Only the FAA issues it, once you pass the ADX knowledge test and the practical test with an FAA examiner. From IFOA: the IFOA Certificate of Completion, which you present at your practical test as proof you completed the approved course. It is not an FAA certificate. There is no EASA flight dispatcher license: in Europe, operators decide who may dispatch their flights.',
       points: ['ADX Knowledge Test', 'Practical Test with FAA Examiner']
     },
     additionalCosts: {
@@ -467,7 +467,7 @@ const courses = [
         { label: 'ADX knowledge test', amount: '$175 USD' },
         { label: 'Practical test, paid to the examiner', amount: '$600 USD' }
       ],
-      note: 'Payment, cancellation and refunds: see our Terms and Conditions.'
+      note: 'Payment, cancellation and refund terms are part of the application form.'
     },
     trainingPhilosophy: {
       eyebrow: 'ADX Preparation',
@@ -487,7 +487,7 @@ const courses = [
     seo: {
       metaTitle: 'Flight Dispatcher Double Program: FAA, ICAO & EASA, 280 Hours | IFOA',
       metaDescription:
-        'A 280-hour, 7-week hybrid program in Europe, $5,500 USD: the FAA Part 65 approved dispatcher course plus ICAO and EASA operations. Prepares you for the FAA Aircraft Dispatcher certificate.'
+        'A 280-hour, 7-week hybrid program in Denmark or India, $5,500 USD: the FAA Part 65 approved dispatcher course plus ICAO and EASA operations. Prepares you for the FAA Aircraft Dispatcher certificate.'
     },
     registrationOpen: true
   },
@@ -1238,6 +1238,10 @@ courses.splice(courses.indexOf(easaInitial) + 2, 0, {
   intakeLabel: 'Intake: contact us',
   schedule: { mode: 'Hybrid', startDate: null, endDate: null, timeText: '2 Weeks Online, 3 Weeks On-site Daytona Beach (Florida)' },
   location: 'Daytona Beach, Florida',
+  // TODO(confirm wording with IFOA): the USA edition is not an FAA course, so it
+  // must not carry the Europe-focused EASA note inherited from the Denmark course.
+  heroNote:
+    'This course gives you an IFOA Certificate of Completion, built on ICAO Doc 10106. It does not lead to an FAA certificate. US airlines require the FAA Aircraft Dispatcher certificate, so if that is your goal, take our FAA Aircraft Dispatcher course instead.',
   delivery: {
     intro: '2 weeks online, from home, then 3 weeks on-site in Daytona Beach, Florida. The online weeks are live and self-paced study, so the on-site weeks can focus on practical work with instructors.',
     items: [

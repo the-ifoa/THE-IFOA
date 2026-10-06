@@ -10,7 +10,8 @@
  *
  * Course pages are rendered from live API data at build time, so publishing or
  * editing a course needs a rebuild for its static HTML and sitemap entry to
- * catch up. The SPA still refetches at runtime, so visitors always see current
+ * catch up. Until that rebuild, a newly published course URL returns a real 404
+ * (see .htaccess): only built routes exist as files. The SPA still refetches at runtime, so visitors always see current
  * data; only the crawler-visible snapshot is build-time.
  */
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
@@ -117,6 +118,20 @@ async function main() {
     )
   }
 
+  // Un-prerendered SPA shell, for app-only routes (admin, enrollment forms).
+  // `index.html` is overwritten below with the prerendered HOME page, so this
+  // copy is written first. The default SEO block is swapped for a noindex tag:
+  // these routes must never be indexed under the homepage's title and canonical.
+  await writeFile(
+    path.join(OUT_DIR, 'spa.html'),
+    template.replace(
+      SEO_BLOCK,
+      '<title>IFOA</title>\n    <meta name="robots" content="noindex, nofollow" />'
+    ),
+    'utf8'
+  )
+  console.log('[prerender] spa.html (noindex SPA shell)')
+
   const { render } = await import(SERVER_ENTRY)
   const courses = await fetchCourses()
   const sitemap = [...STATIC_ROUTES]
@@ -142,10 +157,26 @@ async function main() {
   }
 
   for (const route of STATIC_ROUTES) {
-    const isEventsRoute = route.path === '/events'
-    const preload = isEventsRoute && courses ? { courses } : {}
+    // Routes that read the course list at runtime get it preloaded, so the
+    // prerendered HTML carries the same data the page shows after it loads.
+    const needsCourses = route.path === '/events' || route.path === '/upcoming-courses'
+    const preload = needsCourses && courses ? { courses } : {}
     await renderRoute(route.path, preload)
     console.log(`[prerender] ${route.path}`)
+  }
+
+  // Real 404 page: Apache serves it with a 404 status for unknown URLs
+  // (ErrorDocument in .htaccess). NotFoundPage emits noindex. It is not a
+  // route, so it stays out of the sitemap.
+  {
+    globalThis.__IFOA_PRELOAD__ = {}
+    const { head, body } = splitHead(render('/__not-found__'))
+    const html = template
+      .replace(SEO_BLOCK, head)
+      .replace('<div id="root"></div>', `<div id="root">${body}</div>`)
+    await writeFile(path.join(OUT_DIR, '404.html'), html, 'utf8')
+    globalThis.__IFOA_PRELOAD__ = undefined
+    console.log('[prerender] 404.html')
   }
 
   if (courses) {

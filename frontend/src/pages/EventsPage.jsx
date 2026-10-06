@@ -27,7 +27,7 @@ const doubleProgrammeHero = '/course-images/Flight-Dispatch-Webpage-Small.jpg'
 // Content the page ships with; editable at /admin/pages/events.
 const FALLBACK = {
   hero: {
-    title: 'Courses you can apply for, worldwide.',
+    title: 'Open-enrollment cohorts, worldwide.',
     subtitle:
       'Dispatcher courses you can apply for directly, on published dates or rolling admissions, alongside the custom fleet training we build for airlines and operators.',
     primaryLabel: 'View Open Courses',

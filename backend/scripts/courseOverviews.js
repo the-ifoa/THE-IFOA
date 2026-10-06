@@ -6,7 +6,7 @@
 // spec rows, buttons) set on the course itself. Applied by
 // scripts/seedCatalog.js.
 
-const TERMS = 'Payment, cancellation and refunds: see our Terms and Conditions.'
+const TERMS = 'Payment, cancellation and refund terms are part of the application form.'
 
 const PROPOSAL = '/contact'
 
@@ -113,7 +113,7 @@ const OVERVIEWS = {
         {
           type: 'table',
           anchor: 'compare',
-          title: 'EASA or FAA: which course?',
+          title: 'Which course is right for you?',
           intro: 'Both teach you to dispatch. They lead to different documents.',
           highlight: 1,
           head: ['', 'Flight Dispatcher Initial (this course)', 'FAA Aircraft Dispatcher'],
@@ -242,7 +242,7 @@ const OVERVIEWS = {
         {
           type: 'table',
           anchor: 'compare',
-          title: 'EASA or FAA: which course?',
+          title: 'Which course is right for you?',
           intro: 'Both teach you to dispatch. They lead to different documents.',
           highlight: 1,
           head: ['', 'Flight Dispatcher Initial (this course)', 'FAA Aircraft Dispatcher'],
@@ -250,7 +250,7 @@ const OVERVIEWS = {
             ['You receive', 'IFOA Certificate of Completion', 'Eligibility for the FAA Aircraft Dispatcher certificate, after passing the FAA knowledge and practical tests'],
             ['Issued by', 'IFOA', 'The FAA, a government authority'],
             ['Regulatory focus', 'ICAO', 'FAA, 14 CFR Part 65'],
-            ['Duration', '4 weeks', '200 hours, 5 weeks plus exam week'],
+            ['Duration', '4 weeks', '200 hours, 5 weeks, plus an exam week taken within 6 months'],
             ['Location', 'Online preparation, then New Delhi, India', 'Online preparation, then Sønderborg, Daytona Beach or New Delhi'],
             ['Fee', '€1,000 + GST', '$4,500 USD, plus FAA test and examiner fees']
           ],

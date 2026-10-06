@@ -53,15 +53,15 @@ const FALLBACK = {
     easaBadge: 'EASA Compliant',
     dgcaBadge: 'DGCA & ICAO Aligned',
     shareLabel: 'Share',
-    copiedLabel: 'Link Copied',
+    copiedLabel: 'Copied',
     eyebrowPrimary: 'Professional Aviation Training',
     eyebrowSecondary: 'Flight Dispatch Curriculum',
     easaComplianceBadge: 'EASA ORO.GEN.110 Aligned',
     dgcaComplianceBadge: 'DGCA & ICAO Aligned Training',
     faaComplianceBadge: 'FAA Part 65 Aligned',
-    cbtaBadge: 'Competency-Based Training (CBTA)',
-    applyOnlineLabel: 'Enroll in Program',
-    viewModulesLabel: 'Explore Curriculum',
+    cbtaBadge: 'Competency-Based Training',
+    applyOnlineLabel: 'View Course',
+    viewModulesLabel: 'View Course Modules',
     outcomesEyebrow: 'Competency Outcomes',
     outcomesTitle: 'Built for Operational Control',
     complianceEyebrow: 'Regulatory & Training Framework',
@@ -76,44 +76,44 @@ const FALLBACK = {
     glanceLabel: 'Program at a Glance',
     eligibilityEyebrow: 'Eligibility Profile',
     eligibilityTitle: 'Who Should Attend?',
-    entryReqEyebrow: 'Admissions & Prerequisites',
+    entryReqEyebrow: 'Admissions',
     entryReqTitle: 'Entry Requirements',
     assessmentEyebrow: 'Evaluation',
-    assessmentTitle: 'Assessment & Verification',
+    assessmentTitle: 'Assessment',
     certEyebrow: 'On Completion',
-    certTitle: 'Official Certification',
-    datesEyebrow: 'Schedule & Intakes',
+    certTitle: 'Certification',
+    datesEyebrow: 'Schedule',
     datesTitle: 'Upcoming Courses',
-    faqEyebrow: 'Got Questions?',
+    faqEyebrow: 'Questions',
     faqTitle: 'Frequently Asked Questions',
     admissionsEyebrow: 'Admissions Portal',
     admissionsTitle: 'Ready to Start Your Dispatch Career?',
-    admissionsDesc: 'Reserve your seat for the upcoming training intake or connect directly with our admissions team.',
+    admissionsDesc: 'Reserve your seat for the upcoming training or connect directly with our team.',
     admissionsApplyLabel: 'Apply Online ↗',
-    admissionsWhatsappLabel: 'WhatsApp Admissions',
+    admissionsWhatsappLabel: 'WhatsApp Chat',
     sidebarAdmissionsOpenBadge: 'Admissions Open',
     sidebarOverviewLabel: 'Program Overview',
     sidebarTuitionLabel: 'Training Fee',
-    sidebarTuitionNote: 'Inclusive of official study materials & examination fee',
+    sidebarTuitionNote: '+ 18% GST / Track · Inclusive of official materials',
     sidebarEnrollLabel: 'Enroll Now - Apply Online ↗',
     sidebarWhatsappLabel: 'Inquire on WhatsApp',
     sidebarDurationLabel: 'Duration',
     sidebarIntakeLabel: 'Next Course',
     sidebarLocationLabel: 'Training Location',
     sidebarDeliveryLabel: 'Format',
-    sidebarStandardLabel: 'Regulatory Standard',
+    sidebarStandardLabel: 'Standard',
     sidebarStandardValueEasa: 'EASA-Compliant',
     sidebarStandardValueDgca: 'DGCA / EASA Aligned',
     sidebarStandardValueFaa: 'FAA Part 65',
-    sidebarCertificateLabel: 'Certificate Awarded',
+    sidebarCertificateLabel: 'Certificate',
     sidebarCertificateValue: 'IFOA Certificate of Completion',
     sidebarSupportTitle: 'Admissions Support',
-    sidebarSupportDesc: 'Questions about eligibility, visa letters, or group bookings?'
+    sidebarSupportDesc: 'Questions about eligibility or group bookings?'
   },
   curriculum: {
     eyebrow: 'Curriculum Framework',
     title: 'What the Flight Dispatch Program Covers',
-    subtitle: 'Structured around the core operational competencies required for airline dispatch worldwide.',
+    subtitle: 'Structured around the core competencies required for international airline dispatch.',
     phases: [
       {
         num: '01',
@@ -122,9 +122,9 @@ const FALLBACK = {
         description: 'Establish foundational regulatory frameworks, airspace structure, and air traffic communication systems.',
         topics: [
           'Air Law & Civil Regulations',
-          'ICAO / EASA Regulatory Alignment',
-          'Air Traffic Management (ATM) & Airspace',
-          'Aeronautical Communications & Radiotelephony'
+          'ICAO / EASA Alignment',
+          'Air Traffic Management (ATM)',
+          'Aeronautical Communications'
         ]
       },
       {
@@ -133,10 +133,10 @@ const FALLBACK = {
         title: 'Know the Aircraft',
         description: 'Understand modern commercial aircraft systems, performance envelopes, limitations, and flight mechanics.',
         topics: [
-          'Aircraft Systems & Avionics Architecture',
-          'Flight Instrumentation & Navigation Suites',
+          'Aircraft Systems & Avionics',
+          'Flight Instrumentation',
           'Principles of Flight & Aerodynamics',
-          'Aircraft Performance, Takeoff & Landing Limits'
+          'Aircraft Performance & Limits'
         ]
       },
       {
@@ -145,10 +145,10 @@ const FALLBACK = {
         title: 'Plan the Flight',
         description: 'Master meteorological analysis, route construction, fuel calculations, and operational flight dispatch releases.',
         topics: [
-          'Aviation Navigation, Airways & Enroute Charts',
-          'Synoptic Aeronautical Meteorology & SIGMETs',
-          'Mass & Balance Calculations and Trim Sheets',
-          'Operational Flight Planning (OFP) & Dispatch Releases'
+          'Aviation Navigation & Routes',
+          'Synoptic Aeronautical Meteorology',
+          'Mass & Balance Calculations',
+          'Operational Flight Planning (OFP)'
         ]
       },
       {
@@ -157,10 +157,10 @@ const FALLBACK = {
         title: 'Control the Operation',
         description: 'Execute live flight following, manage real-time deviations, and coordinate airline operational control.',
         topics: [
-          'Live OCC Flight Monitoring & Tracking Systems',
-          'Standard Operating Procedures & MEL/CDL Application',
-          'Crew & Dispatch Human Factors & Crew Resource Management',
-          'OCC Operational Coordination & Station Handling'
+          'Live OCC Flight Monitoring',
+          'Standard Operational Procedures',
+          'Crew & Dispatch Human Factors',
+          'OCC Operational Coordination'
         ]
       },
       {
@@ -169,10 +169,10 @@ const FALLBACK = {
         title: 'Make the Decision',
         description: 'Apply tactical problem-solving during in-flight emergencies, weather diversions, and high-tempo simulator scenarios.',
         topics: [
-          'Tactical Situational Awareness & Threat Management',
-          'Risk Assessment & Operational Contingency Planning',
-          'Collaborative Decision Making (CDM) in High Workload',
-          'Complex Scenario Simulator Drills & Practical Briefings'
+          'Tactical Situational Awareness',
+          'Risk Assessment & Mitigation',
+          'Collaborative Decision Making (CDM)',
+          'Complex Scenario Simulator Drills'
         ]
       }
     ]
