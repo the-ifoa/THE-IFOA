@@ -563,6 +563,28 @@ function Accordion({ block }) {
 }
 
 function Checks({ block, bare, fill }) {
+  // Inside a two-column card the items are chips that wrap to the width, so no
+  // row is left mostly empty.
+  if (bare) {
+    return (
+      <div className={`space-y-4 ${fill ? 'h-full flex flex-col' : ''}`}>
+        <Heading o={block} title={block.title} intro={block.intro} compact />
+        <ul className={`grid grid-cols-[repeat(auto-fit,minmax(15rem,1fr))] gap-3 ${fill ? 'flex-1 auto-rows-fr' : ''}`}>
+          {block.items.map((item, i) => (
+            <li
+              key={i}
+              className="flex items-center gap-3 rounded-2xl border border-slate-200/80 bg-white px-4 py-3.5 text-[13px] sm:text-sm text-slate-700 leading-snug shadow-2xs"
+            >
+              <span className="w-5 h-5 rounded-full bg-[#34E06E]/15 text-[#16a952] flex items-center justify-center shrink-0">
+                <RiCheckLine className="w-3.5 h-3.5" />
+              </span>
+              <span><E o={block.items} k={i} rich /></span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )
+  }
   const body = (
     <div className={`space-y-4 ${fill ? 'flex-1 flex flex-col' : ''}`}>
       <Heading o={block} title={block.title} intro={block.intro} compact={bare} />
@@ -653,20 +675,21 @@ function Facts({ block, bare, fill }) {
   )
 }
 
+// Audience items as a grid of boxes: icon on top, text below, as many per row as fit.
 function Pills({ block, bare, fill }) {
   const body = (
-    <div className={`space-y-3.5 ${fill ? 'flex-1 flex flex-col' : ''}`}>
+    <div className={`space-y-4 ${bare && fill ? 'h-full flex flex-col' : ''}`}>
       <Heading o={block} title={block.title} intro={block.intro} compact={bare} />
-      <ul className={`space-y-2.5 ${fill ? 'flex-1 flex flex-col' : ''}`}>
+      <ul className={`grid grid-cols-[repeat(auto-fit,minmax(11rem,1fr))] gap-3 ${bare && fill ? 'flex-1 auto-rows-fr' : ''}`}>
         {block.items.map((item, i) => (
           <li
             key={i}
-            className={`flex items-center gap-3 p-3.5 sm:p-4 rounded-2xl bg-slate-50/70 border border-slate-200/80 text-xs sm:text-sm font-semibold text-slate-800 leading-snug hover:bg-white hover:border-slate-300 transition-colors shadow-2xs ${fill ? 'flex-1' : ''}`}
+            className="flex flex-col items-start gap-3 p-4 rounded-2xl bg-slate-50/70 border border-slate-200/80 text-sm font-semibold text-slate-900 leading-snug hover:bg-white hover:border-slate-300 transition-colors shadow-2xs"
           >
-            <span className="w-6 h-6 rounded-full bg-[#34E06E]/15 text-[#16a952] flex items-center justify-center shrink-0">
-<RiUser3Line className="w-3.5 h-3.5" />
-</span>
-            <span className="flex-1">{item}</span>
+            <span className="w-9 h-9 rounded-xl bg-[#34E06E]/15 text-[#16a952] flex items-center justify-center shrink-0">
+              <RiUser3Line className="w-4.5 h-4.5" />
+            </span>
+            <span>{item}</span>
           </li>
         ))}
       </ul>
@@ -796,9 +819,12 @@ function Cards({ block }) {
       <Heading o={block} title={block.title} intro={block.intro} />
       <div className={`grid gap-4 ${n % 3 === 0 ? 'md:grid-cols-3' : n === 2 || n === 4 ? 'md:grid-cols-2' : 'md:grid-cols-3'}`}>
         {block.items.map((item, i) => (
-          <div key={i} className="p-5 rounded-2xl bg-slate-50/70 border border-slate-200/80 flex flex-col gap-2">
-            <h3 className="text-base font-bold text-slate-950"><E o={item} k="title" /></h3>
-            {item.text && <p className="text-xs sm:text-sm text-slate-600 leading-relaxed"><E o={item} k="text" /></p>}
+          <div key={i} className="p-5 sm:p-6 rounded-2xl bg-slate-50/70 border border-slate-200/80 flex flex-col gap-3">
+            <span className="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-slate-950 text-white font-mono text-xs font-bold">
+              {String(i + 1).padStart(2, '0')}
+            </span>
+            <h3 className="text-base sm:text-lg font-bold text-slate-950"><E o={item} k="title" /></h3>
+            {item.text && <p className="text-sm text-slate-600 leading-relaxed"><E o={item} k="text" /></p>}
             {item.bullets?.length > 0 && (
               <ul className="mt-auto pt-3 border-t border-slate-200 space-y-1 text-xs text-slate-700">
                 {item.bullets.map((b, j) => (
@@ -810,6 +836,7 @@ function Cards({ block }) {
               </ul>
             )}
             {item.who && <span className="mt-auto pt-1 text-xs font-bold text-slate-900"><E o={item} k="who" /></span>}
+            {!item.bullets?.length && !item.who && <span className="mt-auto block h-1 w-10 shrink-0 rounded-full bg-[#34E06E]" aria-hidden="true" />}
           </div>
         ))}
       </div>
@@ -821,20 +848,22 @@ function Notice({ block }) {
   return (
     <section
       id={block.anchor || undefined}
-      className={`${CARD} grid grid-cols-1 sm:grid-cols-[auto_1fr] gap-4 sm:gap-6 items-start scroll-mt-28`}
+      className={`${CARD} grid grid-cols-1 sm:grid-cols-[auto_1fr] gap-4 sm:gap-6 items-stretch scroll-mt-28`}
     >
       <div
-        className="w-12 h-12 rounded-2xl bg-slate-950 text-[#34E06E] flex items-center justify-center font-bold text-2xl shadow-xs shrink-0 select-none"
+        className="self-start w-12 h-12 rounded-2xl bg-slate-950 text-[#34E06E] flex items-center justify-center font-bold text-2xl shadow-xs shrink-0 select-none"
         aria-hidden="true"
       >
         !
       </div>
-      <div className="space-y-3">
+      <div className="flex flex-col gap-3 min-w-0">
         <h2 className={H2}><E o={block} k="title" /></h2>
         {block.paragraphs.map((p, i) => (
-          <p key={i} className="text-xs sm:text-sm text-slate-700 leading-relaxed">
-            <E o={block.paragraphs} k={i} rich />
-          </p>
+          <div key={i} className="flex-1 flex items-center rounded-2xl bg-slate-50/80 border border-slate-100 px-4 sm:px-5 py-3.5">
+            <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">
+              <E o={block.paragraphs} k={i} rich />
+            </p>
+          </div>
         ))}
       </div>
     </section>
@@ -1049,14 +1078,20 @@ function Text({ block, bare }) {
 const BARE = { checks: Checks, facts: Facts, pills: Pills, standards: Standards, proof: Proof, text: Text }
 
 function Cols({ block }) {
+  // Only short lists (audience / requirements): stack them full width, each as a
+  // grid of boxes, so the card has no half-empty column.
+  const listsOnly = block.columns.every((col) => col.length === 1 && ['pills', 'checks'].includes(col[0].type))
   return (
-    <section id={block.anchor || undefined} className={`${CARD} grid md:grid-cols-2 gap-8 md:gap-10 scroll-mt-28`}>
+    <section
+      id={block.anchor || undefined}
+      className={`${CARD} grid ${listsOnly ? 'gap-8 sm:gap-10' : 'md:grid-cols-2 gap-8 md:gap-10'} scroll-mt-28`}
+    >
       {block.columns.map((col, i) => (
         <div key={i} className="flex flex-col gap-6 h-full">
           {col.map((b, j) => {
             const C = BARE[b.type]
             // A lone list stretches to the height of the other column.
-            return C ? <C key={j} block={b} bare fill={col.length === 1} /> : <Block key={j} block={b} />
+            return C ? <C key={j} block={b} bare fill={col.length === 1 && !listsOnly} /> : <Block key={j} block={b} />
           })}
         </div>
       ))}

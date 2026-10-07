@@ -26,7 +26,10 @@ const GLOBAL_RULES = [
   ['Payment, cancellation and refunds: see our Terms and Conditions.', 'Payment, cancellation and refund terms are part of the application form.', 'terms note'],
   ['EASA or FAA: which course?', 'Which course is right for you?', 'comparison heading'],
   [/200 hours, 5 weeks plus exam week/g, '200 hours, 5 weeks, plus an exam week taken within 6 months', 'FAA India duration'],
-  [/\(in India: 5 weeks, with the exam week taken within 6 months\)/g, '(in India: 5 weeks, plus an exam week taken within 6 months)', 'FAA India duration']
+  [/\(in India: 5 weeks, with the exam week taken within 6 months\)/g, '(in India: 5 weeks, plus an exam week taken within 6 months)', 'FAA India duration'],
+  [/\b(FAA(?: Aircraft| aircraft)?(?: Dispatcher| dispatcher)?|(?:Aircraft|aircraft) (?:Dispatcher|dispatcher)|FAA Part 65) certificate(s?)\b/g, '$1 license$2', 'FAA certificate -> license'],
+  [/\b(issues|issued|issue) (the|your|an|a) (Aircraft Dispatcher |aircraft dispatcher )?certificate\b/g, '$1 $2 $3license', 'FAA issues license'],
+  [/\blicence(s?)\b/g, 'license$1', 'licence -> license']
 ]
 
 const SLUG_RULES = {
@@ -45,7 +48,7 @@ const SLUG_RULES = {
 
 // TODO(confirm wording with IFOA)
 const USA_HERO_NOTE =
-  'This course gives you an IFOA Certificate of Completion, built on ICAO Doc 10106. It does not lead to an FAA certificate. US airlines require the FAA Aircraft Dispatcher certificate, so if that is your goal, take our FAA Aircraft Dispatcher course instead.'
+  'This course gives you an IFOA Certificate of Completion, built on ICAO Doc 10106. It does not lead to an FAA license. US airlines require the FAA Aircraft Dispatcher license, so if that is your goal, take our FAA Aircraft Dispatcher course instead.'
 
 // Pure: returns the corrected course and the changes made.
 function fixCourse(course) {

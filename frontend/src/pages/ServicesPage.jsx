@@ -71,7 +71,7 @@ const FALLBACK = {
         region: 'Denmark · USA · India',
         title: 'FAA Aircraft Dispatcher',
         courseSlug: 'aircraft-dispatcher-training-faa-part-65',
-        desc: 'FAA Part 65 approved. Prepares you for the FAA Aircraft Dispatcher certificate.',
+        desc: 'FAA Part 65 approved. Prepares you for the FAA Aircraft Dispatcher license.',
         badge1: '200 HRS · 6 WKS',
         badge2: '$4,500 USD',
         action: 'Apply'
@@ -170,7 +170,7 @@ const FALLBACK = {
       {
         id: '02',
         title: 'Double Program: FAA & EASA',
-        subtitle: 'One FAA certificate, trained for both rule sets.',
+        subtitle: 'One FAA license, trained for both rule sets.',
         desc: 'The FAA Part 65 approved course plus ICAO and EASA operations, taught as one program. ADX preparation is self-study.',
         facts: '280 hours | 7 weeks | Hybrid',
         audience: 'Individuals',

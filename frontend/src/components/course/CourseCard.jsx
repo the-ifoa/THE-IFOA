@@ -74,11 +74,12 @@ export function enrollPath(course = {}) {
   return ENROLL_VIA[course.slug] || `/courses/${course.slug}/enroll`
 }
 
-// Only these programs have a published registration form; every other
-// course's enroll CTA goes to the contact page instead.
+// The built-in programs have a registration form; so does any other individual
+// (non-corporate) course that has its own form, e.g. one added in admin. Corporate
+// courses and courses without a form send enquiries to the Contact page instead.
 // eslint-disable-next-line react-refresh/only-export-components -- helper co-located with its component on purpose; only affects dev hot reload
 export function hasEnrollmentForm(course = {}) {
-  return course.slug in PROGRAMME_BANNER
+  return course.slug in PROGRAMME_BANNER || Boolean(course.hasForm && !course.isCorporate)
 }
 
 // eslint-disable-next-line react-refresh/only-export-components -- helper co-located with its component on purpose; only affects dev hot reload

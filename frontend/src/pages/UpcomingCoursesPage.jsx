@@ -6,7 +6,7 @@ import { Reveal } from '@/components/common/Reveal'
 import { api } from '@/lib/api'
 import { readPreload } from '@/lib/preload'
 import { usePageContent } from '@/hooks/usePageContent'
-import { CmsText } from '@/components/admin/CmsEditable'
+import { CmsText, CmsRemoveItem, CmsAddItem } from '@/components/admin/CmsEditable'
 import { priceText } from '@/components/course/PriceTag'
 import { graph, organizationSchema, breadcrumbSchema, courseListSchema } from '@/lib/seo'
 import bannerHero from '@/assets/shared/photos/IOFA-banner_10@1920x1280.jpg'
@@ -59,7 +59,7 @@ const FALLBACK = {
         whenNote: 'India batches from 8 Feb 2027',
         title: 'FAA Aircraft Dispatcher',
         slug: 'aircraft-dispatcher-training-faa-part-65',
-        desc: 'FAA Part 65 approved. Prepares you for the FAA Aircraft Dispatcher certificate.',
+        desc: 'FAA Part 65 approved. Prepares you for the FAA Aircraft Dispatcher license.',
         duration: '200 hours, 6 weeks (India: 5 weeks, plus an exam week taken within 6 months), plus ADX self-study',
         where: 'Online preparation, then Sønderborg, Florida or New Delhi',
         fee: '',
@@ -71,7 +71,7 @@ const FALLBACK = {
         whenNote: 'Contact us for dates',
         title: 'Double Program: FAA & EASA',
         slug: 'flight-dispatcher-double-programme',
-        desc: 'The FAA Part 65 approved course plus ICAO and EASA operations. One FAA certificate, trained for both rule sets.',
+        desc: 'The FAA Part 65 approved course plus ICAO and EASA operations. One FAA license, trained for both rule sets.',
         duration: '280 hours, 7 weeks, plus ADX self-study',
         where: 'Hybrid, Denmark · India',
         fee: '',
@@ -184,10 +184,12 @@ export function UpcomingCoursesPage() {
               return (
                 <article
                   key={`${course.slug}-${i}`}
-                  className={`grid grid-cols-1 ${ROW_GRID} gap-y-4 px-6 sm:px-7 py-6 items-center ${
+                  className={`relative grid grid-cols-1 ${ROW_GRID} gap-y-4 px-6 sm:px-7 py-6 items-center ${
                     i > 0 ? 'border-t border-slate-100' : ''
                   }`}
                 >
+                  <CmsRemoveItem listPath="board.courses" index={i} label="Remove course" />
+
                   {/* When */}
                   <div>
                     <b className="block text-xl font-extrabold text-slate-950 tracking-tight leading-none"><CmsText path={`${p}.when`} value={course.when} /></b>
@@ -197,9 +199,13 @@ export function UpcomingCoursesPage() {
                   {/* Course */}
                   <div className="pr-4">
                     <h2 className="text-base sm:text-lg font-bold text-slate-950 tracking-tight">
-                      <Link to={`/courses/${course.slug}`} className="hover:text-[#16a952] transition-colors">
+                      {course.slug ? (
+                        <Link to={`/courses/${course.slug}`} className="hover:text-[#16a952] transition-colors">
+                          <CmsText path={`${p}.title`} value={course.title} />
+                        </Link>
+                      ) : (
                         <CmsText path={`${p}.title`} value={course.title} />
-                      </Link>
+                      )}
                     </h2>
                     <p className="mt-1 text-[13px] text-slate-600 leading-relaxed"><CmsText path={`${p}.desc`} value={course.desc} /></p>
                   </div>
@@ -217,13 +223,13 @@ export function UpcomingCoursesPage() {
                   {/* Actions */}
                   <div className="flex flex-col gap-2 pt-1 lg:pt-0">
                     <Link
-                      to={course.ctaTo}
+                      to={course.ctaTo || '/contact'}
                       className="w-full text-center bg-slate-950 hover:bg-slate-800 text-white font-bold py-2.5 px-4 rounded-full text-xs transition-colors"
                     >
                       <CmsText path={`${p}.ctaLabel`} value={course.ctaLabel} />
                     </Link>
                     <Link
-                      to={`/courses/${course.slug}`}
+                      to={course.slug ? `/courses/${course.slug}` : '/contact'}
                       className="group/link inline-flex items-center justify-center gap-1 text-xs font-semibold text-slate-600 hover:text-slate-950 transition-colors"
                     >
                       <CmsText path="board.detailsLabel" value={c.board.detailsLabel} />
@@ -233,6 +239,13 @@ export function UpcomingCoursesPage() {
                 </article>
               )
             })}
+            <div className="px-6 sm:px-7 py-4">
+              <CmsAddItem
+                listPath="board.courses"
+                label="Add course"
+                blank={{ when: 'Rolling', whenNote: '', title: 'New course', slug: '', desc: '', duration: '', where: '', fee: '', ctaLabel: 'Apply', ctaTo: '' }}
+              />
+            </div>
           </div>
 
           <p className="text-xs sm:text-sm text-slate-500">

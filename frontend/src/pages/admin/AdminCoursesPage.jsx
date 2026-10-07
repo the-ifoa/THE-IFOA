@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import {
   Loader2,
   Pencil,
@@ -22,7 +22,9 @@ import {
   FileText,
   Link as LinkIcon,
   ChevronRight,
-  Mail
+  Mail,
+  Plus,
+  Trash2
 } from 'lucide-react'
 import { api } from '@/lib/api'
 import { hasEnrollmentForm, resolveCard } from '@/components/course/CourseCard'
@@ -56,6 +58,35 @@ export function AdminCoursesPage() {
   const [categoryFilter, setCategoryFilter] = useState('all')
   const [searchQuery, setSearchQuery] = useState('')
   const [copiedId, setCopiedId] = useState(null)
+  const navigate = useNavigate()
+  const [showNew, setShowNew] = useState(false)
+  const [newTitle, setNewTitle] = useState('')
+  const [creating, setCreating] = useState(false)
+
+  async function createCourse(e) {
+    e.preventDefault()
+    if (!newTitle.trim() || creating) return
+    setCreating(true)
+    setError('')
+    try {
+      const { course } = await api.adminCreateCourse({ title: newTitle.trim() })
+      navigate(`/admin/courses/${course._id}`)
+    } catch (err) {
+      setError(err.message)
+      setCreating(false)
+    }
+  }
+
+  async function deleteCourse(course) {
+    if (!window.confirm(`Delete "${course.title}"? This removes the course, its application form and its images. It cannot be undone.`)) return
+    setError('')
+    try {
+      await api.adminDeleteCourse(course._id)
+      setCourses((list) => list.filter((c) => c._id !== course._id))
+    } catch (err) {
+      setError(err.message)
+    }
+  }
 
   async function load() {
     setLoading(true)
@@ -255,6 +286,16 @@ export function AdminCoursesPage() {
               <option value="consulting">Airline Consulting</option>
             </select>
 
+            {/* New course */}
+            <button
+              type="button"
+              onClick={() => setShowNew(true)}
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#020617] hover:bg-[#34E06E] text-white hover:text-black text-xs font-extrabold uppercase tracking-wider transition-colors cursor-pointer shrink-0"
+            >
+              <Plus className="w-3.5 h-3.5" />
+              <span>New course</span>
+            </button>
+
             {/* Default application form new courses start from */}
             <Link
               to="/admin/form-template"
@@ -441,6 +482,14 @@ export function AdminCoursesPage() {
                       <Pencil className="w-3.5 h-3.5" />
                       <span>Edit Page</span>
                     </Link>
+                    <button
+                      type="button"
+                      onClick={() => deleteCourse(course)}
+                      title="Delete this course"
+                      className="inline-flex items-center justify-center border border-slate-200 bg-white text-slate-500 hover:text-red-600 hover:border-red-200 hover:bg-red-50 p-2 rounded-xl transition-all cursor-pointer shadow-2xs"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
                     {hasEnrollmentForm(course) && (
                       <Link
                         to={`/admin/courses/${course._id}/form`}
@@ -468,6 +517,42 @@ export function AdminCoursesPage() {
         </div>
       )}
 
+
+      {showNew && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4" onClick={() => !creating && setShowNew(false)}>
+          <form
+            onSubmit={createCourse}
+            onClick={(e) => e.stopPropagation()}
+            className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl space-y-4"
+          >
+            <div className="flex items-center justify-between">
+              <h2 className="text-base font-extrabold text-slate-900">New course</h2>
+              <button type="button" onClick={() => setShowNew(false)} className="text-slate-400 hover:text-slate-700 cursor-pointer">
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+            <label className="block space-y-1.5">
+              <span className="text-xs font-bold text-slate-600">Course title</span>
+              <input
+                autoFocus
+                value={newTitle}
+                onChange={(e) => setNewTitle(e.target.value)}
+                placeholder="e.g. Flight Dispatcher Refresher"
+                className="w-full rounded-xl border border-slate-200 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              />
+            </label>
+            <p className="text-xs text-slate-500">The course starts as a draft. Add the category, price, dates and content on the next screen, then publish it.</p>
+            <button
+              type="submit"
+              disabled={!newTitle.trim() || creating}
+              className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-[#020617] hover:bg-[#34E06E] text-white hover:text-black text-xs font-extrabold uppercase tracking-wider py-3 transition-colors disabled:opacity-50 cursor-pointer"
+            >
+              {creating ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
+              <span>Create course</span>
+            </button>
+          </form>
+        </div>
+      )}
     </div>
   )
 }

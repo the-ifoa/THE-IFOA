@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { useGoBack } from '@/hooks/useGoBack'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -315,8 +315,6 @@ export function CourseDetailView({ course: savedCourse, preview = false }) {
   // in-progress copy; everywhere else this is just the saved course.
   const course = liveCourse?.course && savedCourse ? { ...savedCourse, ...liveCourse.course } : savedCourse
 
-  // Sidebar sticks below the navbar so price, actions and facts stay in view while reading.
-  const SIDEBAR_TOP = 96
   const [copied, setCopied] = useState(false)
   const [activePhase, setActivePhase] = useState(0)
   const [activeRoleIdx, setActiveRoleIdx] = useState(0)
@@ -334,6 +332,59 @@ export function CourseDetailView({ course: savedCourse, preview = false }) {
     const value = getAtPath(fields, path)
     return editing && typeof value === 'string' ? <CmsText path={`course.${path}`} value={value} /> : value
   }
+
+  // Desktop layout: the sidebar floats right and sections sit beside it. To leave no
+  // empty space next to the sidebar, sections that fit the remaining height are
+  // pulled up beside it; one too tall for the space (e.g. the program) goes below,
+  // full width, after the sidebar ends.
+  const heroRef = useRef(null)
+  const asideRef = useRef(null)
+  const itemRefs = useRef([])
+  const [arrange, setArrange] = useState({ order: null, skipFrom: 0, fillH: 0, asideMin: 0 })
+  const [fitTick, setFitTick] = useState(0)
+  const blockCount = (liveCourse?.overview || savedCourse?.overview)?.blocks?.length || 0
+  useEffect(() => {
+    if (!blockCount) return undefined
+    const reflow = () => {
+      setArrange({ order: null, skipFrom: 0, fillH: 0, asideMin: 0 })
+      setFitTick((t) => t + 1)
+    }
+    reflow()
+    window.addEventListener('resize', reflow)
+    document.fonts?.ready?.then(reflow)
+    return () => window.removeEventListener('resize', reflow)
+  }, [blockCount, preferredLocation])
+  useLayoutEffect(() => {
+    const hero = heroRef.current
+    const aside = asideRef.current
+    if (!blockCount || !hero || !aside || arrange.order) return
+    if (!window.matchMedia('(min-width: 1024px)').matches) return
+    const GAP = 64
+    const SLACK = 120
+    const room = aside.offsetHeight
+    let y = hero.offsetHeight + GAP
+    const placed = []
+    const skipped = []
+    let lastH = 0
+    for (let i = 0; i < blockCount; i++) {
+      const h = itemRefs.current[i]?.offsetHeight || 0
+      if (y < room - 24 && y + h <= room + SLACK) {
+        placed.push(i)
+        lastH = h
+        y += h + GAP
+      } else skipped.push(i)
+    }
+    // Stretch the last section beside the sidebar down to the sidebar's bottom edge.
+    // If the left side ends lower than the sidebar, stretch the sidebar instead.
+    const leftBottom = placed.length ? y - GAP : 0
+    const extra = Math.max(0, room - leftBottom)
+    setArrange({
+      order: [...placed, ...skipped],
+      skipFrom: placed.length,
+      fillH: placed.length && extra ? lastH + extra : 0,
+      asideMin: leftBottom > room ? leftBottom : 0
+    })
+  }, [arrange, fitTick, blockCount])
 
   if (!course) return null
 
@@ -451,6 +502,11 @@ export function CourseDetailView({ course: savedCourse, preview = false }) {
   const dgHatch = { background: 'repeating-linear-gradient(-45deg, #C8102E 0 5px, transparent 5px 10px)' }
   // Dangerous Goods: the sidebar card follows the role/operation picked in the page body.
   const dgBlock = overview?.blocks?.find((b) => b.type === 'dgExplorer') || null
+  const overviewBlocks = overview
+    ? editing
+      ? overview.blocks || []
+      : blocksForLocation(overview.blocks || [], preferredLocation, course.slug)
+    : []
   // Contact links carry the course so the Contact form pre-selects its topic.
   const contactHref = `/contact?course=${course.slug}${preferredLocation ? `&location=${encodeURIComponent(preferredLocation)}` : ''}`
   // A ?location= on this page (e.g. from the India region card) is passed on
@@ -475,15 +531,261 @@ export function CourseDetailView({ course: savedCourse, preview = false }) {
       {/* MAIN TWO-COLUMN CONTAINER                                                 */}
       {/* ========================================================================= */}
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
+        {/* Sections flow in one column. The sidebar floats right at the top and each
+            section (its own formatting context) sits beside it until the sidebar ends,
+            then takes the full width, so no empty space is left beside the sidebar. */}
+        <div className="flex flex-col gap-10 sm:gap-14 lg:block max-lg:[&>*]:order-3 lg:[&>*:not(aside)]:mb-16 lg:[&>*:not(aside)]:[contain:layout]">
+          {/* ===================================================================== */}
+          {/* SIDEBAR: floats right beside the opening sections, then the page runs full width */}
+          {/* ===================================================================== */}
+          <aside
+            ref={asideRef}
+            className={`lg:flex lg:flex-col max-lg:!order-2 lg:float-right lg:w-[calc(41.666%-1rem)] xl:w-[calc(33.333%-1.5rem)] lg:ml-8 xl:ml-10 lg:mb-10 text-slate-900 ${
+              dgBlock
+                ? 'p-1.5 rounded-2xl shadow-[0_4px_24px_rgba(0,0,0,0.04)]'
+                : 'bg-white border border-slate-200/90 rounded-[2rem] p-6 sm:p-7 shadow-[0_4px_24px_rgba(0,0,0,0.03)]'
+            }`}
+            style={{ ...(dgBlock ? dgHatch : {}), ...(arrange.asideMin ? { minHeight: arrange.asideMin } : {}) }}
+            aria-label="Program overview"
+          >
+            <div className={`lg:flex-1 lg:flex lg:flex-col lg:justify-between ${dgBlock ? 'bg-white rounded-xl p-6 sm:p-7 space-y-6' : 'space-y-6'}`}>
+            {dgBlock ? (
+              <DgSidebar block={dgBlock} contactHref={contactHref} />
+            ) : (
+              <>
+            {/* Header & Price / Rate Display */}
+            <div>
+              <div>
+                {course.isCorporate ? (
+                  <>
+                    <span className="block text-xs font-mono font-semibold uppercase text-slate-500 tracking-wider">
+                      {isConsulting ? 'Consulting Fee' : L('sidebarTuitionLabel')}
+                    </span>
+                    <strong className="block text-2xl sm:text-3xl font-extrabold text-slate-950 tracking-tight leading-tight mt-0.5">
+                      {fields.rateCard?.value && fields.rateCard.value !== 'Corporate Rate' ? F('rateCard.value') : 'Training Fee'}
+                    </strong>
+                    <p className="text-sm text-slate-700 font-normal mt-2 leading-relaxed">
+                      {F('rateCard.note') ||
+                        "Custom quote, based on group size and delivery format, tailored to the operator's operational environment."}
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <span className="block text-xs font-mono font-semibold uppercase text-slate-500 tracking-wider">
+                      {L('sidebarTuitionLabel')}
+                    </span>
+                    <strong className="block text-3xl sm:text-4xl font-extrabold text-slate-950 tracking-tight leading-tight mt-0.5">
+                      {formatPrice(sidebarPrice) ? <PriceTag price={sidebarPrice} /> : 'Contact for Pricing'}
+                    </strong>
+                    {taxNote(sidebarPrice, taxIsGst) && (
+                      <span className="block text-sm font-semibold text-slate-800 mt-1.5">{taxNote(sidebarPrice, taxIsGst)}</span>
+                    )}
+                    {taxIsGst && <InrConverter price={sidebarPrice} />}
+                    <small className="block text-sm text-slate-700 font-normal mt-2 leading-relaxed">
+                      {F('price.note') ||
+                        (formatPrice(course.price)
+                          ? isIndiaProgram
+                            ? '+ 18% GST / Track · Inclusive of official materials'
+                            : 'Inclusive of official study materials & exam certification'
+                          : 'Contact admissions for current tuition')}
+                    </small>
+                  </>
+                )}
+              </div>
+            </div>
+
+            {/* Primary Action Buttons */}
+            <div className="space-y-2.5">
+              {course.isCorporate ? (
+                <>
+                  <Link
+                    to={contactHref}
+                    className="w-full block text-center bg-[#34E06E] hover:bg-[#28c85e] text-slate-950 font-extrabold py-3.5 px-5 rounded-full text-xs uppercase tracking-wider transition-all duration-150 shadow-[0_4px_20px_rgba(52,224,110,0.35)] hover:-translate-y-0.5 cursor-pointer"
+                  >
+                    {course.ctaLabel || 'Request a Corporate Quote'}
+                  </Link>
+
+                  <Link
+                    to={contactHref}
+                    className="w-full block text-center bg-white hover:bg-slate-50 border border-slate-200/90 text-slate-800 font-bold py-3 px-4 rounded-full text-xs transition-colors cursor-pointer"
+                  >
+                    {F('rateCard.secondaryCtaLabel') || 'Contact Training Team'}
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <Link
+                    to={enrollHref}
+                    className="w-full block text-center bg-[#34E06E] hover:bg-[#28c85e] text-slate-950 font-extrabold py-3.5 px-5 rounded-full text-xs uppercase tracking-wider transition-all duration-150 shadow-[0_4px_20px_rgba(52,224,110,0.35)] hover:-translate-y-0.5 cursor-pointer"
+                  >
+                    {L('sidebarEnrollLabel')}
+                  </Link>
+
+                  <a
+                    href="https://wa.me/41782273103"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full flex items-center justify-center gap-2 bg-emerald-50/80 hover:bg-emerald-100 border border-emerald-200/80 text-emerald-950 font-bold py-3 px-4 rounded-full text-xs transition-colors cursor-pointer"
+                  >
+                    <RiWhatsappFill className="w-4 h-4 text-[#25D366]" />
+                    <span>{L('sidebarWhatsappLabel')}</span>
+                  </a>
+                </>
+              )}
+            </div>
+
+            {/* Specifications Rows */}
+            {fields.sidebarSpecs?.length > 0 ? (
+              <div className="border-t border-slate-100 pt-3 space-y-1 text-[13px] sm:text-sm">
+                {fields.sidebarSpecs.map((_, idx) => (
+                  // One line per row: label never wraps, a value too long for the card ends in "…" (full text on hover).
+                  <div key={idx} className="flex justify-between items-center gap-3 py-2 border-b border-slate-200/80 whitespace-nowrap">
+                    <span className="text-slate-600 font-medium shrink-0">{F(`sidebarSpecs.${idx}.label`)}</span>
+                    <strong
+                      className="font-bold text-slate-950 text-right min-w-0 truncate"
+                      title={specOverride(fields.sidebarSpecs[idx]?.label) || fields.sidebarSpecs[idx]?.value || undefined}
+                    >
+                      {specOverride(fields.sidebarSpecs[idx]?.label) || F(`sidebarSpecs.${idx}.value`)}
+                    </strong>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="border-t border-slate-100 pt-3 space-y-3 text-xs sm:text-[13px]">
+                <div className="flex justify-between items-center gap-4 py-1.5 border-b border-slate-100/70">
+                  <span className="text-slate-500 font-medium flex items-center gap-2 shrink-0">
+                    <TbClockHour4 className="w-4 h-4 text-slate-400" />
+                    <span>{L('sidebarDurationLabel')}</span>
+                  </span>
+                  <strong className="font-bold text-slate-950 text-right">{course.duration ? <T o={course} k="duration" /> : '5 Weeks'}</strong>
+                </div>
+
+                <div className="flex justify-between items-center gap-4 py-1.5 border-b border-slate-100/70">
+                  <span className="text-slate-500 font-medium flex items-center gap-2 shrink-0">
+                    <RiCalendarEventLine className="w-4 h-4 text-slate-400" />
+                    <span>{L('sidebarIntakeLabel')}</span>
+                  </span>
+                  <strong className="font-bold text-slate-950 font-mono text-right">
+                    {formatDate(schedule.startDate) || (course.intakeLabel && <T o={course} k="intakeLabel" />) || 'Contact for dates'}
+                  </strong>
+                </div>
+
+                <div className="flex justify-between items-start gap-4 py-1.5 border-b border-slate-100/70">
+                  <span className="text-slate-500 font-medium flex items-center gap-2 shrink-0 pt-0.5">
+                    <RiMapPin2Line className="w-4 h-4 text-slate-400" />
+                    <span>{L('sidebarLocationLabel')}</span>
+                  </span>
+                  <strong className="font-bold text-slate-950 text-right leading-snug">
+                    {(course.location && <T o={course} k="location" />) || (isIndiaProgram ? 'New Delhi' : 'Online 2 Weeks, 3 Weeks Onsite Sønderborg (Denmark)')}
+                  </strong>
+                </div>
+
+                <div className="flex justify-between items-center gap-4 py-1.5 border-b border-slate-100/70">
+                  <span className="text-slate-500 font-medium flex items-center gap-2 shrink-0">
+                    <RiStackLine className="w-4 h-4 text-slate-400" />
+                    <span>{L('sidebarDeliveryLabel')}</span>
+                  </span>
+                  <strong className="font-bold text-slate-950 text-right">{schedule.mode || (isIndiaProgram ? 'Onsite' : 'Hybrid')}</strong>
+                </div>
+
+                <div className="flex justify-between items-center gap-4 py-1.5 border-b border-slate-100/70">
+                  <span className="text-slate-500 font-medium flex items-center gap-2 shrink-0">
+                    <RiShieldCheckFill className="w-4 h-4 text-slate-400" />
+                    <span>{L('sidebarStandardLabel')}</span>
+                  </span>
+                  <strong className="font-bold text-slate-950 text-right">
+                    {isIndiaProgram
+                      ? L('sidebarStandardValueDgca')
+                      : isFaaProgram
+                        ? L('sidebarStandardValueFaa')
+                        : L('sidebarStandardValueEasa')}
+                  </strong>
+                </div>
+
+                <div className="flex justify-between items-center gap-4 py-1.5">
+                  <span className="text-slate-500 font-medium flex items-center gap-2 shrink-0">
+                    <TbCertificate className="w-4 h-4 text-slate-400" />
+                    <span>{L('sidebarCertificateLabel')}</span>
+                  </span>
+                  <strong className="font-bold text-slate-950 text-right">{L('sidebarCertificateValue')}</strong>
+                </div>
+              </div>
+            )}
+
+            {overview?.sidebarNote && (
+              <p className="text-xs text-slate-600 leading-relaxed"><T o={overview} k="sidebarNote" /></p>
+            )}
+
+            {/* Trust Badge at bottom of sidebar */}
+            {course.isCorporate && (
+              <div className="rounded-2xl bg-emerald-50/90 text-emerald-900 border border-emerald-200/90 p-3 text-center text-xs font-bold">
+                {course.rateCard?.trustBadge ? <T o={course.rateCard} k="trustBadge" /> : 'Delivered to 70+ operators worldwide'}
+              </div>
+            )}
+
+              </>
+            )}
+
+            {/* Additional Certification Costs */}
+            {course.additionalCosts?.items?.length > 0 && (
+              <div className="rounded-2xl border border-slate-200 bg-slate-50/70 px-5 py-4">
+                {course.additionalCosts.intro && (
+                  <p className="text-[11px] font-mono font-semibold uppercase tracking-wider text-slate-500 pb-3 mb-1 border-b border-slate-200">
+                    {course.additionalCosts.intro}
+                  </p>
+                )}
+                <dl className="divide-y divide-slate-200/70">
+                  {course.additionalCosts.items.map((item, idx) => {
+                    const isTotal = /^total\b/i.test(item.label || '')
+                    return (
+                      <div
+                        key={idx}
+                        className={`grid grid-cols-[1fr_auto] items-baseline gap-x-4 ${
+                          isTotal ? 'pt-3.5 mt-1 border-t-2 border-slate-900 !divide-y-0' : 'py-2.5'
+                        }`}
+                      >
+                        <dt className={`leading-snug ${isTotal ? 'text-sm font-bold text-slate-950' : 'text-[13px] text-slate-600'}`}>
+                          {item.label}
+                        </dt>
+                        <dd
+                          className={`whitespace-nowrap text-right tabular-nums ${
+                            isTotal ? 'text-base font-extrabold text-slate-950' : 'text-sm font-semibold text-slate-900'
+                          }`}
+                        >
+                          {item.amount}
+                        </dd>
+                      </div>
+                    )
+                  })}
+                </dl>
+                {course.additionalCosts.note && (
+                  <p className="text-slate-600 text-xs leading-relaxed pt-3 mt-1 border-t border-slate-200">
+                    {course.additionalCosts.note}
+                  </p>
+                )}
+              </div>
+            )}
+
+            {/* Help line */}
+            <div className="pt-4 border-t border-slate-200 flex items-center justify-between gap-3 text-[13px] sm:text-sm">
+              <span className="text-slate-600">{course.isCorporate ? 'Operator inquiries' : L('sidebarSupportTitle')}</span>
+              <a
+                href={`mailto:${supportEmail}`}
+                className="inline-flex items-center gap-1.5 font-bold text-slate-900 hover:text-[#16a952] transition-colors"
+              >
+                <MdOutlineMail className="w-4 h-4 text-slate-500" />
+                {supportEmail}
+              </a>
+            </div>
+            </div>
+          </aside>
 
           {/* ===================================================================== */}
           {/* LEFT CONTENT COLUMN (7.5 - 8 Cols)                                    */}
           {/* ===================================================================== */}
-          <main className="lg:col-span-7 xl:col-span-8 min-w-0 space-y-10 sm:space-y-14 lg:space-y-16">
 
             {/* 1. HERO SECTION (Executive, Sleek & Clean) */}
-            <section id="overview" className="space-y-6 sm:space-y-8">
+            <section ref={heroRef} id="overview" className="space-y-6 sm:space-y-8 max-lg:!order-1">
               {/* Sleek Breadcrumb & Action Bar */}
               <div className="flex flex-wrap sm:flex-nowrap items-center justify-between gap-2.5 sm:gap-3 pb-3.5 border-b border-slate-200/80">
                 <div className="flex flex-wrap sm:flex-nowrap items-center gap-2 text-xs font-medium text-slate-500 min-w-0 max-w-full flex-1 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden py-0.5">
@@ -654,7 +956,24 @@ export function CourseDetailView({ course: savedCourse, preview = false }) {
             </section>
 
             {overview ? (
-              <OverviewBlocks blocks={editing ? overview.blocks || [] : blocksForLocation(overview.blocks || [], preferredLocation, course.slug)} courseSlug={course.slug} />
+              (arrange.order || overviewBlocks.map((_, i) => i)).map((bi, pos) => (
+                <div
+                  key={bi}
+                  ref={(el) => {
+                    itemRefs.current[bi] = el
+                  }}
+                  className={
+                    arrange.order && pos >= arrange.skipFrom
+                      ? 'lg:clear-right'
+                      : arrange.fillH && pos === arrange.skipFrom - 1
+                        ? 'lg:flex lg:flex-col lg:[&>*]:flex-1 lg:[&>section:not(.grid)]:flex lg:[&>section:not(.grid)]:flex-col lg:[&>section:not(.grid)>:last-child]:flex-1'
+                        : ''
+                  }
+                  style={arrange.fillH && pos === arrange.skipFrom - 1 ? { minHeight: arrange.fillH } : undefined}
+                >
+                  <OverviewBlocks blocks={[overviewBlocks[bi]]} courseSlug={course.slug} />
+                </div>
+              ))
             ) : (
               <>
             {/* 2B. ROLE + OPERATION EXPLORER (Dangerous Goods only - dgrExplorer set) */}
@@ -1484,252 +1803,9 @@ export function CourseDetailView({ course: savedCourse, preview = false }) {
             </section>
               </>
             )}
-          </main>
 
-          {/* ===================================================================== */}
-          {/* RIGHT STICKY SIDEBAR (Executive Overview Panel) (4.5 Cols)             */}
-          {/* ===================================================================== */}
-          <aside
-            className={`lg:col-span-5 xl:col-span-4 lg:sticky lg:self-start text-slate-900 ${
-              dgBlock
-                ? 'p-1.5 rounded-2xl shadow-[0_4px_24px_rgba(0,0,0,0.04)]'
-                : 'bg-white border border-slate-200/90 rounded-[2rem] p-6 sm:p-7 shadow-[0_4px_24px_rgba(0,0,0,0.03)]'
-            }`}
-            style={{ ...(dgBlock ? dgHatch : {}), top: SIDEBAR_TOP }}
-            aria-label="Program overview"
-          >
-            <div className={dgBlock ? 'bg-white rounded-xl p-6 sm:p-7 space-y-6' : 'space-y-6'}>
-            {dgBlock ? (
-              <DgSidebar block={dgBlock} contactHref={contactHref} />
-            ) : (
-              <>
-            {/* Header & Price / Rate Display */}
-            <div>
-              <div>
-                {course.isCorporate ? (
-                  <>
-                    <span className="block text-xs font-mono font-semibold uppercase text-slate-500 tracking-wider">
-                      {isConsulting ? 'Consulting Fee' : L('sidebarTuitionLabel')}
-                    </span>
-                    <strong className="block text-2xl sm:text-3xl font-extrabold text-slate-950 tracking-tight leading-tight mt-0.5">
-                      {fields.rateCard?.value && fields.rateCard.value !== 'Corporate Rate' ? F('rateCard.value') : 'Training Fee'}
-                    </strong>
-                    <p className="text-sm text-slate-700 font-normal mt-2 leading-relaxed">
-                      {F('rateCard.note') ||
-                        "Custom quote, based on group size and delivery format, tailored to the operator's operational environment."}
-                    </p>
-                  </>
-                ) : (
-                  <>
-                    <span className="block text-xs font-mono font-semibold uppercase text-slate-500 tracking-wider">
-                      {L('sidebarTuitionLabel')}
-                    </span>
-                    <strong className="block text-3xl sm:text-4xl font-extrabold text-slate-950 tracking-tight leading-tight mt-0.5">
-                      {formatPrice(sidebarPrice) ? <PriceTag price={sidebarPrice} /> : 'Contact for Pricing'}
-                    </strong>
-                    {taxNote(sidebarPrice, taxIsGst) && (
-                      <span className="block text-sm font-semibold text-slate-800 mt-1.5">{taxNote(sidebarPrice, taxIsGst)}</span>
-                    )}
-                    {taxIsGst && <InrConverter price={sidebarPrice} />}
-                    <small className="block text-sm text-slate-700 font-normal mt-2 leading-relaxed">
-                      {F('price.note') ||
-                        (formatPrice(course.price)
-                          ? isIndiaProgram
-                            ? '+ 18% GST / Track · Inclusive of official materials'
-                            : 'Inclusive of official study materials & exam certification'
-                          : 'Contact admissions for current tuition')}
-                    </small>
-                  </>
-                )}
-              </div>
-            </div>
-
-            {/* Primary Action Buttons */}
-            <div className="space-y-2.5">
-              {course.isCorporate ? (
-                <>
-                  <Link
-                    to={contactHref}
-                    className="w-full block text-center bg-[#34E06E] hover:bg-[#28c85e] text-slate-950 font-extrabold py-3.5 px-5 rounded-full text-xs uppercase tracking-wider transition-all duration-150 shadow-[0_4px_20px_rgba(52,224,110,0.35)] hover:-translate-y-0.5 cursor-pointer"
-                  >
-                    {course.ctaLabel || 'Request a Corporate Quote'}
-                  </Link>
-
-                  <Link
-                    to={contactHref}
-                    className="w-full block text-center bg-white hover:bg-slate-50 border border-slate-200/90 text-slate-800 font-bold py-3 px-4 rounded-full text-xs transition-colors cursor-pointer"
-                  >
-                    {F('rateCard.secondaryCtaLabel') || 'Contact Training Team'}
-                  </Link>
-                </>
-              ) : (
-                <>
-                  <Link
-                    to={enrollHref}
-                    className="w-full block text-center bg-[#34E06E] hover:bg-[#28c85e] text-slate-950 font-extrabold py-3.5 px-5 rounded-full text-xs uppercase tracking-wider transition-all duration-150 shadow-[0_4px_20px_rgba(52,224,110,0.35)] hover:-translate-y-0.5 cursor-pointer"
-                  >
-                    {L('sidebarEnrollLabel')}
-                  </Link>
-
-                  <a
-                    href="https://wa.me/41782273103"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full flex items-center justify-center gap-2 bg-emerald-50/80 hover:bg-emerald-100 border border-emerald-200/80 text-emerald-950 font-bold py-3 px-4 rounded-full text-xs transition-colors cursor-pointer"
-                  >
-                    <RiWhatsappFill className="w-4 h-4 text-[#25D366]" />
-                    <span>{L('sidebarWhatsappLabel')}</span>
-                  </a>
-                </>
-              )}
-            </div>
-
-            {/* Specifications Rows */}
-            {fields.sidebarSpecs?.length > 0 ? (
-              <div className="border-t border-slate-100 pt-3 space-y-1 text-[13px] sm:text-sm">
-                {fields.sidebarSpecs.map((_, idx) => (
-                  // One line per row: label never wraps, a value too long for the card ends in "…" (full text on hover).
-                  <div key={idx} className="flex justify-between items-center gap-3 py-2 border-b border-slate-200/80 whitespace-nowrap">
-                    <span className="text-slate-600 font-medium shrink-0">{F(`sidebarSpecs.${idx}.label`)}</span>
-                    <strong
-                      className="font-bold text-slate-950 text-right min-w-0 truncate"
-                      title={specOverride(fields.sidebarSpecs[idx]?.label) || fields.sidebarSpecs[idx]?.value || undefined}
-                    >
-                      {specOverride(fields.sidebarSpecs[idx]?.label) || F(`sidebarSpecs.${idx}.value`)}
-                    </strong>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="border-t border-slate-100 pt-3 space-y-3 text-xs sm:text-[13px]">
-                <div className="flex justify-between items-center gap-4 py-1.5 border-b border-slate-100/70">
-                  <span className="text-slate-500 font-medium flex items-center gap-2 shrink-0">
-                    <TbClockHour4 className="w-4 h-4 text-slate-400" />
-                    <span>{L('sidebarDurationLabel')}</span>
-                  </span>
-                  <strong className="font-bold text-slate-950 text-right">{course.duration ? <T o={course} k="duration" /> : '5 Weeks'}</strong>
-                </div>
-
-                <div className="flex justify-between items-center gap-4 py-1.5 border-b border-slate-100/70">
-                  <span className="text-slate-500 font-medium flex items-center gap-2 shrink-0">
-                    <RiCalendarEventLine className="w-4 h-4 text-slate-400" />
-                    <span>{L('sidebarIntakeLabel')}</span>
-                  </span>
-                  <strong className="font-bold text-slate-950 font-mono text-right">
-                    {formatDate(schedule.startDate) || (course.intakeLabel && <T o={course} k="intakeLabel" />) || 'Contact for dates'}
-                  </strong>
-                </div>
-
-                <div className="flex justify-between items-start gap-4 py-1.5 border-b border-slate-100/70">
-                  <span className="text-slate-500 font-medium flex items-center gap-2 shrink-0 pt-0.5">
-                    <RiMapPin2Line className="w-4 h-4 text-slate-400" />
-                    <span>{L('sidebarLocationLabel')}</span>
-                  </span>
-                  <strong className="font-bold text-slate-950 text-right leading-snug">
-                    {(course.location && <T o={course} k="location" />) || (isIndiaProgram ? 'New Delhi' : 'Online 2 Weeks, 3 Weeks Onsite Sønderborg (Denmark)')}
-                  </strong>
-                </div>
-
-                <div className="flex justify-between items-center gap-4 py-1.5 border-b border-slate-100/70">
-                  <span className="text-slate-500 font-medium flex items-center gap-2 shrink-0">
-                    <RiStackLine className="w-4 h-4 text-slate-400" />
-                    <span>{L('sidebarDeliveryLabel')}</span>
-                  </span>
-                  <strong className="font-bold text-slate-950 text-right">{schedule.mode || (isIndiaProgram ? 'Onsite' : 'Hybrid')}</strong>
-                </div>
-
-                <div className="flex justify-between items-center gap-4 py-1.5 border-b border-slate-100/70">
-                  <span className="text-slate-500 font-medium flex items-center gap-2 shrink-0">
-                    <RiShieldCheckFill className="w-4 h-4 text-slate-400" />
-                    <span>{L('sidebarStandardLabel')}</span>
-                  </span>
-                  <strong className="font-bold text-slate-950 text-right">
-                    {isIndiaProgram
-                      ? L('sidebarStandardValueDgca')
-                      : isFaaProgram
-                        ? L('sidebarStandardValueFaa')
-                        : L('sidebarStandardValueEasa')}
-                  </strong>
-                </div>
-
-                <div className="flex justify-between items-center gap-4 py-1.5">
-                  <span className="text-slate-500 font-medium flex items-center gap-2 shrink-0">
-                    <TbCertificate className="w-4 h-4 text-slate-400" />
-                    <span>{L('sidebarCertificateLabel')}</span>
-                  </span>
-                  <strong className="font-bold text-slate-950 text-right">{L('sidebarCertificateValue')}</strong>
-                </div>
-              </div>
-            )}
-
-            {overview?.sidebarNote && (
-              <p className="text-xs text-slate-600 leading-relaxed"><T o={overview} k="sidebarNote" /></p>
-            )}
-
-            {/* Trust Badge at bottom of sidebar */}
-            {course.isCorporate && (
-              <div className="rounded-2xl bg-emerald-50/90 text-emerald-900 border border-emerald-200/90 p-3 text-center text-xs font-bold">
-                {course.rateCard?.trustBadge ? <T o={course.rateCard} k="trustBadge" /> : 'Delivered to 70+ operators worldwide'}
-              </div>
-            )}
-
-              </>
-            )}
-
-            {/* Additional Certification Costs */}
-            {course.additionalCosts?.items?.length > 0 && (
-              <div className="rounded-2xl border border-slate-200 bg-slate-50/70 px-5 py-4">
-                {course.additionalCosts.intro && (
-                  <p className="text-[11px] font-mono font-semibold uppercase tracking-wider text-slate-500 pb-3 mb-1 border-b border-slate-200">
-                    {course.additionalCosts.intro}
-                  </p>
-                )}
-                <dl className="divide-y divide-slate-200/70">
-                  {course.additionalCosts.items.map((item, idx) => {
-                    const isTotal = /^total\b/i.test(item.label || '')
-                    return (
-                      <div
-                        key={idx}
-                        className={`grid grid-cols-[1fr_auto] items-baseline gap-x-4 ${
-                          isTotal ? 'pt-3.5 mt-1 border-t-2 border-slate-900 !divide-y-0' : 'py-2.5'
-                        }`}
-                      >
-                        <dt className={`leading-snug ${isTotal ? 'text-sm font-bold text-slate-950' : 'text-[13px] text-slate-600'}`}>
-                          {item.label}
-                        </dt>
-                        <dd
-                          className={`whitespace-nowrap text-right tabular-nums ${
-                            isTotal ? 'text-base font-extrabold text-slate-950' : 'text-sm font-semibold text-slate-900'
-                          }`}
-                        >
-                          {item.amount}
-                        </dd>
-                      </div>
-                    )
-                  })}
-                </dl>
-                {course.additionalCosts.note && (
-                  <p className="text-slate-600 text-xs leading-relaxed pt-3 mt-1 border-t border-slate-200">
-                    {course.additionalCosts.note}
-                  </p>
-                )}
-              </div>
-            )}
-
-            {/* Help line */}
-            <div className="pt-4 border-t border-slate-200 flex items-center justify-between gap-3 text-[13px] sm:text-sm">
-              <span className="text-slate-600">{course.isCorporate ? 'Operator inquiries' : L('sidebarSupportTitle')}</span>
-              <a
-                href={`mailto:${supportEmail}`}
-                className="inline-flex items-center gap-1.5 font-bold text-slate-900 hover:text-[#16a952] transition-colors"
-              >
-                <MdOutlineMail className="w-4 h-4 text-slate-500" />
-                {supportEmail}
-              </a>
-            </div>
-            </div>
-          </aside>
         </div>
+
       </div>
     </div>
     </DgProvider>

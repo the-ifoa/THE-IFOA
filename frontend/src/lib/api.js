@@ -67,6 +67,8 @@ export const api = {
     return request(`/admin/courses${qs ? `?${qs}` : ''}`)
   },
   adminGetCourse: (id) => request(`/admin/courses/${id}`),
+  adminCreateCourse: (payload) => request('/admin/courses', { method: 'POST', body: payload }),
+  adminDeleteCourse: (id) => request(`/admin/courses/${id}`, { method: 'DELETE' }),
   adminUpdateCourse: (id, payload) => request(`/admin/courses/${id}`, { method: 'PUT', body: payload }),
 
   // ---- Admin: per-course enrollment form schema ----

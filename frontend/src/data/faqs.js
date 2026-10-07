@@ -37,7 +37,7 @@ export const FAQ_SECTIONS = [
     items: [
       {
         q: 'Do I need to be a US citizen?',
-        a: 'No. The FAA Aircraft Dispatcher certificate is open to any nationality. You need to meet the age and English requirements.'
+        a: 'No. The FAA Aircraft Dispatcher license is open to any nationality. You need to meet the age and English requirements.'
       },
       {
         q: 'Is ADX preparation part of the 200 hours?',
@@ -48,8 +48,8 @@ export const FAQ_SECTIONS = [
         a: 'Before or during the course. Your ADX result stays valid for 24 months, so you have time to complete the practical test.'
       },
       {
-        q: 'Is the IFOA certificate the same as the FAA certificate?',
-        a: 'No. IFOA issues an IFOA Certificate of Completion when you complete the course. The FAA issues the Aircraft Dispatcher certificate once you pass the knowledge and practical tests.'
+        q: 'Is the IFOA certificate the same as the FAA license?',
+        a: 'No. IFOA issues an IFOA Certificate of Completion when you complete the course. The FAA issues the Aircraft Dispatcher license once you pass the knowledge and practical tests.'
       },
       { q: 'Do you help with visas and accommodation?', a: VISA },
       { q: 'What are the payment and refund terms?', a: TERMS }
@@ -62,7 +62,7 @@ export const FAQ_SECTIONS = [
     items: [
       {
         q: 'Is this a dual license?',
-        a: 'No. The only license is the FAA Aircraft Dispatcher certificate, and the FAA issues it, not IFOA. EASA does not issue dispatcher licenses. The ICAO and EASA part shows European operators you can work under their rules.'
+        a: 'No. The only license is the FAA Aircraft Dispatcher license, and the FAA issues it, not IFOA. EASA does not issue dispatcher licenses. The ICAO and EASA part shows European operators you can work under their rules.'
       },
       {
         q: 'Is ADX preparation part of the 280 hours?',
@@ -74,7 +74,7 @@ export const FAQ_SECTIONS = [
       },
       {
         q: 'Do I need to be a US citizen?',
-        a: 'No. The FAA Aircraft Dispatcher certificate is open to any nationality. You need to meet the age and English requirements.'
+        a: 'No. The FAA Aircraft Dispatcher license is open to any nationality. You need to meet the age and English requirements.'
       },
       {
         q: 'Does the price change by location?',

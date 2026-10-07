@@ -3,6 +3,7 @@ const FormSchema = require('../models/FormSchema')
 const { asyncHandler } = require('../middleware/error')
 const { deleteObject } = require('../config/r2')
 const { DEFAULTS, mergeContent } = require('../utils/pageContent')
+const { defaultFormSchema } = require('../utils/defaultFormSchema')
 
 // Fields a client is never allowed to set directly.
 const PROTECTED = ['_id', 'createdAt', 'updatedAt', '__v']
@@ -27,6 +28,12 @@ const listPublic = asyncHandler(async (req, res) => {
     .sort({ featured: -1, order: 1, 'schedule.startDate': 1, createdAt: -1 })
     .lean()
 
+  // hasForm: the course has an online application form, so its Apply button can open it.
+  const formed = new Set(
+    (await FormSchema.find({ course: { $in: courses.map((c) => c._id) } }).select('course').lean()).map((f) => String(f.course))
+  )
+  for (const c of courses) c.hasForm = formed.has(String(c._id))
+
   res.json({ count: courses.length, courses })
 })
 
@@ -42,6 +49,7 @@ const getBySlug = asyncHandler(async (req, res) => {
     courseDetail: mergeContent(DEFAULTS.courseDetail, course.pageContent?.courseDetail || {}),
     courseEnrollment: mergeContent(DEFAULTS.courseEnrollment, course.pageContent?.courseEnrollment || {})
   }
+  course.hasForm = Boolean(await FormSchema.exists({ course: course._id }))
 
   res.json({ course })
 })
@@ -62,7 +70,7 @@ const listAdmin = asyncHandler(async (req, res) => {
       String(f.course)
     )
   )
-  const withFormStatus = courses.map((c) => ({ ...c, hasCustomForm: formedIds.has(String(c._id)) }))
+  const withFormStatus = courses.map((c) => ({ ...c, hasCustomForm: formedIds.has(String(c._id)), hasForm: formedIds.has(String(c._id)) }))
 
   res.json({ count: withFormStatus.length, courses: withFormStatus })
 })
@@ -78,6 +86,8 @@ const getById = asyncHandler(async (req, res) => {
     courseDetail: mergeContent(DEFAULTS.courseDetail, course.pageContent?.courseDetail || {}),
     courseEnrollment: mergeContent(DEFAULTS.courseEnrollment, course.pageContent?.courseEnrollment || {})
   }
+
+  course.hasForm = Boolean(await FormSchema.exists({ course: course._id }))
 
   res.json({ course })
 })
@@ -175,4 +185,38 @@ const updateTextFields = asyncHandler(async (req, res) => {
   res.json({ course })
 })
 
-module.exports = { listPublic, getBySlug, listAdmin, getById, update, updateOverview, updateTextFields }
+// POST /api/admin/courses - starts a new course as a draft; the rest is filled in
+// from the course settings and the live page editor.
+const create = asyncHandler(async (req, res) => {
+  const { title, category, slug } = req.body || {}
+  if (typeof title !== 'string' || !title.trim()) return res.status(400).json({ message: 'A course title is required' })
+  const data = { title: title.trim().slice(0, 200), status: 'draft' }
+  if (typeof category === 'string' && Course.schema.path('category').enumValues.includes(category)) data.category = category
+  if (typeof slug === 'string' && slug.trim()) data.slug = slug.trim()
+  try {
+    const course = await Course.create(data)
+    // Give the course the default application form so applications are accepted and
+    // show up under Registrations. The admin can edit it per course afterwards.
+    const template = await FormSchema.findOne({ isTemplate: true }).lean()
+    await FormSchema.create({ course: course._id, isTemplate: false, sections: template?.sections || defaultFormSchema.sections })
+    res.status(201).json({ course })
+  } catch (err) {
+    if (err.code === 11000) return res.status(409).json({ message: 'A course with that slug already exists' })
+    throw err
+  }
+})
+
+// DELETE /api/admin/courses/:id - removes the course, its application form and its images.
+const remove = asyncHandler(async (req, res) => {
+  const course = await Course.findById(req.params.id)
+  if (!course) return res.status(404).json({ message: 'Course not found' })
+  const keys = course.imageKeys()
+  await FormSchema.deleteMany({ course: course._id })
+  await course.deleteOne()
+  for (const key of keys) {
+    deleteObject(key).catch((err) => console.warn('[r2] cleanup failed', key, err.message))
+  }
+  res.json({ ok: true })
+})
+
+module.exports = { listPublic, getBySlug, listAdmin, getById, create, update, remove, updateOverview, updateTextFields }

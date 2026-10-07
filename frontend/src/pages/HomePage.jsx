@@ -184,7 +184,7 @@ const FALLBACK = {
       {
         name: 'USA',
         city: 'Daytona Beach, Florida',
-        desc: 'FAA Aircraft Dispatcher: the Part 65 approved course that prepares you for the FAA certificate.',
+        desc: 'FAA Aircraft Dispatcher: the Part 65 approved course that prepares you for the FAA license.',
         link1Label: 'FAA Aircraft Dispatcher',
         link1Slug: 'aircraft-dispatcher-training-faa-part-65',
         link2Label: '',
@@ -261,7 +261,7 @@ const FALLBACK = {
       {
         category: 'FAA & EASA',
         title: 'Double Program: FAA & EASA',
-        desc: 'The FAA Part 65 approved course plus ICAO and EASA operations in one program. The FAA certificate is issued by the FAA.',
+        desc: 'The FAA Part 65 approved course plus ICAO and EASA operations in one program. The FAA license is issued by the FAA.',
         hours: '280 Hours (7 Weeks) · Hybrid\nDenmark, India · $5,500 USD',
         linkText: 'View course',
         courseSlug: 'flight-dispatcher-double-programme'
@@ -269,7 +269,7 @@ const FALLBACK = {
       {
         category: 'FAA Part 65',
         title: 'FAA Aircraft Dispatcher',
-        desc: 'Prepares you for the FAA Aircraft Dispatcher certificate. Part 65 approved.',
+        desc: 'Prepares you for the FAA Aircraft Dispatcher license. Part 65 approved.',
         hours: '200 Hours (6 Weeks) · Hybrid\nDenmark, USA, India · $4,500 USD',
         linkText: 'View course',
         courseSlug: 'aircraft-dispatcher-training-faa-part-65'
@@ -798,7 +798,7 @@ export function HomePage() {
                       Double Program: FAA & EASA
                     </h3>
                     <p className="text-xs text-slate-600 leading-relaxed font-normal min-h-[3.75rem] line-clamp-3">
-                      The FAA Part 65 approved course plus ICAO and EASA operations in one program. The FAA issues the certificate.
+                      The FAA Part 65 approved course plus ICAO and EASA operations in one program. The FAA issues the license.
                     </p>
                   </div>
                 </div>
@@ -914,7 +914,7 @@ export function HomePage() {
                       FAA Aircraft Dispatcher
                     </h3>
                     <p className="text-xs text-slate-600 leading-relaxed font-normal min-h-[3.75rem] line-clamp-3">
-                      FAA Part 65 approved training that prepares you for the FAA Aircraft Dispatcher certificate.
+                      FAA Part 65 approved training that prepares you for the FAA Aircraft Dispatcher license.
                     </p>
                   </div>
                 </div>

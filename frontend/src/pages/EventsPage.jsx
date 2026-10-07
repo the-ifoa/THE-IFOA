@@ -13,7 +13,7 @@ import { usePageContent } from '@/hooks/usePageContent'
 import { Seo } from '@/components/common/Seo'
 import { readPreload } from '@/lib/preload'
 import { graph, organizationSchema, breadcrumbSchema, absoluteUrl } from '@/lib/seo'
-// Hero background: FAA aircraft dispatcher certificate, cropped from the IFOA USA poster.
+// Hero background: FAA aircraft dispatcher license, cropped from the IFOA USA poster.
 import bannerEventsHero from '@/assets/events/events_hero_faa_card.webp'
 import multipleAirImg from '@/assets/events/multiple-air.webp'
 import logoFaa from '@/assets/shared/standards-logos/logo-faa.webp'
@@ -250,7 +250,7 @@ export function EventsPage() {
                       Double Program: FAA & EASA
                     </h3>
                     <p className="text-xs text-slate-600 leading-relaxed font-normal min-h-[3.75rem] line-clamp-3">
-                      The FAA Part 65 approved course plus ICAO and EASA operations in one program. The FAA issues the certificate.
+                      The FAA Part 65 approved course plus ICAO and EASA operations in one program. The FAA issues the license.
                     </p>
                   </div>
                 </div>
@@ -366,7 +366,7 @@ export function EventsPage() {
                       FAA Aircraft Dispatcher
                     </h3>
                     <p className="text-xs text-slate-600 leading-relaxed font-normal min-h-[3.75rem] line-clamp-3">
-                      FAA Part 65 approved training that prepares you for the FAA Aircraft Dispatcher certificate.
+                      FAA Part 65 approved training that prepares you for the FAA Aircraft Dispatcher license.
                     </p>
                   </div>
                 </div>

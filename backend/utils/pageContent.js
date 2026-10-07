@@ -831,7 +831,7 @@ const DEFAULTS = {
         {
           name: 'USA',
           city: 'Daytona Beach, Florida',
-          desc: 'FAA Aircraft Dispatcher: the Part 65 approved course that prepares you for the FAA certificate.',
+          desc: 'FAA Aircraft Dispatcher: the Part 65 approved course that prepares you for the FAA license.',
           link1Label: 'FAA Aircraft Dispatcher',
           link1Slug: 'aircraft-dispatcher-training-faa-part-65',
           link2Label: '',
@@ -909,7 +909,7 @@ const DEFAULTS = {
         {
           category: 'FAA & EASA',
           title: 'Double Program: FAA & EASA',
-          desc: 'The FAA Part 65 approved course plus ICAO and EASA operations in one program. The FAA certificate is issued by the FAA.',
+          desc: 'The FAA Part 65 approved course plus ICAO and EASA operations in one program. The FAA license is issued by the FAA.',
           hours: '280 Hours (7 Weeks) · Hybrid\nDenmark, India · $5,500 USD',
           linkText: 'View course',
           courseSlug: 'flight-dispatcher-double-programme'
@@ -917,7 +917,7 @@ const DEFAULTS = {
         {
           category: 'FAA Part 65',
           title: 'FAA Aircraft Dispatcher',
-          desc: 'Prepares you for the FAA Aircraft Dispatcher certificate. Part 65 approved.',
+          desc: 'Prepares you for the FAA Aircraft Dispatcher license. Part 65 approved.',
           hours: '200 Hours (6 Weeks) · Hybrid\nDenmark, USA, India · $4,500 USD',
           linkText: 'View course',
           courseSlug: 'aircraft-dispatcher-training-faa-part-65'
@@ -1190,7 +1190,7 @@ const DEFAULTS = {
           region: 'Denmark · USA · India',
           title: 'FAA Aircraft Dispatcher',
           courseSlug: 'aircraft-dispatcher-training-faa-part-65',
-          desc: 'FAA Part 65 approved. Prepares you for the FAA Aircraft Dispatcher certificate.',
+          desc: 'FAA Part 65 approved. Prepares you for the FAA Aircraft Dispatcher license.',
           badge1: '200 HRS · 6 WKS',
           badge2: '$4,500 USD',
           action: 'Apply'
@@ -1287,7 +1287,7 @@ const DEFAULTS = {
         {
           id: '02',
           title: 'Double Program: FAA & EASA',
-          subtitle: 'One FAA certificate, trained for both rule sets.',
+          subtitle: 'One FAA license, trained for both rule sets.',
           desc: 'The FAA Part 65 approved course plus ICAO and EASA operations, taught as one program. ADX preparation is self-study.',
           facts: '280 hours | 7 weeks | Hybrid',
           audience: 'Individuals',
@@ -1416,7 +1416,7 @@ const DEFAULTS = {
           "whenNote": "India batches from 8 Feb 2027",
           "title": "FAA Aircraft Dispatcher",
           "slug": "aircraft-dispatcher-training-faa-part-65",
-          "desc": "FAA Part 65 approved. Prepares you for the FAA Aircraft Dispatcher certificate.",
+          "desc": "FAA Part 65 approved. Prepares you for the FAA Aircraft Dispatcher license.",
           "duration": "200 hours, 6 weeks (India: 5 weeks, plus an exam week taken within 6 months), plus ADX self-study",
           "where": "Online preparation, then Sønderborg, Florida or New Delhi",
           "fee": "",
@@ -1428,7 +1428,7 @@ const DEFAULTS = {
           "whenNote": "Contact us for dates",
           "title": "Double Program: FAA & EASA",
           "slug": "flight-dispatcher-double-programme",
-          "desc": "The FAA Part 65 approved course plus ICAO and EASA operations. One FAA certificate, trained for both rule sets.",
+          "desc": "The FAA Part 65 approved course plus ICAO and EASA operations. One FAA license, trained for both rule sets.",
           "duration": "280 hours, 7 weeks, plus ADX self-study",
           "where": "Hybrid, Denmark · India",
           "fee": "",

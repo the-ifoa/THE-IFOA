@@ -19,7 +19,7 @@
             "amount": "$600 USD"
           },
           {
-            "label": "Total to FAA certificate",
+            "label": "Total to FAA license",
             "amount": "$6,275 USD"
           }
         ],
@@ -49,7 +49,7 @@
       "careerPath": "Flight Dispatcher for US and European operators",
       "category": "dispatch",
       "certification": {
-        "text": "From the FAA: the Aircraft Dispatcher certificate under 14 CFR Part 65. Only the FAA issues it, once you pass the ADX knowledge test and the practical test with an FAA examiner. From IFOA: the IFOA Certificate of Completion, which you present at your practical test as proof you completed the approved course. It is not an FAA certificate. There is no EASA flight dispatcher license: in Europe, operators decide who may dispatch their flights.",
+        "text": "From the FAA: the Aircraft Dispatcher license under 14 CFR Part 65. Only the FAA issues it, once you pass the ADX knowledge test and the practical test with an FAA examiner. From IFOA: the IFOA Certificate of Completion, which you present at your practical test as proof you completed the approved course. It is not an FAA license. There is no EASA flight dispatcher license: in Europe, operators decide who may dispatch their flights.",
         "points": [
           "ADX Knowledge Test",
           "Practical Test with FAA Examiner"
@@ -257,7 +257,7 @@
         "intro": "FAA eligibility:",
         "points": [
           "At least 21 to take the ADX knowledge test",
-          "At least 23 to be issued the FAA certificate",
+          "At least 23 to be issued the FAA license",
           "Able to read, speak, write and understand English",
           "No previous dispatch experience required"
         ]
@@ -285,7 +285,7 @@
         "hero": {
           "title": "Double Program: FAA & EASA",
           "slogan": "We train dispatchers, not test takers.",
-          "lead": "One 280-hour program over 7 weeks: the FAA Part 65 approved course, plus ICAO and EASA operations. It prepares you to earn the FAA Aircraft Dispatcher certificate, issued by the FAA, and to dispatch under European rules too.",
+          "lead": "One 280-hour program over 7 weeks: the FAA Part 65 approved course, plus ICAO and EASA operations. It prepares you to earn the FAA Aircraft Dispatcher license, issued by the FAA, and to dispatch under European rules too.",
           "blocks": [
             {
               "type": "split",
@@ -312,8 +312,8 @@
             "anchor": "qualification",
             "title": "What you receive",
             "paragraphs": [
-              "**From the FAA:** the Aircraft Dispatcher certificate under 14 CFR Part 65. Only the FAA issues it, once you pass the ADX knowledge test and the practical test with an FAA examiner.",
-              "**From IFOA:** an IFOA Certificate of Completion for the program. You present it at your practical test as proof you completed the approved course. It is not an FAA certificate.",
+              "**From the FAA:** the Aircraft Dispatcher license under 14 CFR Part 65. Only the FAA issues it, once you pass the ADX knowledge test and the practical test with an FAA examiner.",
+              "**From IFOA:** an IFOA Certificate of Completion for the program. You present it at your practical test as proof you completed the approved course. It is not an FAA license.",
               "There is no EASA flight dispatcher license. In Europe, operators decide who may dispatch their flights. The ICAO and EASA part shows them you can work under European rules as well as FAA rules."
             ]
           },
@@ -494,7 +494,7 @@
                   "title": "FAA eligibility",
                   "items": [
                     "At least 21 to take the ADX knowledge test",
-                    "At least 23 to be issued the FAA certificate",
+                    "At least 23 to be issued the FAA license",
                     "Able to read, speak, write and understand English",
                     "No previous dispatch experience required"
                   ]
@@ -517,8 +517,8 @@
             "rows": [
               [
                 "You receive",
-                "Eligibility for the FAA certificate, issued by the FAA, plus ICAO and EASA training from IFOA",
-                "Eligibility for the FAA certificate, issued by the FAA",
+                "Eligibility for the FAA license, issued by the FAA, plus ICAO and EASA training from IFOA",
+                "Eligibility for the FAA license, issued by the FAA",
                 "IFOA Certificate of Completion"
               ],
               [
@@ -602,7 +602,7 @@
       "seats": null,
       "seo": {
         "metaTitle": "Flight Dispatcher Double Program: FAA, ICAO & EASA, 280 Hours | IFOA",
-        "metaDescription": "A 280-hour, 7-week hybrid program in Denmark or India, $5,500 USD: the FAA Part 65 approved dispatcher course plus ICAO and EASA operations. Prepares you for the FAA Aircraft Dispatcher certificate."
+        "metaDescription": "A 280-hour, 7-week hybrid program in Denmark or India, $5,500 USD: the FAA Part 65 approved dispatcher course plus ICAO and EASA operations. Prepares you for the FAA Aircraft Dispatcher license."
       },
       "sidebarSpecs": [
         {
@@ -627,11 +627,11 @@
         },
         {
           "label": "Leads to",
-          "value": "FAA dispatcher certificate"
+          "value": "FAA dispatcher license"
         }
       ],
       "status": "published",
-      "summary": "One 280-hour program over 7 weeks: the FAA Part 65 approved course, plus ICAO and EASA operations. It prepares you to earn the FAA Aircraft Dispatcher certificate, issued by the FAA, and to dispatch under European rules too.",
+      "summary": "One 280-hour program over 7 weeks: the FAA Part 65 approved course, plus ICAO and EASA operations. It prepares you to earn the FAA Aircraft Dispatcher license, issued by the FAA, and to dispatch under European rules too.",
       "title": "Double Program: FAA & EASA",
       "trainingPhilosophy": {
         "eyebrow": "ADX Preparation",
@@ -1160,7 +1160,7 @@
               [
                 "You receive",
                 "IFOA Certificate of Completion",
-                "Eligibility for the FAA Aircraft Dispatcher certificate, after passing the FAA knowledge and practical tests"
+                "Eligibility for the FAA Aircraft Dispatcher license, after passing the FAA knowledge and practical tests"
               ],
               [
                 "Issued by",
@@ -1681,7 +1681,7 @@
               [
                 "You receive",
                 "IFOA Certificate of Completion",
-                "Eligibility for the FAA Aircraft Dispatcher certificate, after passing the FAA knowledge and practical tests"
+                "Eligibility for the FAA Aircraft Dispatcher license, after passing the FAA knowledge and practical tests"
               ],
               [
                 "Issued by",
@@ -1770,7 +1770,7 @@
       "summary": "Five weeks to learn how to plan, release and follow a flight, and make the calls when it doesn't go to plan. Built on ICAO Doc 10106 and taught by working dispatchers.",
       "heroImage": null,
       "trustStat": "",
-      "heroNote": "This course gives you an IFOA Certificate of Completion, built on ICAO Doc 10106. It does not lead to an FAA certificate. US airlines require the FAA Aircraft Dispatcher certificate, so if that is your goal, take our FAA Aircraft Dispatcher course instead.",
+      "heroNote": "This course gives you an IFOA Certificate of Completion, built on ICAO Doc 10106. It does not lead to an FAA license. US airlines require the FAA Aircraft Dispatcher license, so if that is your goal, take our FAA Aircraft Dispatcher course instead.",
       "isCorporate": false,
       "eyebrow": "",
       "badges": [],
@@ -2209,7 +2209,7 @@
               [
                 "You receive",
                 "IFOA Certificate of Completion",
-                "Eligibility for the FAA Aircraft Dispatcher certificate, after passing the FAA knowledge and practical tests"
+                "Eligibility for the FAA Aircraft Dispatcher license, after passing the FAA knowledge and practical tests"
               ],
               [
                 "Issued by",
@@ -2295,7 +2295,7 @@
       "status": "published",
       "featured": true,
       "order": 15,
-      "summary": "A 200-hour FAA Part 65 approved course. It covers every knowledge area the FAA requires and prepares you to earn the FAA Aircraft Dispatcher certificate.",
+      "summary": "A 200-hour FAA Part 65 approved course. It covers every knowledge area the FAA requires and prepares you to earn the FAA Aircraft Dispatcher license.",
       "heroImage": null,
       "trustStat": "500+ professionals trained a year, across 70+ operators",
       "heroNote": "We train dispatchers, not test takers. The 200 hours cover the FAA knowledge areas. ADX preparation is extra and done alongside, in your own time. The certificate itself is issued by the FAA.",
@@ -2353,7 +2353,7 @@
         "Complete the 200-hour course",
         "Pass the ADX knowledge test",
         "Pass the practical test with an FAA examiner",
-        "FAA Aircraft Dispatcher certificate, issued by the FAA"
+        "FAA Aircraft Dispatcher license, issued by the FAA"
       ],
       "delivery": {
         "intro": "Online preparation, then on-site at IFOA USA, Daytona Beach (FL).",
@@ -2408,7 +2408,7 @@
         "points": [
           "People starting a career in flight dispatch",
           "Airline and OCC staff",
-          "Aviation professionals who want an FAA certificate"
+          "Aviation professionals who want an FAA license"
         ],
         "outro": "",
         "eyebrow": "",
@@ -2418,7 +2418,7 @@
         "intro": "FAA eligibility:",
         "points": [
           "At least 21 to take the ADX knowledge test",
-          "At least 23 to be issued the FAA certificate",
+          "At least 23 to be issued the FAA license",
           "Able to read, speak, write and understand English",
           "No previous dispatch experience required"
         ]
@@ -2438,7 +2438,7 @@
         "note": "We train Aircraft Dispatchers, not test takers: the ADX knowledge test is one step in the certification process."
       },
       "certification": {
-        "text": "IFOA Certificate of Completion: issued when you complete the approved course, and presented at your practical test. It is not the FAA certificate. ADX knowledge test: FAA multiple-choice test at an approved testing center; your result stays valid for 24 months. Practical test: with an FAA examiner. Pass it and the FAA issues your Aircraft Dispatcher certificate.",
+        "text": "IFOA Certificate of Completion: issued when you complete the approved course, and presented at your practical test. It is not the FAA license. ADX knowledge test: FAA multiple-choice test at an approved testing center; your result stays valid for 24 months. Practical test: with an FAA examiner. Pass it and the FAA issues your Aircraft Dispatcher license.",
         "points": [
           "ADX Knowledge Test",
           "Practical Test with FAA Examiner"
@@ -2460,7 +2460,7 @@
             "amount": "$600 USD"
           },
           {
-            "label": "Total to FAA certificate",
+            "label": "Total to FAA license",
             "amount": "$5,275 USD"
           }
         ],
@@ -2671,7 +2671,7 @@
         "hero": {
           "title": "FAA Aircraft Dispatcher",
           "slogan": "We train dispatchers, not test takers.",
-          "lead": "A 200-hour FAA Part 65 approved course. It covers every knowledge area the FAA requires and prepares you to earn the FAA Aircraft Dispatcher certificate.",
+          "lead": "A 200-hour FAA Part 65 approved course. It covers every knowledge area the FAA requires and prepares you to earn the FAA Aircraft Dispatcher license.",
           "blocks": [
             {
               "type": "track",
@@ -2693,7 +2693,7 @@
                 },
                 {
                   "label": "Step 4",
-                  "title": "FAA Aircraft Dispatcher certificate",
+                  "title": "FAA Aircraft Dispatcher license",
                   "sub": "Issued by the FAA",
                   "tone": "on"
                 }
@@ -2845,7 +2845,7 @@
                     },
                     {
                       "title": "Practical test",
-                      "text": "With an FAA examiner. Pass it and the FAA issues your Aircraft Dispatcher certificate."
+                      "text": "With an FAA examiner. Pass it and the FAA issues your Aircraft Dispatcher license."
                     }
                   ],
                   "standards": [
@@ -2880,7 +2880,7 @@
             "rows": [
               [
                 "You receive",
-                "Eligibility for the FAA Aircraft Dispatcher certificate, after passing the FAA knowledge and practical tests",
+                "Eligibility for the FAA Aircraft Dispatcher license, after passing the FAA knowledge and practical tests",
                 "IFOA Certificate of Completion"
               ],
               [
@@ -2931,7 +2931,7 @@
                   "items": [
                     "People starting a career in flight dispatch",
                     "Airline and OCC staff",
-                    "Aviation professionals who want an FAA certificate"
+                    "Aviation professionals who want an FAA license"
                   ]
                 }
               ],
@@ -2941,7 +2941,7 @@
                   "title": "FAA eligibility",
                   "items": [
                     "At least 21 to take the ADX knowledge test",
-                    "At least 23 to be issued the FAA certificate",
+                    "At least 23 to be issued the FAA license",
                     "Able to read, speak, write and understand English",
                     "No previous dispatch experience required"
                   ]
@@ -7112,7 +7112,7 @@
             },
             {
               "id": "acknowledgementAccepted",
-              "label": "I understand that the FAA Aircraft Dispatcher certificate (14 CFR Part 65) is issued only by the FAA, once I pass the ADX knowledge test and the practical test with an FAA examiner, and that I must be at least 21 to take the ADX and at least 23 to be issued the certificate. IFOA will deliver an IFOA Certificate of Completion for the approved course, which is not an FAA certificate.",
+              "label": "I understand that the FAA Aircraft Dispatcher license (14 CFR Part 65) is issued only by the FAA, once I pass the ADX knowledge test and the practical test with an FAA examiner, and that I must be at least 21 to take the ADX and at least 23 to be issued the license. IFOA will deliver an IFOA Certificate of Completion for the approved course, which is not an FAA license.",
               "type": "checkbox",
               "required": true,
               "placeholder": "",
@@ -10275,7 +10275,7 @@
             },
             {
               "id": "acknowledgementAccepted",
-              "label": "I understand that the FAA Aircraft Dispatcher certificate (14 CFR Part 65) is issued only by the FAA, once I pass the ADX knowledge test and the practical test with an FAA examiner, and that I must be at least 21 to take the ADX and at least 23 to be issued the certificate. IFOA will deliver an IFOA Certificate of Completion, which is not an FAA certificate. There is no EASA flight dispatcher license: in Europe, operators decide who may dispatch their flights.",
+              "label": "I understand that the FAA Aircraft Dispatcher license (14 CFR Part 65) is issued only by the FAA, once I pass the ADX knowledge test and the practical test with an FAA examiner, and that I must be at least 21 to take the ADX and at least 23 to be issued the license. IFOA will deliver an IFOA Certificate of Completion, which is not an FAA license. There is no EASA flight dispatcher license: in Europe, operators decide who may dispatch their flights.",
               "type": "checkbox",
               "required": true,
               "placeholder": "",
