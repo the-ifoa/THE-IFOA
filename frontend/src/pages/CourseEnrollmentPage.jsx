@@ -14,7 +14,7 @@ import RegistrationForm from '@/components/course/RegistrationForm'
 import { Seo } from '@/components/common/Seo'
 import { mergeContent } from '@/hooks/usePageContent'
 import { useCoursePreview } from '@/components/course/CourseOverview'
-import { CmsText, CmsImageButton, postEdit } from '@/components/admin/CmsEditable'
+import { CmsText, CmsImageButton, postEdit, isPreviewEditMode } from '@/components/admin/CmsEditable'
 import { useGoBack } from '@/hooks/useGoBack'
 import { programmeBanner, resolveCard, enrollPath } from '@/components/course/CourseCard'
 import { PriceTag, taxNote } from '@/components/course/PriceTag'
@@ -205,10 +205,17 @@ export function CourseEnrollmentPage() {
     return <Navigate to="/events" replace />
   }
   // Courses that apply through another course's form (e.g. India edition).
+  // Not in the admin editor: redirecting there would drop the edit mode and show a different course.
   const via = enrollPath({ slug: activeSlug })
-  if (via !== `/courses/${activeSlug}/enroll`) {
+  if (via !== `/courses/${activeSlug}/enroll` && !isPreviewEditMode()) {
     return <Navigate to={via} replace />
   }
+
+  // Editions (e.g. the India course) have no form of their own: they use the main course's form
+  // with their location pre-selected. Only the admin editor gets here for an edition.
+  const viaUrl = new URL(via, 'https://x.invalid')
+  const formSlug = viaUrl.pathname.split('/')[2] || activeSlug
+  const formLocation = viaUrl.searchParams.get('location') || ''
 
   if (loading) {
     return (
@@ -470,11 +477,11 @@ export function CourseEnrollmentPage() {
           {/* Right Main Column: Full Registration Form */}
           <main className="lg:col-span-8">
             <RegistrationForm
-              slug={course.slug}
+              slug={formSlug}
               courseTitle={course.title?.replace(/[\u2013\u2014]/g, '-')}
               onAnswersChange={handleAnswersChange}
               locationPrices={course.locationPrices || []}
-              initialLocation={initialLocation}
+              initialLocation={initialLocation || formLocation}
               liveSections={liveCourse?.form}
               text={{
                 title: CF('title'),

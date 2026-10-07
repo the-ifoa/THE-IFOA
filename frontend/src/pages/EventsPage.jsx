@@ -224,10 +224,11 @@ export function EventsPage() {
               {/* Image Banner */}
               <div className="relative h-48 sm:h-52 w-full overflow-hidden bg-slate-950 select-none">
                 <img
-                  src={doubleProgrammeHero}
+                  src={c.programs.imageDouble?.url || doubleProgrammeHero}
                   alt="Double Program: FAA & EASA"
                   className="w-full h-full object-cover object-[center_60%] group-hover:scale-105 transition-transform duration-700"
                 />
+                <CmsImageButton path="programs.imageDouble" />
               </div>
 
               {/* Card Body */}
@@ -283,10 +284,11 @@ export function EventsPage() {
               {/* Image Banner */}
               <div className="relative h-48 sm:h-52 w-full overflow-hidden bg-slate-950 select-none">
                 <img
-                  src={easaTarmacHero}
+                  src={c.programs.imageInitial?.url || easaTarmacHero}
                   alt="Flight Dispatcher Initial"
                   className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700"
                 />
+                <CmsImageButton path="programs.imageInitial" />
               </div>
 
               {/* Card Body */}
@@ -341,10 +343,11 @@ export function EventsPage() {
               {/* Image Banner */}
               <div className="relative h-48 sm:h-52 w-full overflow-hidden bg-slate-950 select-none">
                 <img
-                  src={faaTarmacHero}
+                  src={c.programs.imageFaa?.url || faaTarmacHero}
                   alt="FAA Aircraft Dispatcher"
                   className="w-full h-full object-cover object-[center_35%] group-hover:scale-105 transition-transform duration-700"
                 />
+                <CmsImageButton path="programs.imageFaa" />
               </div>
 
               {/* Card Body */}
@@ -532,11 +535,12 @@ export function EventsPage() {
             {/* Right: aircraft image, same height as the text column */}
             <div className="relative min-h-[260px] rounded-2xl overflow-hidden border border-white/10 bg-[#0f172a]">
               <img
-                src={multipleAirImg}
+                src={c.theoryToAircraft.image?.url || multipleAirImg}
                 alt="Aircraft operations training"
                 className="absolute inset-0 w-full h-full object-cover"
                 loading="eager"
               />
+              <CmsImageButton path="theoryToAircraft.image" />
             </div>
           </div>
         </div>

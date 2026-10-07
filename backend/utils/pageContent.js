@@ -19,7 +19,7 @@ const PAGE_LABELS = {
   services: 'Services',
   about: 'About',
   contact: 'Contact',
-  events: 'Events',
+  events: 'Flight Dispatch Courses',
   upcoming: 'Upcoming Courses',
   foxtrotDelta: 'Foxtrot Delta',
   courseEnrollment: 'Course Enrollment',
@@ -91,6 +91,7 @@ const SCHEMAS = {
             fields: [
               f('name', 'Region name'),
               f('city', 'City'),
+              f('image', 'Background image (flag)', 'image'),
               f('desc', 'Description', 'textarea'),
               f('link1Label', 'Link 1 label'),
               f('link1Slug', 'Link 1 course (slug)'),
@@ -191,7 +192,7 @@ const SCHEMAS = {
       {
         k: 'beyond',
         label: 'Smart Talent & Foxtrot Delta',
-        fields: [],
+        fields: [f('eyebrow', 'Eyebrow'), f('title', 'Title'), f('intro', 'Intro', 'textarea')],
         lists: [
           {
             k: 'cards',
@@ -199,6 +200,8 @@ const SCHEMAS = {
             itemLabel: 'Card',
             fields: [
               f('title', 'Title'),
+              f('image', 'Image', 'image'),
+              f('livePreview', 'Show the live site as the image (yes or no)'),
               f('desc', 'Description', 'textarea'),
               f('linkLabel', 'Link label'),
               f('url', 'Link URL')
@@ -432,8 +435,8 @@ const SCHEMAS = {
           },
           {
             k: 'disciplines',
-            label: 'Disciplines',
-            itemLabel: 'Discipline',
+            label: 'Services',
+            itemLabel: 'Service',
             fields: [
               f('id', 'Number'),
               f('title', 'Title'),
@@ -472,9 +475,19 @@ const SCHEMAS = {
           f('colWhere', 'Column: where'),
           f('colFee', 'Column: fee'),
           f('detailsLabel', 'Course details link label'),
-          f('note', 'Note under the table', 'textarea')
+          f('note', 'Note under the table', 'textarea'),
+          f('filterAllLabel', 'Country toggle: "all" label'),
+          f('sortLabel', 'Sort label'),
+          f('formatLabel', 'Format filter label'),
+          f('emptyText', 'Text when no course matches')
         ],
         lists: [
+          {
+            k: 'locations',
+            label: 'Countries (toggle at the top)',
+            itemLabel: 'Country',
+            fields: [f('name', 'Country name'), f('code', 'Flag: 2-letter country code (e.g. dk, us, in, ch)')]
+          },
           {
             k: 'courses',
             label: 'Courses',
@@ -482,6 +495,10 @@ const SCHEMAS = {
             fields: [
               f('when', 'Next start (date or "Rolling")'),
               f('whenNote', 'Start note'),
+              f('variantOf', 'Country version of another course (slug of the main course; empty for a main course)'),
+              f('startDate', 'Start date for sorting (YYYY-MM-DD, empty if none)'),
+              f('format', 'Format (Online, Hybrid or On-site)'),
+              f('locations', 'Countries, comma separated (empty = all)'),
               f('title', 'Course title'),
               f('slug', 'Course page slug'),
               f('desc', 'Short description', 'textarea'),
@@ -529,7 +546,10 @@ const SCHEMAS = {
           f('intro', 'Intro', 'textarea'),
           f('badge', 'Side badge'),
           f('emptyTitle', 'Empty-state title'),
-          f('emptyDesc', 'Empty-state description', 'textarea')
+          f('emptyDesc', 'Empty-state description', 'textarea'),
+          f('imageDouble', 'Card image: Double Program', 'image'),
+          f('imageInitial', 'Card image: Flight Dispatcher Initial', 'image'),
+          f('imageFaa', 'Card image: FAA Aircraft Dispatcher', 'image')
         ]
       },
       {
@@ -563,7 +583,8 @@ const SCHEMAS = {
           f('eyebrow', 'Eyebrow'),
           f('title', 'Title'),
           f('intro', 'Intro', 'textarea'),
-          f('tags', 'Module tags', 'stringList')
+          f('tags', 'Module tags', 'stringList'),
+          f('image', 'Image', 'image')
         ]
       },
       {
@@ -983,11 +1004,15 @@ const DEFAULTS = {
       ]
     },
     beyond: {
+      eyebrow: 'Explore IFOA',
+      title: 'Careers, insights and opportunities',
+      intro: 'Find your next role and stay connected with the people shaping flight dispatch.',
       cards: [
         {
           title: 'Smart Talent',
           desc: 'Our aviation recruitment platform, connecting dispatchers and OCC professionals with operators.',
           linkLabel: 'Visit Smart Talent',
+          livePreview: 'yes',
           url: 'https://talent.theifoa.com/'
         },
         {
@@ -1382,18 +1407,36 @@ const DEFAULTS = {
       "colNext": "Next start",
       "colCourse": "Course",
       "colDuration": "Duration",
-      "colWhere": "Where",
+      "colWhere": "Location",
       "colFee": "Fee",
       "detailsLabel": "Course details",
       "note": "Dates can change. Your place is confirmed once your application is accepted and payment is received, as set out in the application form.",
+      "locations": [
+        {
+          "name": "Denmark",
+          "code": "dk"
+        },
+        {
+          "name": "USA",
+          "code": "us"
+        },
+        {
+          "name": "India",
+          "code": "in"
+        }
+      ],
       "courses": [
         {
           "when": "4 Jan 2027",
           "whenNote": "Seats open",
+          "startDate": "2027-01-04",
+          "format": "Hybrid",
+          "locations": "Denmark",
           "title": "Flight Dispatcher Initial",
           "slug": "flight-dispatcher-initial-certification",
+          "variantOf": "",
           "desc": "ICAO Doc 10106, with EASA operations.",
-          "duration": "200 hours, 5 weeks",
+          "duration": "5 weeks",
           "where": "2 weeks online, 3 weeks in Sønderborg, Denmark",
           "fee": "",
           "ctaLabel": "Apply",
@@ -1402,8 +1445,12 @@ const DEFAULTS = {
         {
           "when": "Rolling",
           "whenNote": "Starts at 10 registrations",
+          "startDate": "",
+          "format": "Hybrid",
+          "locations": "India",
           "title": "Flight Dispatcher Initial (India)",
           "slug": "flight-dispatcher-initial-training-india",
+          "variantOf": "flight-dispatcher-initial-certification",
           "desc": "ICAO Doc 10106, taught in New Delhi after online preparation.",
           "duration": "4 weeks",
           "where": "Online preparation, then New Delhi, India",
@@ -1414,10 +1461,14 @@ const DEFAULTS = {
         {
           "when": "Rolling",
           "whenNote": "India batches from 8 Feb 2027",
+          "startDate": "",
+          "format": "Hybrid",
+          "locations": "Denmark, USA, India",
           "title": "FAA Aircraft Dispatcher",
           "slug": "aircraft-dispatcher-training-faa-part-65",
+          "variantOf": "",
           "desc": "FAA Part 65 approved. Prepares you for the FAA Aircraft Dispatcher license.",
-          "duration": "200 hours, 6 weeks (India: 5 weeks, plus an exam week taken within 6 months), plus ADX self-study",
+          "duration": "6 weeks (India: 5 weeks, plus an exam week taken within 6 months), plus ADX self-study",
           "where": "Online preparation, then Sønderborg, Florida or New Delhi",
           "fee": "",
           "ctaLabel": "Apply",
@@ -1426,10 +1477,14 @@ const DEFAULTS = {
         {
           "when": "To be confirmed",
           "whenNote": "Contact us for dates",
+          "startDate": "",
+          "format": "Hybrid",
+          "locations": "Denmark, India",
           "title": "Double Program: FAA & EASA",
           "slug": "flight-dispatcher-double-programme",
+          "variantOf": "",
           "desc": "The FAA Part 65 approved course plus ICAO and EASA operations. One FAA license, trained for both rule sets.",
-          "duration": "280 hours, 7 weeks, plus ADX self-study",
+          "duration": "7 weeks, plus ADX self-study",
           "where": "Hybrid, Denmark · India",
           "fee": "",
           "ctaLabel": "Apply",
@@ -1438,8 +1493,12 @@ const DEFAULTS = {
         {
           "when": "Next date",
           "whenNote": "To be announced",
+          "startDate": "",
+          "format": "On-site",
+          "locations": "",
           "title": "Train the Trainer",
           "slug": "train-the-trainer-icao-cbta-instructor",
+          "variantOf": "",
           "desc": "For aviation professionals who teach. You teach twice, with feedback each time.",
           "duration": "4 days",
           "where": "Open course, or in-house at your base",
@@ -1447,7 +1506,11 @@ const DEFAULTS = {
           "ctaLabel": "Request a proposal",
           "ctaTo": "/contact?course=train-the-trainer-icao-cbta-instructor"
         }
-      ]
+      ],
+      "filterAllLabel": "All countries",
+      "sortLabel": "Sort by",
+      "formatLabel": "Format",
+      "emptyText": "No upcoming course matches this selection."
     },
     "operators": {
       "title": "Training your whole team?",

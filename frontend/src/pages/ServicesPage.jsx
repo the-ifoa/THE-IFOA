@@ -467,7 +467,7 @@ export function ServicesPage() {
                 key={item.id}
                 className="group relative rounded-2xl bg-white border border-slate-200/90 hover:border-slate-300 hover:shadow-[0_18px_40px_-18px_rgba(15,23,42,0.22)] transition-[border-color,box-shadow] duration-300 flex flex-col overflow-hidden"
               >
-                <CmsRemoveItem listPath="specialist.disciplines" index={item._originalIndex} label="Remove discipline" />
+                <CmsRemoveItem listPath="specialist.disciplines" index={item._originalIndex} label="Remove service" />
                 {/* Image */}
                 <div className="relative aspect-[16/10] w-full overflow-hidden bg-slate-100 shrink-0">
                   <img
@@ -569,7 +569,7 @@ export function ServicesPage() {
             ))}
             <CmsAddItem
               listPath="specialist.disciplines"
-              label="Add discipline"
+              label="Add service"
               blank={{
                 title: 'New Discipline',
                 subtitle: '',

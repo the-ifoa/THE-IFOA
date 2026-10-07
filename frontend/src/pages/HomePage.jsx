@@ -1,5 +1,11 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { api } from '@/lib/api'
+import { readPreload } from '@/lib/preload'
+import { priceText } from '@/components/course/PriceTag'
+import flagSwitzerland from '@/assets/shared/flags/flag-switzerland.webp'
+import flagUsa from '@/assets/shared/flags/flag-usa.webp'
+import flagIndia from '@/assets/shared/flags/flag-india.jpg'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Seo } from '@/components/common/Seo'
 import { Reveal } from '@/components/common/Reveal'
@@ -11,6 +17,7 @@ import {
   RiArrowRightSLine,
   RiGlobalLine,
   RiMapPin2Line,
+  RiTimeLine,
   RiCheckLine
 } from 'react-icons/ri'
 import {
@@ -23,7 +30,7 @@ import {
 
 import { usePageContent } from '@/hooks/usePageContent'
 import { useSwipe } from '@/hooks/useSwipe'
-import { CmsText, CmsRemoveItem, CmsAddItem, isPreviewEditMode } from '@/components/admin/CmsEditable'
+import { CmsText, CmsRemoveItem, CmsAddItem, CmsImageButton, isPreviewEditMode } from '@/components/admin/CmsEditable'
 import { CosmicParallaxBg } from '@/components/common/CosmicParallaxBg'
 import hero3dMockup from '@/assets/home/hero-3d-mockup.webp'
 import hero3dMockupPng from '@/assets/home/hero-3d-mockup.webp'
@@ -335,11 +342,15 @@ const FALLBACK = {
     ]
   },
   beyond: {
+    eyebrow: 'Explore IFOA',
+    title: 'Careers, insights and opportunities',
+    intro: 'Find your next role and stay connected with the people shaping flight dispatch.',
     cards: [
       {
         title: 'Smart Talent',
         desc: 'Our aviation recruitment platform, connecting dispatchers and OCC professionals with operators.',
         linkLabel: 'Visit Smart Talent',
+        livePreview: 'yes',
         url: 'https://talent.theifoa.com/'
       },
       {
@@ -362,6 +373,50 @@ const FALLBACK = {
 // Region card links carry the region, so the course's "Apply online" opens
 // the form with that training location already selected.
 const REGION_LOCATION = { europe: 'denmark', usa: 'united', india: 'india' }
+// Flag artwork behind each region card (Europe uses the Swiss headquarters flag).
+const REGION_FLAG = { europe: flagSwitzerland, usa: flagUsa, india: flagIndia }
+
+// A live, non-interactive view of another site, scaled down to fill its box. The picture
+// behind it stays visible until the page has loaded (or if it cannot be shown).
+const PREVIEW_W = 1440
+function LivePreview({ url, title }) {
+  const box = useRef(null)
+  const [size, setSize] = useState({ w: 0, h: 0 })
+  const [loaded, setLoaded] = useState(false)
+  useEffect(() => {
+    const el = box.current
+    if (!el || typeof ResizeObserver === 'undefined') return undefined
+    const measure = () => setSize({ w: el.clientWidth, h: el.clientHeight })
+    measure()
+    const ro = new ResizeObserver(measure)
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [])
+  const scale = size.w ? size.w / PREVIEW_W : 0
+  return (
+    <div ref={box} className="absolute inset-0 overflow-hidden" aria-hidden="true">
+      {scale > 0 && (
+        <iframe
+          src={url}
+          title={title}
+          tabIndex={-1}
+          loading="lazy"
+          onLoad={() => setLoaded(true)}
+          className={`absolute left-0 top-0 border-0 origin-top-left pointer-events-none bg-white transition-opacity duration-500 ${loaded ? 'opacity-100' : 'opacity-0'}`}
+          style={{ width: PREVIEW_W, height: size.h / scale, transform: `scale(${scale})` }}
+        />
+      )}
+    </div>
+  )
+}
+
+// Artwork for the "Beyond the course" cards, matched by card title. `ink` is the colour
+// of the number and arrow drawn over the image.
+const BEYOND_IMAGE = {
+  'smart talent': { src: '/Talent.jpeg', panel: 'bg-[#050f1e]', ink: 'text-white' },
+  'foxtrot delta': { src: '/delta.jpeg', panel: 'bg-[#ececec]', ink: 'text-slate-900' }
+}
+
 const regionQuery = (name = '') => {
   const loc = REGION_LOCATION[name.trim().toLowerCase()]
   return loc ? `?location=${loc}` : ''
@@ -371,6 +426,18 @@ export function HomePage() {
   const navigate = useNavigate()
   const { c } = usePageContent('home', FALLBACK)
   const [activePage, setActivePage] = useState(0)
+  // Course facts for the hover popups on the "Where we train" cards.
+  const [courseBySlug, setCourseBySlug] = useState(() =>
+    Object.fromEntries((readPreload('courses') || []).map((course) => [course.slug, course]))
+  )
+  useEffect(() => {
+    api
+      .listCourses()
+      .then((data) => setCourseBySlug(Object.fromEntries((data.courses || []).map((course) => [course.slug, course]))))
+      .catch(() => {
+        // Popups simply stay empty when the API is unavailable.
+      })
+  }, [])
 
   const testimonials = [
     {
@@ -973,53 +1040,88 @@ export function HomePage() {
               return (
                 <div
                   key={i}
-                  className="group relative rounded-2xl border border-slate-200/80 bg-white p-7 sm:p-8 shadow-[0_2px_12px_rgba(0,0,0,0.03)] hover:shadow-[0_12px_32px_rgba(0,0,0,0.08)] hover:border-slate-300 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between text-left"
+                  className="group relative rounded-[2rem] border border-white/10 bg-[#020617] text-white shadow-xl hover:shadow-2xl hover:border-[#34E06E]/40 hover:-translate-y-1 transition-all duration-300 flex flex-col text-left"
                 >
                   <CmsRemoveItem listPath="regions.cards" index={i} label="Remove region" />
+                  <CmsImageButton path={`regions.cards.${i}.image`} className="top-3 left-3" label="Replace flag image" />
 
-                  <div>
-                    {/* Top Tag & Location Pill */}
-                    <div className="flex items-center justify-between gap-2">
-                      <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-slate-400">
-                        Location 0{i + 1}
-                      </span>
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-slate-100/90 text-slate-700">
-                        <RiMapPin2Line className="w-3.5 h-3.5 text-slate-500 shrink-0 mt-0.5 sm:mt-0" />
-                        <CmsText path={`regions.cards.${i}.city`} value={region.city} />
-                      </span>
-                    </div>
-
-                    {/* Region Title */}
-                    <h3 className="mt-4 text-2xl sm:text-[26px] font-extrabold tracking-tight text-slate-950 leading-tight">
-                      <CmsText path={`regions.cards.${i}.name`} value={region.name} />
-                    </h3>
-
-                    {/* Description */}
-                    <p className="mt-3.5 text-sm text-slate-600 leading-relaxed font-normal min-h-[4.75rem]">
-                      <CmsText path={`regions.cards.${i}.desc`} value={region.desc} />
-                    </p>
+                  {/* Flag as the card background, centred behind all the content */}
+                  <div className="absolute inset-0 overflow-hidden rounded-[2rem] pointer-events-none z-0">
+                    <img
+                      src={region.image?.url || REGION_FLAG[(region.name || '').trim().toLowerCase()] || flagSwitzerland}
+                      alt=""
+                      className="absolute inset-0 m-auto h-[78%] w-[96%] object-contain mix-blend-screen opacity-25 group-hover:opacity-40 group-hover:scale-105 transition-all duration-700 select-none [mask-image:radial-gradient(ellipse_at_center,black_50%,transparent_78%)]"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-b from-[#020617]/55 via-[#020617]/35 to-[#020617]/75" />
                   </div>
 
-                  {/* Courses offered here */}
-                  <div className="pt-6 mt-6 border-t border-slate-100">
-                    <span className="block mb-3 text-[10px] font-mono font-bold uppercase tracking-widest text-slate-400">
-                      Available Courses
+                  {/* Region name and city */}
+                  <div className="relative z-10 p-6 sm:p-7 pb-0 space-y-3">
+                    <span className="inline-flex w-fit items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-white text-slate-900 shadow-sm">
+                      <RiMapPin2Line className="w-3.5 h-3.5 text-[#16a952] shrink-0" />
+                      <CmsText path={`regions.cards.${i}.city`} value={region.city} />
                     </span>
-                    <div className="flex flex-col gap-2.5">
-                      {links.map((l) => (
-                        <Link
-                          key={l.n}
-                          to={l.slug ? (l.slug.startsWith('/') ? l.slug : `/courses/${l.slug}${regionQuery(region.name)}`) : '/events'}
-                          className="group/link flex items-center justify-between gap-3 px-4 py-3 rounded-xl border border-slate-200/80 bg-slate-50/60 hover:bg-slate-100/80 hover:border-slate-300 text-sm font-semibold text-slate-800 hover:text-slate-950 transition-all duration-200"
-                        >
-                          <span className="leading-snug">
-                            <CmsText path={`regions.cards.${i}.link${l.n}Label`} value={l.label} />
-                          </span>
-                          <HiArrowRight
-                            className="w-4 h-4 shrink-0 text-slate-400 group-hover/link:text-slate-900 group-hover/link:translate-x-1 transition-all duration-200"
-                          />
-                        </Link>
-                      ))}
+                    <h3 className="text-3xl font-extrabold tracking-tight text-white leading-tight">
+                      <CmsText path={`regions.cards.${i}.name`} value={region.name} />
+                    </h3>
+                  </div>
+
+                  <div className="relative z-10 flex-1 flex flex-col p-6 sm:p-7 pt-4">
+                    {/* Description */}
+                    <p className="mb-6 text-sm text-slate-50 leading-relaxed font-medium [text-shadow:0_1px_10px_rgba(2,6,23,0.95)]">
+                      <CmsText path={`regions.cards.${i}.desc`} value={region.desc} />
+                    </p>
+
+                    {/* Courses offered here: hover or focus a course for its details */}
+                    <div className="relative z-10 pt-6 mt-auto border-t border-white/10">
+                      <span className="block mb-3 text-[10px] font-mono font-bold uppercase tracking-widest text-slate-200 [text-shadow:0_1px_8px_rgba(2,6,23,0.95)]">
+                        Available Courses
+                      </span>
+                      <div className="flex flex-col gap-2.5">
+                        {links.map((l) => {
+                          const info = courseBySlug[l.slug]
+                          const fee = info ? priceText(info.price, (l.slug || '').includes('india')) : null
+                          return (
+                            <div key={l.n} className="group/link relative">
+                              <Link
+                                to={l.slug ? (l.slug.startsWith('/') ? l.slug : `/courses/${l.slug}${regionQuery(region.name)}`) : '/events'}
+                                className="flex items-center justify-between gap-3 px-4 py-3 rounded-xl border border-white/15 bg-[#020617]/75 backdrop-blur-sm hover:bg-[#020617]/90 hover:border-[#34E06E]/60 text-sm font-semibold text-white transition-all duration-200"
+                              >
+                                <span className="leading-snug">
+                                  <CmsText path={`regions.cards.${i}.link${l.n}Label`} value={l.label} />
+                                </span>
+                                <HiArrowRight className="w-4 h-4 shrink-0 text-slate-400 group-hover/link:text-[#34E06E] group-hover/link:translate-x-1 transition-all duration-200" />
+                              </Link>
+
+                              {/* Hover / focus popup with the course facts */}
+                              {info && !isPreviewEditMode() && (
+                                <div
+                                  role="tooltip"
+                                  className="pointer-events-none absolute left-0 right-0 bottom-full z-30 mb-2 translate-y-1 opacity-0 transition-all duration-200 group-hover/link:translate-y-0 group-hover/link:opacity-100 group-focus-within/link:translate-y-0 group-focus-within/link:opacity-100"
+                                >
+                                  <div className="rounded-2xl bg-[#0b1220] text-white p-4 shadow-[0_16px_40px_rgba(0,0,0,0.55)] border border-white/15 space-y-2">
+                                    <strong className="block text-sm font-extrabold leading-snug">{info.title}</strong>
+                                    <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 text-xs">
+                                      {info.duration && (
+                                        <>
+                                          <dt className="text-slate-400">Duration</dt>
+                                          <dd className="font-semibold text-right">{info.duration}</dd>
+                                        </>
+                                      )}
+                                      {fee && (
+                                        <>
+                                          <dt className="text-slate-400">Fee</dt>
+                                          <dd className="font-semibold text-right">{fee}</dd>
+                                        </>
+                                      )}
+                                    </dl>
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          )
+                        })}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -1135,49 +1237,45 @@ export function HomePage() {
       {/* BEGIN: Training Pathways Smart Shifting Carousel */}
       <Reveal as="section" className="w-full bg-[#020617] border-t border-white/10 text-white py-12 sm:py-16 overflow-hidden" data-purpose="training-pathways-carousel">
         <div className="max-w-[1280px] mx-auto px-6 space-y-8">
-          {/* Header Row with Eyebrow and Carousel Navigation Controls */}
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-white/10 pb-6">
-            <div className="space-y-2">
+          {/* Header: title on the left, controls on the right */}
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-8 border-b border-white/10">
+            <div className="max-w-3xl space-y-3">
               <span className="text-xs sm:text-sm font-mono font-black uppercase tracking-widest text-[#34E06E] border-b-2 border-[#34E06E] pb-1 inline-block">
                 <CmsText path="pathways.eyebrow" value={c.pathways.eyebrow} />
               </span>
-              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white leading-tight">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-white leading-tight">
                 <CmsText path="pathways.title" value={c.pathways.title} />
               </h2>
             </div>
 
-            {/* Navigation Controls & See More Button */}
-            <div className="flex flex-wrap items-center gap-4 self-start sm:self-auto">
+            <div className="flex items-center gap-3 shrink-0">
               <Link
                 to="/events"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white hover:bg-slate-100 text-slate-950 font-bold text-xs font-mono uppercase tracking-wider transition-all duration-200 shadow-md hover:scale-105 cursor-pointer group"
+                className="group inline-flex items-center gap-2 px-5 py-3 rounded-full bg-white hover:bg-[#34E06E] text-slate-950 font-bold text-xs font-mono uppercase tracking-wider transition-colors duration-200"
               >
                 <span>
                   <CmsText path="pathways.seeMoreLabel" value={c.pathways.seeMoreLabel} />
                 </span>
-                <HiArrowUpRight className="w-3.5 h-3.5 text-slate-950 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                <HiArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
               </Link>
-
-              <div className="flex items-center gap-3">
-                <span className="text-xs font-mono text-slate-400 font-semibold">
+              <div className="flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] p-1">
+                <button
+                  onClick={handlePrevPathway}
+                  className="w-9 h-9 rounded-full hover:bg-white/15 text-slate-300 hover:text-white flex items-center justify-center transition-colors cursor-pointer"
+                  aria-label="Previous Pathway"
+                >
+                  <RiArrowLeftSLine className="w-5 h-5" />
+                </button>
+                <span className="min-w-[3.25rem] text-center text-xs font-mono font-semibold text-slate-300">
                   0{pathwayIndex + 1} / 0{totalPathwayPages}
                 </span>
-                <div className="flex items-center gap-1.5">
-                  <button
-                    onClick={handlePrevPathway}
-                    className="w-9 h-9 rounded-full bg-white/5 hover:bg-white/20 hover:text-white text-slate-300 border border-white/10 flex items-center justify-center transition-all duration-200 cursor-pointer"
-                    aria-label="Previous Pathway"
-                  >
-                    <RiArrowLeftSLine className="w-5 h-5" />
-                  </button>
-                  <button
-                    onClick={handleNextPathway}
-                    className="w-9 h-9 rounded-full bg-white/5 hover:bg-white/20 hover:text-white text-slate-300 border border-white/10 flex items-center justify-center transition-all duration-200 cursor-pointer"
-                    aria-label="Next Pathway"
-                  >
-                    <RiArrowRightSLine className="w-5 h-5" />
-                  </button>
-                </div>
+                <button
+                  onClick={handleNextPathway}
+                  className="w-9 h-9 rounded-full hover:bg-white/15 text-slate-300 hover:text-white flex items-center justify-center transition-colors cursor-pointer"
+                  aria-label="Next Pathway"
+                >
+                  <RiArrowRightSLine className="w-5 h-5" />
+                </button>
               </div>
             </div>
           </div>
@@ -1200,40 +1298,63 @@ export function HomePage() {
                     key={pageIdx}
                     className="w-full shrink-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6"
                   >
-                    {pageCards.map((item, idx) => (
-                      <div
-                        key={idx}
-                        className="relative p-7 rounded-3xl bg-white/[0.04] border border-white/10 hover:border-slate-400 hover:bg-white/[0.07] transition-all duration-300 flex flex-col justify-between space-y-6 group"
-                      >
-                        <CmsRemoveItem listPath="pathways.cards" index={item._index} label="Remove pathway" />
-                        <div className="space-y-3">
-                          <span className="text-[11px] font-mono font-bold tracking-wider text-slate-400 uppercase block h-5 flex items-center">
+                    {pageCards.map((item, idx) => {
+                      // "hours" holds two lines: duration/format, then where or how it is delivered.
+                      const [metaA, ...metaRest] = String(item.hours || '').split('\n')
+                      const metaB = metaRest.join(' ')
+                      return (
+                        <div
+                          key={idx}
+                          className="group relative flex flex-col rounded-[1.5rem] bg-white/[0.04] border border-white/10 p-6 sm:p-7 hover:border-[#34E06E]/50 hover:bg-white/[0.07] hover:shadow-[0_0_0_1px_rgba(52,224,110,0.25),0_18px_40px_-18px_rgba(52,224,110,0.35)] transition-[border-color,background-color,box-shadow] duration-300"
+                        >
+                          <CmsRemoveItem listPath="pathways.cards" index={item._index} label="Remove pathway" />
+
+                          <span className="block text-[11px] font-mono font-bold uppercase tracking-widest text-[#34E06E]">
                             <CmsText path={`${item._path}.category`} value={item.category} />
                           </span>
-                          <h3 className="text-lg sm:text-xl font-bold text-white tracking-tight leading-snug group-hover:text-[#34E06E] transition-colors min-h-[3.25rem] flex items-start">
+
+                          <h3 className="mt-4 text-xl font-bold leading-snug text-white tracking-tight">
                             <CmsText path={`${item._path}.title`} value={item.title} />
                           </h3>
-                          <p className="text-xs sm:text-sm text-slate-300 font-normal leading-relaxed min-h-[4.25rem]">
+                          <p className="mt-3 text-sm leading-relaxed text-slate-400">
                             <CmsText path={`${item._path}.desc`} value={item.desc} />
                           </p>
-                        </div>
 
-                        <div className="mt-auto space-y-3 pt-4 border-t border-white/10">
-                          <div className="text-xs text-[#34E06E] font-mono font-semibold tracking-wide whitespace-pre-line leading-relaxed min-h-[2.6rem] flex flex-col justify-center">
-                            <CmsText path={`${item._path}.hours`} value={item.hours} />
+                          {/* Key facts */}
+                          <div className="mt-5 mb-6 space-y-2 text-sm text-slate-200">
+                            {metaA && (
+                              <p className="flex items-start gap-2.5">
+                                <RiTimeLine className="mt-0.5 h-4 w-4 shrink-0 text-slate-400" />
+                                <span>{metaA}</span>
+                              </p>
+                            )}
+                            {metaB && (
+                              <p className="flex items-start gap-2.5">
+                                <RiMapPin2Line className="mt-0.5 h-4 w-4 shrink-0 text-slate-400" />
+                                <span>{metaB}</span>
+                              </p>
+                            )}
+                            {isPreviewEditMode() && (
+                              <p className="text-[11px] text-slate-500">
+                                Facts (two lines): <CmsText path={`${item._path}.hours`} value={item.hours} />
+                              </p>
+                            )}
                           </div>
+
                           <Link
                             to={item.link}
-                            className="inline-flex items-center gap-1.5 text-xs font-bold text-white/90 hover:text-white transition-colors group/link"
+                            className="group/link mt-auto flex items-center justify-between gap-3 border-t border-white/10 pt-5 text-sm font-bold text-white outline-none focus-visible:text-[#34E06E]"
                           >
-                            <span>
+                            <span className="group-hover/link:text-[#34E06E] transition-colors">
                               <CmsText path={`${item._path}.linkText`} value={item.linkText} />
                             </span>
-                            <HiArrowRight className="w-3.5 h-3.5 text-[#34E06E] group-hover/link:translate-x-1 transition-transform" />
+                            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-[#34E06E] group-hover/link:bg-[#34E06E] group-hover/link:text-slate-950 transition-colors">
+                              <HiArrowRight className="h-4 w-4" />
+                            </span>
                           </Link>
                         </div>
-                      </div>
-                    ))}
+                      )
+                    })}
                     {pageIdx === totalPathwayPages - 1 && (
                       <CmsAddItem
                         listPath="pathways.cards"
@@ -1387,8 +1508,8 @@ export function HomePage() {
                   {['bullet1', 'bullet2'].map((key) => (
                     <li key={key} className="flex items-center gap-3 text-sm font-semibold text-slate-800">
                       <span className="w-5 h-5 rounded-full bg-[#34E06E]/15 text-[#16a952] flex items-center justify-center shrink-0">
-<RiCheckLine className="w-3.5 h-3.5" />
-</span>
+                        <RiCheckLine className="w-3.5 h-3.5" />
+                      </span>
                       <CmsText path={`audience.cards.${i}.${key}`} value={card[key]} />
                     </li>
                   ))}
@@ -1399,9 +1520,8 @@ export function HomePage() {
                   <button
                     type="button"
                     onClick={() => navigate(to)}
-                    className={`group w-full flex items-center justify-between gap-3 rounded-2xl px-5 py-4 text-sm font-bold transition-colors cursor-pointer ${
-                      dark ? 'bg-slate-950 hover:bg-slate-800 text-white' : 'bg-[#34E06E] hover:bg-[#28c85e] text-slate-950'
-                    }`}
+                    className={`group w-full flex items-center justify-between gap-3 rounded-2xl px-5 py-4 text-sm font-bold transition-colors cursor-pointer ${dark ? 'bg-slate-950 hover:bg-slate-800 text-white' : 'bg-[#34E06E] hover:bg-[#28c85e] text-slate-950'
+                      }`}
                   >
                     <CmsText path={`audience.cards.${i}.ctaLabel`} value={card.ctaLabel} />
                     <HiArrowRight className="w-5 h-5 group-hover:translate-x-0.5 transition-transform" />
@@ -1448,9 +1568,8 @@ export function HomePage() {
                       setActivePage(0)
                       resetTimer()
                     }}
-                    className={`-mb-px pb-3 text-sm font-semibold whitespace-nowrap border-b-2 transition-colors cursor-pointer ${
-                      isActive ? 'border-[#34E06E] text-slate-950' : 'border-transparent text-slate-500 hover:text-slate-900'
-                    }`}
+                    className={`-mb-px pb-3 text-sm font-semibold whitespace-nowrap border-b-2 transition-colors cursor-pointer ${isActive ? 'border-[#34E06E] text-slate-950' : 'border-transparent text-slate-500 hover:text-slate-900'
+                      }`}
                   >
                     <CmsText path={tab.path} value={tab.label} />
                   </button>
@@ -1555,9 +1674,8 @@ export function HomePage() {
                     setActivePage(pageIdx)
                     resetTimer()
                   }}
-                  className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
-                    safePage === pageIdx ? 'w-8 bg-[#34E06E]' : 'w-2 bg-slate-300 hover:bg-slate-400'
-                  }`}
+                  className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${safePage === pageIdx ? 'w-8 bg-[#34E06E]' : 'w-2 bg-slate-300 hover:bg-slate-400'
+                    }`}
                   aria-label={`Show reviews page ${pageIdx + 1}`}
                 />
               ))}
@@ -1606,34 +1724,77 @@ export function HomePage() {
       {/* END: Training Framework */}
 
       {/* BEGIN: Beyond the Course (Smart Talent & Foxtrot Delta) */}
-      <Reveal as="section" className="pt-12 sm:pt-16 bg-white" data-purpose="beyond-the-course">
-        <div className="max-w-[1280px] mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 rounded-3xl border border-slate-200/90 bg-white overflow-hidden divide-y md:divide-y-0 md:divide-x divide-slate-200/90">
+      <Reveal as="section" className="py-14 sm:py-20 bg-[#f8fafc]" data-purpose="beyond-the-course">
+        <div className="max-w-[1280px] mx-auto px-6 space-y-10">
+          {/* Section header, same style as the other home sections */}
+          <div className="max-w-2xl space-y-3 text-left">
+            <span className="text-xs sm:text-sm font-mono font-black uppercase tracking-widest text-slate-950 border-b-2 border-[#34E06E] pb-0.5 inline-block">
+              <CmsText path="beyond.eyebrow" value={c.beyond.eyebrow} />
+            </span>
+            <h2 className="text-3xl sm:text-4xl md:text-[40px] font-extrabold tracking-tight text-slate-950 leading-tight">
+              <CmsText path="beyond.title" value={c.beyond.title} />
+            </h2>
+            <p className="text-sm sm:text-base text-slate-600 font-normal leading-relaxed">
+              <CmsText path="beyond.intro" value={c.beyond.intro} />
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 items-stretch">
             {c.beyond.cards.map((card, i) => {
               const external = /^https?:/.test(card.url || '')
               const LinkTag = external ? 'a' : Link
               const linkProps = external
                 ? { href: card.url, target: '_blank', rel: 'noopener noreferrer' }
                 : { to: card.url || '/' }
+              const baseArt = BEYOND_IMAGE[(card.title || '').trim().toLowerCase()]
+              // An image uploaded in the admin editor wins over the bundled artwork.
+              const art = card.image?.url
+                ? { src: card.image.url, panel: baseArt?.panel || 'bg-slate-100', ink: baseArt?.ink || 'text-white' }
+                : baseArt
               return (
-                <div key={i} className="relative p-7 sm:p-8 space-y-2 group">
+                <LinkTag
+                  key={i}
+                  {...linkProps}
+                  className="group relative flex flex-col overflow-hidden rounded-[1.4rem] bg-white shadow-[0_1px_3px_rgba(15,23,42,0.04),0_18px_44px_-16px_rgba(15,23,42,0.16)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_2px_6px_rgba(15,23,42,0.05),0_28px_56px_-18px_rgba(15,23,42,0.22)]"
+                >
                   <CmsRemoveItem listPath="beyond.cards" index={i} label="Remove card" />
-                  <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-950 group-hover:text-[#1fa855] transition-colors">
-                    <CmsText path={`beyond.cards.${i}.title`} value={card.title} />
-                  </h3>
-                  <p className="text-xs sm:text-sm md:text-base text-slate-600 font-normal leading-relaxed">
-                    <CmsText path={`beyond.cards.${i}.desc`} value={card.desc} />
-                  </p>
-                  <LinkTag
-                    {...linkProps}
-                    className="inline-flex items-center gap-1.5 pt-1 text-sm font-bold text-slate-950 hover:text-[#1fa855] transition-colors group/link"
-                  >
-                    <span>
-                      <CmsText path={`beyond.cards.${i}.linkLabel`} value={card.linkLabel} />
+                  <CmsImageButton path={`beyond.cards.${i}.image`} className="top-16 right-5" label="Replace image" />
+                  {art && (
+                    <div className={`relative aspect-[2.2/1] overflow-hidden ${art.panel}`}>
+                      <img
+                        src={art.src}
+                        alt={card.title}
+                        loading="lazy"
+                        className="absolute inset-0 h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-[1.03]"
+                      />
+                      {card.livePreview === 'yes' && external && !isPreviewEditMode() && (
+                        <>
+                          <LivePreview url={card.url} title={`${card.title} (live site)`} />
+                        </>
+                      )}
+                      <div className={`absolute inset-x-0 top-0 flex items-center justify-between px-6 pt-5 ${art.ink}`}>
+                        <span className="flex items-center gap-3 text-sm font-semibold tracking-wide">
+                          {String(i + 1).padStart(2, '0')}
+                        </span>
+                        <HiArrowUpRight className="h-6 w-6 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                      </div>
+                    </div>
+                  )}
+                  <div className="flex flex-1 flex-col gap-3 px-7 pb-7 pt-6 sm:px-8 sm:pb-8">
+                    <h3 className="text-2xl sm:text-[30px] font-bold tracking-tight text-slate-950 leading-tight">
+                      <CmsText path={`beyond.cards.${i}.title`} value={card.title} />
+                    </h3>
+                    <p className="max-w-md text-base text-slate-500 font-normal leading-relaxed">
+                      <CmsText path={`beyond.cards.${i}.desc`} value={card.desc} />
+                    </p>
+                    <span className="mt-auto inline-flex w-fit items-center gap-2 pt-3 text-sm font-semibold text-[#16a952]">
+                      <span className="border-b-2 border-[#34E06E] pb-0.5">
+                        <CmsText path={`beyond.cards.${i}.linkLabel`} value={card.linkLabel} />
+                      </span>
+                      <HiArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                     </span>
-                    <HiArrowRight className="w-3.5 h-3.5 text-[#34E06E] group-hover/link:translate-x-1 transition-transform" />
-                  </LinkTag>
-                </div>
+                  </div>
+                </LinkTag>
               )
             })}
             <CmsAddItem
