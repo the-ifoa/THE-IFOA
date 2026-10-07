@@ -394,15 +394,30 @@ export function EventsPage() {
               </div>
             </div>
           </div>
+        </div>
+      </Reveal>
 
-          {/* One simple route to every start date */}
-          <div className="mt-8 flex justify-center">
+      {/* Upcoming courses: route to every start date */}
+      <Reveal as="section" className="py-14 sm:py-16 bg-slate-950 text-white" data-purpose="upcoming-courses-cta">
+        <div className="max-w-[1280px] mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+          <div className="lg:col-span-8 space-y-3">
+            <span className="text-xs sm:text-sm font-mono font-black uppercase tracking-widest text-white border-b-2 border-[#34E06E] pb-1 inline-block">
+              Start dates
+            </span>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight leading-tight">
+              See what is starting next
+            </h2>
+            <p className="text-sm sm:text-base text-slate-300 leading-relaxed max-w-2xl">
+              Every upcoming intake in one place: start dates, duration, location and fee for each course.
+            </p>
+          </div>
+          <div className="lg:col-span-4 flex lg:justify-end">
             <Link
               to="/upcoming-courses"
-              className="inline-flex items-center gap-2 rounded-full bg-slate-950 hover:bg-slate-800 text-white text-xs font-bold uppercase tracking-wider px-7 py-3.5 transition-colors"
+              className="group inline-flex items-center justify-center gap-2 w-full sm:w-auto bg-[#34E06E] hover:bg-[#28c85e] text-slate-950 font-extrabold py-4 px-9 rounded-full text-sm uppercase tracking-wider transition-all duration-150 shadow-[0_4px_20px_rgba(52,224,110,0.35)] hover:-translate-y-0.5 cursor-pointer"
             >
-              Upcoming courses
-              <RiArrowRightSLine className="w-4 h-4" />
+              View upcoming courses
+              <RiArrowRightSLine className="w-5 h-5 transition-transform group-hover:translate-x-0.5" />
             </Link>
           </div>
         </div>

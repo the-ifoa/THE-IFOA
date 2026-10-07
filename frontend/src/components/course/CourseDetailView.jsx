@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { useGoBack } from '@/hooks/useGoBack'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -25,10 +25,10 @@ import { MdOutlineMail } from 'react-icons/md'
 import { mergeContent } from '@/hooks/usePageContent'
 
 // Assets
-import { resolveCard, programmeBanner, hasEnrollmentForm, enrollPath, courseEditions } from '@/components/course/CourseCard'
+import { hasEnrollmentForm, enrollPath, courseEditions } from '@/components/course/CourseCard'
 import { PriceTag, InrConverter, taxNote } from '@/components/course/PriceTag'
 import { OverviewHero, OverviewBlocks, DgProvider, DgSidebar, OverviewEditProvider, useCoursePreview, E as T } from '@/components/course/CourseOverview'
-import { CmsText, CmsImageButton } from '@/components/admin/CmsEditable'
+import { CmsText } from '@/components/admin/CmsEditable'
 import { getAtPath } from '@/lib/objectPath'
 import { api } from '@/lib/api'
 import { prefetchCourse } from '@/lib/courseCache'
@@ -36,7 +36,6 @@ import logoEasa from '@/assets/shared/standards-logos/logo-easa.webp'
 import logoIcao from '@/assets/shared/standards-logos/logo-icao.webp'
 import logoDgca from '@/assets/shared/standards-logos/logo-dgca.webp'
 import logoFaa from '@/assets/shared/standards-logos/logo-faa.webp'
-import imgDgr from '@/assets/services/02_dangerous_goods.webp'
 
 // Shared accordion motion: height eases out long and soft, content fades a
 // touch faster so text never shows half-clipped.
@@ -203,16 +202,63 @@ function heroForLocation(hero, location) {
   return { ...hero, blocks: hero.blocks.map((b) => (b?.note ? { ...b, note: b.note.replace(FAA_WEEKS_NOTE, FAA_INDIA_NOTE) } : b)) }
 }
 
+// India: comparison tables use the India edition of Flight Dispatcher Initial
+// (own duration, location and fee) instead of the Denmark/USA course.
+const FDI_NAME = /^Flight Dispatcher Initial$/i
+const FDI_INDIA_SLUG = 'flight-dispatcher-initial-training-india'
+const FDI_INDIA_CELLS = {
+  'issued by': 'IFOA',
+  'regulatory focus': 'ICAO',
+  duration: '4 weeks',
+  location: 'Online preparation, then New Delhi, India',
+  format: 'Online preparation, then New Delhi, India',
+  fee: '€1,000 + GST'
+}
+const FAA_NAME = /^FAA Aircraft Dispatcher/i
+const INDIA_PLACE = 'Online preparation, then New Delhi, India'
+const INDIA_FAA_DURATION = '200 hours, 5 weeks, plus an exam week taken within 6 months'
+function tableForIndia(block) {
+  const head = block.head || []
+  const col = head.findIndex((h) => FDI_NAME.test(String(h).trim()))
+  const faaCol = head.findIndex((h) => FAA_NAME.test(String(h).trim()))
+  if (col < 1 && faaCol < 1) return block
+  return {
+    ...block,
+    head: head.map((h, i) => (i === col ? 'Flight Dispatcher Initial (India)' : h)),
+    rows: block.rows.map((row) => {
+      const label = String(row[0]).trim().toLowerCase()
+      return row.map((cell, i) => {
+        if (i === col) return FDI_INDIA_CELLS[label] ?? cell
+        // Other courses: show only their India delivery, not the other locations.
+        if (i === faaCol) {
+          if (label === 'duration') return INDIA_FAA_DURATION
+          if ((label === 'location' || label === 'format') && /Denmark|Sønderborg|Daytona/.test(cell)) return INDIA_PLACE
+        }
+        return cell
+      })
+    }),
+    links: (block.links || []).map((l) =>
+      /\/courses\/flight-dispatcher-initial-certification/.test(l.href || '')
+        ? { ...l, label: 'See Flight Dispatcher Initial (India)', href: `/courses/${FDI_INDIA_SLUG}` }
+        : l
+    )
+  }
+}
+
 // FAA course taught in India: the Meteorology area also covers Indian meteorology.
 function blocksForLocation(blocks, location, slug) {
-  if (location !== 'india' || !slug?.includes('part-65')) return blocks
+  if (location !== 'india') return blocks
   const addTopic = (item) =>
     item.title === 'Meteorology' && !item.bullets?.includes(INDIAN_MET)
       ? { ...item, bullets: [...(item.bullets || []), INDIAN_MET] }
       : item
-  return blocks.map((b) =>
-    b.type === 'accordion' ? { ...b, groups: (b.groups || []).map((g) => ({ ...g, items: (g.items || []).map(addTopic) })) } : b
-  )
+  return blocks.map((b) => {
+    if (b.type === 'table') return tableForIndia(b)
+    if (b.type === 'accordion' && slug?.includes('part-65')) {
+      return { ...b, groups: (b.groups || []).map((g) => ({ ...g, items: (g.items || []).map(addTopic) })) }
+    }
+    return b
+  })
 }
 const INDIAN_MET = 'Indian meteorology: IMD weather reports and regional hazards'
 
@@ -269,20 +315,8 @@ export function CourseDetailView({ course: savedCourse, preview = false }) {
   // in-progress copy; everywhere else this is just the saved course.
   const course = liveCourse?.course && savedCourse ? { ...savedCourse, ...liveCourse.course } : savedCourse
 
-  // Sidebar scrolls with the page until its image has gone off screen, then
-  // sticks, so the price, actions and facts stay in view while reading.
-  const NAV_OFFSET = 96
-  const sidebarImgRef = useRef(null)
-  const [sidebarTop, setSidebarTop] = useState(NAV_OFFSET)
-  useEffect(() => {
-    const img = sidebarImgRef.current
-    if (!img || typeof ResizeObserver === 'undefined') return undefined
-    const measure = () => setSidebarTop(NAV_OFFSET - (img.offsetTop + img.offsetHeight + 16))
-    measure()
-    const ro = new ResizeObserver(measure)
-    ro.observe(img)
-    return () => ro.disconnect()
-  }, [])
+  // Sidebar sticks below the navbar so price, actions and facts stay in view while reading.
+  const SIDEBAR_TOP = 96
   const [copied, setCopied] = useState(false)
   const [activePhase, setActivePhase] = useState(0)
   const [activeRoleIdx, setActiveRoleIdx] = useState(0)
@@ -408,12 +442,6 @@ export function CourseDetailView({ course: savedCourse, preview = false }) {
   const certificationText = course.certification?.text || ''
 
 
-  const isDgrCourse =
-    course.category === 'dangerous-goods' ||
-    course.category === 'dgr' ||
-    course.slug?.includes('dangerous-goods') ||
-    course.slug?.includes('dgr') ||
-    course.title?.toLowerCase().includes('dangerous goods')
 
   // Course-specific overview blocks (approved page copy) replace the fixed
   // section template when present.
@@ -423,10 +451,6 @@ export function CourseDetailView({ course: savedCourse, preview = false }) {
   const dgHatch = { background: 'repeating-linear-gradient(-45deg, #C8102E 0 5px, transparent 5px 10px)' }
   // Dangerous Goods: the sidebar card follows the role/operation picked in the page body.
   const dgBlock = overview?.blocks?.find((b) => b.type === 'dgExplorer') || null
-  // Uploaded course image (live from the admin editor while editing) wins over
-  // the bundled program banners.
-  const cardImageUrl = liveCourse?.courseMedia ? liveCourse.courseMedia.cardImage?.url : course.card?.image?.url
-  const sidebarBanner = cardImageUrl ? null : programmeBanner(course)
   // Contact links carry the course so the Contact form pre-selects its topic.
   const contactHref = `/contact?course=${course.slug}${preferredLocation ? `&location=${encodeURIComponent(preferredLocation)}` : ''}`
   // A ?location= on this page (e.g. from the India region card) is passed on
@@ -436,15 +460,6 @@ export function CourseDetailView({ course: savedCourse, preview = false }) {
     preferredLocation && hasEnrollmentForm(course) && !baseEnroll.includes('location=')
       ? `${baseEnroll}${baseEnroll.includes('?') ? '&' : '?'}location=${encodeURIComponent(preferredLocation)}`
       : baseEnroll
-  const sidebarImgSrc =
-    cardImageUrl ||
-    sidebarBanner ||
-    (isDgrCourse && (!course.heroImage?.url || course.heroImage?.url?.includes('ground') || course.heroImage?.url?.includes('dispatcher'))
-      ? imgDgr
-      : course.heroImage?.url) ||
-    resolveCard(course).image ||
-    (isDgrCourse ? imgDgr : null)
-
   return (
     <OverviewEditProvider overview={overview} course={editing ? course : null}>
     <DgProvider block={dgBlock}>
@@ -1475,30 +1490,15 @@ export function CourseDetailView({ course: savedCourse, preview = false }) {
           {/* RIGHT STICKY SIDEBAR (Executive Overview Panel) (4.5 Cols)             */}
           {/* ===================================================================== */}
           <aside
-            className={`lg:col-span-5 xl:col-span-4 lg:sticky text-slate-900 ${
+            className={`lg:col-span-5 xl:col-span-4 lg:sticky lg:self-start text-slate-900 ${
               dgBlock
                 ? 'p-1.5 rounded-2xl shadow-[0_4px_24px_rgba(0,0,0,0.04)]'
                 : 'bg-white border border-slate-200/90 rounded-[2rem] p-6 sm:p-7 shadow-[0_4px_24px_rgba(0,0,0,0.03)]'
             }`}
-            style={{ ...(dgBlock ? dgHatch : {}), top: sidebarTop }}
+            style={{ ...(dgBlock ? dgHatch : {}), top: SIDEBAR_TOP }}
             aria-label="Program overview"
           >
             <div className={dgBlock ? 'bg-white rounded-xl p-6 sm:p-7 space-y-6' : 'space-y-6'}>
-            {/* Top Course Card Thumbnail - Rounded inset frame */}
-            <div
-              ref={sidebarImgRef}
-              className={`relative aspect-[16/10] rounded-2xl overflow-hidden select-none border border-slate-100 shadow-2xs ${
-                sidebarBanner ? 'bg-slate-950/5 p-2 flex items-center justify-center' : 'bg-slate-950'
-              }`}
-            >
-              <img
-                src={sidebarImgSrc}
-                alt={course.title}
-                className={`w-full h-full object-center ${sidebarBanner ? 'object-contain' : 'object-cover'}`}
-              />
-              <CmsImageButton path="courseMedia.cardImage" folder="courses" />
-            </div>
-
             {dgBlock ? (
               <DgSidebar block={dgBlock} contactHref={contactHref} />
             ) : (

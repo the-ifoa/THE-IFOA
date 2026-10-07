@@ -614,16 +614,16 @@ export function HomePage() {
         )}
       />
       {/* BEGIN: HeroSection */}
-      <section className="relative w-full min-h-[100dvh] lg:h-[100dvh] lg:max-h-[1080px] text-white overflow-hidden border-b border-white/10 flex flex-col justify-between" data-purpose="hero-content">
+      <section className="relative w-full sm:min-h-[100dvh] lg:h-[100dvh] lg:max-h-[1080px] text-white overflow-hidden border-b border-white/10 flex flex-col justify-between" data-purpose="hero-content">
         <CosmicParallaxBg
-          className="cosmic-parallax-bg min-h-[100dvh] lg:h-full flex flex-col justify-between pt-20 sm:pt-24 lg:pt-22 xl:pt-24 pb-4 sm:pb-5 px-4 sm:px-6 lg:px-8"
+          className="cosmic-parallax-bg sm:min-h-[100dvh] lg:h-full flex flex-col justify-between pt-24 sm:pt-24 lg:pt-22 xl:pt-24 pb-8 sm:pb-5 px-4 sm:px-6 lg:px-8"
           contentClassName="justify-between flex-1 flex flex-col h-full w-full max-w-[1280px] mx-auto"
         >
           {/* Main Hero Grid Content (Auto-centered vertically in available viewport) */}
-          <div className="w-full my-auto py-2 sm:py-4 lg:py-1 flex-1 flex items-center">
+          <div className="w-full my-auto py-0 sm:py-4 lg:py-1 flex-1 flex items-center">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 xl:gap-10 items-center w-full">
               {/* Left Column: Typography & CTAs */}
-              <div className="lg:col-span-7 space-y-3 sm:space-y-4 lg:space-y-3.5 xl:space-y-5 text-left">
+              <div className="lg:col-span-7 space-y-4 sm:space-y-4 lg:space-y-3.5 xl:space-y-5 text-left">
                 {/* Eyebrow Label with Green Underline */}
                 <div className="inline-flex items-center pb-1 border-b border-white text-white text-[11px] sm:text-xs font-mono font-medium tracking-widest uppercase w-fit">
                   <span>
@@ -632,8 +632,8 @@ export function HomePage() {
                 </div>
 
                 {/* Main Headline & Subtitle */}
-                <div className="space-y-3 sm:space-y-3.5 max-w-2xl">
-                  <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-extrabold tracking-tight text-white leading-[1.08]">
+                <div className="space-y-4 sm:space-y-3.5 max-w-2xl">
+                  <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-extrabold tracking-tight text-white leading-[1.08]">
                     <CmsText path="hero.title" value={c.hero.title} /> <br className="hidden sm:inline" />
                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-slate-300">
                       <CmsText path="hero.titleHighlight" value={c.hero.titleHighlight} />
@@ -644,7 +644,7 @@ export function HomePage() {
                     <CmsText path="hero.subtitle" value={c.hero.subtitle} />
                   </p>
 
-                  <div className="grid grid-cols-2 sm:flex sm:flex-row items-center gap-2.5 sm:gap-4 pt-1.5 sm:pt-2 w-full sm:w-auto max-w-md sm:max-w-none">
+                  <div className="grid grid-cols-1 sm:flex sm:flex-row items-center gap-2.5 sm:gap-4 pt-2 sm:pt-2 w-full sm:w-auto max-w-md sm:max-w-none">
                     <button
                       onClick={() => navigate('/events')}
                       className="liquid-btn group gap-2 rounded-full text-[11px] sm:text-xs font-mono uppercase tracking-wider transition-all shadow-xl cursor-pointer !py-3 sm:!py-3.5 !px-3.5 sm:!px-7 w-full sm:w-auto text-center justify-center"
@@ -655,7 +655,7 @@ export function HomePage() {
                     </button>
                     <button
                       onClick={() => navigate('/services')}
-                      className="inline-flex items-center justify-center gap-2 !px-3.5 sm:!px-6 !py-3 sm:!py-3.5 rounded-full border border-white/25 hover:border-white/50 hover:bg-white/10 text-white text-[11px] sm:text-xs font-mono font-bold uppercase tracking-wider transition-all cursor-pointer backdrop-blur-xs group w-full sm:w-auto text-center"
+                      className="hidden sm:inline-flex items-center justify-center gap-2 !px-3.5 sm:!px-6 !py-3 sm:!py-3.5 rounded-full border border-white/25 hover:border-white/50 hover:bg-white/10 text-white text-[11px] sm:text-xs font-mono font-bold uppercase tracking-wider transition-all cursor-pointer backdrop-blur-xs group w-full sm:w-auto text-center"
                     >
                       <span>
                         <CmsText path="hero.secondaryLabel" value={c.hero.secondaryLabel} />
@@ -666,16 +666,16 @@ export function HomePage() {
               </div>
 
               {/* Right Column: 3D Aircraft & Learning Platform Visual (Perfect Center on Mobile & Desktop) */}
-              <div className="lg:col-span-5 relative w-full flex items-center justify-center mx-auto my-2 sm:my-4 lg:my-0">
+              <div className="order-first lg:order-none lg:col-span-5 relative w-full flex items-center justify-center mx-auto mb-2 sm:my-4 lg:my-0">
                 {/* Ambient glow accent behind mockup */}
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 sm:w-64 sm:h-64 lg:w-72 lg:h-72 bg-[#34E06E]/15 rounded-full blur-3xl pointer-events-none -z-10" />
-                <div className="relative w-full max-w-[270px] sm:max-w-[340px] md:max-w-[400px] lg:max-w-[440px] xl:max-w-[500px] 2xl:max-w-[560px] mx-auto flex items-center justify-center text-center animate-float-slow">
+                <div className="relative w-full max-w-[300px] sm:max-w-[340px] md:max-w-[400px] lg:max-w-[440px] xl:max-w-[500px] 2xl:max-w-[560px] mx-auto flex items-center justify-center text-center sm:animate-float-slow">
                   <picture className="block w-full text-center">
                     <source srcSet={hero3dMockup} type="image/webp" />
                     <img
                       src={hero3dMockupPng}
                       alt="IFOA Flight Operations Training & Certification Platform"
-                      className="w-full max-h-[30vh] sm:max-h-[36vh] lg:max-h-[42vh] xl:max-h-[46vh] object-contain select-none drop-shadow-[0_20px_50px_rgba(0,0,0,0.65)] pointer-events-none mx-auto block"
+                      className="w-full max-h-[32vh] sm:max-h-[36vh] lg:max-h-[42vh] xl:max-h-[46vh] object-contain select-none drop-shadow-[0_20px_50px_rgba(0,0,0,0.65)] pointer-events-none mx-auto block"
                       loading="eager"
                       fetchPriority="high"
                     />
@@ -686,8 +686,8 @@ export function HomePage() {
           </div>
 
           {/* Key Stats & Accreditations Metric Strip (Inside Hero - Viewport-Fitted) */}
-          <div className="w-full pt-3 sm:pt-4 border-t border-white/15 mt-auto pb-1 sm:pb-2 shrink-0">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 md:gap-0 divide-y md:divide-y-0 md:divide-x divide-white/15">
+          <div className="w-full pt-5 sm:pt-4 border-t border-white/15 mt-6 sm:mt-auto pb-1 sm:pb-2 shrink-0">
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 md:gap-0 sm:divide-y md:divide-y-0 md:divide-x divide-white/15">
               {/* Metric 1 */}
               <div className="px-2 sm:px-4 md:px-6 lg:px-8 py-1.5 sm:py-2 first:pl-0 space-y-0.5 sm:space-y-1">
                 <p className="text-xl sm:text-2xl lg:text-2xl xl:text-3xl font-extrabold text-white tracking-tight">
@@ -699,7 +699,7 @@ export function HomePage() {
               </div>
 
               {/* Metric 2 */}
-              <div className="px-2 sm:px-4 md:px-6 lg:px-8 py-1.5 sm:py-2 pt-1.5 md:pt-2 space-y-0.5 sm:space-y-1">
+              <div className="px-2 sm:px-4 md:px-6 lg:px-8 py-1.5 sm:py-2 pt-1.5 md:pt-2 space-y-0.5 sm:space-y-1 max-sm:border-l max-sm:border-white/15 max-sm:pl-4">
                 <p className="text-xl sm:text-2xl lg:text-2xl xl:text-3xl font-extrabold text-white tracking-tight">
                   <CmsText path="hero.stats.1.value" value={c.hero.stats[1].value} />
                 </p>
@@ -709,7 +709,7 @@ export function HomePage() {
               </div>
 
               {/* Metric 3 */}
-              <div className="px-2 sm:px-4 md:px-6 lg:px-8 py-1.5 sm:py-2 pt-1.5 md:pt-2 space-y-0.5 sm:space-y-1">
+              <div className="hidden sm:block px-2 sm:px-4 md:px-6 lg:px-8 py-1.5 sm:py-2 pt-1.5 md:pt-2 space-y-0.5 sm:space-y-1">
                 <p className="text-xl sm:text-2xl lg:text-2xl xl:text-3xl font-extrabold text-[#34E06E] tracking-tight">
                   <CmsText path="hero.stats.2.value" value={c.hero.stats[2].value} />
                 </p>
@@ -719,7 +719,7 @@ export function HomePage() {
               </div>
 
               {/* Metric 4 */}
-              <div className="px-2 sm:px-4 md:px-6 lg:px-8 py-1.5 sm:py-2 pt-1.5 md:pt-2 last:pr-0 space-y-0.5 sm:space-y-1">
+              <div className="hidden sm:block px-2 sm:px-4 md:px-6 lg:px-8 py-1.5 sm:py-2 pt-1.5 md:pt-2 last:pr-0 space-y-0.5 sm:space-y-1">
                 <p className="text-xl sm:text-2xl lg:text-2xl xl:text-3xl font-extrabold text-white tracking-tight">
                   <CmsText path="hero.stats.3.value" value={c.hero.stats[3].value} />
                 </p>

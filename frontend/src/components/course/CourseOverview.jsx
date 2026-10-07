@@ -248,30 +248,6 @@ export function OverviewHero({ hero, fallbackTitle, fallbackLead }) {
 // everywhere (and is the only trigger on touch screens).
 const canHover = () => typeof window !== 'undefined' && window.matchMedia?.('(hover: hover)').matches
 
-// One-open-at-a-time state for a cluster of expandable rows.
-function useCluster(initial = -1) {
-  const [active, setActive] = useState(initial)
-  const timer = useRef(null)
-  useEffect(() => () => clearTimeout(timer.current), [])
-  return {
-    active,
-    rowProps: (i) => ({
-      // Hovering a row opens it and it stays open until another row is
-      // hovered - moving the mouse away doesn't close it. A short hover-intent
-      // delay stops rows flickering open while the pointer passes over them.
-      onMouseEnter: () => {
-        if (!canHover()) return
-        clearTimeout(timer.current)
-        timer.current = setTimeout(() => setActive(i), 140)
-      },
-      onMouseLeave: () => clearTimeout(timer.current),
-      // Tap/click toggles (the only trigger on touch screens).
-      onClick: () => setActive((a) => (a === i && !canHover() ? -1 : i))
-    }),
-    clusterProps: {},
-    setPinned: setActive
-  }
-}
 
 // Smooth height reveal (grid-rows 0fr -> 1fr) without measuring content.
 function Reveal({ open, children, className = '', inline = false }) {
@@ -308,43 +284,26 @@ function PlusMinus({ open }) {
   )
 }
 
-function AccordionItem({ item, index, isStatic, open, rowProps }) {
-  const hasBody = !isStatic && (item.bullets?.length || item.text || item.competency)
+// One card per phase with every topic visible, so the whole programme reads
+// in one pass without opening anything.
+function PhaseCard({ item, index, isStatic, wide }) {
   const num = item.num || String(index + 1).padStart(2, '0')
+  const count = item.bullets?.length || 0
   return (
-    <li
-      className={`relative rounded-2xl border transition-[background-color,border-color,box-shadow] duration-500 ease-out overflow-hidden ${
-        open
-          ? 'bg-white border-slate-200 shadow-[0_6px_24px_rgba(15,23,42,0.06)]'
-          : 'bg-slate-50/60 border-slate-200/70 hover:bg-white hover:border-slate-300'
-      }`}
-    >
-      <button
-        type="button"
-        {...(hasBody ? rowProps : {})}
-        aria-expanded={hasBody ? open : undefined}
-        className={`w-full flex items-center gap-3.5 text-left px-4 sm:px-5 py-3.5 ${hasBody ? 'cursor-pointer' : 'cursor-default'}`}
-      >
-        <span
-          className={`inline-flex items-center justify-center min-w-[2.5rem] h-8 px-2 rounded-lg font-mono text-xs font-bold tracking-wide shrink-0 transition-colors duration-300 ${
-            open ? 'bg-slate-950 text-white' : 'bg-white text-slate-600 border border-slate-200'
-          }`}
-        >
+    <li className="flex flex-col rounded-2xl border border-slate-200/80 bg-white p-5 shadow-[0_2px_12px_rgba(15,23,42,0.04)]">
+      <div className="flex items-start gap-3.5">
+        <span className="inline-flex items-center justify-center min-w-[2.5rem] h-8 px-2 rounded-lg bg-slate-950 text-white font-mono text-xs font-bold tracking-wide shrink-0">
           {num}
         </span>
         <span className="min-w-0 flex-1">
-          <span className="block text-sm sm:text-[15px] font-semibold text-slate-900 leading-snug"><E o={item} k="title" /></span>
-          {isStatic && item.text && <span className="block mt-1 text-xs text-slate-600 leading-relaxed"><E o={item} k="text" /></span>}
-          {hasBody && item.bullets?.length > 0 && (
-            <Reveal open={!open} inline>
-              <span className="block mt-0.5 text-[11px] text-slate-400">
-                {item.bullets.length} {item.bullets.length === 1 ? 'topic' : 'topics'}
-              </span>
-            </Reveal>
+          <span className="block text-[15px] sm:text-base font-bold text-slate-950 leading-snug"><E o={item} k="title" /></span>
+          {!isStatic && count > 0 && (
+            <span className="block mt-0.5 text-[11px] font-mono uppercase tracking-wider text-slate-400">
+              {count} {count === 1 ? 'topic' : 'topics'}
+            </span>
           )}
         </span>
-
-        {item.tag ? (
+        {item.tag && (
           <span
             className={`text-[10px] font-bold px-2 py-0.5 rounded shrink-0 ${
               item.tagTone === 'accent' ? 'bg-red-50 text-red-700 border border-red-100' : 'text-slate-500 bg-slate-100 border border-slate-200'
@@ -352,55 +311,39 @@ function AccordionItem({ item, index, isStatic, open, rowProps }) {
           >
             <E o={item} k="tag" />
           </span>
-        ) : hasBody ? (
-          <RiArrowDownSLine
-            className={`w-5 h-5 shrink-0 transition-[rotate,color] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${open ? 'rotate-180 text-slate-900' : 'text-slate-400'}`}
-          />
-        ) : null}
-      </button>
-
-      {hasBody && (
-        <Reveal open={open}>
-          <div className="px-4 sm:px-5 pb-4 sm:pl-[4.6rem] space-y-3">
-            <div className="h-px bg-slate-100" />
-            {item.text && <p className="text-[13px] text-slate-600 leading-relaxed"><E o={item} k="text" /></p>}
-            {item.bullets?.length > 0 && (
-              <ul className="grid sm:grid-cols-2 gap-x-6 gap-y-2">
-                {item.bullets.map((b, j) => (
-                  <li key={j} className="flex items-start gap-2 text-[13px] text-slate-700 leading-snug">
-                    <RiCheckLine className="w-3.5 h-3.5 text-[#16a952] shrink-0 mt-[3px]" />
-                    <span><E o={item.bullets} k={j} /></span>
-                  </li>
-                ))}
-              </ul>
-            )}
-            {item.competency && (
-              <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold px-2.5 py-1 rounded-full bg-slate-100 text-slate-700">
-                <RiCheckLine className="w-3.5 h-3.5 text-[#16a952] shrink-0" />
-                <E o={item} k="competency" />
-              </span>
-            )}
-          </div>
-        </Reveal>
+        )}
+      </div>
+      {(item.text || count > 0 || item.competency) && (
+        <div className="mt-4 pt-4 border-t border-slate-100 space-y-3 flex-1">
+          {item.text && <p className="text-[13px] text-slate-600 leading-relaxed"><E o={item} k="text" /></p>}
+          {count > 0 && !isStatic && (
+            <ul className={wide ? 'grid gap-x-8 gap-y-2 sm:grid-cols-2' : 'space-y-2'}>
+              {item.bullets.map((b, j) => (
+                <li key={j} className="flex items-start gap-2 text-[13px] text-slate-700 leading-snug">
+                  <RiCheckLine className="w-3.5 h-3.5 text-[#16a952] shrink-0 mt-[3px]" />
+                  <span><E o={item.bullets} k={j} /></span>
+                </li>
+              ))}
+            </ul>
+          )}
+          {item.competency && (
+            <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold px-2.5 py-1 rounded-full bg-slate-100 text-slate-700">
+              <RiCheckLine className="w-3.5 h-3.5 text-[#16a952] shrink-0" />
+              <E o={item} k="competency" />
+            </span>
+          )}
+        </div>
       )}
     </li>
   )
 }
 
-// A vertical cluster of expandable rows (one open at a time).
+// All items shown at once as a card grid; an odd last card spans the full row.
 function ItemList({ items, startIndex = 0, isStatic }) {
-  const cluster = useCluster(-1)
   return (
-    <ol className="space-y-2.5" {...cluster.clusterProps}>
+    <ol className="grid grid-cols-1 md:grid-cols-2 gap-4 md:[&>li:last-child:nth-child(odd)]:col-span-2">
       {items.map((item, i) => (
-        <AccordionItem
-          key={i}
-          item={item}
-          index={startIndex + i}
-          isStatic={isStatic}
-          open={cluster.active === i}
-          rowProps={cluster.rowProps(i)}
-        />
+        <PhaseCard key={i} item={item} index={startIndex + i} isStatic={isStatic} wide={items.length % 2 === 1 && i === items.length - 1} />
       ))}
     </ol>
   )
@@ -710,15 +653,15 @@ function Facts({ block, bare, fill }) {
   )
 }
 
-function Pills({ block, bare }) {
+function Pills({ block, bare, fill }) {
   const body = (
-    <div className="space-y-3.5">
+    <div className={`space-y-3.5 ${fill ? 'flex-1 flex flex-col' : ''}`}>
       <Heading o={block} title={block.title} intro={block.intro} compact={bare} />
-      <ul className="space-y-2.5">
+      <ul className={`space-y-2.5 ${fill ? 'flex-1 flex flex-col' : ''}`}>
         {block.items.map((item, i) => (
           <li
             key={i}
-            className="flex items-center gap-3 p-3.5 sm:p-4 rounded-2xl bg-slate-50/70 border border-slate-200/80 text-xs sm:text-sm font-semibold text-slate-800 leading-snug hover:bg-white hover:border-slate-300 transition-colors shadow-2xs"
+            className={`flex items-center gap-3 p-3.5 sm:p-4 rounded-2xl bg-slate-50/70 border border-slate-200/80 text-xs sm:text-sm font-semibold text-slate-800 leading-snug hover:bg-white hover:border-slate-300 transition-colors shadow-2xs ${fill ? 'flex-1' : ''}`}
           >
             <span className="w-6 h-6 rounded-full bg-[#34E06E]/15 text-[#16a952] flex items-center justify-center shrink-0">
 <RiUser3Line className="w-3.5 h-3.5" />

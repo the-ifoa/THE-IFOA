@@ -6,6 +6,7 @@ export const PATH_BY_PAGE = {
   about: '/about',
   contact: '/contact',
   events: '/events',
+  upcoming: '/upcoming-courses',
   foxtrotDelta: '/foxtrot-delta',
   courseEnrollment: null,
   courseDetail: null

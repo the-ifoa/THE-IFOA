@@ -12,7 +12,7 @@
  *   image values are { url, key, alt } objects (same shape as ImageUploader).
  */
 
-const PAGE_KEYS = ['home', 'services', 'about', 'contact', 'events', 'foxtrotDelta', 'courseEnrollment', 'courseDetail']
+const PAGE_KEYS = ['home', 'services', 'about', 'contact', 'events', 'upcoming', 'foxtrotDelta', 'courseEnrollment', 'courseDetail']
 
 const PAGE_LABELS = {
   home: 'Home',
@@ -20,6 +20,7 @@ const PAGE_LABELS = {
   about: 'About',
   contact: 'Contact',
   events: 'Events',
+  upcoming: 'Upcoming Courses',
   foxtrotDelta: 'Foxtrot Delta',
   courseEnrollment: 'Course Enrollment',
   courseDetail: 'Course Detail'
@@ -449,6 +450,58 @@ const SCHEMAS = {
               f('courseChoices', 'Course choices (e.g. EASA / FAA dual link)', 'choiceList')
             ]
           }
+        ]
+      }
+    ]
+  },
+
+  upcoming: {
+    groups: [
+      {
+        k: 'hero',
+        label: 'Hero',
+        fields: [f('title', 'Title'), f('subtitle', 'Subtitle', 'textarea')]
+      },
+      {
+        k: 'board',
+        label: 'Course table',
+        fields: [
+          f('colNext', 'Column: next start'),
+          f('colCourse', 'Column: course'),
+          f('colDuration', 'Column: duration'),
+          f('colWhere', 'Column: where'),
+          f('colFee', 'Column: fee'),
+          f('detailsLabel', 'Course details link label'),
+          f('note', 'Note under the table', 'textarea')
+        ],
+        lists: [
+          {
+            k: 'courses',
+            label: 'Courses',
+            itemLabel: 'Course',
+            fields: [
+              f('when', 'Next start (date or "Rolling")'),
+              f('whenNote', 'Start note'),
+              f('title', 'Course title'),
+              f('slug', 'Course page slug'),
+              f('desc', 'Short description', 'textarea'),
+              f('duration', 'Duration'),
+              f('where', 'Where'),
+              f('fee', 'Fee (leave empty to use the course price)'),
+              f('ctaLabel', 'Button label'),
+              f('ctaTo', 'Button link')
+            ]
+          }
+        ]
+      },
+      {
+        k: 'operators',
+        label: 'Team training band',
+        fields: [
+          f('title', 'Title'),
+          f('text', 'Text', 'textarea'),
+          f('primaryLabel', 'Primary button label'),
+          f('secondaryLabel', 'Secondary button label')
         ]
       }
     ]
@@ -1317,6 +1370,90 @@ const DEFAULTS = {
           courseSlug: 'airline-occ-setup-operational-consulting'
         }
       ]
+    }
+  },
+
+  upcoming: {
+    "hero": {
+      "title": "Upcoming courses",
+      "subtitle": "Courses you can book yourself, with their next start date. Training a whole team? We schedule it around your operation instead."
+    },
+    "board": {
+      "colNext": "Next start",
+      "colCourse": "Course",
+      "colDuration": "Duration",
+      "colWhere": "Where",
+      "colFee": "Fee",
+      "detailsLabel": "Course details",
+      "note": "Dates can change. Your place is confirmed once your application is accepted and payment is received, as set out in the application form.",
+      "courses": [
+        {
+          "when": "4 Jan 2027",
+          "whenNote": "Seats open",
+          "title": "Flight Dispatcher Initial",
+          "slug": "flight-dispatcher-initial-certification",
+          "desc": "ICAO Doc 10106, with EASA operations.",
+          "duration": "200 hours, 5 weeks",
+          "where": "2 weeks online, 3 weeks in Sønderborg, Denmark",
+          "fee": "",
+          "ctaLabel": "Apply",
+          "ctaTo": "/courses/flight-dispatcher-initial-certification/enroll"
+        },
+        {
+          "when": "Rolling",
+          "whenNote": "Starts at 10 registrations",
+          "title": "Flight Dispatcher Initial (India)",
+          "slug": "flight-dispatcher-initial-training-india",
+          "desc": "ICAO Doc 10106, taught in New Delhi after online preparation.",
+          "duration": "4 weeks",
+          "where": "Online preparation, then New Delhi, India",
+          "fee": "",
+          "ctaLabel": "Apply",
+          "ctaTo": "/courses/flight-dispatcher-initial-certification/enroll?location=india"
+        },
+        {
+          "when": "Rolling",
+          "whenNote": "India batches from 8 Feb 2027",
+          "title": "FAA Aircraft Dispatcher",
+          "slug": "aircraft-dispatcher-training-faa-part-65",
+          "desc": "FAA Part 65 approved. Prepares you for the FAA Aircraft Dispatcher certificate.",
+          "duration": "200 hours, 6 weeks (India: 5 weeks, plus an exam week taken within 6 months), plus ADX self-study",
+          "where": "Online preparation, then Sønderborg, Florida or New Delhi",
+          "fee": "",
+          "ctaLabel": "Apply",
+          "ctaTo": "/courses/aircraft-dispatcher-training-faa-part-65/enroll"
+        },
+        {
+          "when": "To be confirmed",
+          "whenNote": "Contact us for dates",
+          "title": "Double Program: FAA & EASA",
+          "slug": "flight-dispatcher-double-programme",
+          "desc": "The FAA Part 65 approved course plus ICAO and EASA operations. One FAA certificate, trained for both rule sets.",
+          "duration": "280 hours, 7 weeks, plus ADX self-study",
+          "where": "Hybrid, Denmark · India",
+          "fee": "",
+          "ctaLabel": "Apply",
+          "ctaTo": "/courses/flight-dispatcher-double-programme/enroll"
+        },
+        {
+          "when": "Next date",
+          "whenNote": "To be announced",
+          "title": "Train the Trainer",
+          "slug": "train-the-trainer-icao-cbta-instructor",
+          "desc": "For aviation professionals who teach. You teach twice, with feedback each time.",
+          "duration": "4 days",
+          "where": "Open course, or in-house at your base",
+          "fee": "On request",
+          "ctaLabel": "Request a proposal",
+          "ctaTo": "/contact?course=train-the-trainer-icao-cbta-instructor"
+        }
+      ]
+    },
+    "operators": {
+      "title": "Training your whole team?",
+      "text": "Operators don't wait for a public date. We schedule flight dispatch, crew control, dangerous goods, train the trainer and human factors training around your operation, online or at your base.",
+      "primaryLabel": "Talk to us about your team",
+      "secondaryLabel": "See operator courses"
     }
   },
 

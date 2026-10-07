@@ -146,7 +146,8 @@ export function Navbar({ variant = 'fixed' }) {
   const navLinks = [
     { name: 'Home', path: '/' },
     { name: 'Services', path: '/services' },
-    { name: 'Courses', path: '/events' },
+    { name: 'Flight Dispatch Courses', path: '/events' },
+    { name: 'Upcoming Courses', path: '/upcoming-courses' },
     { name: 'Agent for Service', path: 'https://agent.theifoa.com/', external: true },
     { name: 'Smart Talent', path: 'https://talent.theifoa.com/', external: true },
     { name: 'FAQ', path: '/faq' },
@@ -157,6 +158,7 @@ export function Navbar({ variant = 'fixed' }) {
     if (path === '/' && location.pathname === '/') return true
     if (path === '/services' && (location.pathname === '/services' || location.pathname.startsWith('/services/'))) return true
     if (path === '/events' && (location.pathname === '/events' || location.pathname.startsWith('/events/'))) return true
+    if (path === '/upcoming-courses' && location.pathname === '/upcoming-courses') return true
     if (path === '/foxtrot-delta' && (location.pathname.startsWith('/foxtrot-delta') || location.pathname.startsWith('/magazine'))) return true
     if (path === '/faq' && location.pathname === '/faq') return true
     if (path === '/contact' && (location.pathname === '/contact' || location.pathname.startsWith('/contact/'))) return true

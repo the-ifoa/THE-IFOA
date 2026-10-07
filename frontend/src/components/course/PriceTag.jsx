@@ -29,11 +29,11 @@ export function priceText(price, india = false) {
   return india ? `${base} + GST` : base
 }
 
-// Tax note under a course fee: GST for courses taught in India, VAT elsewhere.
+// Tax note under a course fee: GST for courses taught in India, none elsewhere.
 // eslint-disable-next-line react-refresh/only-export-components -- helper co-located with its component on purpose; only affects dev hot reload
 export function taxNote(price, india = false) {
   if (price?.amount == null) return null
-  return india ? '+ GST as applicable' : '+ VAT where applicable'
+  return india ? '+ GST as applicable' : null
 }
 
 // Indicative rupee equivalent of a USD or EUR price. Rates load on first use and

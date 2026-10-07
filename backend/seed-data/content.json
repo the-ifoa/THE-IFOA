@@ -1046,7 +1046,7 @@
             "type": "accordion",
             "anchor": "modules",
             "title": "The program",
-            "intro": "Five phases, from the rules that govern the operation to the decisions you make on shift. Select a phase to see what it covers.",
+            "intro": "Five phases, from the rules that govern the operation to the decisions you make on shift.",
             "items": [
               {
                 "title": "The Operating Environment",
@@ -1571,7 +1571,7 @@
             "type": "accordion",
             "anchor": "modules",
             "title": "The program",
-            "intro": "Five phases over four weeks, from the rules that govern the operation to the decisions you make on shift. Select a phase to see what it covers.",
+            "intro": "Five phases over four weeks, from the rules that govern the operation to the decisions you make on shift.",
             "items": [
               {
                 "title": "The Operating Environment",
@@ -2095,7 +2095,7 @@
             "type": "accordion",
             "anchor": "modules",
             "title": "The program",
-            "intro": "Five phases, from the rules that govern the operation to the decisions you make on shift. Select a phase to see what it covers.",
+            "intro": "Five phases, from the rules that govern the operation to the decisions you make on shift.",
             "items": [
               {
                 "title": "The Operating Environment",

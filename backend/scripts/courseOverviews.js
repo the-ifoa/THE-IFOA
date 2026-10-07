@@ -66,7 +66,7 @@ const OVERVIEWS = {
           type: 'accordion',
           anchor: 'modules',
           title: 'The program',
-          intro: 'Five phases, from the rules that govern the operation to the decisions you make on shift. Select a phase to see what it covers.',
+          intro: 'Five phases, from the rules that govern the operation to the decisions you make on shift.',
           items: [
             { title: 'The Operating Environment', bullets: ['Air law and civil aviation regulations', 'ICAO and EASA framework', 'Air traffic management', 'Aeronautical communications'] },
             { title: 'Know the Aircraft', bullets: ['Aircraft systems for dispatchers', 'Mass and balance', 'Aircraft performance', 'MEL and CDL'] },
@@ -196,7 +196,7 @@ const OVERVIEWS = {
           type: 'accordion',
           anchor: 'modules',
           title: 'The program',
-          intro: 'Five phases over four weeks, from the rules that govern the operation to the decisions you make on shift. Select a phase to see what it covers.',
+          intro: 'Five phases over four weeks, from the rules that govern the operation to the decisions you make on shift.',
           items: [
             { title: 'The Operating Environment', bullets: ['Air law and civil aviation regulations', 'ICAO framework', 'Air traffic management', 'Aeronautical communications'] },
             { title: 'Know the Aircraft', bullets: ['Aircraft systems for dispatchers', 'Mass and balance', 'Aircraft performance', 'MEL and CDL'] },
