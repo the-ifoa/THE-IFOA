@@ -78,9 +78,11 @@ function flatten(value, prefix = '', out = {}) {
   }
   return out
 }
+Course details
 
 let differences = 0
-for (const [page, file] of Object.entries(PAGES)) {
+for (const [page, file] of Object.entries(PAGES)) {Course details
+
   const literal = extractFallback(readFileSync(path.join(ROOT, file), 'utf8'))
   if (!literal) { console.log(`${page}: no FALLBACK found in ${file}`); differences++; continue }
   let front

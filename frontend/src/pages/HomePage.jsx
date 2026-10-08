@@ -665,7 +665,7 @@ export function HomePage() {
     <div className="font-sans text-rocket-dark bg-white">
       <Seo
         path="/"
-        title="Flight Dispatcher Training: FAA Part 65, ICAO & EASA | The IFOA"
+        title="The IFOA | International Flight Operations Academy"
         description="Flight dispatcher training in Europe, the USA and India. FAA Part 65 and ICAO/EASA courses for individuals, and tailored OCC training for operators."
         jsonLd={graph(
           organizationSchema(),
