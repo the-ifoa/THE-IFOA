@@ -681,9 +681,9 @@ export function HomePage() {
         )}
       />
       {/* BEGIN: HeroSection */}
-      <section className="relative w-full sm:min-h-[100dvh] lg:h-[100dvh] lg:max-h-[1080px] text-white overflow-hidden border-b border-white/10 flex flex-col justify-between" data-purpose="hero-content">
+      <section className="relative w-full min-h-[100svh] sm:min-h-[100dvh] lg:h-[100dvh] lg:max-h-[1080px] text-white overflow-hidden border-b border-white/10 flex flex-col justify-between" data-purpose="hero-content">
         <CosmicParallaxBg
-          className="cosmic-parallax-bg sm:min-h-[100dvh] lg:h-full flex flex-col justify-between pt-24 sm:pt-24 lg:pt-22 xl:pt-24 pb-8 sm:pb-5 px-4 sm:px-6 lg:px-8"
+          className="cosmic-parallax-bg min-h-[100svh] sm:min-h-[100dvh] lg:h-full flex flex-col justify-between pt-24 sm:pt-24 lg:pt-22 xl:pt-24 pb-8 sm:pb-5 px-4 sm:px-6 lg:px-8"
           contentClassName="justify-between flex-1 flex flex-col h-full w-full max-w-[1280px] mx-auto"
         >
           {/* Main Hero Grid Content (Auto-centered vertically in available viewport) */}
@@ -1772,15 +1772,10 @@ export function HomePage() {
                           <LivePreview url={card.url} title={`${card.title} (live site)`} />
                         </>
                       )}
-                      <div className={`absolute inset-x-0 top-0 flex items-center justify-between px-6 pt-5 ${art.ink}`}>
-                        <span className="flex items-center gap-3 text-sm font-semibold tracking-wide">
-                          {String(i + 1).padStart(2, '0')}
-                        </span>
-                        <HiArrowUpRight className="h-6 w-6 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-                      </div>
                     </div>
                   )}
                   <div className="flex flex-1 flex-col gap-3 px-7 pb-7 pt-6 sm:px-8 sm:pb-8">
+                    <span className="text-sm font-semibold tracking-wide text-slate-400">{String(i + 1).padStart(2, '0')}</span>
                     <h3 className="text-2xl sm:text-[30px] font-bold tracking-tight text-slate-950 leading-tight">
                       <CmsText path={`beyond.cards.${i}.title`} value={card.title} />
                     </h3>

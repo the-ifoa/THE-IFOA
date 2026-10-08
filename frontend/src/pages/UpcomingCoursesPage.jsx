@@ -399,7 +399,6 @@ export function UpcomingCoursesPage() {
                         <CmsText path={`${p}.title`} value={course.title} />
                       )}
                     </h2>
-                    <p className="mt-1 text-[13px] text-slate-600 leading-relaxed"><CmsText path={`${p}.desc`} value={course.desc} /></p>
                   </div>
 
                   {/* Facts: own columns on desktop, labeled list on mobile */}

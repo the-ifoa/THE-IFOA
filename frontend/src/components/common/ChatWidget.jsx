@@ -502,16 +502,26 @@ function ChatView({ messages, setMessages, loading, setLoading, initialQuestion,
 const WIDTH_SIZES = [430, 540, 640]
 
 // ── Root ChatWidget component ─────────────────────────────────────────────────
+const STORAGE_KEY = 'ifoa-chat-v1'
+const WELCOME_MESSAGE = {
+  role: 'assistant',
+  content: "Hi! 👋 I'm the IFOA Academy Assistant.\n\nI can help with flight dispatch certifications, OCC training curriculum, cohort dates, or admissions questions. What would you like to know?",
+}
+
+function loadSavedChat() {
+  try {
+    const saved = JSON.parse(sessionStorage.getItem(STORAGE_KEY) || 'null')
+    if (saved && Array.isArray(saved.messages) && saved.messages.length) return saved
+  } catch { /* storage unavailable or corrupt */ }
+  return null
+}
+
 export function ChatWidget() {
-  const [open, setOpen] = useState(false)
-  const [view, setView] = useState('home') // 'home' | 'chat' | 'help'
+  const [saved] = useState(loadSavedChat)
+  const [open, setOpen] = useState(saved?.open ?? false)
+  const [view, setView] = useState(saved?.view ?? 'home') // 'home' | 'chat' | 'help'
   const [widthIndex, setWidthIndex] = useState(0)
-  const [messages, setMessages] = useState([
-    {
-      role: 'assistant',
-      content: "Hi! 👋 I'm the IFOA Academy Assistant.\n\nI can help with flight dispatch certifications, OCC training curriculum, cohort dates, or admissions questions. What would you like to know?",
-    },
-  ])
+  const [messages, setMessages] = useState(saved?.messages ?? [WELCOME_MESSAGE])
   const [loading, setLoading] = useState(false)
   const [unread, setUnread] = useState(0)
   const [initialQuestion, setInitialQuestion] = useState(null)
@@ -553,12 +563,21 @@ export function ChatWidget() {
     if (open) setUnread(0)
   }, [open])
 
+  const skipUnreadRef = useRef(true)
   useEffect(() => {
+    // Skip the mount run so a restored conversation doesn't show a fake unread badge.
+    if (skipUnreadRef.current) { skipUnreadRef.current = false; return }
     if (!open && messages.length > 1 && messages[messages.length - 1].role === 'assistant') {
       // eslint-disable-next-line react-hooks/set-state-in-effect -- loading/reset state at the start of an effect that syncs with an external source
       setUnread((n) => n + 1)
     }
   }, [messages, open])
+
+  useEffect(() => {
+    try {
+      sessionStorage.setItem(STORAGE_KEY, JSON.stringify({ messages, open, view }))
+    } catch { /* storage unavailable */ }
+  }, [messages, open, view])
 
   const handleAsk = (q) => {
     setInitialQuestion(q || null)

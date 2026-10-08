@@ -443,13 +443,13 @@ export function ServicesPage() {
           </div>
 
           {/* Interactive Category Filter Pills */}
-          <div className="flex flex-wrap items-center gap-2 pt-2 border-b border-slate-200/80 pb-4">
+          <div className="flex flex-nowrap sm:flex-wrap items-center gap-2 pt-2 border-b border-slate-200/80 pb-4 overflow-x-auto sm:overflow-visible -mx-4 px-4 sm:mx-0 sm:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             {categories.map((cat) => (
               <button
                 key={cat.id}
                 type="button"
                 onClick={() => setSelectedDiscipline(cat.id)}
-                className={`px-5 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 cursor-pointer ${
+                className={`shrink-0 whitespace-nowrap px-4 sm:px-5 py-2 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 cursor-pointer ${
                   selectedDiscipline === cat.id
                     ? 'bg-slate-950 text-white shadow-sm'
                     : 'bg-white text-slate-600 hover:text-slate-950 border border-slate-200/90 hover:bg-slate-50'
