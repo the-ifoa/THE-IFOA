@@ -80,7 +80,7 @@ export function organizationSchema() {
     alternateName: SITE_ALTERNATE_NAMES,
     url: SITE_URL,
     sameAs: SOCIAL_PROFILES,
-    logo: `${SITE_URL}/favicon.png`,
+    logo: `${SITE_URL}/favicon-512.png`,
     email: 'info@theifoa.com',
     description:
       'Aviation training academy specializing in flight dispatcher certification and flight operations training to ICAO Doc 10106, EASA ORO.GEN.110 and FAA 14 CFR Part 65 standards.',

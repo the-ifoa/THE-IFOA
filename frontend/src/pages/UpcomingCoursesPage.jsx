@@ -10,7 +10,7 @@ import { usePageContent } from '@/hooks/usePageContent'
 import { CmsText, CmsRemoveItem, CmsAddItem, isPreviewEditMode } from '@/components/admin/CmsEditable'
 import { priceText } from '@/components/course/PriceTag'
 import { graph, organizationSchema, breadcrumbSchema, courseListSchema } from '@/lib/seo'
-import bannerHero from '@/assets/shared/photos/IOFA-banner_10@1920x1280.jpg'
+import bannerHero from '@/assets/shared/photos/IOFA-banner_10@1920x1280.webp'
 
 // Shared column layout for the board's heading row and course rows.
 const ROW_GRID = 'lg:grid-cols-[140px_minmax(0,1.6fr)_minmax(0,1fr)_minmax(0,1.2fr)_100px_150px] lg:gap-x-6'
@@ -108,6 +108,86 @@ const FALLBACK = {
         fee: '',
         ctaLabel: 'Apply',
         ctaTo: '/courses/flight-dispatcher-double-programme/enroll'
+      },
+      {
+        when: 'Rolling',
+        whenNote: 'Rolling admissions',
+        startDate: '',
+        format: 'Hybrid',
+        locations: 'Denmark',
+        title: 'FAA Aircraft Dispatcher (Denmark)',
+        slug: 'aircraft-dispatcher-training-faa-part-65',
+        variantOf: 'aircraft-dispatcher-training-faa-part-65',
+        desc: '',
+        duration: '6 weeks, plus ADX self-study',
+        where: 'Online preparation, then Sønderborg, Denmark',
+        fee: '',
+        ctaLabel: 'Apply',
+        ctaTo: '/courses/aircraft-dispatcher-training-faa-part-65/enroll?location=denmark'
+      },
+      {
+        when: 'Rolling',
+        whenNote: 'Rolling admissions',
+        startDate: '',
+        format: 'Hybrid',
+        locations: 'USA',
+        title: 'FAA Aircraft Dispatcher (USA)',
+        slug: 'aircraft-dispatcher-training-faa-part-65',
+        variantOf: 'aircraft-dispatcher-training-faa-part-65',
+        desc: '',
+        duration: '6 weeks, plus ADX self-study',
+        where: 'Online preparation, then Florida, USA',
+        fee: '',
+        ctaLabel: 'Apply',
+        ctaTo: '/courses/aircraft-dispatcher-training-faa-part-65/enroll?location=usa'
+      },
+      {
+        when: 'Rolling',
+        whenNote: 'Batches from 8 Feb 2027',
+        startDate: '',
+        format: 'Hybrid',
+        locations: 'India',
+        title: 'FAA Aircraft Dispatcher (India)',
+        slug: 'aircraft-dispatcher-training-faa-part-65',
+        variantOf: 'aircraft-dispatcher-training-faa-part-65',
+        desc: '',
+        duration: '5 weeks, plus an exam week taken within 6 months, plus ADX self-study',
+        where: 'Online preparation, then New Delhi, India',
+        fee: '',
+        ctaLabel: 'Apply',
+        ctaTo: '/courses/aircraft-dispatcher-training-faa-part-65/enroll?location=india'
+      },
+      {
+        when: 'To be confirmed',
+        whenNote: 'Contact us for dates',
+        startDate: '',
+        format: 'Hybrid',
+        locations: 'Denmark',
+        title: 'Double Program: FAA & EASA (Denmark)',
+        slug: 'flight-dispatcher-double-programme',
+        variantOf: 'flight-dispatcher-double-programme',
+        desc: '',
+        duration: '7 weeks, plus ADX self-study',
+        where: 'Hybrid, Sønderborg, Denmark',
+        fee: '',
+        ctaLabel: 'Apply',
+        ctaTo: '/courses/flight-dispatcher-double-programme/enroll?location=denmark'
+      },
+      {
+        when: 'To be confirmed',
+        whenNote: 'Contact us for dates',
+        startDate: '',
+        format: 'Hybrid',
+        locations: 'India',
+        title: 'Double Program: FAA & EASA (India)',
+        slug: 'flight-dispatcher-double-programme',
+        variantOf: 'flight-dispatcher-double-programme',
+        desc: '',
+        duration: '7 weeks, plus ADX self-study',
+        where: 'Hybrid, New Delhi, India',
+        fee: '',
+        ctaLabel: 'Apply',
+        ctaTo: '/courses/flight-dispatcher-double-programme/enroll?location=india'
       },
       {
         when: 'Next date',
@@ -422,7 +502,7 @@ export function UpcomingCoursesPage() {
                           )}
                           {key === 'Where' && (
                             <span className="mb-2 flex items-center gap-1.5 lg:justify-center justify-end">
-                              {countryFlags({ locations: allCountries.map((v) => v.locations).filter(Boolean).join(',') }, LOCATIONS).map((loc) => (
+                              {countryFlags({ locations: (country === 'all' ? allCountries.map((v) => v.locations).filter(Boolean).join(',') : country) }, LOCATIONS).map((loc) => (
                                 <span key={loc.name} title={loc.name}>
                                   <Flag code={loc.code} />
                                 </span>

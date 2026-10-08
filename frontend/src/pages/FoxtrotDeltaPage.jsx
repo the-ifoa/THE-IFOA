@@ -16,7 +16,7 @@ import { usePageContent } from '@/hooks/usePageContent'
 import issue01Cover from '@/assets/foxtrotDelta/foxtrot-delta-issue-01.webp'
 import issue02Cover from '@/assets/foxtrotDelta/foxtrot-delta-issue-02.webp'
 import issue03Cover from '@/assets/foxtrotDelta/foxtrot-delta-issue-03.webp'
-import bannerAviationClouds from '@/assets/shared/photos/aviation-aircraft-clouds.jpg'
+import bannerAviationClouds from '@/assets/shared/photos/aviation-aircraft-clouds.webp'
 
 // Cover images are local static assets keyed by edition ID; the rest of the
 // edition's copy (title, dates, highlights, etc.) is admin-editable.

@@ -4,7 +4,7 @@ import { HiArrowUpRight } from 'react-icons/hi2'
 
 import bannerDispatcher from '@/assets/shared/course-media/easa-hero.webp'
 import bannerPart65 from '@/assets/shared/course-media/part65-hero.webp'
-import bannerGroundOps from '@/assets/shared/course-media/course_banner_ground_ops_3d.jpg'
+import bannerGroundOps from '@/assets/shared/course-media/course_banner_ground_ops_3d.webp'
 // Same photography as the Services page cards, so a course and its matching
 // service present the same image instead of a generic unrelated stock photo.
 import imgFlightDispatch from '@/assets/services/01_flight_dispatch.webp'

@@ -5,7 +5,7 @@ import { Seo } from '@/components/common/Seo'
 import { graph, organizationSchema, breadcrumbSchema, faqSchema } from '@/lib/seo'
 import { FAQ_SECTIONS, faqPlainText } from '@/data/faqs'
 import { CustomSelect } from '@/components/ui/CustomSelect'
-import bannerHero from '@/assets/shared/photos/IOFA-banner_10@1920x1280.jpg'
+import bannerHero from '@/assets/shared/photos/IOFA-banner_10@1920x1280.webp'
 
 // Same **bold** / [label](href) markup the course overview blocks use.
 function Rich({ text }) {

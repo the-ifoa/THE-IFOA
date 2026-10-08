@@ -29,7 +29,7 @@ import imgTrainTrainer from '@/assets/services/03_train_trainer.webp'
 import imgHumanFactors from '@/assets/services/04_human_factors.webp'
 import imgCrewControl from '@/assets/services/05_crew_control.webp'
 import imgConsulting from '@/assets/services/06_consulting.webp'
-import imgOccLarge from '@/assets/services/occ-flight-dispatch-large.jpg'
+import imgOccLarge from '@/assets/services/occ-flight-dispatch-large.webp'
 
 // Discipline card images stay bundled; matched to a discipline by its number.
 const DISCIPLINE_IMG_BY_ID = {

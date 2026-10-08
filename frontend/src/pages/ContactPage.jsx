@@ -14,8 +14,8 @@ import { graph, organizationSchema, localBusinessSchemas, breadcrumbSchema } fro
 import { api } from '@/lib/api'
 import flagSwitzerland from '@/assets/shared/flags/flag-switzerland.webp'
 import flagUsa from '@/assets/shared/flags/flag-usa.webp'
-import flagIndia from '@/assets/shared/flags/flag-india.jpg'
-import bannerContactHero from '@/assets/shared/photos/IOFA-banner_10@1920x1280.jpg'
+import flagIndia from '@/assets/shared/flags/flag-india.webp'
+import bannerContactHero from '@/assets/shared/photos/IOFA-banner_10@1920x1280.webp'
 
 // Content the page ships with; the admin can override any of it via /admin/pages/contact.
 const FALLBACK = {

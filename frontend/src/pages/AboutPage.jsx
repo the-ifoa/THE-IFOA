@@ -16,10 +16,10 @@ import logoDgca from '@/assets/shared/standards-logos/logo-dgca.webp'
 // Country Flags
 import flagSwitzerland from '@/assets/shared/flags/flag-switzerland.webp'
 import flagUsa from '@/assets/shared/flags/flag-usa.webp'
-import flagIndia from '@/assets/shared/flags/flag-india.jpg'
+import flagIndia from '@/assets/shared/flags/flag-india.webp'
 
 // Official Background
-import imgAircraftClouds from '@/assets/shared/photos/aviation-aircraft-clouds.jpg'
+import imgAircraftClouds from '@/assets/shared/photos/aviation-aircraft-clouds.webp'
 
 // Content the page ships with; editable at /admin/pages/about.
 const FALLBACK = {
