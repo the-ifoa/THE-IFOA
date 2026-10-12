@@ -15,6 +15,18 @@ const BANK_DETAILS = {
   note: 'IMPORTANT: Bank transfer fees are at the charge of the Student or Company applying for training.'
 }
 
+// Shown instead of BANK_DETAILS to applicants training in India, with the
+// payment QR code. Keep in sync with INDIA_BANK_DETAILS in
+// frontend/src/components/formEngine/formSchema.js.
+const INDIA_BANK_DETAILS = [
+  'Account Name: INTERNATIONAL FLIGHT OPERATIONS ACADEMY INDIA LLP',
+  'Account Number: 049421010000093',
+  'Account Type: Current',
+  'IFSC: UBIN0904945',
+  'Bank Name: Union Bank of India'
+].join('\n')
+const INDIA_PAYMENT_QR = '/Qr.jpeg'
+
 const COURSE_ACKNOWLEDGEMENT_TEXT =
   'I understand that IFOA issues an IFOA Certificate of Completion when I complete the course. It is not a government-issued license or certificate.'
 
@@ -48,6 +60,8 @@ const CONTACT_INFO = {
 
 module.exports = {
   BANK_DETAILS,
+  INDIA_BANK_DETAILS,
+  INDIA_PAYMENT_QR,
   COURSE_ACKNOWLEDGEMENT_TEXT,
   TERMS_AND_CONDITIONS,
   PRIVACY_NOTICE,

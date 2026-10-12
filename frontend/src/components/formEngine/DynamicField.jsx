@@ -72,7 +72,40 @@ function parseBankDetails(content) {
   };
 }
 
-function BankDetailsBlock({ content }) {
+// "Label: value" lines beside a payment QR code (India bank details).
+function QrBankDetailsBlock({ content, qrImage }) {
+  const rows = content.split('\n').map((l) => l.trim()).filter(Boolean);
+  return (
+    <div>
+      <p className="mb-3 text-center text-sm font-bold text-slate-800">Bank Transfer</p>
+      <div className="flex flex-col items-center gap-5 sm:flex-row sm:items-start sm:justify-between">
+        <dl className="w-full space-y-1.5 text-xs text-slate-600">
+          {rows.map((row, i) => {
+            const idx = row.indexOf(':');
+            if (idx === -1) return <p key={i}>{row}</p>;
+            return (
+              <div key={i} className="flex flex-col sm:flex-row sm:gap-2">
+                <dt className="shrink-0 sm:w-32">{row.slice(0, idx)}</dt>
+                <dd className="font-bold text-slate-800 break-words">{row.slice(idx + 1).trim()}</dd>
+              </div>
+            );
+          })}
+        </dl>
+        <div className="shrink-0 text-center">
+          <img
+            src={qrImage}
+            alt="Payment QR code"
+            className="h-40 w-40 rounded-xl border border-slate-200 bg-white object-contain p-1.5"
+          />
+          <p className="mt-1.5 text-[11px] font-medium text-slate-500">Scan to pay</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function BankDetailsBlock({ content, qrImage }) {
+  if (qrImage) return <QrBankDetailsBlock content={content} qrImage={qrImage} />;
   const parsed = parseBankDetails(content);
   if (!parsed) return <div className="whitespace-pre-line text-xs leading-relaxed text-slate-600">{content}</div>;
   const { beneficiaryLines, bankLines, iban, bic, note } = parsed;
@@ -286,6 +319,7 @@ export function DynamicField({ field, value, onChange, intakes = [], error }) {
           onChange={(e) => onChange(e.target.value)}
           required={field.required}
           placeholder={field.placeholder || 'Phone number...'}
+          defaultCountryCode={field.defaultCountryCode}
           error={error}
         />
       </div>
@@ -476,7 +510,7 @@ export function DynamicField({ field, value, onChange, intakes = [], error }) {
           {field.id === 'programInfo' ? (
             <ProgramInfoBlock content={field.content} />
           ) : field.id === 'bankDetails' ? (
-            <BankDetailsBlock content={field.content} />
+            <BankDetailsBlock content={field.content} qrImage={field.qrImage} />
           ) : (
             <FormattedStaticContent content={field.content} />
           )}

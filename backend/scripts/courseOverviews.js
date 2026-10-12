@@ -198,7 +198,7 @@ const OVERVIEWS = {
           title: 'The program',
           intro: 'Five phases over four weeks, from the rules that govern the operation to the decisions you make on shift.',
           items: [
-            { title: 'The Operating Environment', bullets: ['Air law and civil aviation regulations', 'ICAO framework', 'Air traffic management', 'Aeronautical communications'] },
+            { title: 'The Operating Environment', bullets: ['Air law and civil aviation regulations', 'ICAO framework', 'DGCA framework', 'Air traffic management', 'Aeronautical communications'] },
             { title: 'Know the Aircraft', bullets: ['Aircraft systems for dispatchers', 'Mass and balance', 'Aircraft performance', 'MEL and CDL'] },
             { title: 'Plan the Flight', bullets: ['Aviation meteorology', 'Navigation and route planning', 'Fuel planning and alternates', 'NOTAMs and flight plan filing'] },
             { title: 'Control the Operation', bullets: ['Flight following and monitoring', 'Operational control', 'Communicating with crew and stakeholders', 'Managing disruptions'] },

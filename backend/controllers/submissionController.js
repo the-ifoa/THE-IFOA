@@ -3,7 +3,13 @@ const Course = require('../models/Course')
 const FormSchema = require('../models/FormSchema')
 const Submission = require('../models/Submission')
 const { asyncHandler } = require('../middleware/error')
-const { validateAnswers, findIntakeFieldId, conditionMet } = require('../utils/validateAnswers')
+const {
+  validateAnswers,
+  findIntakeFieldId,
+  conditionMet,
+  findTrainingLocation,
+  sectionsForLocation
+} = require('../utils/validateAnswers')
 const { sendMail } = require('../utils/mailer')
 
 const STATUSES = ['new', 'contacted', 'confirmed', 'rejected']
@@ -124,7 +130,8 @@ const create = asyncHandler(async (req, res) => {
   if (!schema) {
     return res.status(409).json({ message: 'Registration is not open for this course' })
   }
-  const sections = schema.sections
+  // Applicants training in India get India bank details and no billing section.
+  const sections = sectionsForLocation(schema.sections, findTrainingLocation(schema.sections, answers))
 
   const errors = validateAnswers(sections, answers)
 

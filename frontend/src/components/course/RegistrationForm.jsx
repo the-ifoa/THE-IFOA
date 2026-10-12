@@ -12,7 +12,9 @@ import {
   isSectionComplete,
   isTrackableSection,
   getDetailedValidationErrors,
-  termsForLocation
+  termsForLocation,
+  sectionsForLocation,
+  withLocationDefaults
 } from '@/components/formEngine/formSchema'
 import { downloadEnrollmentPdf } from '@/pdf/generateEnrollmentPdf'
 
@@ -65,7 +67,7 @@ export function RegistrationForm({ slug, courseTitle, onAnswersChange, locationP
             if (match) empty[section.id] = { ...empty[section.id], trainingCountry: match }
           }
         }
-        setAnswers(empty)
+        setAnswers(withLocationDefaults(sorted, empty))
       })
       .catch((err) => {
         if (cancelled) return
@@ -94,7 +96,8 @@ export function RegistrationForm({ slug, courseTitle, onAnswersChange, locationP
     const lp = locationPrices.find((p) => p.location === trainingCountry)
     const priceText = lp ? `${Number(lp.amount).toLocaleString('en-IN')} ${lp.currency}` : null
     if (!sections) return sections
-    return sections.map((s) => ({
+    // India: local bank details + QR, no billing section.
+    return sectionsForLocation(sections, trainingCountry).map((s) => ({
       ...s,
       fields: s.fields.map((f) => {
         if (f.id === 'termsText' && f.content) return { ...f, content: termsForLocation(f.content, trainingCountry) }
@@ -112,7 +115,13 @@ export function RegistrationForm({ slug, courseTitle, onAnswersChange, locationP
   }, [answers, onAnswersChange])
 
   function updateSection(sectionId, sectionAnswers) {
-    setAnswers((prev) => ({ ...prev, [sectionId]: sectionAnswers }))
+    setAnswers((prev) => {
+      const next = { ...prev, [sectionId]: sectionAnswers }
+      // Picking a training location fills location defaults (e.g. country for India).
+      return sectionAnswers?.trainingCountry !== prev?.[sectionId]?.trainingCountry
+        ? withLocationDefaults(sections, next)
+        : next
+    })
     setFieldErrors((prev) => {
       const next = { ...prev }
       for (const key of Object.keys(next)) {
@@ -126,11 +135,11 @@ export function RegistrationForm({ slug, courseTitle, onAnswersChange, locationP
     e.preventDefault()
     // Admin editor preview: never send a real application.
     if (liveSections) return
-    const detailed = getDetailedValidationErrors(sections, answers)
+    const detailed = getDetailedValidationErrors(displaySections, answers)
 
     // Require an intake choice only when the course offers intakes.
     if (intakes.length > 0) {
-      for (const section of sections) {
+      for (const section of displaySections) {
         const f = section.fields.find((x) => x.type === 'intake' && x.required)
         if (f && !answers[section.id]?.[f.id]) {
           detailed.unshift({
@@ -304,7 +313,7 @@ export function RegistrationForm({ slug, courseTitle, onAnswersChange, locationP
     )
   }
 
-  const trackable = sections.filter((s) => isTrackableSection(s))
+  const trackable = displaySections.filter((s) => isTrackableSection(s))
   const completed = trackable.filter((s) => isSectionComplete(s, answers[s.id])).length
 
   return (

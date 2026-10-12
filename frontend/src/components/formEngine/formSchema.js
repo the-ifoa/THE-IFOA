@@ -219,3 +219,45 @@ export function termsForLocation(content = '', location = '') {
     })
     .join('\n');
 }
+
+// Applicants training in India pay IFOA India by local bank transfer / UPI.
+// Keep in sync with INDIA_BANK_DETAILS in backend/utils/staticContent.js.
+export const INDIA_BANK_DETAILS = [
+  'Account Name: INTERNATIONAL FLIGHT OPERATIONS ACADEMY INDIA LLP',
+  'Account Number: 049421010000093',
+  'Account Type: Current',
+  'IFSC: UBIN0904945',
+  'Bank Name: Union Bank of India'
+].join('\n');
+export const INDIA_PAYMENT_QR = '/Qr.jpeg';
+
+// The form as an applicant training in India sees it: India bank details with
+// the payment QR code, no "Billing Address & Tax ID" section, and phone
+// fields starting on +91. Mirrors
+// sectionsForLocation in backend/utils/validateAnswers.js.
+export function sectionsForLocation(sections, location = '') {
+  if (!sections || !/india/i.test(location || '')) return sections;
+  return sections
+    .filter((s) => s.id !== 'billing-address')
+    .map((s) => ({
+      ...s,
+      fields: s.fields.map((f) =>
+        f.id === 'bankDetails'
+          ? { ...f, content: INDIA_BANK_DETAILS, qrImage: INDIA_PAYMENT_QR }
+          : f.type === 'tel'
+            ? { ...f, defaultCountryCode: 'IN' }
+            : f
+      )
+    }));
+}
+
+// Training in India: default the applicant's home-address country to India
+// (still editable). Only fills an empty answer.
+export function withLocationDefaults(sections, answers) {
+  if (!sections || !answers) return answers;
+  const location = sections.map((s) => answers[s.id]?.trainingCountry).find(Boolean);
+  if (!/india/i.test(location || '')) return answers;
+  const section = sections.find((s) => s.id === 'student-info' && s.fields.some((f) => f.id === 'country'));
+  if (!section || answers[section.id]?.country) return answers;
+  return { ...answers, [section.id]: { ...answers[section.id], country: 'India' } };
+}

@@ -2,6 +2,8 @@
 // `sections`. Mirrors the client-side rules in
 // frontend/src/components/formEngine/formSchema.js - keep the two in sync.
 
+const { INDIA_BANK_DETAILS, INDIA_PAYMENT_QR } = require('./staticContent')
+
 function isEmpty(field, value) {
   if (field.type === 'checkbox') return value !== true
   if (field.type === 'checkboxGroup') return !Array.isArray(value) || value.length === 0
@@ -27,6 +29,31 @@ function findIntakeFieldId(sections) {
     if (field) return { sectionId: section.id, fieldId: field.id }
   }
   return null
+}
+
+// The training location the applicant picked, if the form asks for one.
+function findTrainingLocation(sections, answers) {
+  for (const section of sections) {
+    if (!section.fields.some((f) => f.id === 'trainingCountry')) continue
+    const value = answers && answers[section.id] && answers[section.id].trainingCountry
+    if (typeof value === 'string' && value) return value
+  }
+  return ''
+}
+
+// The form as an applicant training in India sees it: India bank details with
+// the payment QR code, and no "Billing Address & Tax ID" section. Mirrors
+// sectionsForLocation in frontend/src/components/formEngine/formSchema.js.
+function sectionsForLocation(sections, location) {
+  if (!/india/i.test(location || '')) return sections
+  return sections
+    .filter((s) => s.id !== 'billing-address')
+    .map((s) => ({
+      ...s,
+      fields: s.fields.map((f) =>
+        f.id === 'bankDetails' ? { ...f, content: INDIA_BANK_DETAILS, qrImage: INDIA_PAYMENT_QR } : f
+      )
+    }))
 }
 
 function validateAnswers(sections, answers) {
@@ -85,4 +112,4 @@ function validateAnswers(sections, answers) {
   return errors
 }
 
-module.exports = { validateAnswers, findIntakeFieldId, conditionMet }
+module.exports = { validateAnswers, findIntakeFieldId, conditionMet, findTrainingLocation, sectionsForLocation }

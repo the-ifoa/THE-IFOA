@@ -148,6 +148,7 @@ const styles = StyleSheet.create({
   bankColLeftText: { alignItems: 'flex-start', width: '100%' },
   bankDetailsHeading: { fontSize: 9, marginBottom: 4 },
   bankBold: { fontFamily: 'Helvetica-Bold' },
+  bankQr: { width: 90, height: 90 },
   bankNote: { fontSize: 8.5, fontFamily: 'Helvetica-Bold', color: '#c00000', marginTop: 8 },
 
   // Terms & Conditions block
@@ -266,7 +267,26 @@ function parseBankDetails(content) {
   };
 }
 
-function BankDetailsBlock({ content }) {
+function BankDetailsBlock({ content, qrImage }) {
+  // India bank details: "Label: value" lines beside the payment QR code.
+  if (qrImage) {
+    const rows = content.split('\n').map((l) => l.trim()).filter(Boolean);
+    return (
+      <View>
+        <Text style={styles.bankHeader}>Bank Transfer</Text>
+        <View style={styles.bankRow}>
+          <View style={[styles.bankCol, styles.bankColLeft, styles.bankColLeftText, { flex: 2 }]}>
+            {rows.map((row, i) => (
+              <Text key={i} style={[styles.bankLine, { textAlign: 'left' }]}>{row}</Text>
+            ))}
+          </View>
+          <View style={styles.bankCol}>
+            <Image src={`${window.location.origin}${qrImage}`} style={styles.bankQr} />
+          </View>
+        </View>
+      </View>
+    );
+  }
   const parsed = parseBankDetails(content);
   if (!parsed) return <Text style={styles.staticBlock}>{content}</Text>;
   const { beneficiaryLines, bankLines, iban, bic, note } = parsed;
@@ -413,7 +433,7 @@ function renderSectionBody(section, sectionAnswers, location = '') {
             {field.id === 'programInfo' ? (
               <ProgramInfoBlock content={field.content} />
             ) : field.id === 'bankDetails' ? (
-              <BankDetailsBlock content={field.content} />
+              <BankDetailsBlock content={field.content} qrImage={field.qrImage} />
             ) : field.id === 'termsText' ? (
               <TermsBlock content={termsForLocation(field.content, location)} />
             ) : (
