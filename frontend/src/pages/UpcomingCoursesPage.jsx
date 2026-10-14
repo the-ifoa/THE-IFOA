@@ -361,11 +361,12 @@ export function UpcomingCoursesPage() {
         <div className="max-w-[1280px] mx-auto px-6 space-y-4">
           {/* Country toggle, format filter and sort */}
           <div className="relative z-20 flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-2">
-            <div className="flex flex-wrap items-center gap-2">
+            {/* Phones: even 2-column grid of chips. sm+: one wrapping row. */}
+            <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:items-center">
               <button
                 type="button"
                 onClick={() => setCountry('all')}
-                className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold transition-colors cursor-pointer ${
+                className={`inline-flex w-full sm:w-auto justify-center items-center gap-2 rounded-full border px-4 py-2.5 sm:py-2 text-sm font-semibold transition-colors cursor-pointer ${
                   country === 'all' ? 'bg-slate-950 border-slate-950 text-white' : 'bg-white border-slate-200 text-slate-700 hover:border-slate-400'
                 }`}
               >
@@ -374,11 +375,11 @@ export function UpcomingCoursesPage() {
               {LOCATIONS.map((loc, li) => {
                 const key = String(loc.name || '').trim().toLowerCase()
                 return (
-                  <span key={`${loc.name}-${li}`} className="relative">
+                  <span key={`${loc.name}-${li}`} className="relative block sm:inline">
                     <button
                       type="button"
                       onClick={() => setCountry(key)}
-                      className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold transition-colors cursor-pointer ${
+                      className={`inline-flex w-full sm:w-auto justify-center items-center gap-2 rounded-full border px-4 py-2.5 sm:py-2 text-sm font-semibold transition-colors cursor-pointer ${
                         country === key ? 'bg-slate-950 border-slate-950 text-white' : 'bg-white border-slate-200 text-slate-700 hover:border-slate-400'
                       }`}
                     >
@@ -394,25 +395,25 @@ export function UpcomingCoursesPage() {
                   </span>
                 )
               })}
-              <div className="w-44 [&>button]:min-h-0 [&>button]:rounded-full [&>button]:py-2">
+              <div className="col-span-2 sm:w-44 [&>button]:min-h-0 [&>button]:rounded-full [&>button]:py-2">
                 <CmsAddItem listPath="board.locations" label="Add country" blank={{ name: 'New country', code: '' }} />
               </div>
             </div>
 
-            <div className="flex flex-wrap items-center gap-3">
-              <div className="flex items-center gap-2 text-xs font-semibold text-slate-500">
+            <div className="grid grid-cols-2 gap-3 sm:flex sm:flex-wrap sm:items-center">
+              <div className="flex flex-col items-start sm:flex-row sm:items-center gap-1.5 sm:gap-2 text-xs font-semibold text-slate-500">
                 <CmsText path="board.formatLabel" value={c.board.formatLabel} />
                 <CustomSelect
-                  className="!w-40"
+                  className="!w-full sm:!w-40"
                   value={format}
                   onChange={setFormat}
                   options={[{ value: 'all', label: 'All' }, ...FORMATS.map((f) => ({ value: normFormat(f), label: f }))]}
                 />
               </div>
-              <div className="flex items-center gap-2 text-xs font-semibold text-slate-500">
+              <div className="flex flex-col items-start sm:flex-row sm:items-center gap-1.5 sm:gap-2 text-xs font-semibold text-slate-500">
                 <CmsText path="board.sortLabel" value={c.board.sortLabel} />
                 <CustomSelect
-                  className="!w-44"
+                  className="!w-full sm:!w-44"
                   value={sort}
                   onChange={setSort}
                   options={[

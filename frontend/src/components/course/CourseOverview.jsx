@@ -143,39 +143,39 @@ function Track({ block }) {
   const cols = block.items.length
   return (
     <div className="space-y-3">
+      {/* Phones: one compact row per item (label left, title right). sm+: one column per item. */}
       <div
-        className="grid grid-cols-2 sm:grid-cols-[repeat(var(--n),minmax(0,1fr))] rounded-2xl border border-slate-300 overflow-hidden bg-white"
+        className="grid grid-cols-1 sm:grid-cols-[repeat(var(--n),minmax(0,1fr))] rounded-2xl border border-slate-300 overflow-hidden bg-white"
         style={{ '--n': cols }}
       >
         {block.items.map((item, i) => {
           const on = item.tone === 'on'
           const prep = item.tone === 'prep'
-          // Odd count on the 2-column phone grid: last item takes the full row.
-          const lone = cols % 2 === 1 && i === cols - 1
+          const last = i === cols - 1
           return (
             <div
               key={i}
-              className={`p-3.5 sm:p-4 min-h-[92px] flex flex-col justify-between gap-2 border-slate-200 ${
-                i < cols - 1 ? 'sm:border-r' : ''
-              } ${i % 2 === 0 && !lone ? 'border-r sm:border-r' : ''} ${i < cols - (lone ? 1 : 2) ? 'border-b sm:border-b-0' : ''} ${
-                lone ? 'col-span-2 sm:col-span-1' : ''
-              } ${
+              className={`px-4 py-3 sm:p-4 sm:min-h-[92px] flex items-center justify-between gap-3 sm:flex-col sm:items-stretch sm:justify-between sm:gap-2 ${
+                on ? 'border-white/10' : 'border-slate-200'
+              } ${last ? '' : 'border-b sm:border-b-0 sm:border-r'} ${
                 on ? 'bg-slate-950 text-white' : prep ? 'bg-slate-100 text-slate-950' : 'bg-white text-slate-950'
               }`}
             >
               {item.label && (
-                <span className={`text-[11px] font-mono uppercase tracking-wider ${on ? 'text-slate-300' : 'text-slate-500'}`}>
+                <span className={`shrink-0 text-[11px] font-mono uppercase tracking-wider ${on ? 'text-slate-300' : 'text-slate-500'}`}>
                   <E o={item} k="label" />
                 </span>
               )}
-              <strong className="text-sm sm:text-base font-bold leading-snug"><E o={item} k="title" /></strong>
-              {item.sub && <small className={`text-[11px] leading-snug ${on ? 'text-slate-300' : 'text-slate-500'}`}><E o={item} k="sub" /></small>}
+              <div className="min-w-0 text-right sm:text-left flex flex-col sm:gap-2">
+                <strong className="text-sm sm:text-base font-bold leading-snug"><E o={item} k="title" /></strong>
+                {item.sub && <small className={`text-[11px] leading-snug ${on ? 'text-slate-300' : 'text-slate-500'}`}><E o={item} k="sub" /></small>}
+              </div>
             </div>
           )
         })}
       </div>
       {block.key?.length > 0 && (
-        <div className="flex flex-wrap gap-4 text-xs text-slate-500">
+        <div className="flex flex-wrap gap-x-4 gap-y-2 text-xs text-slate-500">
           {block.key.map((k, i) => (
             <span key={i} className="inline-flex items-center gap-2">
               <span

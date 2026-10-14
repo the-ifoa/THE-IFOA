@@ -32,8 +32,9 @@ import { usePageContent } from '@/hooks/usePageContent'
 import { useSwipe } from '@/hooks/useSwipe'
 import { CmsText, CmsRemoveItem, CmsAddItem, CmsImageButton, isPreviewEditMode } from '@/components/admin/CmsEditable'
 import { CosmicParallaxBg } from '@/components/common/CosmicParallaxBg'
-import hero3dMockup from '@/assets/home/hero-3d-mockup.webp'
-import hero3dMockupPng from '@/assets/home/hero-3d-mockup.webp'
+// Hero mockup, resized from the 2400px original (shown at most 560px wide).
+import hero3dMockup600 from '@/assets/home/hero-3d-mockup-600.webp'
+import hero3dMockup1120 from '@/assets/home/hero-3d-mockup-1120.webp'
 
 // Tarmac Photography Banners
 const easaTarmacHero = '/course-images/EASA.jpeg'
@@ -738,9 +739,13 @@ export function HomePage() {
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 sm:w-64 sm:h-64 lg:w-72 lg:h-72 bg-[#34E06E]/15 rounded-full blur-3xl pointer-events-none -z-10" />
                 <div className="relative w-full max-w-[300px] sm:max-w-[340px] md:max-w-[400px] lg:max-w-[440px] xl:max-w-[500px] 2xl:max-w-[560px] mx-auto flex items-center justify-center text-center sm:animate-float-slow">
                   <picture className="block w-full text-center">
-                    <source srcSet={hero3dMockup} type="image/webp" />
                     <img
-                      src={hero3dMockupPng}
+                      src={hero3dMockup1120}
+                      srcSet={`${hero3dMockup600} 600w, ${hero3dMockup1120} 1120w`}
+                      sizes="(min-width: 1536px) 560px, (min-width: 1280px) 500px, (min-width: 1024px) 440px, (min-width: 768px) 400px, (min-width: 640px) 340px, 300px"
+                      width="1120"
+                      height="1119"
+                      decoding="async"
                       alt="IFOA Flight Operations Training & Certification Platform"
                       className="w-full max-h-[32vh] sm:max-h-[36vh] lg:max-h-[42vh] xl:max-h-[46vh] object-contain select-none drop-shadow-[0_20px_50px_rgba(0,0,0,0.65)] pointer-events-none mx-auto block"
                       loading="eager"

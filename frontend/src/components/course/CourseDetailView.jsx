@@ -421,6 +421,8 @@ export function CourseDetailView({ course: savedCourse, preview = false }) {
     course.title?.toLowerCase().includes('india')
   // GST applies to anything taught in India, including another course with India picked in the location switch.
   const taxIsGst = isIndiaProgram || preferredLocation === 'india'
+  // India admissions has its own WhatsApp line.
+  const whatsappHref = isIndiaProgram || preferredLocation === 'india' ? 'https://wa.me/919654584882' : 'https://wa.me/41782273103'
   // Slug/refCode only - course.authority often *mentions* FAA on non-FAA
   // courses too (e.g. the EASA course's authority is "EASA / FAA Part 65
   // Standards" as a comparison), which caused false positives here.
@@ -622,7 +624,7 @@ export function CourseDetailView({ course: savedCourse, preview = false }) {
                   </Link>
 
                   <a
-                    href="https://wa.me/41782273103"
+                    href={whatsappHref}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-full flex items-center justify-center gap-2 bg-emerald-50/80 hover:bg-emerald-100 border border-emerald-200/80 text-emerald-950 font-bold py-3 px-4 rounded-full text-xs transition-colors cursor-pointer"
@@ -1791,7 +1793,7 @@ export function CourseDetailView({ course: savedCourse, preview = false }) {
                 )}
 
                 <a
-                  href="https://wa.me/41782273103"
+                  href={whatsappHref}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center gap-2 border border-white/20 bg-white/5 hover:bg-white/10 text-white font-semibold py-3.5 px-5 rounded-full text-xs transition-colors cursor-pointer"
