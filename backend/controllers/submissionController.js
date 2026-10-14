@@ -10,7 +10,7 @@ const {
   findTrainingLocation,
   sectionsForLocation
 } = require('../utils/validateAnswers')
-const { sendMail } = require('../utils/mailer')
+const { sendMail, routeFor } = require('../utils/mailer')
 
 const STATUSES = ['new', 'contacted', 'confirmed', 'rejected']
 
@@ -102,8 +102,12 @@ async function notifySubmission({ course, intake, sections, answers, submissionI
       .join('')}
   `
 
+  // India enrollments go to the India mailbox; everything else to the main inbox.
+  const { account, to } = routeFor(trainingLocation || course.location)
+
   await sendMail({
-    to: process.env.MAIL_TO || 'info@theifoa.com',
+    account,
+    to,
     replyTo,
     subject: `New enrollment: ${course.title} - ${trainingLocation || course.location || 'Location not specified'}${intake ? ` (${intake})` : ''}${applicant ? ` - ${applicant}` : ''}`,
     text,

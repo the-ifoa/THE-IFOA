@@ -1,5 +1,5 @@
 const { asyncHandler } = require('../middleware/error')
-const { sendMail } = require('../utils/mailer')
+const { sendMail, routeFor } = require('../utils/mailer')
 const ContactMessage = require('../models/ContactMessage')
 
 const OFFICE_INBOX = {
@@ -35,7 +35,10 @@ const send = asyncHandler(async (req, res) => {
   // Save first so the inquiry is durable even if the email below fails.
   await ContactMessage.create({ firstName, lastName, email, audience, organization, topic, message, office, location })
 
-  const to = process.env.MAIL_TO || OFFICE_INBOX[office] || OFFICE_INBOX.switzerland
+  // India inquiries (India training location or India office) go to the India
+  // mailbox; everything else to the main inbox.
+  const route = routeFor(office === 'india' ? 'india' : location)
+  const to = route.account === 'india' ? route.to : process.env.MAIL_TO || OFFICE_INBOX[office] || OFFICE_INBOX.switzerland
 
   const text = [
     audienceLabel ? `I am: ${audienceLabel}` : null,
@@ -64,6 +67,7 @@ const send = asyncHandler(async (req, res) => {
   // failure (e.g. SMTP not configured) must not turn into a 500 for the visitor.
   try {
     await sendMail({
+      account: route.account,
       to,
       replyTo: email,
       subject: `theIFOA website inquiry${audienceLabel ? ` (${audienceLabel})` : ''}: ${topic || 'General'}${` - ${location}`} - ${firstName} ${lastName}`,
