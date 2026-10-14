@@ -240,6 +240,8 @@ export function RegistrationForm({ slug, courseTitle, onAnswersChange, locationP
   }
 
   if (done) {
+    // India applicants send their signed form to the India office.
+    const signedFormEmail = /india/i.test(trainingCountry || '') ? 'info-india@theifoa.com' : 'info@theifoa.com'
     const steps = [
       { title: 'Download your application', text: 'Your completed form as a PDF.' },
       {
@@ -247,8 +249,8 @@ export function RegistrationForm({ slug, courseTitle, onAnswersChange, locationP
         text: (
           <>
             Email the signed copy with two copies of your passport or photo ID to{' '}
-            <a className="font-semibold text-slate-900 underline underline-offset-2 hover:text-[#16a952]" href="mailto:info@theifoa.com">
-              info@theifoa.com
+            <a className="font-semibold text-slate-900 underline underline-offset-2 hover:text-[#16a952]" href={`mailto:${signedFormEmail}`}>
+              {signedFormEmail}
             </a>
             .
           </>
@@ -306,7 +308,7 @@ export function RegistrationForm({ slug, courseTitle, onAnswersChange, locationP
         </div>
         {submitError && (
           <p className="mt-4 text-xs font-medium text-red-600">
-            Could not create the PDF ({submitError}). Please try again, or email info@theifoa.com with your reference.
+            Could not create the PDF ({submitError}). Please try again, or email {signedFormEmail} with your reference.
           </p>
         )}
       </div>

@@ -172,9 +172,11 @@ const create = asyncHandler(async (req, res) => {
     console.error('submissionController.create: notifySubmission failed', err)
   }
 
+  const trainingLocation = findTrainingLocation(schema.sections, answers) || course.location
+  const signedFormEmail = /india/i.test(trainingLocation || '') ? 'info-india@theifoa.com' : 'info@theIFOA.com'
+
   res.status(201).json({
-    message:
-      'Enrollment received. Download your completed form below and email the signed copy to info@theIFOA.com.',
+    message: `Enrollment received. Download your completed form below and email the signed copy to ${signedFormEmail}.`,
     submissionId: submission._id,
     id: submission._id
   })
